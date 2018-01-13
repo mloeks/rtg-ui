@@ -6,9 +6,9 @@ class AuthService {
     this.logout = this.logout.bind(this);
   }
 
-  authenticate(isAdmin, callback) {
+  authenticate(username, password, callback) {
     this.isAuthenticated = true;
-    this.isAdmin = isAdmin;
+    this.isAdmin = username === 'admin';
     setTimeout(callback, 100);
   }
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
+import LoginForm from '../components/LoginForm';
 import authService from '../service/AuthService';
 
 class Foyer extends Component {
@@ -14,19 +14,13 @@ class Foyer extends Component {
     };
 
     this.login = this.login.bind(this);
-    this.loginAsAdmin = this.loginAsAdmin.bind(this);
   }
 
-  login() {
-    authService.authenticate(false, () => {
+  login(username, password) {
+    authService.authenticate(username, password, () => {
       this.setState({ redirectToReferrer: true });
     });
-  }
-
-  loginAsAdmin() {
-    authService.authenticate(true, () => {
-      this.setState({ redirectToReferrer: true });
-    });
+    // TODO handle error
   }
 
   render() {
@@ -39,9 +33,7 @@ class Foyer extends Component {
     return (
       <div>
         <Header />
-        <h3>RTG Foyer ...</h3>
-        <RaisedButton label="Eintreten" onClick={this.login} />
-        <RaisedButton label="Ich bin die Königin!" onClick={this.loginAsAdmin} />
+        <LoginForm onLogin={this.login} />
       </div>);
   }
 }

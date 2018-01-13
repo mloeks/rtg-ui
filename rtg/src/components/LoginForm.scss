@@ -1,0 +1,15 @@
+.LoginForm {
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
+  width: 400px;
+
+  &__heading {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  &__form {
+    width: 100%;
+  }
+}
