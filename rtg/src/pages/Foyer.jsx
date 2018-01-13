@@ -1,13 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
+import authService from '../service/AuthService';
 
-const Foyer = () => (
-  <div>
-    <Header />
-    <h3>RTG Foyer ...</h3>
-    <RaisedButton label="Eintreten" />
-  </div>
-);
+class Foyer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      redirectToReferrer: false,
+    };
+
+    this.login = this.login.bind(this);
+  }
+
+  login() {
+    authService.authenticate(() => {
+      this.setState({ redirectToReferrer: true });
+    });
+  }
+
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: '/reception' } };
+
+    if (this.state.redirectToReferrer) {
+      return (<Redirect to={from} />);
+    }
+
+    return (
+      <div>
+        <Header />
+        <h3>RTG Foyer ...</h3>
+        <RaisedButton label="Eintreten" onClick={this.login} />
+      </div>);
+  }
+}
+
+Foyer.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      from: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+      }),
+    }),
+  }).isRequired,
+};
 
 export default Foyer;
