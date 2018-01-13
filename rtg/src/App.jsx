@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Route, Switch } from 'react-router-dom';
 import Admin from './pages/Admin';
 import Bets from './pages/Bets';
@@ -8,6 +9,7 @@ import Reception from './pages/Reception';
 import PermissionDenied from './pages/403';
 import AuthRoute from './components/auth/AuthRoute';
 import AdminRoute from './components/auth/AdminRoute';
+import rtg from './theme/RtgTheme';
 
 import './App.css';
 
@@ -22,7 +24,7 @@ class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
         <div className="App">
           <Switch>
             <Route exact path="/" component={Foyer} />
