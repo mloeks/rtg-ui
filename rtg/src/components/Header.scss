@@ -1,0 +1,11 @@
+.Header__menu {
+  text-align: left;
+
+  a {
+    text-decoration: none;
+
+    &:hover, &:focus, &:active {
+      text-decoration: none;
+    }
+  }
+}
