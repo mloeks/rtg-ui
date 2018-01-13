@@ -20,13 +20,15 @@ const Header = withRouter(({ history }) => (
       >
         <Link to="/reception"><MenuItem primaryText="Rezeption" /></Link>
         <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
-        <Divider />
+
+        {authService.isAdmin && <Divider />}
+        {authService.isAdmin &&
         <Link to="/admin">
           <MenuItem
             primaryText="Admin"
             leftIcon={<ActionSettings />}
           />
-        </Link>
+        </Link>}
 
         {authService.isAuthenticated && <Divider />}
         {authService.isAuthenticated && <MenuItem

@@ -5,7 +5,9 @@ import Admin from './pages/Admin';
 import Bets from './pages/Bets';
 import Foyer from './pages/Foyer';
 import Reception from './pages/Reception';
+import PermissionDenied from './pages/403';
 import AuthRoute from './components/auth/AuthRoute';
+import AdminRoute from './components/auth/AdminRoute';
 
 import './App.css';
 
@@ -24,11 +26,12 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route exact path="/" component={Foyer} />
+            <Route exact path="/403" component={PermissionDenied} />
 
             <AuthRoute exact path="/bets" component={Bets} />
-            <AuthRoute exact path="/reception" component={Reception} />} />
+            <AuthRoute exact path="/reception" component={Reception} />
 
-            <Route exact path="/admin" component={Admin} />
+            <AdminRoute exact path="/admin" component={Admin} />
           </Switch>
         </div>
       </MuiThemeProvider>

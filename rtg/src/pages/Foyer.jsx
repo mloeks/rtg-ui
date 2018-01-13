@@ -14,10 +14,17 @@ class Foyer extends Component {
     };
 
     this.login = this.login.bind(this);
+    this.loginAsAdmin = this.loginAsAdmin.bind(this);
   }
 
   login() {
-    authService.authenticate(() => {
+    authService.authenticate(false, () => {
+      this.setState({ redirectToReferrer: true });
+    });
+  }
+
+  loginAsAdmin() {
+    authService.authenticate(true, () => {
       this.setState({ redirectToReferrer: true });
     });
   }
@@ -34,6 +41,7 @@ class Foyer extends Component {
         <Header />
         <h3>RTG Foyer ...</h3>
         <RaisedButton label="Eintreten" onClick={this.login} />
+        <RaisedButton label="Ich bin die Königin!" onClick={this.loginAsAdmin} />
       </div>);
   }
 }
