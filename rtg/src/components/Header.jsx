@@ -10,7 +10,7 @@ import authService from '../service/AuthService';
 const Header = withRouter(({ history }) => (
   <AppBar
     title="Royale Tippgemeinschaft - 2018"
-    iconElementRight={
+    iconElementRight={authService.isAuthenticated ?
       <IconMenu
         iconButtonElement={
           <IconButton>
@@ -36,7 +36,7 @@ const Header = withRouter(({ history }) => (
           leftIcon={<ActionExitToApp />}
           onClick={() => authService.logout(() => history.push('/'))}
         />}
-      </IconMenu>
+      </IconMenu> : null
     }
   />
 ));
