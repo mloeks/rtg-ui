@@ -9,8 +9,6 @@ import Reception from './pages/Reception';
 import PermissionDenied from './pages/403';
 import AuthRoute from './components/auth/AuthRoute';
 import AdminRoute from './components/auth/AdminRoute';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import rtg from './theme/RtgTheme';
 
 import './App.css';
@@ -28,22 +26,15 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
         <div className="App">
-          <Header />
+          <Switch>
+            <Route exact path="/" component={Foyer} />
+            <Route exact path="/403" component={PermissionDenied} />
 
-          <div className="main-content">
-            <Switch>
-              <Route exact path="/" component={Foyer} />
-              <Route exact path="/403" component={PermissionDenied} />
-              <Route exact path="/footer" component={Footer} />
+            <AuthRoute exact path="/bets" component={Bets} />
+            <AuthRoute exact path="/reception" component={Reception} />
 
-              <AuthRoute exact path="/bets" component={Bets} />
-              <AuthRoute exact path="/reception" component={Reception} />
-
-              <AdminRoute exact path="/admin" component={Admin} />
-            </Switch>
-          </div>
-
-          <Footer />
+            <AdminRoute exact path="/admin" component={Admin} />
+          </Switch>
         </div>
       </MuiThemeProvider>
     );

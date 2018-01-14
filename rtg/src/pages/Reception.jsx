@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import BigPicture from '../components/BigPicture';
 import Post from '../components/Post';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -51,16 +53,20 @@ class Reception extends Component {
 
   render() {
     return (
-      <div>
-        <BigPicture className="Reception__welcome" img={headingImg}>
-          <h1 className="BigPicture__heading">Willkommen! ...</h1>
-        </BigPicture>
-        <section className="Reception__news">
-          <h2>Neuigkeiten</h2>
-          {this.state.loadingError && <p>{this.state.loadingError}</p>}
-          {this.state.posts.map(post => <Post key={post.id} post={post} />)}
+      <main className="content">
+        <Header />
+        <section className="page-content">
+          <BigPicture className="Reception__welcome" img={headingImg}>
+            <h1 className="BigPicture__heading">Willkommen! ...</h1>
+          </BigPicture>
+          <section className="Reception__news">
+            <h2>Neuigkeiten</h2>
+            {this.state.loadingError && <p>{this.state.loadingError}</p>}
+            {this.state.posts.map(post => <Post key={post.id} post={post} />)}
+          </section>
         </section>
-      </div>
+        <Footer />
+      </main>
     );
   }
 }
