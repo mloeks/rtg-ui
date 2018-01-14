@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Header from '../components/Header';
 import LoginForm from '../components/LoginForm';
 import AuthService from '../service/AuthService';
 
@@ -33,7 +32,6 @@ class Foyer extends Component {
 
     return (
       <div>
-        <Header />
         <LoginForm onLogin={this.login} />
       </div>);
   }

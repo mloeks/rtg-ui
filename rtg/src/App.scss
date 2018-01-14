@@ -2,6 +2,16 @@
   font-family: 'Roboto', sans-serif;
   text-align: center;
 
+  min-width: 320px;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  .main-content {
+    flex-grow: 1;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;

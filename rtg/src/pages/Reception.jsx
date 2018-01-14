@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
 import BigPicture from '../components/BigPicture';
 import Post from '../components/Post';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -53,7 +52,6 @@ class Reception extends Component {
   render() {
     return (
       <div>
-        <Header />
         <BigPicture className="Reception__welcome" img={headingImg}>
           <h1 className="BigPicture__heading">Willkommen! ...</h1>
         </BigPicture>
