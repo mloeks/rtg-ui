@@ -1,7 +1,7 @@
 import FetchHelper from './FetchHelper';
 
 // TODO make base URL of API configurable by environment
-const AUTH_URL = 'http://localhost:8000/api-token-auth/';
+export const API_BASE_URL = 'http://localhost:8000';
 
 class AuthService {
   constructor() {
@@ -37,7 +37,7 @@ class AuthService {
 
   async authenticate(username, password) {
     return new Promise((resolve, reject) => {
-      fetch(AUTH_URL, {
+      fetch(`${API_BASE_URL}/api-token-auth/`, {
         method: 'POST',
         body: JSON.stringify({ username, password }),
         headers: {

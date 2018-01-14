@@ -25,11 +25,17 @@ I tried this briefly, but it even got messier ;-)
 ### Authentication
 
 * check token (and refresh?) on every page
-* make page reloads work
+* make page reloads work --> have authService use localStorage and make sure reloads on certain routes work
 
 ### Design
 
+#### Foyer
+* Migrate from old design - with login and registration form
+
+#### Reception
 * Start migrating the Reception page with a big image and User posts
+
+#### Footer
 * Start migrating the (mostly static) footer
 
 ### General
