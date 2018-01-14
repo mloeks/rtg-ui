@@ -14,6 +14,8 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ## Current Issues
 
+* Drawer stays open if user navigates to the page which he is already on
+
 ## Outstanding TODOs
 
 ### Authentication
@@ -21,17 +23,17 @@ Sass support has been configured as described [here](https://github.com/facebook
 * do I ever need to check and/or refresh the token?
 * Handle token expiry
 
-### Reception
+### Foyer
 
 * Adding posts
 * Take post pagination into account
 
 ### Design
 
-#### Foyer
+#### Reception
 * Migrate from old design - with login and registration form
 
-#### Reception
+#### Foyer
 * Make post cards prettier, give no-avatar letter circles random colours
 
 #### Header

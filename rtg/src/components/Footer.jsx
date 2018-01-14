@@ -16,7 +16,7 @@ const FacebookIcon = props => (
 
 const Footer = () => (
   <footer className="Footer" style={{ backgroundColor: darkGrey }}>
-    <Link to="/reception" className="Footer__title">
+    <Link to="/" className="Footer__title">
       <img alt="logo" className="Footer__logo" src={logo} />
       <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>
       <h4 className="Footer__title--abbrev">RTG 2018</h4>
@@ -24,7 +24,7 @@ const Footer = () => (
 
     <div className="Footer__content">
       <ul className="Footer__links">
-        <li><Link to="/reception">Home</Link></li>
+        <li><Link to="/">Home</Link></li>
         <li><Link to="/about">Über die RTG</Link></li>
         <li><Link to="/rules">Regeln</Link></li>
         <li><Link to="/imprint">Impressum</Link></li>

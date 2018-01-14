@@ -27,11 +27,11 @@ class App extends Component {
       <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
         <div className="App">
           <Switch>
-            <Route exact path="/" component={Foyer} />
+            <Route exact path="/" component={Reception} />
             <Route exact path="/403" component={PermissionDenied} />
 
             <AuthRoute exact path="/bets" component={Bets} />
-            <AuthRoute exact path="/reception" component={Reception} />
+            <AuthRoute exact path="/foyer" component={Foyer} />
 
             <AdminRoute exact path="/admin" component={Admin} />
           </Switch>

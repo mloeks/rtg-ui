@@ -1,51 +1,69 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import Page from './Page';
-import LoginForm from '../components/LoginForm';
-import AuthService from '../service/AuthService';
+import BigPicture from '../components/BigPicture';
+import Post from '../components/Post';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
+import FetchHelper from '../service/FetchHelper';
+
+import headingImg from '../theme/img/img7.jpg';
+import './Foyer.css';
 
 class Foyer extends Component {
+  static async loadPosts() {
+    return new Promise((resolve, reject) => {
+      fetch(`${API_BASE_URL}/rtg/posts/`, {
+        method: 'GET',
+        headers: { Authorization: `Token ${AuthService.getToken()}` },
+      })
+        .then(FetchHelper.parseJson)
+        .then(response => (
+          response.ok ? resolve(response.json) : reject(new Error('Ein Fehler ist aufgetreten.'))
+        ))
+        .catch(() => {
+          reject(new Error('Ein Fehler ist aufgetreten.'));
+        });
+    });
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      redirectToReferrer: false,
+      loadingError: null,
+      posts: [],
     };
-
-    this.login = this.login.bind(this);
   }
 
-  login(username, password, errorCallback) {
-    AuthService.authenticate(username, password)
-      .then(() => {
-        this.setState({ redirectToReferrer: true });
+  componentDidMount() {
+    Foyer.loadPosts()
+      .then((response) => {
+        this.setState({
+          loadingError: false,
+          posts: response.results,
+        });
       })
-      .catch(errorCallback);
+      .catch((error) => {
+        this.setState({
+          loadingError: error.message,
+          posts: [],
+        });
+      });
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/reception' } };
-
-    if (this.state.redirectToReferrer || AuthService.isAuthenticated()) {
-      return (<Redirect to={from} />);
-    }
-
     return (
       <Page className="FoyerPage">
-        <LoginForm onLogin={this.login} />
-      </Page>);
+        <BigPicture className="Foyer__welcome" img={headingImg}>
+          <h1 className="BigPicture__heading">Willkommen! ...</h1>
+        </BigPicture>
+        <section className="Foyer__news">
+          <h2>Neuigkeiten</h2>
+          {this.state.loadingError && <p>{this.state.loadingError}</p>}
+          {this.state.posts.map(post => <Post key={post.id} post={post} />)}
+        </section>
+      </Page>
+    );
   }
 }
-
-Foyer.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      from: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-      }),
-    }),
-  }).isRequired,
-};
 
 export default Foyer;

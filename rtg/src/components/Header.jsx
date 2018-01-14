@@ -44,7 +44,7 @@ class Header extends Component {
           open={this.state.menuOpen}
           onRequestChange={(menuOpen) => this.setState({ menuOpen })}
         >
-          <Link to="/reception"><MenuItem primaryText="Rezeption" /></Link>
+          <Link to="/foyer"><MenuItem primaryText="Foyer" /></Link>
           <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
 
           {AuthService.isAdmin() && <Divider />}
