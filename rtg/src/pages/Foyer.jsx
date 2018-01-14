@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import LoginForm from '../components/LoginForm';
-import authService from '../service/AuthService';
+import AuthService from '../service/AuthService';
 
 class Foyer extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Foyer extends Component {
   }
 
   login(username, password, errorCallback) {
-    authService.authenticate(username, password)
+    AuthService.authenticate(username, password)
       .then(() => {
         this.setState({ redirectToReferrer: true });
       })

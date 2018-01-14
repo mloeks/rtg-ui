@@ -14,21 +14,16 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ## Current Issues
 
-### Authentication
-
-* User needs to re-login on every real page reload. Make use of LocalStorage.
-* It seems a bit messy to use the authService singleton all over the app. It would be nice to have the authentication info in the App's state.
-I tried this briefly, but it even got messier ;-)
-
 ## Outstanding TODOs
 
 ### Authentication
 
-* check token (and refresh?) on every page
-* make page reloads work --> have authService use localStorage and make sure reloads on certain routes work
+* do I ever need to check and/or refresh the token?
+* Handle token expiry
 
 ### Reception
 
+* Adding posts
 * Take post pagination into account
 
 ### Design
@@ -52,7 +47,6 @@ I tried this briefly, but it even got messier ;-)
 
 ### General
 * Add Fetch/Promise polyfill for IE, if it's not already included in create-react-app config.
-
 
 ## Learnings during dev
 

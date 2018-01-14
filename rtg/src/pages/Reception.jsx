@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import BigPicture from '../components/BigPicture';
 import Post from '../components/Post';
-import authService, { API_BASE_URL } from '../service/AuthService';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 
 import headingImg from '../theme/img/img7.jpg';
@@ -13,7 +13,7 @@ class Reception extends Component {
     return new Promise((resolve, reject) => {
       fetch(`${API_BASE_URL}/rtg/posts/`, {
         method: 'GET',
-        headers: { Authorization: `Token ${authService.token}` },
+        headers: { Authorization: `Token ${AuthService.getToken()}` },
       })
         .then(FetchHelper.parseJson)
         .then(response => (

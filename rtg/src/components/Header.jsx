@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Divider, Drawer, MenuItem } from 'material-ui';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
-import authService from '../service/AuthService';
+import AuthService from '../service/AuthService';
 
 import './Header.css';
 
@@ -40,8 +40,8 @@ class Header extends Component {
           <Link to="/reception"><MenuItem primaryText="Rezeption" /></Link>
           <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
 
-          {authService.isAdmin && <Divider />}
-          {authService.isAdmin &&
+          {AuthService.isAdmin() && <Divider />}
+          {AuthService.isAdmin() &&
           <Link to="/admin">
             <MenuItem
               primaryText="Admin"
@@ -49,11 +49,11 @@ class Header extends Component {
             />
           </Link>}
 
-          {authService.isAuthenticated && <Divider />}
-          {authService.isAuthenticated && <MenuItem
+          {AuthService.isAuthenticated() && <Divider />}
+          {AuthService.isAuthenticated() && <MenuItem
             primaryText="Log Out"
             rightIcon={<ActionExitToApp />}
-            onClick={() => authService.logout().then(() => this.props.history.push('/'))}
+            onClick={() => AuthService.logout().then(() => this.props.history.push('/'))}
           />}
         </Drawer>
       </header>);

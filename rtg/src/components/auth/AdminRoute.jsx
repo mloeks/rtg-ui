@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
-import authService from '../../service/AuthService';
+import AuthService from '../../service/AuthService';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const componentToRender = (props) => {
-    if (authService.isAuthenticated) {
-      if (authService.isAdmin) {
+    if (AuthService.isAuthenticated()) {
+      if (AuthService.isAdmin()) {
         return <Component {...props} />;
       } else {
-        return <Redirect to={{pathname: '/403', state: {from: props.location}}}/>;
+        return <Redirect to={{ pathname: '/403', state: { from: props.location } }} />;
       }
     } else {
-      return <Redirect to={{pathname: '/', state: {from: props.location}}}/>;
+      return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
     }
   };
 

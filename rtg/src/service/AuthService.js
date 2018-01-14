@@ -3,39 +3,61 @@ import FetchHelper from './FetchHelper';
 // TODO make base URL of API configurable by environment
 export const API_BASE_URL = 'http://localhost:8000';
 
+const LocalStorageWrapper = {
+  get: key => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef
+  set: (key, value) => localStorage.setItem(`rtg-${key}`, value), // eslint-disable-line no-undef
+  remove: key => localStorage.removeItem(`rtg-${key}`), // eslint-disable-line no-undef
+};
+
 class AuthService {
-  constructor() {
-    this.resetProps = this.resetProps.bind(this);
-    this.setPropsFromAuthResponse = this.setPropsFromAuthResponse.bind(this);
-    this.authenticate = this.authenticate.bind(this);
-    this.logout = this.logout.bind(this);
-
-    this.resetProps();
+  static getToken() {
+    return LocalStorageWrapper.get('token');
   }
 
-  resetProps() {
-    this.isAuthenticated = false;
-    this.isAdmin = false;
-    this.token = null;
-    this.userId = null;
-    this.username = null;
-    this.hasPaid = false;
-    this.avatarUrl = null;
-    this.openBetsCount = null;
+  static isAuthenticated() {
+    return LocalStorageWrapper.get('authenticated') === 'true';
   }
 
-  setPropsFromAuthResponse(authResponse) {
-    this.isAuthenticated = true;
-    this.isAdmin = authResponse.admin === true;
-    this.token = authResponse.token;
-    this.userId = authResponse.user_id;
-    this.username = authResponse.username;
-    this.hasPaid = authResponse.has_paid;
-    this.avatarUrl = authResponse.avatar_url;
-    this.openBetsCount = authResponse.no_open_bets;
+  static isAdmin() {
+    return LocalStorageWrapper.get('admin') === 'true';
   }
 
-  async authenticate(username, password) {
+  static getUserId() {
+    return Number(LocalStorageWrapper.get('user-id'));
+  }
+
+  static getUsername() {
+    return LocalStorageWrapper.get('username');
+  }
+
+  static getHasPaid() {
+    return LocalStorageWrapper.get('has-paid') === 'true';
+  }
+
+  static getAvatarUrl() {
+    return LocalStorageWrapper.get('avatar-url');
+  }
+
+  static getOpenBetsCount() {
+    return Number(LocalStorageWrapper.get('open-bets-count'));
+  }
+
+  static resetProps() {
+    localStorage.clear(); // eslint-disable-line no-undef
+  }
+
+  static setPropsFromAuthResponse(authResponse) {
+    LocalStorageWrapper.set('authenticated', true);
+    LocalStorageWrapper.set('admin', authResponse.admin === true);
+    LocalStorageWrapper.set('token', authResponse.token);
+    LocalStorageWrapper.set('user-id', authResponse.user_id);
+    LocalStorageWrapper.set('username', authResponse.username);
+    LocalStorageWrapper.set('has-paid', authResponse.has_paid);
+    LocalStorageWrapper.set('avatar-url', authResponse.avatar_url);
+    LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);
+  }
+
+  static async authenticate(username, password) {
     return new Promise((resolve, reject) => {
       fetch(`${API_BASE_URL}/api-token-auth/`, {
         method: 'POST',
@@ -47,28 +69,28 @@ class AuthService {
         .then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
-            this.setPropsFromAuthResponse(response.json);
+            AuthService.setPropsFromAuthResponse(response.json);
             resolve(response.json);
           } else {
-            this.resetProps();
+            AuthService.resetProps();
             reject(new Error(response.json && response.json.non_field_errors
               ? response.json.non_field_errors[0]
               : 'Ein Fehler ist aufgetreten.'));
           }
         })
         .catch(() => {
-          this.resetProps();
+          AuthService.resetProps();
           reject(new Error('Ein Fehler ist aufgetreten.'));
         });
     });
   }
 
-  async logout() {
+  static async logout() {
     return new Promise((resolve) => {
-      this.resetProps();
+      AuthService.resetProps();
       resolve();
     });
   }
 }
 
-export default new AuthService();
+export default AuthService;
