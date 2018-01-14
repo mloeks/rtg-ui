@@ -1,0 +1,27 @@
+.BigPicture {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-size: cover;
+  background-position-x: 50%;
+  background-position-y: 50%;
+
+  &__heading {
+    font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+
+    text-transform: uppercase;
+    letter-spacing: 6px;
+
+    color: white;
+  }
+}
