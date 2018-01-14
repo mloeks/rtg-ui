@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Page from './Page';
 import LoginForm from '../components/LoginForm';
 import AuthService from '../service/AuthService';
 
@@ -33,13 +32,9 @@ class Foyer extends Component {
     }
 
     return (
-      <main className="content">
-        <Header />
-        <section className="page-content">
-          <LoginForm onLogin={this.login} />
-        </section>
-        <Footer />
-      </main>);
+      <Page className="FoyerPage">
+        <LoginForm onLogin={this.login} />
+      </Page>);
   }
 }
 

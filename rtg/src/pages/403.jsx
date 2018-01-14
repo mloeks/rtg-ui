@@ -1,16 +1,11 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Page from './Page';
 
 const PermissionDenied = () => (
-  <main className="content">
-    <Header />
-    <section className="page-content">
-      <h1>403</h1>
-      <h3>(Permission Denied)</h3>
-    </section>
-    <Footer />
-  </main>
+  <Page className="403Page">
+    <h1>403</h1>
+    <h3>(Permission Denied)</h3>
+  </Page>
 );
 
 export default PermissionDenied;
