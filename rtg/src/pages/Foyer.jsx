@@ -27,7 +27,7 @@ class Foyer extends Component {
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/reception' } };
 
-    if (this.state.redirectToReferrer) {
+    if (this.state.redirectToReferrer || AuthService.isAuthenticated()) {
       return (<Redirect to={from} />);
     }
 
