@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { lighten } from 'material-ui/utils/colorManipulator';
 import SvgIcon from 'material-ui/SvgIcon';
-import { darkGrey, lightGrey, white } from '../theme/RtgColours';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import './Footer.css';
 import logo from '../theme/img/logo_tiny.png';
@@ -14,8 +16,8 @@ const FacebookIcon = props => (
 );
 /* eslint-enable max-len */
 
-const Footer = () => (
-  <footer className="Footer" style={{ backgroundColor: darkGrey }}>
+const Footer = props => (
+  <footer className="Footer" style={{ backgroundColor: props.muiTheme.palette.footerColor }}>
     <Link to="/" className="Footer__title">
       <img alt="logo" className="Footer__logo" src={logo} />
       <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>
@@ -36,8 +38,8 @@ const Footer = () => (
         <a href="http://www.facebook.com/groups/219528178065049">
           <FacebookIcon
             viewBox="0 0 155.139 155.139"
-            color={lightGrey}
-            hoverColor={white}
+            color={props.muiTheme.palette.footerSocialIconColor}
+            hoverColor={lighten(props.muiTheme.palette.footerSocialIconColor, 0.7)}
           />
         </a>
       </div>
@@ -47,4 +49,9 @@ const Footer = () => (
   </footer>
 );
 
-export default Footer;
+Footer.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  muiTheme: PropTypes.object.isRequired,
+};
+
+export default muiThemeable()(Footer);

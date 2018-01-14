@@ -1,4 +1,19 @@
-import { black, darkGold, error, gold, purple, white } from './RtgColours';
+// Sometimes helpful template:
+// https://github.com/mui-org/material-ui/blob/master/src/styles/getMuiTheme.js
+
+/* eslint-disable no-unused-vars */
+const black = '#372D2D';
+const white = '#F9FBFA';
+const grey = '#808080';
+const lightGrey = '#B4B4B4';
+const darkGrey = '#292929';
+const purple = '#974578';
+const gold = '#CD9B1D';
+const darkGold = '#8B6914';
+const lightGold = '#E9C467';
+const success = '#58ce38';
+const error = '#ce3838';
+/* eslint-enable no-unused-vars */
 
 export default {
   fontFamily: 'Roboto, sans-serif',
@@ -9,28 +24,11 @@ export default {
     textColor: black,
     canvasColor: white,
     errorColor: error,
+    footerColor: darkGrey,
+    footerSocialIconColor: lightGrey,
   },
   appBar: {
     color: white,
     textColor: purple,
   },
 };
-
-// spacing: spacing,
-//   fontFamily: 'Roboto, sans-serif',
-//   palette: {
-//   primary1Color: cyan500,
-//     primary2Color: cyan700,
-//     primary3Color: grey400,
-//     accent1Color: pinkA200,
-//     accent2Color: grey100,
-//     accent3Color: grey500,
-//     textColor: darkBlack,
-//     alternateTextColor: white,
-//     canvasColor: white,
-//     borderColor: grey300,
-//     disabledColor: fade(darkBlack, 0.3),
-//     pickerHeaderColor: cyan500,
-//     clockCircleColor: fade(darkBlack, 0.07),
-//     shadowColor: fullBlack,
-// },
