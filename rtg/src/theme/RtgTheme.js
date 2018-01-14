@@ -30,5 +30,7 @@ export default {
   appBar: {
     color: white,
     textColor: purple,
+    avatarColor: white,
+    avatarBackgroundColor: purple,
   },
 };

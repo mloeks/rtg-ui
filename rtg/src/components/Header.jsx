@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import ReactRouterProptypes from 'react-router-prop-types';
 import AppBar from 'material-ui/AppBar';
-import { Link, withRouter } from 'react-router-dom';
-import { Divider, Drawer, MenuItem } from 'material-ui';
-import ActionSettings from 'material-ui/svg-icons/action/settings';
-import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
+import { Link } from 'react-router-dom';
+import { Drawer, MenuItem } from 'material-ui';
+import UserMenu from './UserMenu';
 import AuthService from '../service/AuthService';
 
 import './Header.css';
@@ -36,6 +34,9 @@ class Header extends Component {
       <header className="Header">
         <AppBar
           title="Royale Tippgemeinschaft 2018"
+          iconElementRight={AuthService.isAuthenticated() &&
+            <UserMenu username={AuthService.getUsername()} />
+          }
           onLeftIconButtonClick={this.handleMenuToggle}
         />
         <Drawer
@@ -48,30 +49,9 @@ class Header extends Component {
           <Link to="/schedule"><MenuItem primaryText="Spielplan" /></Link>
           <Link to="/standings"><MenuItem primaryText="Spielstand" /></Link>
           <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
-
-          {AuthService.isAdmin() && <Divider />}
-          {AuthService.isAdmin() &&
-          <Link to="/admin">
-            <MenuItem
-              primaryText="Admin"
-              rightIcon={<ActionSettings />}
-            />
-          </Link>}
-
-          <Divider />
-          <MenuItem
-            primaryText="Ausloggen"
-            rightIcon={<ActionExitToApp />}
-            onClick={() => AuthService.logout().then(() => this.props.history.push('/'))}
-          />
         </Drawer>
       </header>);
   }
 }
 
-Header.propTypes = {
-  // eslint-disable-next-line react/no-typos
-  history: ReactRouterProptypes.history.isRequired,
-};
-
-export default withRouter(Header);
+export default Header;

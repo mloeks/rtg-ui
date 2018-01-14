@@ -14,6 +14,7 @@ import Foyer from './pages/Foyer';
 import Bets from './pages/Bets';
 import Schedule from './pages/Schedule';
 import Standings from './pages/Standings';
+import Profile from './pages/Profile';
 
 import Admin from './pages/Admin';
 import PermissionDenied from './pages/403';
@@ -53,6 +54,7 @@ class App extends Component {
             <AuthRoute exact path="/bets" component={Bets} />
             <AuthRoute exact path="/schedule" component={Schedule} />
             <AuthRoute exact path="/standings" component={Standings} />
+            <AuthRoute exact path="/profile" component={Profile} />
 
             <AdminRoute exact path="/admin" component={Admin} />
           </Switch>
