@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import './LoginForm.css';
 
@@ -17,30 +18,38 @@ class LoginForm extends Component {
         username: null,
         password: null,
       },
+      formError: null,
       formHasErrors: false,
     };
 
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.loginErrorCallback = this.loginErrorCallback.bind(this);
     this.validate = this.validate.bind(this);
   }
 
   updateUsername(event, newValue) {
-    this.setState({username: newValue});
+    this.setState({ formError: null, formHasErrors: false, username: newValue });
   }
 
   updatePassword(event, newValue) {
-    this.setState({password: newValue});
+    this.setState({ formError: null, formHasErrors: false, password: newValue });
   }
 
   handleLogin(event) {
     this.validate(() => {
       if (!this.state.formHasErrors) {
-        this.props.onLogin(this.state.username, this.state.password);
+        this.props.onLogin(this.state.username, this.state.password,
+          () => {}, this.loginErrorCallback,
+        );
       }
     });
     event.preventDefault();
+  }
+
+  loginErrorCallback(error) {
+    this.setState({ formError: error.message });
   }
 
   validate(callback) {
@@ -87,13 +96,22 @@ class LoginForm extends Component {
             type="submit"
             label="Eintreten"
           />
+
+          {this.state.formError &&
+          <div
+            className="LoginForm__formError"
+            style={{ color: this.props.muiTheme.palette.errorColor }}
+          >{this.state.formError}
+          </div>}
         </form>
       </Paper>);
   }
 }
 
 LoginForm.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  muiTheme: PropTypes.object.isRequired,
   onLogin: PropTypes.func.isRequired,
 };
 
-export default LoginForm;
+export default muiThemeable()(LoginForm);

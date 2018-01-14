@@ -16,11 +16,13 @@ class Foyer extends Component {
     this.login = this.login.bind(this);
   }
 
-  login(username, password) {
-    authService.authenticate(username, password, () => {
-      this.setState({ redirectToReferrer: true });
-    });
-    // TODO handle error
+  login(username, password, successCallback, errorCallback) {
+    authService.authenticate(username, password)
+      .then(() => {
+        this.setState({ redirectToReferrer: true });
+        successCallback();
+      })
+      .catch(errorCallback);
   }
 
   render() {

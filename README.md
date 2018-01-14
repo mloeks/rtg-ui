@@ -20,6 +20,11 @@ Sass support has been configured as described [here](https://github.com/facebook
 * User needs to re-login on every real page reload
 * It seems a bit messy to use the authService singleton all over the app. It would be nice to have the authentication info in the App's state.
 
+## Outstanding TODOs
+
+* fetch polyfill
+
+
 ## Learnings during dev
 
 ### React Router

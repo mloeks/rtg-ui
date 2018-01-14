@@ -1,4 +1,4 @@
-import { black, darkGold, gold, purple, white } from './RtgColours';
+import { black, darkGold, error, gold, purple, white } from './RtgColours';
 
 export default {
   fontFamily: 'Roboto, sans-serif',
@@ -8,6 +8,7 @@ export default {
     accent2Color: darkGold,
     textColor: black,
     canvasColor: white,
+    errorColor: error,
   },
   // appBar: {
   //   height: 50,
