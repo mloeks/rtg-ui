@@ -25,10 +25,17 @@ class Header extends Component {
   }
 
   render() {
+    if (!AuthService.isAuthenticated()) {
+      return (
+        <header className="Header">
+          <AppBar title="Royale Tippgemeinschaft 2018" showMenuIconButton={false} />
+        </header>);
+    }
+
     return (
       <header className="Header">
         <AppBar
-          title="Royale Tippgemeinschaft - 2018"
+          title="Royale Tippgemeinschaft 2018"
           onLeftIconButtonClick={this.handleMenuToggle}
         />
         <Drawer
@@ -49,12 +56,12 @@ class Header extends Component {
             />
           </Link>}
 
-          {AuthService.isAuthenticated() && <Divider />}
-          {AuthService.isAuthenticated() && <MenuItem
+          <Divider />
+          <MenuItem
             primaryText="Log Out"
             rightIcon={<ActionExitToApp />}
             onClick={() => AuthService.logout().then(() => this.props.history.push('/'))}
-          />}
+          />
         </Drawer>
       </header>);
   }
