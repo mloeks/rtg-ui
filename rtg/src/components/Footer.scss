@@ -1,0 +1,106 @@
+@import '../sass/colors';
+
+.Footer {
+  box-sizing: border-box;
+  height: 480px;
+  padding: 96px;
+  font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  @media only screen and (max-width : 767px) {
+    padding: 40px 15px;
+  }
+
+  &__title {
+    color: $white;
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+
+    &--full {
+      margin: 25px 0;
+      @media only screen and (max-width : 767px) {
+        display: none;
+      }
+    }
+
+    &--abbrev {
+      margin: 10px 0;
+      @media only screen and (min-width : 768px) {
+        display: none;
+      }
+    }
+  }
+
+  &__logo {
+    margin-right: 15px;
+    padding-bottom: 10px;
+
+    @media only screen and (max-width : 767px) {
+      height: 30px;
+      padding-bottom: 0;
+    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 16px 0 64px;
+
+    @media only screen and (max-width : 767px) {
+      flex-direction: column;
+      margin: 16px 0;
+    }
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+
+    @media only screen and (max-width : 767px) {
+      grid-template-columns: 100%;
+    }
+
+    li {
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin: 10px 0;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    a {
+      color: $lightGold;
+    }
+
+    a, a:focus, a:hover, a:active {
+      text-decoration: none;
+    }
+  }
+
+  &__socialmedia {
+    padding-top: 5px;
+    text-align: left;
+
+    @media only screen and (max-width : 767px) {
+      margin-top: 10px;
+    }
+  }
+
+  &__copyright {
+    color: #fefefe;
+    font-size: 13px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    opacity: 0.5;
+  }
+}
