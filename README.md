@@ -39,8 +39,16 @@ I tried this briefly, but it even got messier ;-)
 #### Reception
 * Make post cards prettier, give no-avatar letter circles random colours
 
+#### Header
+* Only show burger menu when logged in, adjust to pages from old FE
+* Show User Avatar and name on the top right with a dropdown menu for Profile and Logout
+* make sticky (position: fixed but still take up top space)
+
 #### Footer
 * Start migrating the (mostly static) footer
+
+#### Big Pictures
+* include a react lib for parallax effect
 
 ### General
 * Add Fetch/Promise polyfill for IE, if it's not already included in create-react-app config.
