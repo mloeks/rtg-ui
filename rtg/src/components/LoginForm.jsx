@@ -40,9 +40,7 @@ class LoginForm extends Component {
   handleLogin(event) {
     this.validate(() => {
       if (!this.state.formHasErrors) {
-        this.props.onLogin(this.state.username, this.state.password,
-          () => {}, this.loginErrorCallback,
-        );
+        this.props.onLogin(this.state.username, this.state.password, this.loginErrorCallback);
       }
     });
     event.preventDefault();

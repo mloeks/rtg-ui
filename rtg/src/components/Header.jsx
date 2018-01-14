@@ -53,7 +53,7 @@ class Header extends Component {
           {authService.isAuthenticated && <MenuItem
             primaryText="Log Out"
             rightIcon={<ActionExitToApp />}
-            onClick={() => authService.logout(() => this.props.history.push('/'))}
+            onClick={() => authService.logout().then(() => this.props.history.push('/'))}
           />}
         </Drawer>
       </header>);

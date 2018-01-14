@@ -1,6 +1,5 @@
 # RTG UI
 
-
 ## Toolchain
 
 This project is built using [create-react-app](https://github.com/facebookincubator/create-react-app).
@@ -17,12 +16,24 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Authentication
 
-* User needs to re-login on every real page reload
+* User needs to re-login on every real page reload. Make use of LocalStorage.
 * It seems a bit messy to use the authService singleton all over the app. It would be nice to have the authentication info in the App's state.
+I tried this briefly, but it even got messier ;-)
 
 ## Outstanding TODOs
 
-* fetch polyfill
+### Authentication
+
+* check token (and refresh?) on every page
+* make page reloads work
+
+### Design
+
+* Start migrating the Reception page with a big image and User posts
+* Start migrating the (mostly static) footer
+
+### General
+* Add Fetch/Promise polyfill for IE, if it's not already included in create-react-app config.
 
 
 ## Learnings during dev
