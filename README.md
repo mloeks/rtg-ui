@@ -27,13 +27,17 @@ I tried this briefly, but it even got messier ;-)
 * check token (and refresh?) on every page
 * make page reloads work --> have authService use localStorage and make sure reloads on certain routes work
 
+### Reception
+
+* Take post pagination into account
+
 ### Design
 
 #### Foyer
 * Migrate from old design - with login and registration form
 
 #### Reception
-* Start migrating the Reception page with a big image and User posts
+* Make post cards prettier, give no-avatar letter circles random colours
 
 #### Footer
 * Start migrating the (mostly static) footer
