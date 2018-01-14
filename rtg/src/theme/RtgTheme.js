@@ -10,9 +10,10 @@ export default {
     canvasColor: white,
     errorColor: error,
   },
-  // appBar: {
-  //   height: 50,
-  // },
+  appBar: {
+    color: white,
+    textColor: purple,
+  },
 };
 
 // spacing: spacing,
