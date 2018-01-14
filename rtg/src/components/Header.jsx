@@ -44,7 +44,9 @@ class Header extends Component {
           open={this.state.menuOpen}
           onRequestChange={(menuOpen) => this.setState({ menuOpen })}
         >
-          <Link to="/foyer"><MenuItem primaryText="Foyer" /></Link>
+          <Link to="/foyer"><MenuItem primaryText="Neuigkeiten" /></Link>
+          <Link to="/schedule"><MenuItem primaryText="Spielplan" /></Link>
+          <Link to="/standings"><MenuItem primaryText="Spielstand" /></Link>
           <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
 
           {AuthService.isAdmin() && <Divider />}
@@ -58,7 +60,7 @@ class Header extends Component {
 
           <Divider />
           <MenuItem
-            primaryText="Log Out"
+            primaryText="Ausloggen"
             rightIcon={<ActionExitToApp />}
             onClick={() => AuthService.logout().then(() => this.props.history.push('/'))}
           />

@@ -9,12 +9,14 @@ import About from './pages/About';
 import Imprint from './pages/Imprint';
 import Donate from './pages/Donate';
 
-import Admin from './pages/Admin';
-import Bets from './pages/Bets';
-import Foyer from './pages/Foyer';
 import Reception from './pages/Reception';
-import PermissionDenied from './pages/403';
+import Foyer from './pages/Foyer';
+import Bets from './pages/Bets';
+import Schedule from './pages/Schedule';
+import Standings from './pages/Standings';
 
+import Admin from './pages/Admin';
+import PermissionDenied from './pages/403';
 
 import AuthRoute from './components/auth/AuthRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -47,8 +49,10 @@ class App extends Component {
             <Route exact path="/donate" component={Donate} />
 
             {/* Login Area */}
-            <AuthRoute exact path="/bets" component={Bets} />
             <AuthRoute exact path="/foyer" component={Foyer} />
+            <AuthRoute exact path="/bets" component={Bets} />
+            <AuthRoute exact path="/schedule" component={Schedule} />
+            <AuthRoute exact path="/standings" component={Standings} />
 
             <AdminRoute exact path="/admin" component={Admin} />
           </Switch>
