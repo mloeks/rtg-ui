@@ -122,19 +122,19 @@ class LoginForm extends Component {
             style={{ color: this.props.muiTheme.palette.errorColor }}
           >{this.state.formError}
           </div>}
-
-          <br />
-          <div className="LoginForm__second-button-row">
-            <FlatButton label="Registrieren" onClick={this.handleRegisterButtonClicked} />
-            <RegisterDialog
-              open={this.state.registerModalOpen}
-              onCancel={this.handleRegisterCancel}
-              onSubmit={this.handleRegisterSubmit}
-            />
-
-            <FlatButton label="Passwort vergessen" />
-          </div>
         </form>
+
+        <br />
+        <div className="LoginForm__second-button-row">
+          <FlatButton label="Registrieren" onClick={this.handleRegisterButtonClicked} />
+          <RegisterDialog
+            open={this.state.registerModalOpen}
+            onCancel={this.handleRegisterCancel}
+            onSubmit={this.handleRegisterSubmit}
+          />
+
+          <FlatButton label="Passwort vergessen" />
+        </div>
       </Paper>);
   }
 }
