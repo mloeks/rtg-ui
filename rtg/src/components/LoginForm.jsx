@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
+import { FlatButton, RaisedButton } from 'material-ui';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -93,7 +93,7 @@ class LoginForm extends Component {
             primary
             type="submit"
             label="Eintreten"
-          />
+          /><br />
 
           {this.state.formError &&
           <div
@@ -101,6 +101,12 @@ class LoginForm extends Component {
             style={{ color: this.props.muiTheme.palette.errorColor }}
           >{this.state.formError}
           </div>}
+
+          <br />
+          <div className="LoginForm__second-button-row">
+            <FlatButton label="Registrieren" />
+            <FlatButton label="Passwort vergessen" />
+          </div>
         </form>
       </Paper>);
   }
