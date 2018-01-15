@@ -4,6 +4,7 @@ import { FlatButton, RaisedButton } from 'material-ui';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import RegisterDialog from './RegisterDialog';
 
 import './LoginForm.css';
 
@@ -20,6 +21,8 @@ class LoginForm extends Component {
       },
       formError: null,
       formHasErrors: false,
+
+      registerModalOpen: false,
     };
 
     this.updateUsername = this.updateUsername.bind(this);
@@ -27,6 +30,10 @@ class LoginForm extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.loginErrorCallback = this.loginErrorCallback.bind(this);
     this.validate = this.validate.bind(this);
+
+    this.handleRegisterButtonClicked = this.handleRegisterButtonClicked.bind(this);
+    this.handleRegisterCancel = this.handleRegisterCancel.bind(this);
+    this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
   }
 
   updateUsername(event, newValue) {
@@ -64,6 +71,20 @@ class LoginForm extends Component {
       }
       return { formHasErrors, fieldErrors };
     }, callback);
+  }
+
+  handleRegisterButtonClicked() {
+    this.setState({ registerModalOpen: true });
+  }
+
+  handleRegisterSubmit(username, password) {
+    this.setState({ registerModalOpen: false }, () => {
+      this.props.onLogin(username, password, this.loginErrorCallback);
+    });
+  }
+
+  handleRegisterCancel() {
+    this.setState({ registerModalOpen: false });
   }
 
   render() {
@@ -104,7 +125,13 @@ class LoginForm extends Component {
 
           <br />
           <div className="LoginForm__second-button-row">
-            <FlatButton label="Registrieren" />
+            <FlatButton label="Registrieren" onClick={this.handleRegisterButtonClicked} />
+            <RegisterDialog
+              open={this.state.registerModalOpen}
+              onCancel={this.handleRegisterCancel}
+              onSubmit={this.handleRegisterSubmit}
+            />
+
             <FlatButton label="Passwort vergessen" />
           </div>
         </form>
