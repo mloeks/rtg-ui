@@ -85,6 +85,43 @@ class AuthService {
     });
   }
 
+  static async register(username, email, password, passwordRepeat, firstName, lastName) {
+    const payload = {
+      username,
+      email,
+      password1: password,
+      password2: passwordRepeat,
+      first_name: firstName,
+      last_name: lastName,
+    };
+
+    return new Promise((resolve, reject) => {
+      fetch(`${API_BASE_URL}/api-token-register/`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(FetchHelper.parseJson)
+        .then((response) => {
+          if (response.ok) {
+            AuthService.setPropsFromAuthResponse(response.json);
+            resolve(response.json);
+          } else {
+            AuthService.resetProps();
+            reject(new Error(response.json && response.json.non_field_errors
+              ? response.json.non_field_errors[0]
+              : 'Ein Fehler ist aufgetreten.'));
+          }
+        })
+        .catch(() => {
+          AuthService.resetProps();
+          reject(new Error('Ein Fehler ist aufgetreten.'));
+        });
+    });
+  }
+
   static async logout() {
     return new Promise((resolve) => {
       AuthService.resetProps();

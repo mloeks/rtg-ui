@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, FlatButton, TextField } from 'material-ui';
+import AuthService from '../service/AuthService';
 
 class RegisterDialog extends Component {
   constructor(props) {
@@ -53,7 +54,17 @@ class RegisterDialog extends Component {
   updateEmail(event, newValue) { this.updateFormField('email', newValue); }
 
   handleSubmit() {
-    this.props.onSubmit(this.state.username, this.state.password);
+    AuthService.register(this.state.username, this.state.email, this.state.password,
+      this.state.passwordRepeat, this.state.firstName, this.state.lastName
+    ).then(() => {
+      this.props.onSubmit(this.state.username, this.state.password);
+    })
+      .catch((error) => {
+        this.setState({
+          formHasErrors: true,
+          formError: error.message,
+        });
+      });
   }
 
   // validate() {}
@@ -78,6 +89,10 @@ class RegisterDialog extends Component {
         open={this.props.open}
         title="Werde Teil der Royalen Tippgemeinschaft"
       >
+        {this.state.formHasErrors &&
+        <div className="RegisterDialog__formError">Fehler: ${this.state.formError}</div>
+        }
+
         <TextField
           errorText={this.state.fieldErrors.username || false}
           floatingLabelText="Username"

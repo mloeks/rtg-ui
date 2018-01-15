@@ -18,6 +18,14 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ## Outstanding TODOs
 
+### Registration
+
+* request to backend currently fails
+* show server-side errors
+* validate client-side
+* implement "first-time" flag for subsequent login
+* info icons in firstName and lastName fields
+
 ### Authentication
 
 * do I ever need to check and/or refresh the token?
