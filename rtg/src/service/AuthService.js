@@ -105,19 +105,32 @@ class AuthService {
       })
         .then(FetchHelper.parseJson)
         .then((response) => {
+          const responseJson = response.json;
           if (response.ok) {
-            AuthService.setPropsFromAuthResponse(response.json);
-            resolve(response.json);
+            AuthService.setPropsFromAuthResponse(responseJson);
+            resolve(responseJson);
           } else {
             AuthService.resetProps();
-            reject(new Error(response.json && response.json.non_field_errors
-              ? response.json.non_field_errors[0]
-              : 'Ein Fehler ist aufgetreten.'));
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(
+              {
+                username: responseJson.username || '',
+                email: responseJson.email || '',
+                firstName: responseJson.first_name || '',
+                lastName: responseJson.last_name || '',
+                password: responseJson.password1 || '',
+                passwordRepeat: responseJson.password2 || '',
+              },
+              responseJson && responseJson.non_field_errors
+                ? responseJson.non_field_errors[0]
+                : 'Ein Fehler ist aufgetreten.',
+            );
           }
         })
         .catch(() => {
           AuthService.resetProps();
-          reject(new Error('Ein Fehler ist aufgetreten.'));
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject({}, 'Ein Fehler ist aufgetreten');
         });
     });
   }

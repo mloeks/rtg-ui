@@ -21,10 +21,10 @@ Sass support has been configured as described [here](https://github.com/facebook
 ### Registration
 
 * request to backend currently fails
-* show server-side errors
-* validate client-side
+* show server-side errors (non field and also field related errors)
 * implement "first-time" flag for subsequent login
-* info icons in firstName and lastName fields
+
+* (first/last name info as icon + popup)
 
 ### Authentication
 

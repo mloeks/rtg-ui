@@ -59,15 +59,14 @@ class RegisterDialog extends Component {
     ).then(() => {
       this.props.onSubmit(this.state.username, this.state.password);
     })
-      .catch((error) => {
+      .catch((fieldErrors, nonFieldError) => {
         this.setState({
+          fieldErrors,
           formHasErrors: true,
-          formError: error.message,
+          formError: nonFieldError,
         });
       });
   }
-
-  // validate() {}
 
   render() {
     const actions = [
@@ -90,7 +89,7 @@ class RegisterDialog extends Component {
         title="Werde Teil der Royalen Tippgemeinschaft"
       >
         {this.state.formHasErrors &&
-        <div className="RegisterDialog__formError">Fehler: ${this.state.formError}</div>
+        <div className="RegisterDialog__formError">Fehler: {this.state.formError}</div>
         }
 
         <TextField
@@ -128,12 +127,14 @@ class RegisterDialog extends Component {
             style={{ marginRight: '10px' }}
             errorText={this.state.fieldErrors.firstName || false}
             floatingLabelText="Vorname"
+            title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
             onChange={this.updateFirstName}
           />
           <TextField
             style={{ marginLeft: '10px' }}
             errorText={this.state.fieldErrors.lastName || false}
             floatingLabelText="Nachname"
+            title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
             onChange={this.updateLastName}
           />
         </div>
