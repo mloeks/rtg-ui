@@ -24,7 +24,6 @@ Sass support has been configured as described [here](https://github.com/facebook
 * Style non-field-errors a bit nicer
 
 * (implement "first-time" flag for subsequent login)
-* (directly redirect from RegisterForm instead of actually login in after signup)
 * (Try to understand and fix triple password requirement in backend serializers)
 * (first/last name info as icon + popup)
 * (ability to make password visible)

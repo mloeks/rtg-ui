@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
@@ -9,6 +10,8 @@ class RegisterDialog extends Component {
     super(props);
 
     this.state = {
+      registerSuccessful: false,
+
       username: null,
       password: null,
       passwordRepeat: null,
@@ -59,7 +62,7 @@ class RegisterDialog extends Component {
       this.state.username, this.state.email, this.state.password,
       this.state.passwordRepeat, this.state.firstName, this.state.lastName,
     ).then(() => {
-      this.props.onSubmit(this.state.username, this.state.password);
+      this.setState({ registerSuccessful: true });
     })
       .catch((errors) => {
         this.setState({
@@ -71,6 +74,10 @@ class RegisterDialog extends Component {
   }
 
   render() {
+    if (this.state.registerSuccessful) {
+      return (<Redirect to="/foyer" />);
+    }
+
     const actions = [
       <FlatButton label="Abbrechen" secondary onClick={this.props.onCancel} />,
       <FlatButton
@@ -153,7 +160,6 @@ RegisterDialog.propTypes = {
   muiTheme: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default muiThemeable()(RegisterDialog);

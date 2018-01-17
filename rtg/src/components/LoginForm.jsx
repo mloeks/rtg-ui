@@ -33,7 +33,6 @@ class LoginForm extends Component {
 
     this.handleRegisterButtonClicked = this.handleRegisterButtonClicked.bind(this);
     this.handleRegisterCancel = this.handleRegisterCancel.bind(this);
-    this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
   }
 
   updateUsername(event, newValue) {
@@ -75,12 +74,6 @@ class LoginForm extends Component {
 
   handleRegisterButtonClicked() {
     this.setState({ registerModalOpen: true });
-  }
-
-  handleRegisterSubmit(username, password) {
-    this.setState({ registerModalOpen: false }, () => {
-      this.props.onLogin(username, password, this.loginErrorCallback);
-    });
   }
 
   handleRegisterCancel() {
@@ -130,7 +123,6 @@ class LoginForm extends Component {
           <RegisterDialog
             open={this.state.registerModalOpen}
             onCancel={this.handleRegisterCancel}
-            onSubmit={this.handleRegisterSubmit}
           />
 
           <FlatButton label="Passwort vergessen" />
