@@ -20,16 +20,20 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Registration
 
-* request to backend currently fails
-* show server-side errors (non field and also field related errors)
-* implement "first-time" flag for subsequent login
+* configure backend field error messages to be better
+* Style non-field-errors a bit nicer
 
+* (implement "first-time" flag for subsequent login)
+* (directly redirect from RegisterForm instead of actually login in after signup)
+* (Try to understand and fix triple password requirement in backend serializers)
 * (first/last name info as icon + popup)
+* (ability to make password visible)
 
 ### Authentication
 
 * do I ever need to check and/or refresh the token?
 * Handle token expiry
+* use JWT correctly --> auth details should be stored within the token, which then is decoded in the client
 
 ### Foyer
 
@@ -45,9 +49,9 @@ Sass support has been configured as described [here](https://github.com/facebook
 * Make post cards prettier, give no-avatar letter circles random colours
 
 #### Header
-* Only show burger menu when logged in, adjust to pages from old FE
 * Show User Avatar and name on the top right with a dropdown menu for Profile and Logout
 * make sticky (position: fixed but still take up top space)
+* Make it V-shaped using SVG or CSS skewing, logo in the middle, apply fading leather texture on the top?
 
 #### Footer
 * Start migrating the (mostly static) footer

@@ -89,6 +89,7 @@ class AuthService {
     const payload = {
       username,
       email,
+      password,
       password1: password,
       password2: passwordRepeat,
       first_name: firstName,
