@@ -1,0 +1,12 @@
+{
+  "api-token-auth": {
+    "id": 1,
+    "token": "some-json-server-fake-token",
+    "user_id": 4711,
+    "username": "Testy McTestface",
+    "admin": true,
+    "avatar_url": null,
+    "has_paid": false,
+    "no_open_bets": 23
+  }
+}
