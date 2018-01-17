@@ -112,8 +112,8 @@ class AuthService {
           } else {
             AuthService.resetProps();
             // eslint-disable-next-line prefer-promise-reject-errors
-            reject(
-              {
+            reject({
+              fieldErrors: {
                 username: responseJson.username || '',
                 email: responseJson.email || '',
                 firstName: responseJson.first_name || '',
@@ -121,16 +121,14 @@ class AuthService {
                 password: responseJson.password1 || '',
                 passwordRepeat: responseJson.password2 || '',
               },
-              responseJson && responseJson.non_field_errors
-                ? responseJson.non_field_errors[0]
-                : 'Ein Fehler ist aufgetreten.',
-            );
+              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
+            });
           }
         })
         .catch(() => {
           AuthService.resetProps();
           // eslint-disable-next-line prefer-promise-reject-errors
-          reject({}, 'Ein Fehler ist aufgetreten');
+          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });
   }

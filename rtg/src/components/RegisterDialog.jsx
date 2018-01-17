@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, FlatButton, TextField } from 'material-ui';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 
 class RegisterDialog extends Component {
@@ -54,16 +55,17 @@ class RegisterDialog extends Component {
   updateEmail(event, newValue) { this.updateFormField('email', newValue); }
 
   handleSubmit() {
-    AuthService.register(this.state.username, this.state.email, this.state.password,
-      this.state.passwordRepeat, this.state.firstName, this.state.lastName
+    AuthService.register(
+      this.state.username, this.state.email, this.state.password,
+      this.state.passwordRepeat, this.state.firstName, this.state.lastName,
     ).then(() => {
       this.props.onSubmit(this.state.username, this.state.password);
     })
-      .catch((fieldErrors, nonFieldError) => {
+      .catch((errors) => {
         this.setState({
-          fieldErrors,
-          formHasErrors: true,
-          formError: nonFieldError,
+          fieldErrors: errors.fieldErrors || {},
+          formHasErrors: errors.nonFieldError,
+          formError: errors.nonFieldError,
         });
       });
   }
@@ -86,11 +88,14 @@ class RegisterDialog extends Component {
         autoScrollBodyContent
         modal
         open={this.props.open}
-        title="Werde Teil der Royalen Tippgemeinschaft"
+        title={
+          <div style={{ textAlign: 'center' }}>
+            <h2>Werde Teil der Royalen Tippgemeinschaft</h2>
+            {this.state.formHasErrors &&
+            <p style={{ color: this.props.muiTheme.palette.errorColor }}>{this.state.formError}</p>}
+          </div>}
+        style={{ textAlign: 'left' }}
       >
-        {this.state.formHasErrors &&
-        <div className="RegisterDialog__formError">Fehler: {this.state.formError}</div>
-        }
 
         <TextField
           errorText={this.state.fieldErrors.username || false}
@@ -144,9 +149,11 @@ class RegisterDialog extends Component {
 }
 
 RegisterDialog.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  muiTheme: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default RegisterDialog;
+export default muiThemeable()(RegisterDialog);
