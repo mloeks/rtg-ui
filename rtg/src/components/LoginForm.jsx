@@ -30,9 +30,6 @@ class LoginForm extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.loginErrorCallback = this.loginErrorCallback.bind(this);
     this.validate = this.validate.bind(this);
-
-    this.handleRegisterButtonClicked = this.handleRegisterButtonClicked.bind(this);
-    this.handleRegisterCancel = this.handleRegisterCancel.bind(this);
   }
 
   updateUsername(event, newValue) {
@@ -70,14 +67,6 @@ class LoginForm extends Component {
       }
       return { formHasErrors, fieldErrors };
     }, callback);
-  }
-
-  handleRegisterButtonClicked() {
-    this.setState({ registerModalOpen: true });
-  }
-
-  handleRegisterCancel() {
-    this.setState({ registerModalOpen: false });
   }
 
   render() {
@@ -119,10 +108,13 @@ class LoginForm extends Component {
 
         <br />
         <div className="LoginForm__second-button-row">
-          <FlatButton label="Registrieren" onClick={this.handleRegisterButtonClicked} />
+          <FlatButton
+            label="Registrieren"
+            onClick={() => { this.setState({ registerModalOpen: true }); }}
+          />
           <RegisterDialog
             open={this.state.registerModalOpen}
-            onCancel={this.handleRegisterCancel}
+            onCancel={() => { this.setState({ registerModalOpen: false }); }}
           />
 
           <FlatButton label="Passwort vergessen" />
