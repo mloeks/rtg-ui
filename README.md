@@ -26,9 +26,10 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Forgot Password
 
-* Backend Request
-* Request error and success handling
+* Latest achievement: Backend request works
+* Now: Request error and success handling
 * Client-Side form validation
+* Continue with reset page (token!)
 
 ### Authentication
 

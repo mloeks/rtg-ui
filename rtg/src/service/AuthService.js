@@ -133,6 +133,35 @@ class AuthService {
     });
   }
 
+  static async requestPasswordReset(email) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API_BASE_URL}/rest-auth/password/reset/`, {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(FetchHelper.parseJson)
+        .then((response) => {
+          const responseJson = response.json;
+          if (response.ok) {
+            resolve(responseJson);
+          } else {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject({
+              fieldErrors: { email: responseJson.email || '' },
+              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
+            });
+          }
+        })
+        .catch(() => {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
+        });
+    });
+  }
+
   static async logout() {
     return new Promise((resolve) => {
       AuthService.resetProps();

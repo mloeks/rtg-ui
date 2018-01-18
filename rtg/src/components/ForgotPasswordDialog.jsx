@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import AuthService from "../service/AuthService";
 
 class ForgotPasswordDialog extends Component {
   static getInitialState() {
@@ -46,7 +47,16 @@ class ForgotPasswordDialog extends Component {
   }
 
   handleSubmit() {
-    // TODO
+    AuthService.requestPasswordReset(this.state.email).then(() => {
+      this.setState({ passwordReminderSuccessful: true });
+    })
+      .catch((errors) => {
+        this.setState({
+          fieldErrors: errors.fieldErrors || {},
+          formHasErrors: errors.nonFieldError,
+          formError: errors.nonFieldError,
+        });
+      });
   }
 
   render() {
