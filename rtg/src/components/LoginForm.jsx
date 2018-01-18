@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import RegisterDialog from './RegisterDialog';
+import ForgotPasswordDialog from './ForgotPasswordDialog';
 
 import './LoginForm.css';
 
@@ -23,6 +24,7 @@ class LoginForm extends Component {
       formHasErrors: false,
 
       registerModalOpen: false,
+      passwordForgotDialogOpen: false,
     };
 
     this.updateUsername = this.updateUsername.bind(this);
@@ -117,7 +119,14 @@ class LoginForm extends Component {
             onCancel={() => { this.setState({ registerModalOpen: false }); }}
           />
 
-          <FlatButton label="Passwort vergessen" />
+          <FlatButton
+            label="Passwort vergessen"
+            onClick={() => { this.setState({ passwordForgotDialogOpen: true }); }}
+          />
+          <ForgotPasswordDialog
+            open={this.state.passwordForgotDialogOpen}
+            onCancel={() => { this.setState({ passwordForgotDialogOpen: false }); }}
+          />
         </div>
       </Paper>);
   }

@@ -12,21 +12,23 @@ Material UI has been added as CSS Framework as described [here](https://stackove
 
 Sass support has been configured as described [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc).
 
-## Current Issues
-
-* Drawer stays open if user navigates to the page which he is already on
-
-## Outstanding TODOs
+## Current Issues / Outstanding TODOs
 
 ### Registration
 
 * configure backend field error messages to be better
 * Style non-field-errors a bit nicer
+* send form on Enter
 
 * (implement "first-time" flag for subsequent login)
-* (Try to understand and fix triple password requirement in backend serializers)
 * (first/last name info as icon + popup)
 * (ability to make password visible)
+
+### Forgot Password
+
+* Backend Request
+* Request error and success handling
+* Client-Side form validation
 
 ### Authentication
 
