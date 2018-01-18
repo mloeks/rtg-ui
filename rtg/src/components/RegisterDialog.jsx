@@ -6,10 +6,8 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 
 class RegisterDialog extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  static getInitialState() {
+    return {
       registerSuccessful: false,
 
       username: null,
@@ -32,6 +30,12 @@ class RegisterDialog extends Component {
 
       hasChanges: false,
     };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = RegisterDialog.getInitialState();
 
     this.updateFormField = this.updateFormField.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
@@ -42,6 +46,13 @@ class RegisterDialog extends Component {
     this.updateEmail = this.updateEmail.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // reset my state on open
+    if (nextProps.open === true) {
+      this.setState(RegisterDialog.getInitialState);
+    }
   }
 
   updateFormField(fieldName, newValue) {
