@@ -90,7 +90,6 @@ class AuthService {
       username,
       email,
       password,
-      password1: password,
       password2: passwordRepeat,
       first_name: firstName,
       last_name: lastName,
@@ -119,7 +118,7 @@ class AuthService {
                 email: responseJson.email || '',
                 firstName: responseJson.first_name || '',
                 lastName: responseJson.last_name || '',
-                password: responseJson.password1 || '',
+                password: responseJson.password1 || '', // password1 is intentional, because the backend serializers returns it like this
                 passwordRepeat: responseJson.password2 || '',
               },
               nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
