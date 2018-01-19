@@ -26,10 +26,10 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Forgot Password
 
-* Latest achievement: Backend request works
-* Now: Request error and success handling
-* Client-Side form validation
-* Continue with reset page (token!)
+* Reset Page: pass token url param as prop with React router
+* Make backend request and handle response
+
+* (Style progress indicator and success message a bit nicer)
 
 ### Authentication
 

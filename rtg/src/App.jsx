@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 
 import Admin from './pages/Admin';
 import PermissionDenied from './pages/403';
+import PasswordReset from './pages/PasswordReset';
 
 import AuthRoute from './components/auth/AuthRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -48,6 +49,9 @@ class App extends Component {
             <Route exact path="/about" component={About} />
             <Route exact path="/imprint" component={Imprint} />
             <Route exact path="/donate" component={Donate} />
+
+            {/* Password reset - protected by token in URL */}
+            <Route exact path="/passwordreset" component={PasswordReset} />
 
             {/* Login Area */}
             <AuthRoute exact path="/foyer" component={Foyer} />
