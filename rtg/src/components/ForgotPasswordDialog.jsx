@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, FlatButton, TextField } from 'material-ui';
+import { CircularProgress, Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 
 class ForgotPasswordDialog extends Component {
   static getInitialState() {
     return {
-      passwordReminderSuccessful: false,
-
       email: '',
+
+      requestInProgress: false,
+      passwordReminderSuccessful: false,
 
       fieldErrors: {
         email: null,
@@ -44,9 +45,11 @@ class ForgotPasswordDialog extends Component {
   }
 
   handleSubmit() {
+    this.setState({ requestInProgress: true });
     AuthService.requestPasswordReset(this.state.email).then(() => {
       this.setState({
         ...ForgotPasswordDialog.getInitialState(),
+        requestInProgress: false,
         passwordReminderSuccessful: true,
       }, () => {
         setTimeout(this.props.onClose, 5000);
@@ -54,6 +57,7 @@ class ForgotPasswordDialog extends Component {
     })
       .catch((errors) => {
         this.setState({
+          requestInProgress: false,
           fieldErrors: errors.fieldErrors || {},
           formHasErrors: errors.nonFieldError,
           formError: errors.nonFieldError,
@@ -74,7 +78,9 @@ class ForgotPasswordDialog extends Component {
       actions.push(<FlatButton
         label="Abschicken"
         primary
-        disabled={!this.state.email || this.state.email.length === 0}
+        disabled={
+          !this.state.email || this.state.email.length === 0 || this.state.requestInProgress
+        }
         onClick={this.handleSubmit}
       />);
     }
@@ -96,10 +102,10 @@ class ForgotPasswordDialog extends Component {
         modal
         open={this.props.open}
         title={titleDiv}
-        style={{ textAlign: 'left' }}
       >
 
-        {!this.state.passwordReminderSuccessful && <TextField
+        {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
+        <TextField
           errorText={this.state.fieldErrors.email || false}
           floatingLabelText="E-Mail eingeben"
           fullWidth
@@ -107,8 +113,9 @@ class ForgotPasswordDialog extends Component {
           onChange={this.updateEmail}
         />}
 
+        {this.state.requestInProgress && <CircularProgress />}
         {this.state.passwordReminderSuccessful &&
-        <p style={{ color: this.props.muiTheme.palette.successColor, textAlign: 'center' }}>
+        <p style={{ color: this.props.muiTheme.palette.successColor }}>
           Herzlichen Dank, bitte überprüfe nun Deine E-Mails, um Dein Passwort zurückzusetzen.
         </p>}
       </Dialog>
