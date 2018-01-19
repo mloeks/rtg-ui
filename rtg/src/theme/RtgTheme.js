@@ -24,6 +24,7 @@ export default {
     textColor: black,
     canvasColor: white,
     errorColor: error,
+    successColor: success,
     footerColor: darkGrey,
     footerSocialIconColor: lightGrey,
   },

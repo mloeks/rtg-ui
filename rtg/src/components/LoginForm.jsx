@@ -125,7 +125,7 @@ class LoginForm extends Component {
           />
           <ForgotPasswordDialog
             open={this.state.passwordForgotDialogOpen}
-            onCancel={() => { this.setState({ passwordForgotDialogOpen: false }); }}
+            onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}
           />
         </div>
       </Paper>);
