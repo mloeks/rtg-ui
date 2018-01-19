@@ -55,14 +55,12 @@ Sass support has been configured as described [here](https://github.com/facebook
 * make sticky (position: fixed but still take up top space)
 * Make it V-shaped using SVG or CSS skewing, logo in the middle, apply fading leather texture on the top?
 
-#### Footer
-* Start migrating the (mostly static) footer
-
 #### Big Pictures
 * include a react lib for parallax effect
 
 ### General
 * Add Fetch/Promise polyfill for IE, if it's not already included in create-react-app config.
+* React Router 404 page when no route matches
 
 ## Learnings during dev
 

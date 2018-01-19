@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
+import ReactRouterProptypes from 'react-router-prop-types';
 import { Paper, RaisedButton, TextField } from 'material-ui';
 import Page from './Page';
 
 class PasswordReset extends Component {
-  static getInitialState() {
+  constructor(props) {
+    super(props);
+
+    this.getInitialState = this.getInitialState.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
+    this.updatePasswordRepeat = this.updatePasswordRepeat.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
     return {
       password: '',
       passwordRepeat: '',
+      uid: this.props.match.uid,
+      token: this.props.match.token,
 
       fieldErrors: {
         password: null,
@@ -16,16 +30,6 @@ class PasswordReset extends Component {
       formHasErrors: false,
       formError: null,
     };
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = PasswordReset.getInitialState();
-
-    this.updatePassword = this.updatePassword.bind(this);
-    this.updatePasswordRepeat = this.updatePasswordRepeat.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   updateFormField(fieldName, newValue) {
@@ -39,7 +43,7 @@ class PasswordReset extends Component {
 
   handleSubmit(e) {
     // TODO make request to set new password and handle result
-    this.setState(PasswordReset.getInitialState());
+    this.setState(this.getInitialState());
     e.preventDefault();
   }
 
@@ -85,6 +89,9 @@ class PasswordReset extends Component {
   }
 }
 
-PasswordReset.propTypes = {};
+PasswordReset.propTypes = {
+  // eslint-disable-next-line react/no-typos
+  match: ReactRouterProptypes.match.isRequired,
+};
 
 export default PasswordReset;

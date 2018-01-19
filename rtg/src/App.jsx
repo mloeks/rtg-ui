@@ -51,7 +51,7 @@ class App extends Component {
             <Route exact path="/donate" component={Donate} />
 
             {/* Password reset - protected by token in URL */}
-            <Route exact path="/passwordreset" component={PasswordReset} />
+            <Route exact path="/passwordreset/:uid/:token" component={PasswordReset} />
 
             {/* Login Area */}
             <AuthRoute exact path="/foyer" component={Foyer} />
