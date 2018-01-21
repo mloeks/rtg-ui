@@ -162,6 +162,45 @@ class AuthService {
     });
   }
 
+  static async confirmPasswordReset(newPassword, newPasswordRepeat, uid, token) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API_BASE_URL}/rest-auth/password/reset/confirm/`, {
+        method: 'POST',
+        body: JSON.stringify({
+          new_password1: newPassword,
+          new_password2: newPasswordRepeat,
+          uid,
+          token,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(FetchHelper.parseJson)
+        .then((response) => {
+          const responseJson = response.json;
+          if (response.ok) {
+            resolve(responseJson);
+          } else {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject({
+              fieldErrors: {
+                password: responseJson.new_password1 || '',
+                passwordRepeat: responseJson.new_password2 || '',
+                uid: responseJson.uid || '',
+                token: responseJson.token || '',
+              },
+              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
+            });
+          }
+        })
+        .catch(() => {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
+        });
+    });
+  }
+
   static async logout() {
     return new Promise((resolve) => {
       AuthService.resetProps();
