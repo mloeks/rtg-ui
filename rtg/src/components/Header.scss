@@ -1,11 +1,17 @@
-.Header__menu {
-  text-align: left;
+.Header {
+  h1:hover {
+    cursor: pointer;
+  }
 
-  a {
-    text-decoration: none;
+  &__menu {
+    text-align: left;
 
-    &:hover, &:focus, &:active {
+    a {
       text-decoration: none;
+
+      &:hover, &:focus, &:active {
+        text-decoration: none;
+      }
     }
   }
 }

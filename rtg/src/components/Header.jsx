@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import ReactRouterProptypes from 'react-router-prop-types';
 import AppBar from 'material-ui/AppBar';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Drawer, MenuItem } from 'material-ui';
 import UserMenu from './UserMenu';
 import AuthService from '../service/AuthService';
@@ -26,7 +27,12 @@ class Header extends Component {
     if (!AuthService.isAuthenticated()) {
       return (
         <header className="Header">
-          <AppBar title="Royale Tippgemeinschaft 2018" showMenuIconButton={false} />
+          <AppBar
+            className="Header__AppBar"
+            title="Royale Tippgemeinschaft 2018"
+            showMenuIconButton={false}
+            onTitleClick={() => { this.props.history.push('/'); }}
+          />
         </header>);
     }
 
@@ -38,6 +44,7 @@ class Header extends Component {
             <UserMenu username={AuthService.getUsername()} />
           }
           onLeftIconButtonClick={this.handleMenuToggle}
+          onTitleClick={() => { this.props.history.push('/'); }}
         />
         <Drawer
           className="Header__menu"
@@ -54,4 +61,9 @@ class Header extends Component {
   }
 }
 
-export default Header;
+Header.propTypes = {
+  // eslint-disable-next-line react/no-typos
+  history: ReactRouterProptypes.history.isRequired,
+};
+
+export default withRouter(Header);
