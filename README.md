@@ -14,6 +14,12 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ## Current Issues / Outstanding TODOs
 
+### Schedule
+
+* Latest achievement: first round games grouped by group name
+* Next: group knock out round games
+* Introduce higher level tab to switch between first round and knockout
+
 ### Registration
 
 * configure backend field error messages to be better
@@ -25,9 +31,6 @@ Sass support has been configured as described [here](https://github.com/facebook
 * (ability to make password visible)
 
 ### Forgot Password
-
-* Reset Page: pass token url param as prop with React router
-* Make backend request and handle response
 
 * (Style progress indicator and success message a bit nicer)
 
@@ -55,8 +58,12 @@ Sass support has been configured as described [here](https://github.com/facebook
 * make sticky (position: fixed but still take up top space)
 * Make it V-shaped using SVG or CSS skewing, logo in the middle, apply fading leather texture on the top?
 
+#### Place bets
+* Use Material UI Tabs with icons and badges to indicate how many open bets
+
 #### Big Pictures
-* include a react lib for parallax effect
+* include a react lib for parallax effect, e.g. https://www.npmjs.com/package/react-scroll-parallax
+* it seems not to be fancy anymore though!
 
 ### General
 * Add Fetch/Promise polyfill for IE, if it's not already included in create-react-app config.
