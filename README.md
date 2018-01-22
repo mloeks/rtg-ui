@@ -16,9 +16,9 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Schedule
 
-* Latest achievement: first round games grouped by group name
-* Next: group knock out round games
-* Introduce higher level tab to switch between first round and knockout
+* Latest achievement: started with toolbar UI
+* Next: filter properly for all games of all rounds
+* Make games more beautiful
 
 ### Registration
 
@@ -36,6 +36,7 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Authentication
 
+* When the user never logs out, he will be logged in but getting 401 on next visit
 * do I ever need to check and/or refresh the token?
 * Handle token expiry
 * use JWT correctly --> auth details should be stored within the token, which then is decoded in the client
