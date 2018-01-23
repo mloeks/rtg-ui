@@ -1,32 +1,27 @@
 import React, { Component } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { Divider, IconButton, IconMenu } from 'material-ui';
-import ContentFilter from 'material-ui/svg-icons/content/filter-list';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import { CircularProgress, Divider, DropDownMenu, MenuItem, ToolbarTitle } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
+import GameCard from '../components/GameCard';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 
+import './Schedule.css';
 import headingImg from '../theme/img/img2.jpg';
-import GameCard from "../components/GameCard";
 
 class Schedule extends Component {
-  static allGroupNames(games) {
-    return [...new Set(games.map(game => game.group.name))];
-  }
-
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedRoundIndex: 1,
-      selectedGroupFilter: 'Alle Gruppen',
+      selectedRoundIndex: 'VOR',
+      selectedGroupFilter: 'all',
       games: [],
+      rounds: [],
+      groups: [],
 
-      loading: false,
+      loading: true,
       loadingError: '',
     };
 
@@ -36,101 +31,106 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
-    this.loadGames();
+    this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds');
+    this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups');
+    this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
   }
 
-  async loadGames() {
+  async fetchData(url, targetStateField) {
     this.setState({ loading: true, loadingError: '' });
-    return fetch(`${API_BASE_URL}/rtg/games/`, {
-      method: 'GET',
+    return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
-    })
-      .then(FetchHelper.parseJson)
+    }).then(FetchHelper.parseJson)
       .then((response) => {
-        const responseJson = response.json;
-        if (response.ok) {
-          this.setState({ loading: false, games: responseJson });
-        } else {
-          this.setState({ loading: false, loadingError: true });
-        }
-      })
-      .catch(() => {
-        this.setState({ loading: false, loadingError: true });
-      });
+        this.setState(() => (
+          response.ok
+            ? { loading: false, [targetStateField]: response.json }
+            : { loading: false, loadingError: true }
+        ));
+      }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   handleSelectedRoundChange(event, index, value) {
     this.setState({ selectedRoundIndex: value });
   }
 
-  handleGroupFilterChanged(event, value) {
+  handleGroupFilterChanged(event, index, value) {
     this.setState({ selectedGroupFilter: value });
   }
 
   gamesFilter(game) {
-    if (this.state.selectedGroupFilter === 'Alle Gruppen') {
-      return true;
+    if (this.state.selectedRoundIndex === 'VOR' && this.state.selectedGroupFilter !== 'all') {
+      return game.group.abbreviation === this.state.selectedGroupFilter;
     }
-    return game.group.name === this.state.selectedGroupFilter;
+    return game.round_details.abbreviation === this.state.selectedRoundIndex;
   }
 
   render() {
+    const gamesToDisplay = this.state.games.filter(this.gamesFilter);
+
     return (
       <Page className="SchedulePage">
-        <BigPicture className="Foyer__welcome" img={headingImg}>
+        <BigPicture className="SchedulePage__heading" img={headingImg}>
           <h1 className="BigPicture__heading">Spielplan</h1>
         </BigPicture>
 
         <Toolbar>
           <ToolbarGroup firstChild>
+            <ToolbarTitle className="SchedulePage__toolbar-title" text="Spiele auswählen:" />
             <DropDownMenu
+              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedRoundIndex}
               onChange={this.handleSelectedRoundChange}
             >
-              <MenuItem value={1} primaryText="Vorrunde"/>
-              <MenuItem value={2} primaryText="Achtelfinale"/>
+              {this.state.rounds.map(round => (
+                <MenuItem
+                  key={round.id}
+                  checked={this.state.selectedRoundIndex === round.abbreviation}
+                  insetChildren
+                  value={round.abbreviation}
+                  primaryText={round.name}
+                  style={{ textAlign: 'left' }}
+                />))
+              }
             </DropDownMenu>
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <IconMenu
-              anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              iconButtonElement={<IconButton><ContentFilter/></IconButton>}
-              onChange={this.handleGroupFilterChanged}
+            {this.state.selectedRoundIndex === 'VOR' &&
+            <DropDownMenu
+              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedGroupFilter}
+              onChange={this.handleGroupFilterChanged}
             >
               <MenuItem
-                checked={this.state.selectedGroupFilter === 'Alle Gruppen'}
+                checked={this.state.selectedGroupFilter === 'all'}
                 insetChildren
-                value="Alle Gruppen"
                 primaryText="Alle Gruppen"
+                value="all"
+                style={{ textAlign: 'left' }}
               />
-              <Divider/>
-              <MenuItem
-                checked={this.state.selectedGroupFilter === 'Gruppe A'}
-                insetChildren
-                value="Gruppe A"
-                primaryText="Gruppe A"
-              />
-              <MenuItem
-                checked={this.state.selectedGroupFilter === 'Gruppe B'}
-                insetChildren
-                value="Gruppe B"
-                primaryText="Gruppe B"
-              />
-            </IconMenu>
+              <Divider />
+              {this.state.groups.map(group => (
+                <MenuItem
+                  key={group.abbreviation}
+                  checked={this.state.selectedGroupFilter === group.abbreviation}
+                  insetChildren
+                  primaryText={group.name}
+                  value={group.abbreviation}
+                  style={{ textAlign: 'left' }}
+                />))
+              }
+            </DropDownMenu>}
           </ToolbarGroup>
         </Toolbar>
 
         {(!this.state.loading && !this.state.loadingError) &&
-        this.state.games
-          .filter(this.gamesFilter)
-          .map(game => <GameCard {...game} />)
+        gamesToDisplay.map(game => <GameCard {...game} />)
+        }
+        {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
+        <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
         }
 
         {this.state.loading && <CircularProgress />}
         {this.state.loadingError &&
-          <div className="Schedule__loadingError">Fehler beim Laden.</div>
+          <div className="SchedulePage__loadingError">Fehler beim Laden.</div>
         }
       </Page>);
   }

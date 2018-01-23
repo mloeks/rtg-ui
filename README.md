@@ -16,9 +16,12 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Schedule
 
-* Latest achievement: started with toolbar UI
-* Next: filter properly for all games of all rounds
+* Make toolbar sticky as soon as it's scrolled out of view
+* Make display of progress and error message nicer
 * Make games more beautiful
+
+* (Jump to current round after load)
+* (Optimize state handling during initial data load)
 
 ### Registration
 
