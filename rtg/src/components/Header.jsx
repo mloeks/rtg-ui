@@ -50,7 +50,7 @@ class Header extends Component {
           className="Header__menu"
           docked={false}
           open={this.state.menuOpen}
-          onRequestChange={(menuOpen) => this.setState({ menuOpen })}
+          onRequestChange={menuOpen => this.setState({ menuOpen })}
         >
           <Link to="/foyer"><MenuItem primaryText="Neuigkeiten" /></Link>
           <Link to="/schedule"><MenuItem primaryText="Spielplan" /></Link>

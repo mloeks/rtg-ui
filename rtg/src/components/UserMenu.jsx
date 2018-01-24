@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { Avatar, Divider, IconMenu, MenuItem } from 'material-ui';
+import { Avatar, Divider, FlatButton, IconMenu, MenuItem } from 'material-ui';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import AuthService from '../service/AuthService';
@@ -12,15 +12,20 @@ import './UserMenu.css';
 
 const UserMenu = (props) => {
   const userAndAvatar = (
-    <div className="UserMenu">
-      <div className="UserMenu__username">{props.username}</div>
-      <Avatar
-        className="UserMenu__avatar"
-        color={props.muiTheme.appBar.avatarColor}
-        backgroundColor={props.muiTheme.appBar.avatarBackgroundColor}
-      >{props.username[0].toUpperCase()}
-      </Avatar>
-    </div>
+    <FlatButton
+      className="UserMenu"
+      label={props.username}
+      labelPosition="before"
+      icon={
+        <Avatar
+          className="UserMenu__avatar"
+          color={props.muiTheme.appBar.avatarColor}
+          backgroundColor={props.muiTheme.appBar.avatarBackgroundColor}
+          size={25}
+        >{props.username[0].toUpperCase()}
+        </Avatar>
+      }
+    />
   );
 
   return (
