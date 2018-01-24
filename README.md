@@ -16,9 +16,9 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Schedule
 
-* Make toolbar sticky as soon as it's scrolled out of view
+* Sticky toolbar cleanup and more robust
 * Make display of progress and error message nicer
-* Make games more beautiful
+* Make games more beautiful --> idea: use vertical ribbon https://css-tricks.com/snippets/css/ribbon/
 
 * (Jump to current round after load)
 * (Optimize state handling during initial data load)
@@ -31,7 +31,7 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 * (implement "first-time" flag for subsequent login)
 * (first/last name info as icon + popup)
-* (ability to make password visible)
+* (ability to make password visible and then remove password repeat field)
 
 ### Forgot Password
 
