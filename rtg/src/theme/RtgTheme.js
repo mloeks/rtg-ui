@@ -27,6 +27,7 @@ export default {
     successColor: success,
     footerColor: darkGrey,
     footerSocialIconColor: lightGrey,
+    scheduleToolbarColor: darkGrey,
   },
   appBar: {
     color: white,

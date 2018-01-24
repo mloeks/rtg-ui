@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { CircularProgress, Divider, DropDownMenu, MenuItem, ToolbarTitle } from 'material-ui';
+import PropTypes from 'prop-types';
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import { CircularProgress, Divider, DropDownMenu, MenuItem } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
@@ -60,7 +61,7 @@ class Schedule extends Component {
 
   gamesFilter(game) {
     if (this.state.selectedRoundIndex === 'VOR' && this.state.selectedGroupFilter !== 'all') {
-      return game.group.abbreviation === this.state.selectedGroupFilter;
+      return game.group && game.group.abbreviation === this.state.selectedGroupFilter;
     }
     return game.round_details.abbreviation === this.state.selectedRoundIndex;
   }
@@ -74,55 +75,61 @@ class Schedule extends Component {
           <h1 className="BigPicture__heading">Spielplan</h1>
         </BigPicture>
 
-        <Toolbar>
-          <ToolbarGroup firstChild>
-            <ToolbarTitle className="SchedulePage__toolbar-title" text="Spiele auswählen:" />
-            <DropDownMenu
-              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-              value={this.state.selectedRoundIndex}
-              onChange={this.handleSelectedRoundChange}
-            >
-              {this.state.rounds.map(round => (
-                <MenuItem
-                  key={round.id}
-                  checked={this.state.selectedRoundIndex === round.abbreviation}
-                  insetChildren
-                  value={round.abbreviation}
-                  primaryText={round.name}
-                  style={{ textAlign: 'left' }}
-                />))
-              }
-            </DropDownMenu>
-            {this.state.selectedRoundIndex === 'VOR' &&
-            <DropDownMenu
-              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-              value={this.state.selectedGroupFilter}
-              onChange={this.handleGroupFilterChanged}
-            >
+        <section
+          className="SchedulePage__toolbar"
+          style={{
+            color: this.props.muiTheme.palette.canvasColor,
+            backgroundColor: this.props.muiTheme.palette.scheduleToolbarColor,
+          }}
+        >
+          <div className="SchedulePage__toolbar-title">Spiele auswählen:</div>
+          <DropDownMenu
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            value={this.state.selectedRoundIndex}
+            onChange={this.handleSelectedRoundChange}
+            labelStyle={{ color: this.props.muiTheme.palette.canvasColor }}
+          >
+            {this.state.rounds.map(round => (
               <MenuItem
-                checked={this.state.selectedGroupFilter === 'all'}
+                key={round.id}
+                checked={this.state.selectedRoundIndex === round.abbreviation}
                 insetChildren
-                primaryText="Alle Gruppen"
-                value="all"
+                value={round.abbreviation}
+                primaryText={round.name}
                 style={{ textAlign: 'left' }}
-              />
-              <Divider />
-              {this.state.groups.map(group => (
-                <MenuItem
-                  key={group.abbreviation}
-                  checked={this.state.selectedGroupFilter === group.abbreviation}
-                  insetChildren
-                  primaryText={group.name}
-                  value={group.abbreviation}
-                  style={{ textAlign: 'left' }}
-                />))
-              }
-            </DropDownMenu>}
-          </ToolbarGroup>
-        </Toolbar>
+              />))
+            }
+          </DropDownMenu>
+          {this.state.selectedRoundIndex === 'VOR' &&
+          <DropDownMenu
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            value={this.state.selectedGroupFilter}
+            onChange={this.handleGroupFilterChanged}
+            labelStyle={{ color: this.props.muiTheme.palette.canvasColor }}
+          >
+            <MenuItem
+              checked={this.state.selectedGroupFilter === 'all'}
+              insetChildren
+              primaryText="Alle Gruppen"
+              value="all"
+              style={{ textAlign: 'left' }}
+            />
+            <Divider />
+            {this.state.groups.map(group => (
+              <MenuItem
+                key={group.abbreviation}
+                checked={this.state.selectedGroupFilter === group.abbreviation}
+                insetChildren
+                primaryText={group.name}
+                value={group.abbreviation}
+                style={{ textAlign: 'left' }}
+              />))
+            }
+          </DropDownMenu>}
+        </section>
 
         {(!this.state.loading && !this.state.loadingError) &&
-        gamesToDisplay.map(game => <GameCard {...game} />)
+        gamesToDisplay.map(game => <GameCard key={game.id} {...game} />)
         }
         {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
         <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
@@ -136,4 +143,9 @@ class Schedule extends Component {
   }
 }
 
-export default Schedule;
+Schedule.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  muiTheme: PropTypes.object.isRequired,
+};
+
+export default muiThemeable()(Schedule);
