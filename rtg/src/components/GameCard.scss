@@ -1,0 +1,84 @@
+.GameCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 50px;
+  margin: 50px;
+  padding: 0 110px;
+
+  background-color: #ececec;
+  box-shadow: 0px -1px 25px -1px rgba(0,0,0,0.35);
+
+  font-family: 'Roboto', sans-serif;
+
+  &__flag { position: absolute; }
+
+  &__flag--home { left: -20px; }
+  &__flag--away { right: -20px; }
+
+  &__hometeam, &__awayteam {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 22px;
+  }
+
+  &__hometeam {
+    text-align: left;
+    flex-grow: 1;
+  }
+
+  &__awayteam {
+    text-align: right;
+    flex-grow: 1;
+  }
+
+  &__result-ribbon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 65px;
+    width: 70px;
+    top: -3px;
+    padding-top: 5px;
+
+    background: red;
+    color: white;
+
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 22px;
+
+    box-shadow: -6px 3px 19px -7px rgba(0,0,0,1);
+    box-sizing: border-box;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      left: -10px;
+      content: "";
+      width: 0;
+      height: 0;
+
+      border-bottom: 10px solid darken(red, 30%);
+      border-left: 10px solid transparent;
+    }
+
+    &:after {
+      border-top: 15px solid red;
+      border-left: 35px solid transparent;
+      border-right: 35px solid transparent;
+      content: "";
+      height: 0;
+      left: 0;
+      position: absolute;
+      bottom: -15px;
+      width: 0;
+    }
+  }
+
+  @media only screen and (min-width : 768px) {
+    max-width: 750px;
+  }
+}
