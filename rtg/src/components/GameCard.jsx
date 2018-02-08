@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CountryFlag from './CountryFlag';
+import GameCardRibbon from './GameCardRibbon';
 
 import './GameCard.css';
 
@@ -8,7 +9,7 @@ const GameCard = props => (
   <section className="GameCard">
     <CountryFlag className="GameCard__flag GameCard__flag--home" countryCode="GER" />
     <div className="GameCard__hometeam">{props.hometeam_name}</div>
-    <div className="GameCard__result-ribbon">16:00</div>
+    <GameCardRibbon />
     <div className="GameCard__awayteam">{props.awayteam_name}</div>
     <CountryFlag className="GameCard__flag GameCard__flag--away" countryCode="SWE" />
   </section>

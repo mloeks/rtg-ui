@@ -1,0 +1,58 @@
+@mixin game-card-ribbon($color, $wrapped-el-height, $width) {
+  $added-height: 15px;
+  $bottom-arrow-height: 10px;
+  $darken-left-right: 3%;
+  $darken-ribbon-callout: 25%;
+
+  box-sizing: border-box;
+
+  position: relative;
+  height: $wrapped-el-height + 2 * $added-height;
+
+  background: $color;
+  box-shadow: -6px 3px 19px -7px rgba(0, 0, 0, 1);
+  width: $width;
+
+  &:before {
+    position: absolute;
+    top: 0;
+    left: -$added-height;
+    content: "";
+    width: 0;
+    height: 0;
+
+    border-bottom: $added-height solid darken($color, $darken-ribbon-callout);
+    border-left: $added-height solid transparent;
+  }
+
+  &:after {
+    border-top: $bottom-arrow-height solid $color;
+    border-left: $width / 2 solid transparent;
+  }
+
+  // TODO how to remove hard dependency to parent class name for the __right subelement?
+  &:after, > .GameCardRibbon__right:after {
+    content: "";
+    height: 0;
+    left: 0;
+    position: absolute;
+    bottom: -$bottom-arrow-height;
+    width: 0;
+  }
+
+  > .GameCardRibbon__right {
+    width: $width / 2;
+    height: 100%;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    background: darken($color, $darken-left-right);
+
+    &:after {
+      border-right: $width / 2 solid transparent;
+      border-top: $bottom-arrow-height solid darken($color, $darken-left-right);
+    }
+  }
+}

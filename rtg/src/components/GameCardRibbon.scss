@@ -1,0 +1,36 @@
+@import '../sass/z-indexes.scss';
+@import '../sass/mixins/game-card-ribbon.scss';
+
+.GameCardRibbon {
+  // TODO set proper RTG colours for all different states (think about states as well)
+  &.neutral { @include game-card-ribbon(grey, 60px, 90px); }
+  &.success { @include game-card-ribbon(green, 60px, 90px); }
+  &.failure { @include game-card-ribbon(red, 60px, 90px); }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5px;
+    height: 100%;
+    width: 100%;
+
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 22px;
+
+    color: white;
+
+    z-index: $zGameCardRibbonContent;
+  }
+
+  &__venue {
+    font-size: 13px;
+    overflow: hidden;
+  }
+}
