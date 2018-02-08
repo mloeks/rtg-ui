@@ -8,9 +8,17 @@ import './GameCard.css';
 const GameCard = props => (
   <section className="GameCard">
     <CountryFlag className="GameCard__flag GameCard__flag--home" countryCode="GER" />
-    <div className="GameCard__hometeam">{props.hometeam_name}</div>
+    <div className="GameCard__hometeam GameCard__hometeam--full">{props.hometeam_name}</div>
+    <div className="GameCard__hometeam GameCard__hometeam--abbreviation">
+      {props.hometeam_abbreviation}
+    </div>
+
     <GameCardRibbon />
-    <div className="GameCard__awayteam">{props.awayteam_name}</div>
+
+    <div className="GameCard__awayteam GameCard__awayteam--full">{props.awayteam_name}</div>
+    <div className="GameCard__awayteam GameCard__awayteam--abbreviation">
+      {props.awayteam_abbreviation}
+    </div>
     <CountryFlag className="GameCard__flag GameCard__flag--away" countryCode="SWE" />
   </section>
 );
@@ -24,7 +32,9 @@ GameCard.propTypes = {
   kickoff: PropTypes.string.isRequired,
   deadline: PropTypes.string.isRequired,
   hometeam_name: PropTypes.string.isRequired,
+  hometeam_abbreviation: PropTypes.string.isRequired,
   awayteam_name: PropTypes.string.isRequired,
+  awayteam_abbreviation: PropTypes.string.isRequired,
   homegoals: PropTypes.number.isRequired,
   awaygoals: PropTypes.number.isRequired,
   city: PropTypes.string.isRequired,

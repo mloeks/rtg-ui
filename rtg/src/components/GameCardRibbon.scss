@@ -3,9 +3,9 @@
 
 .GameCardRibbon {
   // TODO set proper RTG colours for all different states (think about states as well)
-  &.neutral { @include game-card-ribbon(grey, 60px, 90px); }
-  &.success { @include game-card-ribbon(green, 60px, 90px); }
-  &.failure { @include game-card-ribbon(red, 60px, 90px); }
+  &.neutral { @include game-card-ribbon(grey, 60px, 80px); }
+  &.success { @include game-card-ribbon(green, 60px, 80px); }
+  &.failure { @include game-card-ribbon(red, 60px, 80px); }
 
   display: flex;
   align-items: center;
