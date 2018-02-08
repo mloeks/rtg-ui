@@ -1,17 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './GameCardRibbon.css';
 
-const GameCardRibbon = () => (
-  <div className="GameCardRibbon success">
+const GameCardRibbon = props => (
+  <div className={`GameCardRibbon ${props.state}`}>
     <div className="GameCardRibbon__content">
-      <div className="GameCardRibbon__kickoff">16:00</div>
-      <div className="GameCardRibbon__venue">St. Petersburg</div>
+      {props.kickoff && <div className="GameCardRibbon__kickoff">{props.kickoff}</div>}
+      {props.city && <div className="GameCardRibbon__city">{props.city}</div>}
     </div>
     <div className="GameCardRibbon__right" />
   </div>
 );
 
-GameCardRibbon.propTypes = {};
+GameCardRibbon.defaultProps = {
+  state: 'neutral',
+  kickoff: null,
+  city: null,
+};
+
+GameCardRibbon.propTypes = {
+  state: PropTypes.string,
+  kickoff: PropTypes.string,
+  city: PropTypes.string,
+};
 
 export default GameCardRibbon;

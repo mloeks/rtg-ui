@@ -13,7 +13,9 @@ const GameCard = props => (
       {props.hometeam_abbreviation}
     </div>
 
-    <GameCardRibbon />
+    {/* TODO properly format date */}
+    {/* TODO set state and props according to game state */}
+    <GameCardRibbon state="neutral" kickoff="16:00" city={props.city} />
 
     <div className="GameCard__awayteam GameCard__awayteam--full">{props.awayteam_name}</div>
     <div className="GameCard__awayteam GameCard__awayteam--abbreviation">

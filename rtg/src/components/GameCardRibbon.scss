@@ -29,8 +29,8 @@
     z-index: $zGameCardRibbonContent;
   }
 
-  &__venue {
+  &__city {
     font-size: 13px;
-    overflow: hidden;
+    word-wrap: break-word;
   }
 }
