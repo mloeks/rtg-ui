@@ -3,7 +3,7 @@
 
 /* eslint-disable no-unused-vars */
 const black = '#372D2D';
-const white = '#F9FBFA';
+const white = '#FCFCFC';
 const grey = '#808080';
 const lightGrey = '#B4B4B4';
 const darkGrey = '#292929';
