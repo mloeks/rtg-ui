@@ -1,0 +1,29 @@
+@import '../sass/colors.scss';
+
+.GameDateSeparator {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: auto;
+  max-width: 850px;
+
+  &__text {
+    color: $grey;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 15px;
+    margin: 20px 0;
+    background-color: white;
+    z-index: 1;
+  }
+
+  &:after {
+    content: "";
+    left: 0;
+    top: 30px;
+    width: 100%;
+    border-top: 1px dotted $lightGold;
+    position: absolute;
+  }
+}

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CircularProgress, Divider, DropDownMenu, MenuItem } from 'material-ui';
+import { isSameDay, parse } from 'date-fns';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
+import GameDateSeparator from '../components/GameDateSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 
@@ -12,6 +14,20 @@ import './Schedule.css';
 import headingImg from '../theme/img/img2.jpg';
 
 class Schedule extends Component {
+  static createGameCardsWithDateSubheadings(games) {
+    const gameCardsWithDateSubheadings = [];
+    let lastGameDay = null;
+    games.forEach((game) => {
+      if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
+        gameCardsWithDateSubheadings
+          .push(<GameDateSeparator key={game.kickoff} date={parse(game.kickoff)} />);
+        lastGameDay = game.kickoff;
+      }
+      gameCardsWithDateSubheadings.push(<GameCard key={game.id} {...game} />);
+    });
+    return gameCardsWithDateSubheadings;
+  }
+
   constructor(props) {
     super(props);
 
@@ -93,6 +109,7 @@ class Schedule extends Component {
 
   render() {
     const gamesToDisplay = this.state.games.filter(this.gamesFilter);
+    const gameContainerItems = Schedule.createGameCardsWithDateSubheadings(gamesToDisplay);
 
     return (
       <Page className="SchedulePage">
@@ -157,7 +174,7 @@ class Schedule extends Component {
         </section>
         <section className="SchedulePage__game-container">
           {(!this.state.loading && !this.state.loadingError) &&
-          gamesToDisplay.map(game => <GameCard key={game.id} {...game} />)
+            gameContainerItems.map(game => game)
           }
           {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
           <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
