@@ -3,6 +3,10 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import AppBar from 'material-ui/AppBar';
 import { Link, withRouter } from 'react-router-dom';
 import { Drawer, MenuItem } from 'material-ui';
+import Home from 'material-ui/svg-icons/action/home';
+import List from 'material-ui/svg-icons/action/list';
+import Today from 'material-ui/svg-icons/action/today';
+import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import UserMenu from './UserMenu';
 import AuthService from '../service/AuthService';
 
@@ -52,10 +56,11 @@ class Header extends Component {
           open={this.state.menuOpen}
           onRequestChange={menuOpen => this.setState({ menuOpen })}
         >
-          <Link to="/foyer"><MenuItem primaryText="Neuigkeiten" /></Link>
-          <Link to="/schedule"><MenuItem primaryText="Spielplan" /></Link>
-          <Link to="/standings"><MenuItem primaryText="Spielstand" /></Link>
-          <Link to="/bets"><MenuItem primaryText="Tipps" /></Link>
+          {/* TODO add icons to menu entries */}
+          <Link to="/foyer"><MenuItem primaryText="Neuigkeiten" leftIcon={<Home />} /></Link>
+          <Link to="/schedule"><MenuItem primaryText="Spielplan" leftIcon={<Today />} /></Link>
+          <Link to="/standings"><MenuItem primaryText="Spielstand" leftIcon={<List />} /></Link>
+          <Link to="/bets"><MenuItem primaryText="Tipps" leftIcon={<TrendingUp />} /></Link>
         </Drawer>
       </header>);
   }
