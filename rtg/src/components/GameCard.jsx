@@ -7,21 +7,15 @@ import './GameCard.css';
 
 const GameCard = props => (
   <section className="GameCard">
-    <CountryFlag className="GameCard__flag GameCard__flag--home" countryCode="GER" />
-    <div className="GameCard__hometeam GameCard__hometeam--full">{props.hometeam_name}</div>
-    <div className="GameCard__hometeam GameCard__hometeam--abbreviation">
-      {props.hometeam_abbreviation}
-    </div>
+    <CountryFlag country={props.hometeam_name} countryCode="GER" />
+    <div className="hometeam">{props.hometeam_name}</div>
 
     {/* TODO properly format date */}
     {/* TODO set state and props according to game state */}
     <GameCardRibbon state="neutral" kickoff="16:00" city={props.city} />
 
-    <div className="GameCard__awayteam GameCard__awayteam--full">{props.awayteam_name}</div>
-    <div className="GameCard__awayteam GameCard__awayteam--abbreviation">
-      {props.awayteam_abbreviation}
-    </div>
-    <CountryFlag className="GameCard__flag GameCard__flag--away" countryCode="SWE" />
+    <div className="awayteam">{props.awayteam_name}</div>
+    <CountryFlag country={props.awayteam_name} countryCode="SWE" />
   </section>
 );
 

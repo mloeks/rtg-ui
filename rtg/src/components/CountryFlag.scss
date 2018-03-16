@@ -1,0 +1,23 @@
+@import '../sass/_z-indexes.scss';
+
+.CountryFlag {
+  position: relative;
+  width: 100px;
+  margin: 0 -25px;
+  z-index: $zGameCardFlags;
+
+  &__flag {
+    width: 100%;
+  }
+
+  &__name {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+
+    @media only screen and (min-width : 680px) {
+      display: none;
+    }
+  }
+}

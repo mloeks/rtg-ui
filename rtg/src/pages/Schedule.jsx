@@ -155,18 +155,19 @@ class Schedule extends Component {
             }
           </DropDownMenu>}
         </section>
+        <section className="SchedulePage__game-container">
+          {(!this.state.loading && !this.state.loadingError) &&
+          gamesToDisplay.map(game => <GameCard key={game.id} {...game} />)
+          }
+          {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
+          <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
+          }
 
-        {(!this.state.loading && !this.state.loadingError) &&
-        gamesToDisplay.map(game => <GameCard key={game.id} {...game} />)
-        }
-        {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
-        <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
-        }
-
-        {this.state.loading && <CircularProgress />}
-        {this.state.loadingError &&
-          <div className="SchedulePage__loadingError">Fehler beim Laden.</div>
-        }
+          {this.state.loading && <CircularProgress />}
+          {this.state.loadingError &&
+            <div className="SchedulePage__loadingError">Fehler beim Laden.</div>
+          }
+        </section>
       </Page>);
   }
 }

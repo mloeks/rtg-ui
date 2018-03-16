@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './CountryFlag.css';
 import countryFlags from '../theme/CountryFlagImporter';
 
-const CountryFlag = ({ countryCode, ...rest }) => (
-  <img
-    src={countryFlags[countryCode.toUpperCase()]}
-    alt={countryCode.toUpperCase()}
-    {...rest}
-  />
+const CountryFlag = ({ country, countryCode }) => (
+  <div className="CountryFlag">
+    <img
+      src={countryFlags[countryCode.toUpperCase()]}
+      alt={countryCode.toUpperCase()}
+      className="CountryFlag__flag"
+    />
+    <div className="CountryFlag__name">{country}</div>
+  </div>
 );
 
 CountryFlag.propTypes = {
+  country: PropTypes.string.isRequired,
   countryCode: PropTypes.string.isRequired,
 };
 
