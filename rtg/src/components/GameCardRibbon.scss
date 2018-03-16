@@ -38,10 +38,12 @@
 
   &__kickoff {
     font-size: 26px;
+    font-weight: 600;
   }
 
   &__result {
     font-size: 28px;
+    font-weight: 600;
   }
 
   &__userBet, &__points {
@@ -51,5 +53,6 @@
   &__city, &__userBet, &__points {
     font-size: 14px;
     word-wrap: break-word;
+    font-weight: 300;
   }
 }
