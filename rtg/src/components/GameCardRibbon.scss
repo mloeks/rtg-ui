@@ -1,11 +1,21 @@
+@import '../sass/colors.scss';
 @import '../sass/z-indexes.scss';
 @import '../sass/mixins/game-card-ribbon.scss';
 
 .GameCardRibbon {
-  // TODO set proper RTG colours for all different states (think about states as well)
-  &.neutral { @include game-card-ribbon(grey, 60px, 80px); }
-  &.success { @include game-card-ribbon(green, 60px, 80px); }
-  &.failure { @include game-card-ribbon(red, 60px, 80px); }
+  // TODO set proper RTG colours for all different states
+  &.neutral { @include game-card-ribbon($ribbonNeutral, 60px, 80px); }
+  &.niete { @include game-card-ribbon($ribbonNiete, 60px, 80px); }
+  &.tendenz { @include game-card-ribbon($ribbonTendenz, 60px, 80px); }
+  &.differenz { @include game-card-ribbon($ribbonDifferenz, 60px, 80px); }
+  &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 60px, 80px); }
+
+  font-family: 'Oswald', sans-serif;
+  color: white;
+
+  &.differenz {
+    color: $darkGrey;
+  }
 
   display: flex;
   align-items: center;
@@ -21,16 +31,25 @@
     height: 100%;
     width: 100%;
 
-    font-family: 'Oswald', sans-serif;
     font-size: 22px;
-
-    color: white;
 
     z-index: $zGameCardRibbonContent;
   }
 
-  &__city {
-    font-size: 13px;
+  &__kickoff {
+    font-size: 26px;
+  }
+
+  &__result {
+    font-size: 28px;
+  }
+
+  &__userBet, &__points {
+    opacity: .75;
+  }
+
+  &__city, &__userBet, &__points {
+    font-size: 14px;
     word-wrap: break-word;
   }
 }

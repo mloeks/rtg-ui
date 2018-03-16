@@ -16,9 +16,9 @@ Sass support has been configured as described [here](https://github.com/facebook
 
 ### Schedule
 
-* Sticky toolbar cleanup and more robust
+* Separate GameCards by date
 * Make display of progress and error message nicer
-* Make games more beautiful --> idea: use vertical ribbon https://css-tricks.com/snippets/css/ribbon/
+* Download all flag icons here: https://www.shareicon.net/pack/flat-round-world-flag-icon-set?p=8
 
 * (Jump to current round after load)
 * (Optimize state handling during initial data load)

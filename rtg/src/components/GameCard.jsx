@@ -1,23 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { parse } from 'date-fns';
 import CountryFlag from './CountryFlag';
 import GameCardRibbon from './GameCardRibbon';
 
 import './GameCard.css';
 
-const GameCard = props => (
-  <section className="GameCard">
-    <CountryFlag country={props.hometeam_name} countryCode="GER" />
-    <div className="hometeam">{props.hometeam_name}</div>
+const GameCard = (props) => {
+  const kickoffDate = parse(props.kickoff);
 
-    {/* TODO properly format date */}
-    {/* TODO set state and props according to game state */}
-    <GameCardRibbon state="neutral" kickoff="16:00" city={props.city} />
+  return (
+    <section className="GameCard">
+      <CountryFlag country={props.hometeam_name} countryCode="GER" />
+      <div className="hometeam">{props.hometeam_name}</div>
 
-    <div className="awayteam">{props.awayteam_name}</div>
-    <CountryFlag country={props.awayteam_name} countryCode="SWE" />
-  </section>
-);
+      {/* TODO fetch user bet and points if result is there and pass them in */}
+      <GameCardRibbon
+        city={props.city}
+        kickoff={kickoffDate}
+        result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}
+      />
+
+      <div className="awayteam">{props.awayteam_name}</div>
+      <CountryFlag country={props.awayteam_name} countryCode="SWE" />
+    </section>);
+};
 
 GameCard.defaultProps = {
   group: null,
