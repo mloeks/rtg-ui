@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CircularProgress, Divider, DropDownMenu, MenuItem } from 'material-ui';
-import { isSameDay, parse } from 'date-fns';
+import { format, isSameDay, parse } from 'date-fns';
+import de from 'date-fns/locale/de';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
-import GameDateSeparator from '../components/GameDateSeparator';
+import GameCardSeparator from '../components/GameCardSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 
@@ -20,7 +21,10 @@ class Schedule extends Component {
     games.forEach((game) => {
       if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
         gameCardsWithDateSubheadings
-          .push(<GameDateSeparator key={game.kickoff} date={parse(game.kickoff)} />);
+          .push(<GameCardSeparator
+            key={game.kickoff}
+            content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
+          />);
         lastGameDay = game.kickoff;
       }
       gameCardsWithDateSubheadings.push(<GameCard key={game.id} {...game} />);

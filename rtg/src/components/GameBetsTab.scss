@@ -6,4 +6,14 @@
   &__loadingSpinner {
     margin: 30px;
   }
+
+  &__deadline-separator {
+    display: flex;
+    align-items: center;
+    color: red;
+  }
+
+  &__deadline-separator-text {
+
+  }
 }

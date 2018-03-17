@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CircularProgress } from 'material-ui';
+import Timer from 'material-ui/svg-icons/image/timer';
+import { distanceInWordsToNow, format } from 'date-fns';
+import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
-import { BettableTypes } from '../pages/Bets';
+import GameCardSeparator from './GameCardSeparator';
+import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
-export default class GameBetsTab extends Component {
+// TODO introduce interval to update deadline countdowns, or better all games without reload...
+class GameBetsTab extends Component {
   static initialState() {
     return {
       bets: [],
-      bettables: [],
-      games: [],
+      gamesWithOpenBets: [],
 
       loading: true,
       loadingError: '',
@@ -22,9 +27,7 @@ export default class GameBetsTab extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = GameBetsTab.initialState();
-
     this.fetchData = this.fetchData.bind(this);
   }
 
@@ -40,12 +43,10 @@ export default class GameBetsTab extends Component {
 
   updateData() {
     this.setState(GameBetsTab.initialState(), async () => {
-      await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
-      await this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
+      await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
       await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
 
-      this.props.onOpenBetsUpdate(this.state.bettables
-        .filter(bettable => bettable.type === BettableTypes.GAME).length);
+      this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
 
       this.setState({ loading: false });
     });
@@ -62,11 +63,44 @@ export default class GameBetsTab extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
+  createGameCardsWithDeadlineSubheadings(games) {
+    const gameCardsWithDeadlineSubheadings = [];
+    let lastDeadlineText = null;
+    games.forEach((game) => {
+      const deadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
+      if (lastDeadlineText === null || deadlineText !== lastDeadlineText) {
+        gameCardsWithDeadlineSubheadings
+          .push(<GameCardSeparator
+            key={`${game.id}-${game.deadline}`}
+            content={this.createDeadlineWithIcon(game.deadline, deadlineText)}
+          />);
+        lastDeadlineText = deadlineText;
+      }
+      gameCardsWithDeadlineSubheadings.push(<GameCard key={game.id} {...game} />);
+    });
+    return gameCardsWithDeadlineSubheadings;
+  }
+
+  createDeadlineWithIcon(deadlineDate, readableDeadlineText) {
+    return (
+      <div className="GameBetsTab__deadline-separator">
+        <Timer
+          className="GameBetsTab__deadline-separator-icon"
+          color={this.props.muiTheme.palette.errorColor}
+          style={{ width: '28px', height: '28px', marginRight: '5px' }}
+        />
+        <span
+          className="GameBetsTab__deadline-separator-text"
+          title={format(deadlineDate, 'dd. DD. MMMM - HH:mm [Uhr]', { locale: de })}
+        >{readableDeadlineText}
+        </span>
+      </div>
+    );
+  }
+
   render() {
     // TODO reduce number of re-renders
-    const gameBettables =
-      this.state.bettables.filter(bettable => bettable.type === BettableTypes.GAME);
-    const bettablesCount = gameBettables.length;
+    const gameBetsItems = this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets);
 
     return (
       <div className="GameBetsTab">
@@ -82,15 +116,10 @@ export default class GameBetsTab extends Component {
           {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 
           {(!this.state.loading && !this.state.loadingError &&
-            bettablesCount > 0 && this.state.games.length > 0) &&
-            gameBettables.map((bettable) => {
-              const correspondingGame =
-                this.state.games.find(game => game.id === bettable.id);
-              return (<GameCard key={bettable.id} {...correspondingGame} />);
-            })
-          }
+             this.state.gamesWithOpenBets.length > 0) && gameBetsItems}
 
-          {(!this.state.loading && !this.state.loadingError && bettablesCount === 0) &&
+          {(!this.state.loading && !this.state.loadingError &&
+             this.state.gamesWithOpenBets.length === 0) &&
             <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>
           }
           {this.state.loadingError &&
@@ -104,5 +133,8 @@ export default class GameBetsTab extends Component {
 
 GameBetsTab.propTypes = {
   active: PropTypes.bool.isRequired,
+  muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onOpenBetsUpdate: PropTypes.func.isRequired,
 };
+
+export default muiThemeable()(GameBetsTab);

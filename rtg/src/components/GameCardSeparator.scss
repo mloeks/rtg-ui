@@ -1,6 +1,6 @@
 @import '../sass/colors.scss';
 
-.GameDateSeparator {
+.GameCardSeparator {
   display: flex;
   justify-content: center;
   position: relative;
@@ -21,7 +21,7 @@
   &:after {
     content: "";
     left: 0;
-    top: 30px;
+    top: 50%;
     width: 100%;
     border-top: 1px dotted $lightGold;
     position: absolute;

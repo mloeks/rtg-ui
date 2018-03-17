@@ -6,6 +6,7 @@ import GameCardRibbon from './GameCardRibbon';
 
 import './GameCard.css';
 
+// TODO add the possibility to display user bet for not-yet-started games
 const GameCard = (props) => {
   return (
     <section className="GameCard">
