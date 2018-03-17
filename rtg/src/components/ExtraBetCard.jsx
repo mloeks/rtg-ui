@@ -15,6 +15,7 @@ export default class ExtraBetCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      deadlineCountdownIntervalId: null,
       remainingTime: ExtraBetCard.getRemainingTime(props.deadline),
       value: null,
     };
@@ -27,11 +28,16 @@ export default class ExtraBetCard extends Component {
     this.registerCountdown();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.deadlineCountdownIntervalId);
+  }
+
   registerCountdown() {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       this.setState((prevState, prevProps) => (
         { remainingTime: ExtraBetCard.getRemainingTime(prevProps.deadline) }));
     }, 10000);
+    this.setState({ deadlineCountdownIntervalId: intervalId });
   }
 
   handleChange(event, index, value) {
