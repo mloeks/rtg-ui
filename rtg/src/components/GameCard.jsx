@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { parse } from 'date-fns';
 import CountryFlag from './CountryFlag';
-import GameCardInfoRibbon from './GameCardInfoRibbon';
+import GameCardGameInfo from './GameCardGameInfo';
 
 import './GameCard.css';
 
@@ -15,7 +15,7 @@ const GameCard = (props) => {
 
       {/* TODO fetch user bet and points if result is there and pass them in */}
       {/* TODO offer second type of "game card content" --> bet */}
-      <GameCardInfoRibbon
+      <GameCardGameInfo
         city={props.city}
         kickoff={parse(props.kickoff)}
         result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}

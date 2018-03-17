@@ -1,0 +1,34 @@
+@import '../sass/colors.scss';
+
+.GameCardGameInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+  }
+
+  &__kickoff {
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  &__result {
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  &__userBet, &__points {
+    opacity: .75;
+  }
+
+  &__city, &__userBet, &__points {
+    font-size: 14px;
+    word-wrap: break-word;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.2;
+  }
+}

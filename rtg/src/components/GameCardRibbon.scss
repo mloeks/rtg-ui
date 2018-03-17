@@ -2,23 +2,22 @@
 @import '../sass/z-indexes.scss';
 @import '../sass/mixins/game-card-ribbon.scss';
 
-.GameCardInfoRibbon {
+.GameCardRibbon {
+  &.bet { @include game-card-ribbon($ribbonBet, 60px, 80px); }
   &.neutral { @include game-card-ribbon($ribbonNeutral, 60px, 80px); }
   &.niete { @include game-card-ribbon($ribbonNiete, 60px, 80px); }
   &.tendenz { @include game-card-ribbon($ribbonTendenz, 60px, 80px); }
   &.differenz { @include game-card-ribbon($ribbonDifferenz, 60px, 80px); }
   &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 60px, 80px); }
 
-  font-family: 'Oswald', sans-serif;
-  color: white;
-
-  &.differenz {
-    color: $darkGrey;
-  }
-
   display: flex;
   align-items: center;
   justify-content: center;
+
+  color: white;
+  &.differenz {
+    color: $darkGrey;
+  }
 
   &__content {
     box-sizing: border-box;
@@ -31,30 +30,6 @@
     height: 100%;
     width: 100%;
 
-    font-size: 22px;
-
     z-index: $zGameCardRibbonContent;
-  }
-
-  &__kickoff {
-    font-size: 26px;
-    font-weight: 600;
-  }
-
-  &__result {
-    font-size: 28px;
-    font-weight: 600;
-  }
-
-  &__userBet, &__points {
-    opacity: .75;
-  }
-
-  &__city, &__userBet, &__points {
-    font-size: 14px;
-    word-wrap: break-word;
-    font-weight: 300;
-    text-align: center;
-    line-height: 1.2;
   }
 }
