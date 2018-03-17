@@ -13,7 +13,6 @@ const StateEnum = {
   VOLLTREFFER: 'volltreffer',
 };
 
-// TODO pass user bet, result & resultBetType in
 // TODO handle display of running games and games which have started but no result
 const GameCardGameInfo = (props) => {
   const state = props.result === null ? StateEnum.NEUTRAL : StateEnum.NEUTRAL;
@@ -21,14 +20,14 @@ const GameCardGameInfo = (props) => {
   let ribbonContent;
   if (props.result === null) {
     ribbonContent = (
-      <div className="GameCardGameInfo__content">
+      <div className="GameCardGameInfo">
         <div className="GameCardGameInfo__kickoff">{format(props.kickoff, 'HH:mm')}</div>
         <div className="GameCardGameInfo__city">{props.city}</div>
       </div>
     );
   } else {
     ribbonContent = (
-      <div className="GameCardGameInfo__content">
+      <div className="GameCardGameInfo">
         <div className="GameCardGameInfo__result">{props.result}</div>
         <div className="GameCardGameInfo__userBet">( {props.userBet || '3 - 4'} )</div>
         <div className="GameCardGameInfo__points">{props.points} Pkt.</div>

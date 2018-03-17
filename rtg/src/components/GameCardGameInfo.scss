@@ -1,14 +1,8 @@
 @import '../sass/colors.scss';
 
 .GameCardGameInfo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &__content {
-    font-family: 'Oswald', sans-serif;
-    font-size: 22px;
-  }
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
 
   &__kickoff {
     font-size: 26px;
