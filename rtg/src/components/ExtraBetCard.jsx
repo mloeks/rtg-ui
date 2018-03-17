@@ -9,20 +9,22 @@ import './ExtraBetCard.css';
 
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
-    return distanceInWordsToNow(deadline);
+    return distanceInWordsToNow(deadline, { locale: de });
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      // TODO de locale not working?
-      remainingTime: ExtraBetCard.getRemainingTime(props.deadline, { locale: de }),
+      remainingTime: ExtraBetCard.getRemainingTime(props.deadline),
       value: null,
     };
 
-    this.registerCountdown();
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+  }
+
+  componentDidMount() {
+    this.registerCountdown();
   }
 
   registerCountdown() {
