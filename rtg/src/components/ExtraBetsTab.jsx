@@ -73,7 +73,8 @@ export default class ExtraBetsTab extends Component {
         <p>Hier kannst du Deine Zusatztipps abgeben.</p>
 
         <section className="ExtraBetsTab__extra-bets-container">
-          {this.state.loading && <CircularProgress className="ExtraBetsTab__loadingSpinner" />}
+          {this.state.loading &&
+            <CircularProgress className="ExtraBetsTab__loadingSpinner" style={{ display: 'block' }} />}
 
           {(!this.state.loading && !this.state.loadingError) && this.state.extras
             .map(extraBet => <ExtraBetCard key={extraBet.id} {...extraBet} />)

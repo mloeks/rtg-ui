@@ -1,7 +1,40 @@
+@import '../sass/colors';
+
 .ExtraBetCard {
   margin: 25px 0;
 
   &__actions {
     display: flex;
+  }
+
+  &__result-info {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    padding: 16px;
+
+    font-size: 16px;
+
+    background-color: lighten($ribbonNeutral, 30%);
+    border-top: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+  }
+
+  &__result-info--finished {
+    background-color: $ribbonNiete;
+    &.volltreffer {
+      background-color: $ribbonVolltreffer;
+    }
+  }
+
+  &__bet-info {
+    padding: 16px;
+  }
+
+  &__bet-info-bet {
+    font-weight: bold;
+    text-transform: uppercase;
   }
 }
