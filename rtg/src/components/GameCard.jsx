@@ -9,7 +9,7 @@ import './GameCard.css';
 const GameCard = (props) => {
   return (
     <section className="GameCard">
-      <CountryFlag country={props.hometeam_name} countryCode="GER" />
+      <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
       <div className="hometeam">{props.hometeam_name}</div>
 
       {/* TODO fetch user bet and points if result is there and pass them in */}
@@ -21,7 +21,7 @@ const GameCard = (props) => {
       />
 
       <div className="awayteam">{props.awayteam_name}</div>
-      <CountryFlag country={props.awayteam_name} countryCode="SWE" />
+      <CountryFlag country={props.awayteam_name} countryCode={props.awayteam_abbreviation} />
     </section>);
 };
 
