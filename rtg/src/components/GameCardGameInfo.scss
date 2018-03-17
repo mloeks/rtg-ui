@@ -4,6 +4,12 @@
   font-family: 'Oswald', sans-serif;
   font-size: 22px;
 
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  height: 90%;
+
   &__kickoff {
     font-size: 26px;
     font-weight: 600;
