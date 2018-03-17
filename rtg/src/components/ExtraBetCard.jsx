@@ -96,14 +96,22 @@ export default class ExtraBetCard extends Component {
         body: JSON.stringify(body),
       }).then(FetchHelper.parseJson)
         .then((response) => {
-          this.setState(() => (
-            response.ok ? {
+          if (response.ok) {
+            this.setState({
               savingSuccess: true,
               isSaving: false,
               hasChanges: false,
               userBet: response.json || null,
-            } : { savingError: true, isSaving: false }
-          ));
+            }, () => {
+              if (method === 'POST') {
+                this.props.onBetAdded();
+              } else if (method === 'DELETE') {
+                this.props.onBetRemoved();
+              }
+            });
+          } else {
+            this.setState({ savingError: true, isSaving: false });
+          }
         }).catch(() => this.setState({ savingError: true, isSaving: false }));
     }
   }
@@ -145,6 +153,8 @@ export default class ExtraBetCard extends Component {
                 onClick={this.handleSave}
                 disabled={this.state.isSaving || !this.state.hasChanges}
               />
+
+              {/* TODO make it look better */}
               {this.state.savingSuccess && <div>Gespeichert!</div>}
               {this.state.savingError && <div>Fehler beim Speichern :-(</div>}
             </div>
@@ -172,4 +182,7 @@ ExtraBetCard.propTypes = {
   open: PropTypes.bool.isRequired,
   points: PropTypes.number.isRequired,
   result: PropTypes.string,
+
+  onBetAdded: PropTypes.func.isRequired,
+  onBetRemoved: PropTypes.func.isRequired,
 };

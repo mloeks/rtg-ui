@@ -6,14 +6,19 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
+import ExtraBetsTab from '../components/ExtraBetsTab';
 
 import headingImg from '../theme/img/img7.jpg';
 import './Bets.css';
-import ExtraBetsTab from "../components/ExtraBetsTab";
 
 export const BettableTypes = {
   GAME: 'game',
   EXTRA: 'extra',
+};
+
+export const countOpenBets = (bettables, allBets) => {
+  const allBetBettablesIds = new Set(allBets.map(bet => bet.bettable));
+  return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
 class Bets extends Component {
@@ -50,7 +55,9 @@ class Bets extends Component {
             >
               <GameBetsTab
                 active={this.state.activeTab === BettableTypes.GAME}
-                onOpenBetsUpdate={openGameBetsCt => this.setState({ openGameBetsCt })}
+                onOpenBetsUpdate={openBets => this.setState({ openGameBetsCt: openBets })}
+                onOpenBetsUpdateIncremental={openBetsChange => this.setState(prevState =>
+                  ({ openGameBetsCt: prevState.openGameBetsCt + openBetsChange }))}
               />
             </Tab>
             <Tab
@@ -61,7 +68,9 @@ class Bets extends Component {
             >
               <ExtraBetsTab
                 active={this.state.activeTab === BettableTypes.EXTRA}
-                onOpenBetsUpdate={openExtraBetsCt => this.setState({ openExtraBetsCt })}
+                onOpenBetsUpdate={openBets => this.setState({ openExtraBetsCt: openBets })}
+                onOpenBetsUpdateIncremental={openBetsChange => this.setState(prevState =>
+                  ({ openExtraBetsCt: prevState.openExtraBetsCt + openBetsChange }))}
               />
             </Tab>
           </Tabs>

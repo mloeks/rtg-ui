@@ -38,16 +38,17 @@ export default class GameBetsTab extends Component {
     }
   }
 
-  async updateData() {
-    this.setState(GameBetsTab.initialState());
-    await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
-    await this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
-    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
+  updateData() {
+    this.setState(GameBetsTab.initialState(), async () => {
+      await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
+      await this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
+      await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
 
-    this.props.onOpenBetsUpdate(this.state.bettables
-      .filter(bettable => bettable.type === BettableTypes.GAME).length);
+      this.props.onOpenBetsUpdate(this.state.bettables
+        .filter(bettable => bettable.type === BettableTypes.GAME).length);
 
-    this.setState({ loading: false });
+      this.setState({ loading: false });
+    });
   }
 
   async fetchData(url, targetStateField) {
