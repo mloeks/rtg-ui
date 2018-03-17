@@ -4,10 +4,10 @@ import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card';
 import { MenuItem, RaisedButton, SelectField } from 'material-ui';
 import { distanceInWordsToNow } from 'date-fns';
 import de from 'date-fns/locale/de';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
+import FetchHelper from '../service/FetchHelper';
 
 import './ExtraBetCard.css';
-import AuthService, { API_BASE_URL } from "../service/AuthService";
-import FetchHelper from "../service/FetchHelper";
 
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
@@ -23,7 +23,9 @@ export default class ExtraBetCard extends Component {
       hasChanges: false,
 
       loadingError: false,
+      savingSuccess: false,
       savingError: false,
+      isSaving: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,7 +48,7 @@ export default class ExtraBetCard extends Component {
       .then((response) => {
         this.setState(() => (
           response.ok ?
-            { userBet: response.json.length > 0 ? response.json[0].result_bet : null }
+            { userBet: response.json.length > 0 ? response.json[0] : null }
             : { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
@@ -61,17 +63,54 @@ export default class ExtraBetCard extends Component {
   }
 
   handleChange(event, index, value) {
-    this.setState({ userBet: value, hasChanges: true });
+    this.setState((prevState) => {
+      const prevUserBet = prevState.userBet || { result_bet: null };
+      const userBet = Object.assign({}, prevUserBet);
+      userBet.result_bet = value;
+      return { userBet, hasChanges: value !== prevUserBet.result_bet };
+    });
   }
 
   handleSave() {
-    // TODO
+    if (this.state.userBet && !this.state.isSaving) {
+      this.setState({ isSaving: true, savingSuccess: false, savingError: false });
+
+      const newBet = this.state.userBet.result_bet;
+      const body = newBet !== null ? { bettable: this.props.id, result_bet: newBet } : null;
+
+      let method;
+      let url = `${API_BASE_URL}/rtg/bets/`;
+      if (this.state.userBet.id) {
+        url += `${this.state.userBet.id}/`;
+        method = newBet !== null ? 'PUT' : 'DELETE';
+      } else {
+        method = 'POST';
+      }
+
+      fetch(url, {
+        headers: {
+          Authorization: `Token ${AuthService.getToken()}`,
+          'content-type': 'application/json',
+        },
+        method,
+        body: JSON.stringify(body),
+      }).then(FetchHelper.parseJson)
+        .then((response) => {
+          this.setState(() => (
+            response.ok ? {
+              savingSuccess: true,
+              isSaving: false,
+              hasChanges: false,
+              userBet: response.json || null,
+            } : { savingError: true, isSaving: false }
+          ));
+        }).catch(() => this.setState({ savingError: true, isSaving: false }));
+    }
   }
 
   render() {
-    // TODO show user points and set color of result info accordingly
-    const isUserBetCorrect =
-      this.props.result && this.state.userBet && this.state.userBet === this.props.result;
+    const userResultBet = this.state.userBet ? this.state.userBet.result_bet : null;
+    const isUserBetCorrect = this.props.result && userResultBet === this.props.result;
     const resultInfo = this.props.result ? (
       <div className={`ExtraBetCard__result-info--finished ${isUserBetCorrect ? 'volltreffer' : ''}`}>
         Ergebnis: {this.props.result} - {isUserBetCorrect ? `${this.props.points} Punkte!` : 'Keine Punkte.'}
@@ -90,7 +129,8 @@ export default class ExtraBetCard extends Component {
           <CardActions className="ExtraBetCard__actions">
             <SelectField
               floatingLabelText="Dein Tipp"
-              value={this.state.userBet}
+              maxHeight={300}
+              value={userResultBet}
               onChange={this.handleChange}
               menuItemStyle={{ textAlign: 'left' }}
             >
@@ -103,14 +143,18 @@ export default class ExtraBetCard extends Component {
                 label="Speichern"
                 primary
                 onClick={this.handleSave}
-                disabled={!this.state.hasChanges}
+                disabled={this.state.isSaving || !this.state.hasChanges}
               />
+              {this.state.savingSuccess && <div>Gespeichert!</div>}
+              {this.state.savingError && <div>Fehler beim Speichern :-(</div>}
             </div>
           </CardActions>}
 
         {(!this.state.loadingError && !this.props.open) &&
-          <div className="ExtraBetCard__bet-info">
-            Dein Tipp: <span className="ExtraBetCard__bet-info-bet">{this.state.userBet ? this.state.userBet : '---'}</span>
+          <div className="ExtraBetCard__bet-info">Dein Tipp:
+            <span className="ExtraBetCard__bet-info-bet">
+              {(this.state.userBet && this.state.userBet.result_bet) ? this.state.userBet.result_bet : '---'}
+            </span>
           </div>}
       </Card>);
   }
