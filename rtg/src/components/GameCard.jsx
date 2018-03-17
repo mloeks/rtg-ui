@@ -8,19 +8,20 @@ import './GameCard.css';
 
 // TODO add the possibility to display user bet for not-yet-started games
 const GameCard = (props) => {
+  const centerContent = props.children || (
+    // if no other children are passed in,
+    // display the usual read-only information about the game per default
+    <GameCardGameInfo
+      city={props.city}
+      kickoff={parse(props.kickoff)}
+      result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}
+    />
+  );
   return (
     <section className="GameCard">
       <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
       <div className="hometeam">{props.hometeam_name}</div>
-
-      {/* TODO fetch user bet and points if result is there and pass them in */}
-      {/* TODO offer second type of "game card content" --> bet */}
-      <GameCardGameInfo
-        city={props.city}
-        kickoff={parse(props.kickoff)}
-        result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}
-      />
-
+      {centerContent}
       <div className="awayteam">{props.awayteam_name}</div>
       <CountryFlag country={props.awayteam_name} countryCode={props.awayteam_abbreviation} />
     </section>);
@@ -28,6 +29,7 @@ const GameCard = (props) => {
 
 GameCard.defaultProps = {
   group: null,
+  children: null,
 };
 
 GameCard.propTypes = {
@@ -51,6 +53,11 @@ GameCard.propTypes = {
     abbreviation: PropTypes.string.isRequired,
   }),
   bets_open: PropTypes.bool.isRequired,
+
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 export default GameCard;

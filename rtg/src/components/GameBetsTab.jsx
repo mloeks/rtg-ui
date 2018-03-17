@@ -8,6 +8,7 @@ import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
+import GameCardBet from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
 
@@ -28,7 +29,9 @@ class GameBetsTab extends Component {
   constructor(props) {
     super(props);
     this.state = GameBetsTab.initialState();
+
     this.fetchData = this.fetchData.bind(this);
+    this.handleBetChanged = this.handleBetChanged.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +66,11 @@ class GameBetsTab extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
+  handleBetChanged(betId) {
+    console.log(`bet ${betId} changed`);
+    // TODO
+  }
+
   createGameCardsWithDeadlineSubheadings(games) {
     const gameCardsWithDeadlineSubheadings = [];
     let lastDeadlineText = null;
@@ -76,7 +84,18 @@ class GameBetsTab extends Component {
           />);
         lastDeadlineText = deadlineText;
       }
-      gameCardsWithDeadlineSubheadings.push(<GameCard key={game.id} {...game} />);
+      const gameCardWithBet = (
+        <GameCard key={game.id} {...game} >
+          <GameCardBet
+            gameId={game.id}
+            onChange={this.handleBetChanged}
+            onBetAdded={() => this.props.onOpenBetsUpdateIncremental(-1)}
+            onBetRemoved={() => this.props.onOpenBetsUpdateIncremental(1)}
+          />
+        </GameCard>
+      );
+
+      gameCardsWithDeadlineSubheadings.push(gameCardWithBet);
     });
     return gameCardsWithDeadlineSubheadings;
   }
@@ -120,7 +139,7 @@ class GameBetsTab extends Component {
 
           {(!this.state.loading && !this.state.loadingError &&
              this.state.gamesWithOpenBets.length === 0) &&
-            <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>
+             <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>
           }
           {this.state.loadingError &&
             <div className="GameBetsTab__loadingError">Fehler beim Laden.</div>
@@ -135,6 +154,7 @@ GameBetsTab.propTypes = {
   active: PropTypes.bool.isRequired,
   muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onOpenBetsUpdate: PropTypes.func.isRequired,
+  onOpenBetsUpdateIncremental: PropTypes.func.isRequired,
 };
 
 export default muiThemeable()(GameBetsTab);
