@@ -7,17 +7,16 @@ import GameCardRibbon from './GameCardRibbon';
 import './GameCard.css';
 
 const GameCard = (props) => {
-  const kickoffDate = parse(props.kickoff);
-
   return (
     <section className="GameCard">
       <CountryFlag country={props.hometeam_name} countryCode="GER" />
       <div className="hometeam">{props.hometeam_name}</div>
 
       {/* TODO fetch user bet and points if result is there and pass them in */}
+      {/* TODO offer second type of "game card content" --> bet */}
       <GameCardRibbon
         city={props.city}
-        kickoff={kickoffDate}
+        kickoff={parse(props.kickoff)}
         result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}
       />
 
