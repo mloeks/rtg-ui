@@ -2,8 +2,7 @@
 @import '../sass/z-indexes.scss';
 @import '../sass/mixins/game-card-ribbon.scss';
 
-.GameCardRibbon {
-  // TODO set proper RTG colours for all different states
+.GameCardInfoRibbon {
   &.neutral { @include game-card-ribbon($ribbonNeutral, 60px, 80px); }
   &.niete { @include game-card-ribbon($ribbonNiete, 60px, 80px); }
   &.tendenz { @include game-card-ribbon($ribbonTendenz, 60px, 80px); }

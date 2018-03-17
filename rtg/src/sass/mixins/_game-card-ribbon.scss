@@ -33,7 +33,9 @@
   }
 
   // TODO how to remove hard dependency to parent class name for the __right subelement?
-  &:after, > .GameCardRibbon__right:after {
+  &:after,
+  > .GameCardInfoRibbon__right:after,
+  > .GameCardBetRibbon__right:after {
     content: "";
     height: 0;
     left: 0;
@@ -42,7 +44,8 @@
     width: 0;
   }
 
-  > .GameCardRibbon__right {
+  > .GameCardInfoRibbon__right,
+  > .GameCardBetRibbon__right {
     width: $width / 2;
     height: 100%;
 
