@@ -1,9 +1,19 @@
 import React from 'react';
 import Page from './Page';
+import BigPicture from '../components/BigPicture';
+import StandingsTable from '../components/standings/StandingsTable';
+
+import headingImg from '../theme/img/img9.jpg';
 
 const Standings = () => (
   <Page className="StandingsPage">
-    <h3>Spielstand</h3>
+    <BigPicture className="StandingsPage__heading" img={headingImg}>
+      <h1 className="BigPicture__heading">Spielstand</h1>
+    </BigPicture>
+
+    <section className="StandingsPage__content">
+      <StandingsTable />
+    </section>
   </Page>
 );
 
