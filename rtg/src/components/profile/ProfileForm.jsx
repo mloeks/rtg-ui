@@ -63,13 +63,11 @@ class ProfileForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    setTimeout(async () => {
-      await this.fetchData(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, ProfileForm.userToStateMapper);
-      await this.fetchData(`${API_BASE_URL}/rtg/profiles/${AuthService.getUserId()}/`, ProfileForm.profileToStateMapper);
+  async componentDidMount() {
+    await this.fetchData(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, ProfileForm.userToStateMapper);
+    await this.fetchData(`${API_BASE_URL}/rtg/profiles/${AuthService.getUserId()}/`, ProfileForm.profileToStateMapper);
 
-      this.setState({ loading: false });
-    }, 2000);
+    this.setState({ loading: false });
   }
 
   async fetchData(url, responseToStateMapper) {
