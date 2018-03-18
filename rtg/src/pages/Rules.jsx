@@ -1,9 +1,14 @@
 import React from 'react';
 import Page from './Page';
+import BigPicture from '../components/BigPicture';
+
+import headingImg from '../theme/img/img7.jpg';
 
 const Rules = () => (
   <Page className="RulesPage">
-    <h3>RTG Regeln</h3>
+    <BigPicture className="RulesPage__heading" img={headingImg}>
+      <h1 className="BigPicture__heading">Spielregeln</h1>
+    </BigPicture>
   </Page>
 );
 

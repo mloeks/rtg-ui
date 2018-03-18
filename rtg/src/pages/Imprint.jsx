@@ -1,9 +1,14 @@
 import React from 'react';
 import Page from './Page';
+import BigPicture from '../components/BigPicture';
+
+import headingImg from '../theme/img/img7.jpg';
 
 const Imprint = () => (
   <Page className="ImprintPage">
-    <h3>Impressum</h3>
+    <BigPicture className="ImprintPage__heading" img={headingImg}>
+      <h1 className="BigPicture__heading">Impressum</h1>
+    </BigPicture>
     {/* Icons von hier: https://www.shareicon.net/pack/flat-round-world-flag-icon-set */}
   </Page>
 );
