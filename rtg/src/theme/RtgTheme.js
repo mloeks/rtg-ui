@@ -10,7 +10,7 @@ const darkGrey = '#292929';
 const purple = '#974578';
 const gold = '#CD9B1D';
 const darkGold = '#8B6914';
-const lightGold = '#E9C467';
+const lightGold = '#EDD69C';
 const success = '#58ce38';
 const error = '#ce3838';
 /* eslint-enable no-unused-vars */
