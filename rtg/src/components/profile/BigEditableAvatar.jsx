@@ -6,7 +6,7 @@ import Person from 'material-ui/svg-icons/social/person';
 
 import './BigEditableAvatar.css';
 
-// TODO P1 enable avatar upload
+// TODO P1 enable avatar upload, check https://www.npmjs.com/package/react-avatar-image-cropper
 class BigEditableAvatar extends Component {
   constructor(props) {
     super(props);
