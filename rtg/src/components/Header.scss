@@ -3,6 +3,19 @@
     cursor: pointer;
   }
 
+  &__AppBar--desktop {
+    display: none !important;
+    @media only screen and (min-width : 480px) {
+      display: flex !important;
+    }
+  }
+
+  &__AppBar--mobile {
+    @media only screen and (min-width : 480px) {
+      display: none !important;
+    }
+  }
+
   &__menu {
     text-align: left;
 
