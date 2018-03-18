@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar } from 'material-ui';
+import { teal400 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 
 import './BigEditableAvatar.css';
 
-// TODO handle
+// TODO P1 enable avatar upload
 class BigEditableAvatar extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const avatar = this.props.avatarUrl ?
-      <Avatar className="ProfilePage__avatar" src={this.props.avatarUrl} size={128} /> :
-      <Avatar className="ProfilePage__avatar--no-pic" icon={<Person />} size={128} />;
-
     return (
       <div className="BigEditableAvatar">
-        {avatar}
+        <Avatar
+          className="BigEditableAvatar__avatar"
+          backgroundColor={!this.props.avatarUrl ? teal400 : null}
+          icon={!this.props.avatarUrl ? <Person /> : null}
+          src={this.props.avatarUrl}
+          size={150}
+        /> :
         <h2 className="BigEditableAvatar__username">{this.props.username}</h2>
       </div>
     );
