@@ -39,10 +39,11 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO Fehler beim Laden schön machen.
-// TODO Spaltenlayout fertig machen.
-// TODO Avatar URLs aus dem Backend mitliefern.
-// TODO random colours für User ohne Avatar.
+// TODO P1 Avatar URLs aus dem Backend mitliefern.
+// TODO P1 Plätze korrekt durchnummerieren
+// TODO P2 Fehler beim Laden schön machen.
+// TODO P2 andere Spalten anzeigen
+// TODO P3 random colours für User ohne Avatar.
 class StandingsTable extends Component {
   static statsToStateMapper(stats) {
     return {
@@ -92,9 +93,10 @@ class StandingsTable extends Component {
       textAlign: 'center',
       padding: '0 10px',
     };
-    const avatarColumnStyle = {
+    const pointsColumnStyle = {
       width: '40px',
-      padding: '0 10px',
+      textAlign: 'right',
+      padding: '0 15px 0 5px',
     };
 
     return (
@@ -102,12 +104,12 @@ class StandingsTable extends Component {
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
         {this.state.loadingError &&
           <div className="StandingsTable__loading-error">Fehler beim Laden.</div> }
-        <Table className="StandingsTable" selectable={false}>
+        <Table className="StandingsTable__table" selectable={false}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
             <TableRow>
               <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
               <TableHeaderColumn style={{ paddingLeft: '5px' }} colSpan={2}>Username</TableHeaderColumn>
-              <TableHeaderColumn>Punkte</TableHeaderColumn>
+              <TableHeaderColumn style={pointsColumnStyle}>Punkte</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody showRowHover displayRowCheckbox={false}>
@@ -118,7 +120,7 @@ class StandingsTable extends Component {
                   <Avatar size={32}>{row.username[0].toUpperCase()}</Avatar>
                 </TableRowColumn>
                 <TableRowColumn style={{ paddingLeft: '5px' }}>{row.username}</TableRowColumn>
-                <TableRowColumn style={{ textAlign: 'right' }}>{row.points}</TableRowColumn>
+                <TableRowColumn style={pointsColumnStyle}>{row.points}</TableRowColumn>
               </TableRow>))}
           </TableBody>
         </Table>

@@ -20,7 +20,7 @@ export default {
   palette: {
     primary1Color: purple,
     accent1Color: gold,
-    accent2Color: darkGold,
+    accent2Color: lightGold,
     textColor: black,
     canvasColor: white,
     errorColor: error,
