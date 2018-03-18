@@ -9,7 +9,7 @@ import headingImg from '../theme/img/img8.jpg';
 
 const Profile = () => (
   <Page className="ProfilePage">
-    <BigPicture className="ProfilePage__heading" img={headingImg} height={200} />
+    <BigPicture className="ProfilePage__heading" img={headingImg} />
     <section className="ProfilePage__content">
       <BigEditableAvatar userId={AuthService.getUserId()} username={AuthService.getUsername()} />
       <ProfileForm />
