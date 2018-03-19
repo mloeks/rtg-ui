@@ -5,9 +5,12 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
 // TODO handle save and its success / error responses + styling
+// TODO in order to do a PUT, we need the avatar props passed in here
+// (PATCH seems to be a bit complicated with the DRF backend)
 class ProfileForm extends Component {
   static userToStateMapper(userJson) {
     return {
+      userId: userJson.pk,
       username: userJson.username,
       firstName: userJson.first_name,
       lastName: userJson.last_name,
@@ -26,10 +29,15 @@ class ProfileForm extends Component {
     };
   }
 
+  static profileErrorResponseToState(responseJson) {
+    console.log(responseJson);
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
+      userId: null,
       username: null,
       email: null,
       email2: null,
@@ -46,9 +54,10 @@ class ProfileForm extends Component {
       loadingError: false,
       savingError: false,
       savingSuccess: false,
-      formError: '',
 
-      formFieldErrors: {
+      formError: null,
+      formHasErrors: false,
+      fieldErrors: {
         username: null,
         email: null,
         email2: null,
@@ -57,10 +66,13 @@ class ProfileForm extends Component {
         about: null,
         location: null,
       },
+
+      hasChanges: false,
     };
 
     this.handleFormFieldUpdate = this.handleFormFieldUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.stateToProfilePayload = this.stateToProfilePayload.bind(this);
   }
 
   async componentDidMount() {
@@ -68,6 +80,19 @@ class ProfileForm extends Component {
     await this.fetchData(`${API_BASE_URL}/rtg/profiles/${AuthService.getUserId()}/`, ProfileForm.profileToStateMapper);
 
     this.setState({ loading: false });
+  }
+
+  stateToProfilePayload() {
+    return {
+      pk: this.state.userId,
+      email2: this.state.email2,
+      location: this.state.location,
+      about: this.state.about,
+      reminder_emails: this.state.reminderEmails,
+      daily_emails: this.state.dailyEmails,
+      avatar: null,
+      avatar_url: null,
+    };
   }
 
   async fetchData(url, responseToStateMapper) {
@@ -83,10 +108,37 @@ class ProfileForm extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  handleSubmit(e) {
-    this.setState({ saving: true });
-    setTimeout(() => this.setState({ saving: false }), 2000);
+  async putData(url, payload, errorResponseToStateMapper) {
+    return fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+      headers: {
+        Authorization: `Token ${AuthService.getToken()}`,
+        'content-type': 'application/json',
+      },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        this.setState(() => (
+          response.ok
+            ? { savingSuccess: true }
+            : errorResponseToStateMapper(response.json)
+        ));
+      }).catch(() => this.setState({ savingError: true }));
+  }
+
+  async handleSubmit(e) {
+    console.log(this.stateToProfilePayload());
     e.preventDefault();
+    this.setState({ saving: true, savingSuccess: false, savingError: false });
+
+    await this.putData(
+      `${API_BASE_URL}/rtg/profiles/${this.state.userId}/`,
+      this.stateToProfilePayload(),
+      ProfileForm.profileErrorResponseToState,
+    );
+    // await this.putData(`${API_BASE_URL}/rtg/users/${this.state.userId}/`, ProfileForm.userErrorResponseToState);
+
+    this.setState({ saving: false });
   }
 
   handleFormFieldUpdate(fieldName, value) {
@@ -95,7 +147,7 @@ class ProfileForm extends Component {
 
   render() {
     return (
-      <form className="ProfileForm__container" onSubmit={this.handleSubmit}>
+      <form className="ProfileForm__container" onSubmit={this.handleSubmit} noValidate>
         {this.state.loading && <CircularProgress className="ProfileForm__loading-spinner" />}
 
         {this.state.loadingError &&
@@ -113,15 +165,15 @@ class ProfileForm extends Component {
             reminderEmails={this.state.reminderEmails}
             username={this.state.username}
 
-            aboutError={this.state.formFieldErrors.about}
-            dailyEmailsError={this.state.formFieldErrors.dailyEmails}
-            emailError={this.state.formFieldErrors.email}
-            email2Error={this.state.formFieldErrors.email2}
-            firstNameError={this.state.formFieldErrors.firstName}
-            lastNameError={this.state.formFieldErrors.lastName}
-            locationError={this.state.formFieldErrors.location}
-            reminderEmailsError={this.state.formFieldErrors.reminderEmails}
-            usernameError={this.state.formFieldErrors.username}
+            aboutError={this.state.fieldErrors.about}
+            dailyEmailsError={this.state.fieldErrors.dailyEmails}
+            emailError={this.state.fieldErrors.email}
+            email2Error={this.state.fieldErrors.email2}
+            firstNameError={this.state.fieldErrors.firstName}
+            lastNameError={this.state.fieldErrors.lastName}
+            locationError={this.state.fieldErrors.location}
+            reminderEmailsError={this.state.fieldErrors.reminderEmails}
+            usernameError={this.state.fieldErrors.username}
 
             isSaving={this.state.saving}
 
