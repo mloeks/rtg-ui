@@ -36,7 +36,7 @@ class Header extends Component {
         title={title}
         titleStyle={{ textAlign: 'left' }}
         showMenuIconButton={loggedIn}
-        iconElementRight={loggedIn && <UserMenu username={AuthService.getUsername()} />}
+        iconElementRight={loggedIn ? <UserMenu username={AuthService.getUsername()} /> : null}
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
       />
