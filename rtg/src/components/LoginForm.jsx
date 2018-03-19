@@ -73,7 +73,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Paper className="LoginForm" zDepth={1}>
+      <Paper className="LoginForm" zDepth={3}>
         <h3 className="LoginForm__heading">Bitte treten Sie ein:</h3>
         <form className="LoginForm__form" onSubmit={this.handleLogin}>
           <TextField

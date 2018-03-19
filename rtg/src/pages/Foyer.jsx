@@ -54,10 +54,9 @@ class Foyer extends Component {
     return (
       <Page className="FoyerPage">
         <BigPicture className="Foyer__welcome" img={headingImg}>
-          <h1 className="BigPicture__heading">Willkommen! ...</h1>
+          <h1 className="BigPicture__heading">Neuigkeiten</h1>
         </BigPicture>
         <section className="Foyer__news">
-          <h2>Neuigkeiten</h2>
           {this.state.loadingError && <p>{this.state.loadingError}</p>}
           {this.state.posts.map(post => <Post key={post.id} post={post} />)}
         </section>

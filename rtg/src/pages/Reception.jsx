@@ -4,6 +4,10 @@ import { Redirect } from 'react-router-dom';
 import Page from './Page';
 import LoginForm from '../components/LoginForm';
 import AuthService from '../service/AuthService';
+import BigPicture from '../components/BigPicture';
+
+import headingImg from '../theme/img/img7.jpg';
+import './Reception.css';
 
 class Reception extends Component {
   constructor(props) {
@@ -33,7 +37,12 @@ class Reception extends Component {
 
     return (
       <Page className="ReceptionPage">
-        <LoginForm onLogin={this.login} />
+        <BigPicture className="ReceptionPage__heading" img={headingImg}>
+          <h1 className="BigPicture__heading">Willkommen</h1>
+        </BigPicture>
+        <section className="ReceptionPage__content">
+          <LoginForm onLogin={this.login} />
+        </section>
       </Page>);
   }
 }
