@@ -11,6 +11,7 @@ import './index.css';
 
 injectTapEventPlugin();
 
+// TODO P1 add ScrollToTop wrapper component
 ReactDOM.render(
   <BrowserRouter>
     <App />
