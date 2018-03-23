@@ -93,11 +93,11 @@ class ProfileForm extends Component {
   stateToUserPatchPayload() {
     return {
       pk: this.state.userId,
-      email2: this.state.email2,
-      first_name: this.state.firstName,
-      last_name: this.state.lastName,
-      about: this.state.about,
-      location: this.state.location,
+      email2: this.state.email2 || '',
+      first_name: this.state.firstName || '',
+      last_name: this.state.lastName || '',
+      about: this.state.about || '',
+      location: this.state.location || '',
       reminder_emails: this.state.reminderEmails,
       daily_emails: this.state.dailyEmails,
     };
@@ -151,7 +151,13 @@ class ProfileForm extends Component {
         {this.state.loading && <CircularProgress className="ProfileForm__loading-spinner" />}
 
         {this.state.loadingError &&
-          <div className="ProfileForm__loading-error">Fehler beim Laden.</div>}
+          <div className="ProfileForm__loading-error">
+            <Notification
+              type={NotificationType.ERROR}
+              title="Fehler beim Laden."
+              subtitle="Bitte versuche es später erneut."
+            />
+          </div>}
 
         {(!this.state.loading && !this.state.loadingError) &&
           <ProfileFormDisplay

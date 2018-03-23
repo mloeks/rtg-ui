@@ -3,7 +3,7 @@
   padding: 10px;
   margin: 0 auto;
   text-align: left;
-  min-width: 360px;
+  min-width: 320px;
 
   &__container {
     margin: 0 auto 50px;
@@ -13,7 +13,8 @@
     }
   }
 
-  &__loading-spinner {
+  &__loading-spinner,
+  &__loading-error {
     margin: 50px 0;
   }
 
