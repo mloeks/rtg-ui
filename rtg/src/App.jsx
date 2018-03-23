@@ -26,6 +26,7 @@ import AdminRoute from './components/auth/AdminRoute';
 import rtg from './theme/RtgTheme';
 import './App.css';
 
+// TODO P3 Implement bottom navigation for mobile breakpoints
 class App extends Component {
   constructor(props) {
     super(props);
