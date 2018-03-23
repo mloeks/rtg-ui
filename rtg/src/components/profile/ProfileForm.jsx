@@ -3,8 +3,8 @@ import { CircularProgress } from 'material-ui';
 import ProfileFormDisplay from './ProfileFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import Notification, { NotificationType } from '../Notification';
 
-// TODO P1 Style success and error responses
 // TODO P2 make e-mail changeable --> probably needs a re-login? evaluate..
 class ProfileForm extends Component {
   static userToStateMapper(userJson) {
@@ -139,6 +139,8 @@ class ProfileForm extends Component {
     this.setState({
       [fieldName]: value,
       formHasErrors: false,
+      savingError: false,
+      savingSuccess: false,
       fieldErrors: ProfileForm.resetFieldErrors(),
     });
   }
@@ -171,15 +173,28 @@ class ProfileForm extends Component {
             reminderEmailsError={this.state.fieldErrors.reminderEmails}
 
             isSaving={this.state.saving}
+            formHasErrors={this.state.formHasErrors}
 
             onFieldChange={this.handleFormFieldUpdate}
           />
         }
 
         {this.state.savingError &&
-          <div className="ProfileForm__saving-error">Speichern fehlgeschlagen.</div>}
+          <div className="ProfileForm__save-feedback ProfileForm__saving-error">
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle="Bitte prüfe Deine Eingaben oder versuche es später erneut."
+            />
+          </div>}
         {this.state.savingSuccess &&
-          <div className="ProfileForm__saving-success">Änderungen erfolgreich gespeichert!</div>}
+          <div className="ProfileForm__save-feedback ProfileForm__saving-success">
+            <Notification
+              type={NotificationType.SUCCESS}
+              title="Änderungen erfolgreich gespeichert!"
+              disappearAfterMs={5000}
+            />
+          </div>}
       </form>
     );
   }

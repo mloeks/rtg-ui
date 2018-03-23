@@ -71,7 +71,7 @@ const ProfileFormDisplay = props => (
         label={props.isSaving ? 'Speichern...' : 'Änderungen speichern'}
         type="submit"
         primary
-        disabled={props.isSaving}
+        disabled={props.isSaving || props.formHasErrors}
         style={{ width: 250 }}
       />
     </div>
@@ -88,6 +88,8 @@ ProfileFormDisplay.defaultProps = {
   email2Error: null,
   aboutError: null,
   locationError: null,
+
+  formHasErrors: false,
 };
 
 ProfileFormDisplay.propTypes = {
@@ -108,6 +110,7 @@ ProfileFormDisplay.propTypes = {
   locationError: PropTypes.string,
 
   isSaving: PropTypes.bool.isRequired,
+  formHasErrors: PropTypes.bool,
 
   onFieldChange: PropTypes.func.isRequired,
 };
