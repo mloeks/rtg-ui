@@ -4,9 +4,8 @@ import ProfileFormDisplay from './ProfileFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
-// TODO handle save and its success / error responses + styling
-// TODO in order to do a PUT, we need the avatar props passed in here
-// (PATCH seems to be a bit complicated with the DRF backend)
+// TODO P1 Style success and error responses
+// TODO P2 make e-mail changeable --> probably needs a re-login? evaluate..
 class ProfileForm extends Component {
   static userToStateMapper(userJson) {
     return {
@@ -15,22 +14,35 @@ class ProfileForm extends Component {
       firstName: userJson.first_name,
       lastName: userJson.last_name,
       email: userJson.email,
-    };
-  }
-
-  static profileToStateMapper(userJson) {
-    return {
       email2: userJson.email2,
       location: userJson.location,
       about: userJson.about,
       reminderEmails: userJson.reminder_emails,
       dailyEmails: userJson.daily_emails,
-      avatarUrl: userJson.avatar_cropped,
     };
   }
 
-  static profileErrorResponseToState(responseJson) {
-    console.log(responseJson);
+  static userErrorResponseToState(responseJson) {
+    return {
+      formHasErrors: true,
+      fieldErrors: {
+        email2: responseJson.email2 && responseJson.email2[0],
+        firstName: responseJson.firstName && responseJson.firstName[0],
+        lastName: responseJson.lastName && responseJson.lastName[0],
+        about: responseJson.about && responseJson.about[0],
+        location: responseJson.location && responseJson.location[0],
+      },
+    };
+  }
+
+  static resetFieldErrors() {
+    return {
+      email2: null,
+      firstName: null,
+      lastName: null,
+      about: null,
+      location: null,
+    };
   }
 
   constructor(props) {
@@ -55,62 +67,45 @@ class ProfileForm extends Component {
       savingError: false,
       savingSuccess: false,
 
-      formError: null,
       formHasErrors: false,
-      fieldErrors: {
-        username: null,
-        email: null,
-        email2: null,
-        firstName: null,
-        lastName: null,
-        about: null,
-        location: null,
-      },
-
-      hasChanges: false,
+      fieldErrors: ProfileForm.resetFieldErrors(),
     };
 
     this.handleFormFieldUpdate = this.handleFormFieldUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.stateToProfilePayload = this.stateToProfilePayload.bind(this);
+    this.stateToUserPatchPayload = this.stateToUserPatchPayload.bind(this);
   }
 
-  async componentDidMount() {
-    await this.fetchData(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, ProfileForm.userToStateMapper);
-    await this.fetchData(`${API_BASE_URL}/rtg/profiles/${AuthService.getUserId()}/`, ProfileForm.profileToStateMapper);
-
-    this.setState({ loading: false });
-  }
-
-  stateToProfilePayload() {
-    return {
-      pk: this.state.userId,
-      email2: this.state.email2,
-      location: this.state.location,
-      about: this.state.about,
-      reminder_emails: this.state.reminderEmails,
-      daily_emails: this.state.dailyEmails,
-      avatar: null,
-      avatar_url: null,
-    };
-  }
-
-  async fetchData(url, responseToStateMapper) {
-    return fetch(url, {
+  componentDidMount() {
+    fetch(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
-        this.setState(() => (
-          response.ok
-            ? responseToStateMapper(response.json)
+        this.setState(() => ({
+          loading: false,
+          ...(response.ok ? ProfileForm.userToStateMapper(response.json)
             : { loadingError: true }
-        ));
-      }).catch(() => this.setState({ loadingError: true }));
+          ),
+        }));
+      }).catch(() => this.setState({ loadingError: true, loading: false }));
   }
 
-  async putData(url, payload, errorResponseToStateMapper) {
+  stateToUserPatchPayload() {
+    return {
+      pk: this.state.userId,
+      email2: this.state.email2,
+      first_name: this.state.firstName,
+      last_name: this.state.lastName,
+      about: this.state.about,
+      location: this.state.location,
+      reminder_emails: this.state.reminderEmails,
+      daily_emails: this.state.dailyEmails,
+    };
+  }
+
+  async patchData(url, payload, successResponseToStateMapper, errorResponseToStateMapper) {
     return fetch(url, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(payload),
       headers: {
         Authorization: `Token ${AuthService.getToken()}`,
@@ -120,29 +115,32 @@ class ProfileForm extends Component {
       .then((response) => {
         this.setState(() => (
           response.ok
-            ? { savingSuccess: true }
-            : errorResponseToStateMapper(response.json)
+            ? { savingSuccess: true, ...successResponseToStateMapper(response.json) }
+            : { savingError: true, ...errorResponseToStateMapper(response.json) }
         ));
       }).catch(() => this.setState({ savingError: true }));
   }
 
   async handleSubmit(e) {
-    console.log(this.stateToProfilePayload());
     e.preventDefault();
     this.setState({ saving: true, savingSuccess: false, savingError: false });
 
-    await this.putData(
-      `${API_BASE_URL}/rtg/profiles/${this.state.userId}/`,
-      this.stateToProfilePayload(),
-      ProfileForm.profileErrorResponseToState,
+    await this.patchData(
+      `${API_BASE_URL}/rtg/users/${this.state.userId}/`,
+      this.stateToUserPatchPayload(),
+      ProfileForm.userToStateMapper,
+      ProfileForm.userErrorResponseToState,
     );
-    // await this.putData(`${API_BASE_URL}/rtg/users/${this.state.userId}/`, ProfileForm.userErrorResponseToState);
 
     this.setState({ saving: false });
   }
 
   handleFormFieldUpdate(fieldName, value) {
-    this.setState({ [fieldName]: value });
+    this.setState({
+      [fieldName]: value,
+      formHasErrors: false,
+      fieldErrors: ProfileForm.resetFieldErrors(),
+    });
   }
 
   render() {
@@ -163,17 +161,14 @@ class ProfileForm extends Component {
             lastName={this.state.lastName}
             location={this.state.location}
             reminderEmails={this.state.reminderEmails}
-            username={this.state.username}
 
             aboutError={this.state.fieldErrors.about}
             dailyEmailsError={this.state.fieldErrors.dailyEmails}
-            emailError={this.state.fieldErrors.email}
             email2Error={this.state.fieldErrors.email2}
             firstNameError={this.state.fieldErrors.firstName}
             lastNameError={this.state.fieldErrors.lastName}
             locationError={this.state.fieldErrors.location}
             reminderEmailsError={this.state.fieldErrors.reminderEmails}
-            usernameError={this.state.fieldErrors.username}
 
             isSaving={this.state.saving}
 

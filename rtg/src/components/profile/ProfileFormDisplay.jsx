@@ -6,14 +6,6 @@ import './ProfileForm.css';
 
 const ProfileFormDisplay = props => (
   <div className="ProfileForm">
-    <TextField
-      floatingLabelText="Username"
-      fullWidth
-      value={props.username}
-      errorText={props.usernameError}
-      onChange={(e, v) => props.onFieldChange('username', v)}
-    /><br />
-
     <div className="ProfileForm__name-row">
       <TextField
         floatingLabelText="Vorname"
@@ -33,11 +25,10 @@ const ProfileFormDisplay = props => (
     </div>
 
     <TextField
-      floatingLabelText="E-Mail"
+      floatingLabelText="E-Mail (nicht änderbar)"
       fullWidth
       value={props.email}
-      errorText={props.emailError}
-      onChange={(e, v) => props.onFieldChange('email', v)}
+      disabled
     /><br />
     <TextField
       floatingLabelText="Weitere E-Mail (nur für News)"
@@ -92,17 +83,14 @@ ProfileFormDisplay.defaultProps = {
   about: null,
   location: null,
 
-  usernameError: null,
   firstNameError: null,
   lastNameError: null,
-  emailError: null,
   email2Error: null,
   aboutError: null,
   locationError: null,
 };
 
 ProfileFormDisplay.propTypes = {
-  username: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
@@ -113,10 +101,8 @@ ProfileFormDisplay.propTypes = {
   reminderEmails: PropTypes.bool.isRequired,
   dailyEmails: PropTypes.bool.isRequired,
 
-  usernameError: PropTypes.string,
   firstNameError: PropTypes.string,
   lastNameError: PropTypes.string,
-  emailError: PropTypes.string,
   email2Error: PropTypes.string,
   aboutError: PropTypes.string,
   locationError: PropTypes.string,
