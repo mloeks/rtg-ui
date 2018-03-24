@@ -1,12 +1,5 @@
 .BigEditableAvatar {
-  margin-top: -75px;
-
-  &__avatar {
-    box-sizing: border-box;
-    border: 5px solid white
-  }
-
-  &__username {
-    margin: 15px 0 0;
+  &__avatar-elem:hover {
+    cursor: pointer;
   }
 }
