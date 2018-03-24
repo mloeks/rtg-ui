@@ -11,6 +11,7 @@
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
+    "react-avatar-image-cropper": "^1.1.7",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.0",
