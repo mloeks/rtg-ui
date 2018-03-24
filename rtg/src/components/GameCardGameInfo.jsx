@@ -13,7 +13,7 @@ const StateEnum = {
   VOLLTREFFER: 'volltreffer',
 };
 
-// TODO handle display of running games and games which have started but no result
+// TODO P2 handle display of running games and games which have started but no result
 const GameCardGameInfo = (props) => {
   const state = props.result === null ? StateEnum.NEUTRAL : StateEnum.NEUTRAL;
 

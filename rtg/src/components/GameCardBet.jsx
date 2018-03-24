@@ -111,12 +111,12 @@ class GameCardBet extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  // TODO DRY with ExtraBetCard, introduce BetSavingHelper
+  // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   handleSave() {
     if (this.state.userBet && !this.state.isSaving) {
       this.setState({ isSaving: true, savingSuccess: false, savingError: false });
 
-      // TODO do we need to remember the original bet in a separate field?
+      // TODO P1 do we need to remember the original bet in a separate field?
       const newBet = this.state.userBet;
       const body = newBet !== null ? { bettable: this.props.gameId, result_bet: newBet } : null;
 

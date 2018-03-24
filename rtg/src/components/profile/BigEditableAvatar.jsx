@@ -21,7 +21,7 @@ class BigEditableAvatar extends Component {
           icon={!this.props.avatarUrl ? <Person /> : null}
           src={this.props.avatarUrl}
           size={150}
-        /> :
+        />
         <h2 className="BigEditableAvatar__username">{this.props.username}</h2>
       </div>
     );

@@ -77,7 +77,7 @@ class StandingsTable extends Component {
     this.setState({ loading: false });
   }
 
-  // TODO could this be wrapped in a FetchHelper method using Promises??
+  // TODO P3 could this be wrapped in a FetchHelper method using Promises??
   async fetchData(url, responseToStateMapper) {
     return fetch(url, { headers: { Authorization: `Token ${AuthService.getToken()}` }})
       .then(FetchHelper.parseJson).then((response) => {

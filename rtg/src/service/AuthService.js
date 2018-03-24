@@ -1,6 +1,6 @@
 import FetchHelper from './FetchHelper';
 
-// TODO make base URL of API configurable by environment
+// TODO P1 make base URL of API configurable by environment
 export const API_BASE_URL = 'http://localhost:8000';
 
 const LocalStorageWrapper = {

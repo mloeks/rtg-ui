@@ -14,7 +14,7 @@ import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
-// TODO introduce interval to update deadline countdowns, or better all games without reload...
+// TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 class GameBetsTab extends Component {
   static initialState() {
     return {
@@ -68,7 +68,7 @@ class GameBetsTab extends Component {
 
   handleBetChanged(betId) {
     console.log(`bet ${betId} changed`);
-    // TODO
+    // TODO P1 implement
   }
 
   createGameCardsWithDeadlineSubheadings(games) {
@@ -118,7 +118,7 @@ class GameBetsTab extends Component {
   }
 
   render() {
-    // TODO reduce number of re-renders
+    // TODO P2 reduce number of re-renders
     const gameBetsItems = this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets);
 
     return (

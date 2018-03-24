@@ -8,7 +8,7 @@ import { BettableTypes, countOpenBets } from '../pages/Bets';
 
 import './ExtraBetsTab.css';
 
-// TODO a LOT of this is identical to GameBetsTab --> can a HOC be used?
+// TODO P3 a LOT of this is identical to GameBetsTab --> can a HOC be used?
 export default class ExtraBetsTab extends Component {
   static initialState() {
     return {
@@ -64,7 +64,7 @@ export default class ExtraBetsTab extends Component {
   }
 
   render() {
-    // TODO reduce number of re-renders
+    // TODO P2 reduce number of re-renders
     const extraBettables =
       this.state.bettables.filter(bettable => bettable.type === BettableTypes.EXTRA);
 

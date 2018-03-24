@@ -32,7 +32,7 @@
     border-left: $width / 2 solid transparent;
   }
 
-  // TODO how to remove hard dependency to parent class name for the __right subelement?
+  // TODO P3 how to remove hard dependency to parent class name for the __right subelement?
   &:after, > .GameCardRibbon__right:after {
     content: "";
     height: 0;

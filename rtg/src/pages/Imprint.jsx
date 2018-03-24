@@ -10,6 +10,7 @@ const Imprint = () => (
       <h1 className="BigPicture__heading">Impressum</h1>
     </BigPicture>
     {/* Icons von hier: https://www.shareicon.net/pack/flat-round-world-flag-icon-set */}
+    {/* https://materialdesignicons.com/ */}
   </Page>
 );
 

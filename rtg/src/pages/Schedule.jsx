@@ -52,7 +52,7 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
-    // TODO clean up and only do this after data has been loaded? otherwise it does not seem
+    // TODO P3 clean up and only do this after data has been loaded? otherwise it does not seem
     // to work properly when top is no 0 on page load.
     const toolbar = document.getElementById('schedule-toolbar');
     toolbar.setAttribute('data-sticky-initial', toolbar.getBoundingClientRect().top);
@@ -78,7 +78,7 @@ class Schedule extends Component {
   }
 
   componentWillUnmount() {
-    // TODO function must be provided.
+    // TODO P2 function must be provided.
     // document.removeEventListener('scroll');
   }
 
