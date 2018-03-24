@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar } from 'material-ui';
+import { Avatar, FlatButton, Slider } from 'material-ui';
 import { teal400 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 import AvatarEditor from 'react-avatar-editor';
@@ -8,6 +8,9 @@ import Notification, { NotificationType } from '../Notification';
 
 import './BigEditableAvatar.css';
 
+// TODO P1 touchMove on Avatar edit does not seem to work yet
+// TODO P2 investigate about console error on editing cancel
+// TODO P3 offer rotate buttons
 class BigEditableAvatar extends Component {
   constructor(props) {
     super(props);
@@ -16,16 +19,19 @@ class BigEditableAvatar extends Component {
       chosenFile: null,
       editing: false,
       cropError: '',
+
+      avatarEditScale: 1.2,
+
+      uploadInProgress: false,
+      uploadError: false,
+      uploadSuccess: false,
     };
 
-    this.maxImageSize = 1024 * 100;
+    this.maxImageSize = 1024 * 1024 * 5;
     this.avatarSize = 180;
     this.avatarBorderSize = 6;
 
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
-    // this.handleAvatarClick = this.handleAvatarClick.bind(this);
-    // this.handleCropApply = this.handleCropApply.bind(this);
-    // this.handleCropCancel = this.handleCropCancel.bind(this);
   }
 
   getCropErrorReadableText() {
@@ -63,6 +69,11 @@ class BigEditableAvatar extends Component {
     this.setState({ editing: false, cropError: errorType });
   }
 
+  handleEditSave() {
+    // TODO P1 get blob and handle upload
+    console.log('save....');
+  }
+
   render() {
     const avatarPlusBorderSize = this.avatarSize + (2 * this.avatarBorderSize);
     const avatarDivStyle = {
@@ -85,7 +96,7 @@ class BigEditableAvatar extends Component {
               height={this.avatarSize}
               border={0}
               borderRadius={this.avatarSize / 2}
-              scale={1.2}
+              scale={this.state.avatarEditScale}
               rotate={0}
               style={{ borderRadius: this.avatarSize / 2 }}
             />}
@@ -97,7 +108,7 @@ class BigEditableAvatar extends Component {
                 id="fileElem"
                 multiple
                 accept="image/*"
-                style={{ display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={this.handleFileInputChange}
               />
               <label htmlFor="fileElem">
@@ -107,18 +118,37 @@ class BigEditableAvatar extends Component {
                   icon={!this.props.avatarUrl ? <Person style={{ pointerEvents: 'none' }} /> : null}
                   src={this.props.avatarUrl}
                   size={this.avatarSize}
-                  onClick={this.handleAvatarClick}
-                  style={{}}
                 />
               </label>
             </div>}
         </div>
 
-        {this.state.cropError && <Notification
-          type={NotificationType.ERROR}
-          title="Das hat leider nicht geklappt"
-          subtitle={this.getCropErrorReadableText()}
-        />}
+        {this.state.editing &&
+          <div className="BigEditableAvatar__edit-actions">
+            <Slider
+              min={1}
+              max={2}
+              defaultValue={this.state.avatarEditScale}
+              style={{ maxWidth: avatarPlusBorderSize, margin: '24px auto' }}
+              sliderStyle={{ margin: 0 }}
+              onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
+            />
+            <FlatButton label="Speichern" primary onClick={this.handleEditSave} />
+            <FlatButton label="Abbrechen" onClick={() => { this.setState({ editing: false }); }} />
+          </div>}
+
+        <div className="BigEditableAvatar__feedback">
+          {(this.state.cropError || this.state.uploadError) && <Notification
+            type={NotificationType.ERROR}
+            title="Das hat leider nicht geklappt"
+            subtitle={this.getCropErrorReadableText()}
+          />}
+          {this.state.uploadSuccess && <Notification
+            type={NotificationType.SUCCESS}
+            title="Avatar erfolgreich geändert"
+            disappearAfterMs={3000}
+          />}
+        </div>
 
         <h2 className="BigEditableAvatar__username" style={{ margin: '15px 0 0' }}>
           {this.props.username}

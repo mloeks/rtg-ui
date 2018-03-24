@@ -2,4 +2,9 @@
   &__avatar-elem:hover {
     cursor: pointer;
   }
+
+  &__feedback {
+    margin: 15px auto;
+    max-width: 500px;
+  }
 }
