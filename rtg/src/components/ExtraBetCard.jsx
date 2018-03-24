@@ -6,6 +6,7 @@ import { distanceInWordsToNow } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
+import Notification, { NotificationType } from './Notification';
 
 import './ExtraBetCard.css';
 
@@ -67,7 +68,7 @@ export default class ExtraBetCard extends Component {
       const prevUserBet = prevState.userBet || { result_bet: null };
       const userBet = Object.assign({}, prevUserBet);
       userBet.result_bet = value;
-      return { userBet, hasChanges: value !== prevUserBet.result_bet };
+      return { userBet, hasChanges: value !== prevUserBet.result_bet, savingError: false };
     });
   }
 
@@ -134,13 +135,17 @@ export default class ExtraBetCard extends Component {
           <div className="ExtraBetCard__loading-error">Fehler beim Laden.</div>}
 
         {(!this.state.loadingError && this.props.open) &&
-          <CardActions className="ExtraBetCard__actions">
+          <CardActions
+            className="ExtraBetCard__actions"
+            style={{ padding: '0 20px 10px' }}
+          >
             <SelectField
               floatingLabelText="Dein Tipp"
               maxHeight={300}
               value={userResultBet}
               onChange={this.handleChange}
               menuItemStyle={{ textAlign: 'left' }}
+              style={{ marginBottom: '20px' }}
             >
               <MenuItem value={null} primaryText="" />
               {this.props.choices
@@ -152,13 +157,25 @@ export default class ExtraBetCard extends Component {
                 primary
                 onClick={this.handleSave}
                 disabled={this.state.isSaving || !this.state.hasChanges}
+                style={{ margin: '0 15px' }}
               />
-
-              {/* TODO make it look better */}
-              {this.state.savingSuccess && <div>Gespeichert!</div>}
-              {this.state.savingError && <div>Fehler beim Speichern :-(</div>}
             </div>
-          </CardActions>}
+          </CardActions>
+        }
+        <div>
+          {this.state.savingSuccess &&
+            <Notification
+              type={NotificationType.SUCCESS}
+              title="Gespeichert!"
+              disappearAfterMs={3000}
+            />}
+          {this.state.savingError &&
+            <Notification
+              type={NotificationType.ERROR}
+              title="Fehler beim Speichern"
+              subtitle="Bitte versuche es später erneut."
+            />}
+        </div>
 
         {(!this.state.loadingError && !this.props.open) &&
           <div className="ExtraBetCard__bet-info">Dein Tipp:
