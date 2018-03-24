@@ -50,6 +50,7 @@ class Notification extends Component {
         <CardHeader
           title={this.props.title}
           subtitle={this.props.subtitle}
+          subtitleStyle={{ fontWeight: 400 }}
           style={{
             textAlign: 'left',
             display: 'flex',
