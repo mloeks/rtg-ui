@@ -9,13 +9,11 @@ import Notification, { NotificationType } from '../Notification';
 import './BigEditableAvatar.css';
 
 // TODO P1 touchMove on Avatar edit does not seem to work yet
-// TODO P2 investigate about console error on editing cancel
+// TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
 class BigEditableAvatar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  static getInitialState() {
+    return {
       chosenFile: null,
       editing: false,
       cropError: '',
@@ -26,12 +24,20 @@ class BigEditableAvatar extends Component {
       uploadError: false,
       uploadSuccess: false,
     };
+  }
+  constructor(props) {
+    super(props);
 
+    this.state = BigEditableAvatar.getInitialState();
+
+    this.editor = null;
     this.maxImageSize = 1024 * 1024 * 5;
     this.avatarSize = 180;
     this.avatarBorderSize = 6;
 
+    this.setEditorRef = this.setEditorRef.bind(this);
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
+    this.handleEditSave = this.handleEditSave.bind(this);
   }
 
   getCropErrorReadableText() {
@@ -42,6 +48,10 @@ class BigEditableAvatar extends Component {
       return 'Erlaubte Dateitypen sind PNG/JPG/JPEG.';
     }
     return 'Bitte versuche es später noch einmal.';
+  }
+
+  setEditorRef(editor) {
+    this.editor = editor;
   }
 
   handleFileInputChange(e) {
@@ -70,8 +80,14 @@ class BigEditableAvatar extends Component {
   }
 
   handleEditSave() {
-    // TODO P1 get blob and handle upload
-    console.log('save....');
+    if (this.editor) {
+      const canvasScaled = this.editor.getImageScaledToCanvas();
+      canvasScaled.toBlob((blob) => {
+        // TODO P1 handle upload
+        console.log(blob);
+        this.setState(BigEditableAvatar.getInitialState());
+      }, 'image/jpeg', 0.95);
+    }
   }
 
   render() {
@@ -91,6 +107,7 @@ class BigEditableAvatar extends Component {
         <div className="BigEditableAvatar__avatar" style={avatarDivStyle}>
           {(this.state.editing && this.state.chosenFile) &&
             <AvatarEditor
+              ref={this.setEditorRef}
               image={this.state.chosenFile}
               width={this.avatarSize}
               height={this.avatarSize}
@@ -133,8 +150,12 @@ class BigEditableAvatar extends Component {
               sliderStyle={{ margin: 0 }}
               onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
             />
+
             <FlatButton label="Speichern" primary onClick={this.handleEditSave} />
-            <FlatButton label="Abbrechen" onClick={() => { this.setState({ editing: false }); }} />
+            <FlatButton
+              label="Abbrechen"
+              onClick={() => { this.setState(BigEditableAvatar.getInitialState()); }}
+            />
           </div>}
 
         <div className="BigEditableAvatar__feedback">
