@@ -8,6 +8,35 @@ import Notification, { NotificationType } from '../Notification';
 
 import './BigEditableAvatar.css';
 
+
+const EditingActions = props => (
+  <div className="BigEditableAvatar__edit-actions" style={props.style}>
+    <Slider
+      min={1}
+      max={2}
+      defaultValue={props.initialSliderValue}
+      sliderStyle={{ margin: '10px' }}
+      onChange={props.onChange}
+    />
+
+    <FlatButton label="Speichern" primary onClick={props.onSave} />
+    <FlatButton label="Abbrechen" onClick={props.onCancel} />
+  </div>
+);
+
+EditingActions.defaultProps = {
+  initialSliderValue: 1.0,
+  style: {},
+};
+
+EditingActions.propTypes = {
+  initialSliderValue: PropTypes.number,
+  style: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
+
 // TODO P1 touchMove on Avatar edit does not seem to work yet
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
@@ -141,22 +170,13 @@ class BigEditableAvatar extends Component {
         </div>
 
         {this.state.editing &&
-          <div className="BigEditableAvatar__edit-actions">
-            <Slider
-              min={1}
-              max={2}
-              defaultValue={this.state.avatarEditScale}
-              style={{ maxWidth: avatarPlusBorderSize, margin: '24px auto' }}
-              sliderStyle={{ margin: 0 }}
-              onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
-            />
-
-            <FlatButton label="Speichern" primary onClick={this.handleEditSave} />
-            <FlatButton
-              label="Abbrechen"
-              onClick={() => { this.setState(BigEditableAvatar.getInitialState()); }}
-            />
-          </div>}
+          <EditingActions
+            initialSliderValue={this.state.avatarEditScale}
+            onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
+            onSave={this.handleEditSave}
+            onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
+            style={{ maxWidth: avatarPlusBorderSize, margin: '0 auto' }}
+          />}
 
         <div className="BigEditableAvatar__feedback">
           {(this.state.cropError || this.state.uploadError) && <Notification
