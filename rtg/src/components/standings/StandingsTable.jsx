@@ -15,21 +15,47 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
 import './StandingsTable.css';
 
-const StandingsTableRow = props => (
-  <TableRow className="StandingsTableRow">
-    <TableRowColumn>{props.rank}</TableRowColumn>
-    <TableRowColumn>
-      <Avatar>{props.username[0].toUpperCase()}</Avatar>
-    </TableRowColumn>
-    <TableRowColumn>{props.username}</TableRowColumn>
-    <TableRowColumn style={{ textAlign: 'right' }}>{props.points}</TableRowColumn>
-  </TableRow>
-);
+const pointsColumnStyle = {
+  width: '40px',
+  textAlign: 'right',
+  padding: '0 15px 0 5px',
+};
+
+const rankColumnStyle = {
+  width: '20px',
+  textAlign: 'center',
+  padding: '0 10px',
+};
+
+const StandingsTableRow = props => {
+  const ROW_HEIGHT = 65;
+  return (
+    <TableRow style={{ height: ROW_HEIGHT }} className="StandingsTableRow">
+      <TableRowColumn style={rankColumnStyle}>{props.rank}</TableRowColumn>
+      <TableRowColumn style={{ height: ROW_HEIGHT, display: 'flex', alignItems: 'center' }}>
+        {props.userAvatar ?
+          <Avatar
+            size={0.65 * ROW_HEIGHT}
+            style={{ marginRight: '10px' }}
+            src={`${API_BASE_URL}/media/${props.userAvatar}`}
+          /> :
+          <Avatar
+            size={0.65 * ROW_HEIGHT}
+            style={{ marginRight: '10px' }}
+          >{props.username[0].toUpperCase()}
+          </Avatar>}
+        {props.username}
+      </TableRowColumn>
+      <TableRowColumn style={pointsColumnStyle}>{props.points}</TableRowColumn>
+    </TableRow>
+  );
+}
 
 StandingsTableRow.propTypes = {
   rank: PropTypes.number.isRequired,
   userId: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
+  userAvatar: PropTypes.string.isRequired,
   points: PropTypes.number.isRequired,
   noBets: PropTypes.number.isRequired,
   noVolltreffer: PropTypes.number.isRequired,
@@ -53,6 +79,7 @@ class StandingsTable extends Component {
       rows: stats.map(statObj => ({
         userId: statObj.user,
         username: statObj.username,
+        userAvatar: statObj.user_avatar,
         points: statObj.points,
         noBets: statObj.no_bets,
         noVolltreffer: statObj.no_volltreffer,
@@ -88,17 +115,6 @@ class StandingsTable extends Component {
   }
 
   render() {
-    const rankColumnStyle = {
-      width: '20px',
-      textAlign: 'center',
-      padding: '0 10px',
-    };
-    const pointsColumnStyle = {
-      width: '40px',
-      textAlign: 'right',
-      padding: '0 15px 0 5px',
-    };
-
     return (
       <div className="StandingsTable">
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
@@ -108,20 +124,14 @@ class StandingsTable extends Component {
           <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
             <TableRow>
               <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
-              <TableHeaderColumn style={{ paddingLeft: '5px' }} colSpan={2}>Username</TableHeaderColumn>
+              <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
               <TableHeaderColumn style={pointsColumnStyle}>Punkte</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody showRowHover displayRowCheckbox={false}>
             {this.state.rows.map((row, ix) => (
-              <TableRow key={row.userId}>
-                <TableRowColumn style={rankColumnStyle}>{ix + 1}</TableRowColumn>
-                <TableRowColumn style={{ padding: '0 5px', width: '32px', textAlign: 'center' }}>
-                  <Avatar size={32}>{row.username[0].toUpperCase()}</Avatar>
-                </TableRowColumn>
-                <TableRowColumn style={{ paddingLeft: '5px' }}>{row.username}</TableRowColumn>
-                <TableRowColumn style={pointsColumnStyle}>{row.points}</TableRowColumn>
-              </TableRow>))}
+              <StandingsTableRow key={row.userId} rank={ix + 1} {...row} />
+            ))}
           </TableBody>
         </Table>
       </div>
