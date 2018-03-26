@@ -1,18 +1,21 @@
 class FetchHelper {
   static parseJson(response) {
-    if (response.status === 204) {
-      return new Promise(resolve => (resolve({
-        status: response.status,
-        ok: response.ok,
-        json: null,
-      })));
+    const contentType = response.headers.get('content-type');
+
+    if (contentType && contentType.indexOf('application/json') !== -1) {
+      return new Promise(resolve => response.json()
+        .then(json => resolve({
+          status: response.status,
+          ok: response.ok,
+          json,
+        })));
     }
 
-    return new Promise(resolve => response.json()
-      .then(json => resolve({
+    return new Promise(resolve => response.text()
+      .then(text => resolve({
         status: response.status,
         ok: response.ok,
-        json,
+        text,
       })));
   }
 }
