@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { CircularProgress } from 'material-ui';
 import ProfileFormDisplay from './ProfileFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
@@ -7,21 +8,6 @@ import Notification, { NotificationType } from '../Notification';
 
 // TODO P2 make e-mail changeable --> probably needs a re-login? evaluate..
 class ProfileForm extends Component {
-  static userToStateMapper(userJson) {
-    return {
-      userId: userJson.pk,
-      username: userJson.username,
-      firstName: userJson.first_name,
-      lastName: userJson.last_name,
-      email: userJson.email,
-      email2: userJson.email2,
-      location: userJson.location,
-      about: userJson.about,
-      reminderEmails: userJson.reminder_emails,
-      dailyEmails: userJson.daily_emails,
-    };
-  }
-
   static userErrorResponseToState(responseJson) {
     return {
       formHasErrors: true,
@@ -37,11 +23,11 @@ class ProfileForm extends Component {
 
   static resetFieldErrors() {
     return {
-      email2: null,
-      firstName: null,
-      lastName: null,
-      about: null,
-      location: null,
+      email2: '',
+      firstName: '',
+      lastName: '',
+      about: '',
+      location: '',
     };
   }
 
@@ -49,21 +35,7 @@ class ProfileForm extends Component {
     super(props);
 
     this.state = {
-      userId: null,
-      username: null,
-      email: null,
-      email2: null,
-      firstName: null,
-      lastName: null,
-      about: null,
-      location: null,
-
-      dailyEmails: true,
-      reminderEmails: true,
-
-      loading: true,
       saving: false,
-      loadingError: false,
       savingError: false,
       savingSuccess: false,
 
@@ -73,33 +45,19 @@ class ProfileForm extends Component {
 
     this.handleFormFieldUpdate = this.handleFormFieldUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.stateToUserPatchPayload = this.stateToUserPatchPayload.bind(this);
+    this.propsToUserPatchPayload = this.propsToUserPatchPayload.bind(this);
   }
 
-  componentDidMount() {
-    fetch(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, {
-      headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        this.setState(() => ({
-          loading: false,
-          ...(response.ok ? ProfileForm.userToStateMapper(response.json)
-            : { loadingError: true }
-          ),
-        }));
-      }).catch(() => this.setState({ loadingError: true, loading: false }));
-  }
-
-  stateToUserPatchPayload() {
+  propsToUserPatchPayload() {
     return {
-      pk: this.state.userId,
-      email2: this.state.email2 || '',
-      first_name: this.state.firstName || '',
-      last_name: this.state.lastName || '',
-      about: this.state.about || '',
-      location: this.state.location || '',
-      reminder_emails: this.state.reminderEmails,
-      daily_emails: this.state.dailyEmails,
+      pk: this.props.userId,
+      email2: this.props.email2 || '',
+      first_name: this.props.firstName || '',
+      last_name: this.props.lastName || '',
+      about: this.props.about || '',
+      location: this.props.location || '',
+      reminder_emails: this.props.reminderEmails,
+      daily_emails: this.props.dailyEmails,
     };
   }
 
@@ -126,9 +84,9 @@ class ProfileForm extends Component {
     this.setState({ saving: true, savingSuccess: false, savingError: false });
 
     await this.patchData(
-      `${API_BASE_URL}/rtg/users/${this.state.userId}/`,
-      this.stateToUserPatchPayload(),
-      ProfileForm.userToStateMapper,
+      `${API_BASE_URL}/rtg/users/${this.props.userId}/`,
+      this.propsToUserPatchPayload(),
+      this.props.onUserUpdate,
       ProfileForm.userErrorResponseToState,
     );
 
@@ -136,21 +94,24 @@ class ProfileForm extends Component {
   }
 
   handleFormFieldUpdate(fieldName, value) {
-    this.setState({
-      [fieldName]: value,
-      formHasErrors: false,
-      savingError: false,
-      savingSuccess: false,
-      fieldErrors: ProfileForm.resetFieldErrors(),
+    this.setState((prevState, prevProps) => {
+      prevProps.onFieldChange(fieldName, value);
+
+      return {
+        formHasErrors: false,
+        savingError: false,
+        savingSuccess: false,
+        fieldErrors: ProfileForm.resetFieldErrors(),
+      };
     });
   }
 
   render() {
     return (
       <form className="ProfileForm__container" onSubmit={this.handleSubmit} noValidate>
-        {this.state.loading && <CircularProgress className="ProfileForm__loading-spinner" />}
+        {this.props.loading && <CircularProgress className="ProfileForm__loading-spinner" />}
 
-        {this.state.loadingError &&
+        {this.props.loadingError &&
           <div className="ProfileForm__loading-error">
             <Notification
               type={NotificationType.ERROR}
@@ -159,16 +120,16 @@ class ProfileForm extends Component {
             />
           </div>}
 
-        {(!this.state.loading && !this.state.loadingError) &&
+        {(!this.props.loading && !this.props.loadingError) &&
           <ProfileFormDisplay
-            about={this.state.about}
-            dailyEmails={this.state.dailyEmails}
-            email={this.state.email}
-            email2={this.state.email2}
-            firstName={this.state.firstName}
-            lastName={this.state.lastName}
-            location={this.state.location}
-            reminderEmails={this.state.reminderEmails}
+            about={this.props.about}
+            dailyEmails={this.props.dailyEmails}
+            email={this.props.email}
+            email2={this.props.email2}
+            firstName={this.props.firstName}
+            lastName={this.props.lastName}
+            location={this.props.location}
+            reminderEmails={this.props.reminderEmails}
 
             aboutError={this.state.fieldErrors.about}
             dailyEmailsError={this.state.fieldErrors.dailyEmails}
@@ -205,5 +166,24 @@ class ProfileForm extends Component {
     );
   }
 }
+
+ProfileForm.propTypes = {
+  userId: PropTypes.number.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  email2: PropTypes.string.isRequired,
+  about: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+
+  reminderEmails: PropTypes.bool.isRequired,
+  dailyEmails: PropTypes.bool.isRequired,
+
+  loading: PropTypes.bool.isRequired,
+  loadingError: PropTypes.bool.isRequired,
+
+  onFieldChange: PropTypes.func.isRequired,
+  onUserUpdate: PropTypes.func.isRequired,
+};
 
 export default ProfileForm;

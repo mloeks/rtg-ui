@@ -41,7 +41,7 @@ const ProfileFormDisplay = props => (
       floatingLabelText="Ein Satz über Dich / Euch"
       fullWidth
       multiLine
-      value={props.about || ''}
+      value={props.about}
       errorText={props.aboutError}
       onChange={(e, v) => props.onFieldChange('about', v)}
     /><br />
@@ -79,10 +79,6 @@ const ProfileFormDisplay = props => (
 );
 
 ProfileFormDisplay.defaultProps = {
-  email2: null,
-  about: null,
-  location: null,
-
   firstNameError: null,
   lastNameError: null,
   email2Error: null,
@@ -96,9 +92,9 @@ ProfileFormDisplay.propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  email2: PropTypes.string,
-  about: PropTypes.string,
-  location: PropTypes.string,
+  email2: PropTypes.string.isRequired,
+  about: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
 
   reminderEmails: PropTypes.bool.isRequired,
   dailyEmails: PropTypes.bool.isRequired,
@@ -110,7 +106,7 @@ ProfileFormDisplay.propTypes = {
   locationError: PropTypes.string,
 
   isSaving: PropTypes.bool.isRequired,
-  formHasErrors: PropTypes.bool,
+  formHasErrors: PropTypes.bool.isRequired,
 
   onFieldChange: PropTypes.func.isRequired,
 };

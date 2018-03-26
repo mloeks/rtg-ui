@@ -5,15 +5,16 @@ import { teal400 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 import AvatarEditor from 'react-avatar-editor';
 import Notification, { NotificationType } from '../Notification';
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.css';
-
 
 const EditingActions = props => (
   <div className="BigEditableAvatar__edit-actions" style={props.style}>
     <Slider
       min={1}
-      max={2}
+      max={3}
       defaultValue={props.initialSliderValue}
       sliderStyle={{ margin: '10px' }}
       onChange={props.onChange}
@@ -31,7 +32,7 @@ EditingActions.defaultProps = {
 
 EditingActions.propTypes = {
   initialSliderValue: PropTypes.number,
-  style: PropTypes.object,
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
@@ -40,6 +41,7 @@ EditingActions.propTypes = {
 // TODO P1 touchMove on Avatar edit does not seem to work yet
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
+// TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
   static getInitialState() {
     return {
@@ -110,10 +112,29 @@ class BigEditableAvatar extends Component {
 
   handleEditSave() {
     if (this.editor) {
+      this.setState({ uploadInProgress: true });
       const canvasScaled = this.editor.getImageScaledToCanvas();
+
       canvasScaled.toBlob((blob) => {
-        // TODO P1 handle upload
-        console.log(blob);
+        const formData = new FormData();
+        formData.set('upload', blob, 'avatar.jpg');
+
+        fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
+          method: 'POST',
+          body: formData,
+          headers: { Authorization: `Token ${AuthService.getToken()}` },
+        }).then(FetchHelper.parseJson)
+          .then((response) => {
+            if (response.ok) {
+              this.setState({
+                uploadInProgress: false,
+                uploadSuccess: true,
+              }, () => { this.props.onAvatarChanged(response.json.avatar); });
+            } else {
+              this.setState({ uploadInProgress: false, uploadError: true });
+            }
+          }).catch(() => this.setState({ uploadError: true, uploadInProgress: false }));
+
         this.setState(BigEditableAvatar.getInitialState());
       }, 'image/jpeg', 0.95);
     }
@@ -207,6 +228,11 @@ BigEditableAvatar.propTypes = {
   userId: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
+
+  loading: PropTypes.bool.isRequired,
+  loadingError: PropTypes.bool.isRequired,
+
+  onAvatarChanged: PropTypes.func.isRequired,
 };
 
 export default BigEditableAvatar;
