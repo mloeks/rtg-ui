@@ -44,4 +44,9 @@ export const setAwaygoals = (resultString, awaygoalsInput) => {
     : toResultString(getHomegoals(resultString), inputToGoals(awaygoalsInput));
 };
 
-export const getGoalsString = goals => (Number(goals) < 0 ? NO_GOALS_STRING : goals);
+export const getGoalsString = (goals) => {
+  if (Number.isNaN(goals) || goals === '') { return NO_GOALS_STRING }
+  const goalsNumber = Number(goals);
+  if (goalsNumber < 0 || goalsNumber > 10) { return NO_GOALS_STRING; }
+  return goals;
+};

@@ -6,6 +6,8 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification, { NotificationType } from '../Notification';
 
+// TODO P2 Clean up such that the form related fields are not updated up to the Profile,
+// it should not need to know about that
 // TODO P2 make e-mail changeable --> probably needs a re-login? evaluate..
 class ProfileForm extends Component {
   static userErrorResponseToState(responseJson) {
