@@ -9,6 +9,8 @@ import BigPicture from '../components/BigPicture';
 import headingImg from '../theme/img/img7.jpg';
 import './Reception.css';
 
+// TODO P1 style about text
+// TODO P1 login form is too wide on mobile, make it work with down to 320 px
 class Reception extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +44,21 @@ class Reception extends Component {
         </BigPicture>
         <section className="ReceptionPage__content">
           <LoginForm onLogin={this.login} />
+          <div className="ReceptionPage__about">
+            <h3>Über die RTG</h3>
+            <p>
+              Die Royale Tippgemeinschaft ist ein alle zwei Jahre zur Fußball-WM oder EM
+              stattfindendes Tippspiel, welches vom Royalen Paar (Dorothee von Schweden und
+              ihrem Prinzgemahl Matthias) organisiert wird. Es wendet sich an alle Freunde,
+              Bekannte, Kollegen und Familienmitglieder der Organisatoren.
+            </p>
+            <p>
+              Stetig wächst die Gruppe der RTG, die Mitglieder sind nicht nur
+              in ganz Deutschland sondern mittlerweile auch in der ganzen Welt verteilt.
+              Wenn Du mit dem Royalen Paar bekannt bist, fühl Dich herzlich eingeladen,
+              an diesem wunderbaren und hochroyalen Spaß teilzuhaben!
+            </p>
+          </div>
         </section>
       </Page>);
   }
