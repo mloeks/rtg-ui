@@ -113,9 +113,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-
 ### Example user template template
 ### Example user template
 

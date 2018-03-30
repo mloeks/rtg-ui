@@ -1,7 +1,15 @@
 import FetchHelper from './FetchHelper';
 
-// TODO P1 make base URL of API configurable by environment
-export const API_BASE_URL = 'http://localhost:8000';
+// Unfortunately this does not work as elegantly as described here:
+// https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables
+// Instead, I defined all three different API URLs in one .env file
+
+// eslint-disable-next-line no-nested-ternary
+export const API_BASE_URL = process.env.NODE_ENV === 'production' ?
+  (process.env.REACT_APP_ENV === 'production' ?
+    process.env.REACT_APP_PROD_API_URL :
+    process.env.REACT_APP_DEMO_API_URL
+  ) : process.env.REACT_APP_DEV_API_URL;
 
 const LocalStorageWrapper = {
   get: key => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef

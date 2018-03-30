@@ -25,7 +25,8 @@
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
+    "build": "REACT_APP_ENV=production npm-run-all build-css build-js",
+    "build:demo": "REACT_APP_ENV=demo npm-run-all build-css build-js",
     "mock-server": "json-server -p 8000 -w -d 300 config/json-server/db.json",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
