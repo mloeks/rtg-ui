@@ -19,6 +19,7 @@
     "react-tap-event-plugin": "^3.0.2"
   },
   "scripts": {
+    "clean": "rm -rf build",
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
