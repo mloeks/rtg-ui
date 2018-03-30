@@ -1,15 +1,31 @@
 @import '../sass/colors.scss';
 
 .GameCardBet {
-  font-family: 'Oswald', sans-serif;
-  font-size: 18px;
-
   width: 100%;
+  font-family: 'Oswald', sans-serif;
 
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  &__goal-input-row {
+    height: 32px;
+    padding: 2px 5px 5px;
+    font-size: 18px;
 
-  text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+
+    text-align: center;
+  }
+
+  &__up-arrow-row,
+  &__down-arrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  &__up-arrow-row {
+    margin-top: 2px;
+  }
 }

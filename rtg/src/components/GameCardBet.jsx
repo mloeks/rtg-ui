@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import GameCardRibbon from './GameCardRibbon';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
@@ -11,6 +13,7 @@ import './GoalInput.css';
 
 const validGoalInputRegex = /^([0-9]|10)$/;
 
+// TODO P1  handle all kinds of save, propagate to parent when a bet could not be saved
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 const GoalInput = ({ id, goals, type, onChange, onBlur }) => {
   let textInputRef;
@@ -31,12 +34,11 @@ const GoalInput = ({ id, goals, type, onChange, onBlur }) => {
       onBlur={onBlur}
       onChange={validateAndNotifyChange}
       onFocus={() => { textInputRef.select(); }}
+      style={{ height: '100%' }}
       inputStyle={{
         color: '#F2CE00',
         fontFamily: '"Oswald", sans-serif',
         fontSize: '26px',
-        padding: type === 'home' ? '0 0 0 10px' : '0 10px 0 0',
-        width: '60%',
         textAlign: 'center',
       }}
     />);
@@ -48,49 +50,96 @@ GoalInput.defaultProps = {
 
 GoalInput.propTypes = {
   id: PropTypes.string.isRequired,
-  goals: PropTypes.string,
+  goals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   type: PropTypes.string.isRequired,
 
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
 };
 
+
+const ARROW_SIZE = 16;
+const GoalChangeArrow = (props) => {
+  const arrowStyle = {
+    height: `${ARROW_SIZE}px`,
+    width: `${ARROW_SIZE}px`,
+    padding: '0 5px',
+    color: 'white',
+  };
+  return (props.direction === 'up' ?
+    <KeyboardArrowUp style={arrowStyle} onClick={props.onClick} /> :
+    <KeyboardArrowDown style={arrowStyle} onClick={props.onClick} />);
+};
+
+GoalChangeArrow.propTypes = {
+  direction: PropTypes.oneOf(['up', 'down']).isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
 const GameCardBetPresentational = ({
-  id, homegoals, awaygoals, onHomegoalsChange, onAwaygoalsChange, onBlur,
+  id, homegoals, awaygoals, onBlur, onHomegoalsChange, onAwaygoalsChange,
+  onHomegoalsIncrementalChange, onAwaygoalsIncrementalChange,
 }) => (
   <GameCardRibbon stateCssClass="bet">
     <div className="GameCardBet">
-      <GoalInput
-        className="GoalInput GoalInput__home"
-        id={`${id}-home`}
-        goals={homegoals}
-        type="home"
-        onChange={onHomegoalsChange}
-        onBlur={onBlur}
-      />
-      <span>{RESULT_SEPARATOR}</span>
-      <GoalInput
-        className="GoalInput GoalInput__away"
-        id={`${id}-away`}
-        goals={awaygoals}
-        type="away"
-        onChange={onAwaygoalsChange}
-        onBlur={onBlur}
-      />
+      <div className="GameCardBet__up-arrow-row">
+        <GoalChangeArrow direction="up" onClick={() => onHomegoalsIncrementalChange(1)} />
+        <GoalChangeArrow direction="up" onClick={() => onAwaygoalsIncrementalChange(1)} />
+      </div>
+      <div className="GameCardBet__goal-input-row">
+        <GoalInput
+          className="GoalInput GoalInput__home"
+          id={`${id}-home`}
+          goals={homegoals}
+          type="home"
+          onChange={onHomegoalsChange}
+          onBlur={onBlur}
+        />
+        <span>{RESULT_SEPARATOR}</span>
+        <GoalInput
+          className="GoalInput GoalInput__away"
+          id={`${id}-away`}
+          goals={awaygoals}
+          type="away"
+          onChange={onAwaygoalsChange}
+          onBlur={onBlur}
+        />
+      </div>
+      <div className="GameCardBet__down-arrow-row">
+        <GoalChangeArrow direction="down" onClick={() => onHomegoalsIncrementalChange(-1)} />
+        <GoalChangeArrow direction="down" onClick={() => onAwaygoalsIncrementalChange(-1)} />
+      </div>
     </div>
   </GameCardRibbon>
 );
 
 GameCardBetPresentational.propTypes = {
   id: PropTypes.number.isRequired,
-  homegoals: PropTypes.string.isRequired,
-  awaygoals: PropTypes.string.isRequired,
+  homegoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  awaygoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+
+  onBlur: PropTypes.func.isRequired,
   onHomegoalsChange: PropTypes.func.isRequired,
   onAwaygoalsChange: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  onHomegoalsIncrementalChange: PropTypes.func.isRequired,
+  onAwaygoalsIncrementalChange: PropTypes.func.isRequired,
 };
 
 class GameCardBet extends Component {
+  static getIncrementedGoal(previousValue, inc) {
+    const previousValueNumber = Number(previousValue);
+    if (Number.isNaN(previousValue) || (previousValue === NO_GOALS_STRING && inc === 1)) {
+      return 0;
+    } else if (previousValue === NO_GOALS_STRING && inc === -1) {
+      return previousValue;
+    } else if (previousValueNumber === 10 && inc === 1) {
+      return previousValueNumber;
+    } else if (previousValueNumber === 0 && inc === -1) {
+      return NO_GOALS_STRING;
+    }
+    return previousValueNumber + inc;
+  }
+
   constructor(props) {
     super(props);
 
@@ -107,6 +156,8 @@ class GameCardBet extends Component {
 
     this.handleHomegoalsChange = this.handleHomegoalsChange.bind(this);
     this.handleAwaygoalsChange = this.handleAwaygoalsChange.bind(this);
+    this.handleHomegoalsIncrementalChange = this.handleHomegoalsIncrementalChange.bind(this);
+    this.handleAwaygoalsIncrementalChange = this.handleAwaygoalsIncrementalChange.bind(this);
     this.sanitizeBet = this.sanitizeBet.bind(this);
   }
 
@@ -177,6 +228,18 @@ class GameCardBet extends Component {
   handleHomegoalsChange(e, value) { this.setState({ homegoalsInput: value }); }
   handleAwaygoalsChange(e, value) { this.setState({ awaygoalsInput: value }); }
 
+  handleHomegoalsIncrementalChange(inc) {
+    this.setState(prevState => (
+      { homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc) }
+    ));
+  }
+
+  handleAwaygoalsIncrementalChange(inc) {
+    this.setState(prevState => (
+      { awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc) }
+    ));
+  }
+
   sanitizeBet() {
     this.setState(prevState => ({
       homegoalsInput: getGoalsString(prevState.homegoalsInput),
@@ -191,9 +254,11 @@ class GameCardBet extends Component {
         homegoals={this.state.homegoalsInput}
         awaygoals={this.state.awaygoalsInput}
 
+        onBlur={this.sanitizeBet}
         onHomegoalsChange={this.handleHomegoalsChange}
         onAwaygoalsChange={this.handleAwaygoalsChange}
-        onBlur={this.sanitizeBet}
+        onHomegoalsIncrementalChange={this.handleHomegoalsIncrementalChange}
+        onAwaygoalsIncrementalChange={this.handleAwaygoalsIncrementalChange}
       />
     );
   }
