@@ -8,6 +8,10 @@ import FetchHelper from '../service/FetchHelper';
 import headingImg from '../theme/img/img7.jpg';
 import './Foyer.css';
 
+// TODO P1 Put News into own component, make them look nice
+// TODO P1 Add possibility to create news, at least for Admins
+// TODO P2 Lazy load news
+// TODO P2 Allow normal users to post and comment on news
 class Foyer extends Component {
   static async loadPosts() {
     return new Promise((resolve, reject) => {
