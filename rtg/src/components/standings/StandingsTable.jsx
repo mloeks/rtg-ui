@@ -99,7 +99,7 @@ class StandingsTable extends Component {
   }
 
   async componentDidMount() {
-    await this.fetchData(`${API_BASE_URL}/rtg/statisticsss/`, StandingsTable.statsToStateMapper);
+    await this.fetchData(`${API_BASE_URL}/rtg/statistics/`, StandingsTable.statsToStateMapper);
     this.setState({ loading: false });
   }
 
