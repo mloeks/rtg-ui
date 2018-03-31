@@ -12,6 +12,7 @@ import {
 } from 'material-ui';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import Notification from '../Notification';
 
 import './StandingsTable.css';
 
@@ -27,7 +28,7 @@ const rankColumnStyle = {
   padding: '0 10px',
 };
 
-const StandingsTableRow = props => {
+const StandingsTableRow = (props) => {
   const ROW_HEIGHT = 65;
   return (
     <TableRow style={{ height: ROW_HEIGHT }} className="StandingsTableRow">
@@ -49,7 +50,7 @@ const StandingsTableRow = props => {
       <TableRowColumn style={pointsColumnStyle}>{props.points}</TableRowColumn>
     </TableRow>
   );
-}
+};
 
 StandingsTableRow.propTypes = {
   rank: PropTypes.number.isRequired,
@@ -65,10 +66,8 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P1 Avatar URLs aus dem Backend mitliefern.
 // TODO P1 Plätze korrekt durchnummerieren
-// TODO P2 Fehler beim Laden schön machen.
-// TODO P2 andere Spalten anzeigen
+// TODO P1 andere Spalten anzeigen
 // TODO P3 random colours für User ohne Avatar.
 class StandingsTable extends Component {
   static statsToStateMapper(stats) {
@@ -100,7 +99,7 @@ class StandingsTable extends Component {
   }
 
   async componentDidMount() {
-    await this.fetchData(`${API_BASE_URL}/rtg/statistics/`, StandingsTable.statsToStateMapper);
+    await this.fetchData(`${API_BASE_URL}/rtg/statisticsss/`, StandingsTable.statsToStateMapper);
     this.setState({ loading: false });
   }
 
@@ -119,21 +118,28 @@ class StandingsTable extends Component {
       <div className="StandingsTable">
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
         {this.state.loadingError &&
-          <div className="StandingsTable__loading-error">Fehler beim Laden.</div> }
-        <Table className="StandingsTable__table" selectable={false}>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
-            <TableRow>
-              <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
-              <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
-              <TableHeaderColumn style={pointsColumnStyle}>Punkte</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody showRowHover displayRowCheckbox={false}>
-            {this.state.rows.map((row, ix) => (
-              <StandingsTableRow key={row.userId} rank={ix + 1} {...row} />
-            ))}
-          </TableBody>
-        </Table>
+          <Notification
+            title="Es ist ein Fehler aufgetreten"
+            subtitle="Bitte versuche es später noch einmal."
+            type="error"
+            style={{ margin: '25px 0' }}
+          />}
+
+        {(!this.state.loading && !this.state.loadingError) &&
+          <Table className="StandingsTable__table" selectable={false}>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
+              <TableRow>
+                <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
+                <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
+                <TableHeaderColumn style={pointsColumnStyle}>Punkte</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody showRowHover displayRowCheckbox={false}>
+              {this.state.rows.map((row, ix) => (
+                <StandingsTableRow key={row.userId} rank={ix + 1} {...row} />
+              ))}
+            </TableBody>
+          </Table>}
       </div>
     );
   }
