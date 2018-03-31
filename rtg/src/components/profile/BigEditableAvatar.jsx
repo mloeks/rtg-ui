@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, FlatButton, Slider } from 'material-ui';
+import { Avatar, CircularProgress, FlatButton, Slider } from 'material-ui';
 import { teal400 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
 import AvatarEditor from 'react-avatar-editor';
@@ -39,6 +39,8 @@ EditingActions.propTypes = {
 };
 
 // TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
+// is it related to the console error about preventDefault which appears after it
+// has worked properly for a short time?
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
@@ -116,37 +118,41 @@ class BigEditableAvatar extends Component {
 
   handleEditSave() {
     if (this.editor) {
-      this.setState({ uploadInProgress: true, uploadError: '' });
-      const canvasScaled = this.editor.getImageScaledToCanvas();
+      this.setState(
+        { uploadInProgress: true, uploadSuccess: false, uploadError: '' },
+        () => {
+          const canvasScaled = this.editor.getImageScaledToCanvas();
 
-      canvasScaled.toBlob((blob) => {
-        const formData = new FormData();
-        formData.set('upload', blob, 'avatar.jpg');
+          canvasScaled.toBlob((blob) => {
+            const formData = new FormData();
+            formData.set('upload', blob, 'avatar.jpg');
 
-        fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
-          method: 'POST',
-          body: formData,
-          headers: { Authorization: `Token ${AuthService.getToken()}` },
-        }).then(FetchHelper.parseJson)
-          .then((response) => {
-            if (response.ok) {
-              this.setState({
-                uploadInProgress: false,
-                uploadSuccess: true,
-              }, () => { this.props.onAvatarChanged(response.json.avatar); });
-            } else {
-              this.setState({
-                uploadInProgress: false,
-                uploadError: response.json.error || 'Bitte versuche es später noch einmal.',
-              });
-            }
-          }).catch(() => this.setState({
-            uploadError: 'Bitte versuche es später noch einmal.',
-            uploadInProgress: false,
-          }));
-
-        this.setState(BigEditableAvatar.getInitialState());
-      }, 'image/jpeg', 0.95);
+            fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
+              method: 'POST',
+              body: formData,
+              headers: {Authorization: `Token ${AuthService.getToken()}`},
+            }).then(FetchHelper.parseJson)
+              .then((response) => {
+                if (response.ok) {
+                  this.setState({
+                    ...BigEditableAvatar.getInitialState(),
+                    uploadSuccess: true,
+                  }, () => {
+                    this.props.onAvatarChanged(response.json.avatar);
+                  });
+                } else {
+                  this.setState({
+                    ...BigEditableAvatar.getInitialState(),
+                    uploadError: response.json.error || 'Bitte versuche es später noch einmal.',
+                  });
+                }
+              }).catch(() => this.setState({
+                ...BigEditableAvatar.getInitialState(),
+                uploadError: 'Bitte versuche es später noch einmal.',
+              }));
+          }, 'image/jpeg', 0.95);
+        },
+      );
     }
   }
 
@@ -200,7 +206,7 @@ class BigEditableAvatar extends Component {
             </div>}
         </div>
 
-        {this.state.editing &&
+        {(this.state.editing && !this.state.uploadInProgress) &&
           <EditingActions
             initialSliderValue={this.state.avatarEditScale}
             onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
@@ -210,6 +216,8 @@ class BigEditableAvatar extends Component {
           />}
 
         <div className="BigEditableAvatar__feedback">
+          {this.state.uploadInProgress &&
+            <CircularProgress size={30} thickness={2.5} style={{ margin: '20px 0' }} />}
           {(this.state.cropError || this.state.uploadError) && <Notification
             type={NotificationType.ERROR}
             title="Das hat leider nicht geklappt"
