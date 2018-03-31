@@ -2,4 +2,15 @@
   &__content {
     margin-top: -90px;
   }
+
+  &__about {
+    font-family: 'Roboto', sans-serif;
+    margin: 75px 10px;
+    padding: 0 20px;
+
+    @media only screen and (min-width : 480px) {
+      width: 480px;
+      margin: 75px auto;
+    }
+  }
 }
