@@ -178,12 +178,16 @@ class GameCardBet extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
+  // TODO P1 save when required from parent component (via prop & receiveprops),
+  // require and invoke success and error callbacks
+  // in the parent, remember bets with saving issues
+  // also stay able to save a single bet from here, might be needed for other usages
+  // of GameBetCard!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   handleSave() {
     if (this.state.userBet && !this.state.isSaving) {
       this.setState({ isSaving: true, savingSuccess: false, savingError: false });
 
-      // TODO P1 do we need to remember the original bet in a separate field?
       const newBet = this.state.userBet;
       const body = newBet !== null ? { bettable: this.props.gameId, result_bet: newBet } : null;
 

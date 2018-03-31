@@ -4,6 +4,7 @@ import BigPicture from '../components/BigPicture';
 
 import headingImg from '../theme/img/img7.jpg';
 
+// TODO P1 implement
 const Imprint = () => (
   <Page className="ImprintPage">
     <BigPicture className="ImprintPage__heading" img={headingImg}>
