@@ -74,13 +74,14 @@ class LoginForm extends Component {
   render() {
     return (
       <Paper className="LoginForm" zDepth={3}>
-        <h3 className="LoginForm__heading">Bitte treten Sie ein:</h3>
+        <h3 className="LoginForm__heading">Bitte eintreten:</h3>
         <form className="LoginForm__form" onSubmit={this.handleLogin}>
           <TextField
             errorText={this.state.fieldErrors.username || false}
             floatingLabelText="E-Mail / Username"
             fullWidth
             onChange={this.updateUsername}
+            inputStyle={{ margin: 0 }}
           />
           <br />
           <TextField
@@ -89,6 +90,7 @@ class LoginForm extends Component {
             fullWidth
             type="password"
             onChange={this.updatePassword}
+            inputStyle={{ margin: 0 }}
           />
           <br /><br />
 

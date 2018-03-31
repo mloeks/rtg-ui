@@ -9,7 +9,6 @@ import BigPicture from '../components/BigPicture';
 import headingImg from '../theme/img/img7.jpg';
 import './Reception.css';
 
-// TODO P1 login form is too wide on mobile, make it work with down to 320 px
 class Reception extends Component {
   constructor(props) {
     super(props);

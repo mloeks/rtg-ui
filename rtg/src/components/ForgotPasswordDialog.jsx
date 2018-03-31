@@ -103,15 +103,17 @@ class ForgotPasswordDialog extends Component {
         open={this.props.open}
         title={titleDiv}
         style={{ textAlign: 'left' }}
+        contentStyle={{ width: '95%' }}
       >
 
         {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
         <TextField
           errorText={this.state.fieldErrors.email || false}
-          floatingLabelText="E-Mail eingeben"
+          floatingLabelText="E-Mail Adresse"
           fullWidth
           value={this.state.email}
           onChange={this.updateEmail}
+          inputStyle={{ margin: 0 }}
         />}
 
         {this.state.requestInProgress && <CircularProgress />}

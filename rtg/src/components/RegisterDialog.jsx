@@ -113,6 +113,7 @@ class RegisterDialog extends Component {
             <p style={{ color: this.props.muiTheme.palette.errorColor }}>{this.state.formError}</p>}
           </div>}
         style={{ textAlign: 'left' }}
+        contentStyle={{ width: '95%' }}
       >
 
         <TextField
@@ -147,14 +148,14 @@ class RegisterDialog extends Component {
         <br />
         <div style={{ display: 'flex' }}>
           <TextField
-            style={{ marginRight: '10px' }}
+            style={{ marginRight: '10px', width: '50%' }}
             errorText={this.state.fieldErrors.firstName || false}
             floatingLabelText="Vorname"
             title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
             onChange={this.updateFirstName}
           />
           <TextField
-            style={{ marginLeft: '10px' }}
+            style={{ marginLeft: '10px', width: '50%' }}
             errorText={this.state.fieldErrors.lastName || false}
             floatingLabelText="Nachname"
             title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
