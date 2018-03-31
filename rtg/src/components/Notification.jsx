@@ -46,7 +46,9 @@ class Notification extends Component {
     const notificationColor = this.props.muiTheme.palette[`${this.props.type}Color`];
 
     return (
-      <Card style={{ backgroundColor: lightenDarkenColor(notificationColor, 150) }}>
+      <Card
+        style={{ ...this.props.style, backgroundColor: lightenDarkenColor(notificationColor, 150) }}
+      >
         <CardHeader
           title={this.props.title}
           subtitle={this.props.subtitle}
@@ -74,6 +76,7 @@ class Notification extends Component {
 Notification.defaultProps = {
   disappearAfterMs: null,
   subtitle: null,
+  style: {},
 };
 
 Notification.propTypes = {
@@ -82,6 +85,7 @@ Notification.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
