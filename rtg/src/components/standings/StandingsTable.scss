@@ -5,9 +5,24 @@
     margin: 50px 0;
   }
 
+  &__stat-col-desktop {
+    display: none;
+
+    @media only screen and (min-width: 480px) {
+      display: table-cell;
+    }
+  }
+
   @media only screen and (min-width : 850px) {
     max-width: 850px;
     margin: 50px auto 75px;
     box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
+  }
+}
+
+.TableRowColumn {
+  &__username {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

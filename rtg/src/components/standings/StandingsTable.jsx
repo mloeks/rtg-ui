@@ -13,40 +13,80 @@ import {
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
+import { lightGrey } from '../../theme/RtgTheme';
 
 import './StandingsTable.css';
 
-const pointsColumnStyle = {
-  width: '40px',
-  textAlign: 'right',
-  padding: '0 15px 0 5px',
-};
+const ROW_HEIGHT = 65;
 
 const rankColumnStyle = {
+  width: '23px',
+  textAlign: 'center',
+  padding: '0 5px',
+};
+
+const betStatColumnStyle = {
   width: '20px',
   textAlign: 'center',
-  padding: '0 10px',
+  padding: '0 5px',
+  color: lightGrey,
+};
+
+const pointsColumnStyle = {
+  width: '30px',
+  textAlign: 'right',
+  padding: '0 15px 0 5px',
+  fontSize: '16px',
+  fontWeight: 'bold',
 };
 
 const StandingsTableRow = (props) => {
-  const ROW_HEIGHT = 65;
   return (
     <TableRow style={{ height: ROW_HEIGHT }} className="StandingsTableRow">
       <TableRowColumn style={rankColumnStyle}>{props.rank}</TableRowColumn>
-      <TableRowColumn style={{ height: ROW_HEIGHT, display: 'flex', alignItems: 'center' }}>
-        {props.userAvatar ?
-          <Avatar
-            size={0.65 * ROW_HEIGHT}
-            style={{ marginRight: '10px' }}
-            src={`${API_BASE_URL}/media/${props.userAvatar}`}
-          /> :
-          <Avatar
-            size={0.65 * ROW_HEIGHT}
-            style={{ marginRight: '10px' }}
-          >{props.username[0].toUpperCase()}
-          </Avatar>}
-        {props.username}
+      <TableRowColumn style={{
+        height: ROW_HEIGHT,
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: '16px',
+        paddingLeft: 0,
+      }}
+      >{props.userAvatar ?
+        <Avatar
+          size={0.65 * ROW_HEIGHT}
+          style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+          src={`${API_BASE_URL}/media/${props.userAvatar}`}
+        /> :
+        <Avatar
+          size={0.65 * ROW_HEIGHT}
+          style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+        >{props.username[0].toUpperCase()}
+        </Avatar>}
+        <span className="TableRowColumn__username">{props.username}</span>
       </TableRowColumn>
+      <TableRowColumn style={betStatColumnStyle}>{props.noVolltreffer}</TableRowColumn>
+
+      <TableRowColumn
+        className="StandingsTable__stat-col-desktop"
+        style={betStatColumnStyle}
+      >{props.noDifferenz}
+      </TableRowColumn>
+      <TableRowColumn
+        className="StandingsTable__stat-col-desktop"
+        style={betStatColumnStyle}
+      >{props.noRemisTendenz}
+      </TableRowColumn>
+      <TableRowColumn
+        className="StandingsTable__stat-col-desktop"
+        style={betStatColumnStyle}
+      >{props.noTendenz}
+      </TableRowColumn>
+      <TableRowColumn
+        className="StandingsTable__stat-col-desktop"
+        style={betStatColumnStyle}
+      >{props.noNiete}
+      </TableRowColumn>
+
       <TableRowColumn style={pointsColumnStyle}>{props.points}</TableRowColumn>
     </TableRow>
   );
@@ -67,7 +107,6 @@ StandingsTableRow.propTypes = {
 };
 
 // TODO P1 Plätze korrekt durchnummerieren
-// TODO P1 andere Spalten anzeigen
 // TODO P3 random colours für User ohne Avatar.
 class StandingsTable extends Component {
   static statsToStateMapper(stats) {
@@ -126,7 +165,31 @@ class StandingsTable extends Component {
               <TableRow>
                 <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
                 <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
-                <TableHeaderColumn style={pointsColumnStyle}>Punkte</TableHeaderColumn>
+                <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
+                <TableHeaderColumn
+                  className="StandingsTable__stat-col-desktop"
+                  style={betStatColumnStyle}
+                >D
+                </TableHeaderColumn>
+                <TableHeaderColumn
+                  className="StandingsTable__stat-col-desktop"
+                  style={betStatColumnStyle}
+                >RT
+                </TableHeaderColumn>
+                <TableHeaderColumn
+                  className="StandingsTable__stat-col-desktop"
+                  style={betStatColumnStyle}
+                >T
+                </TableHeaderColumn>
+                <TableHeaderColumn
+                  className="StandingsTable__stat-col-desktop"
+                  style={betStatColumnStyle}
+                >N
+                </TableHeaderColumn>
+                <TableHeaderColumn
+                  style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
+                >Pkt.
+                </TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover displayRowCheckbox={false}>
