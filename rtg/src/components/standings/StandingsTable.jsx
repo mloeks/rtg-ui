@@ -72,9 +72,7 @@ StandingsTableRow.propTypes = {
 class StandingsTable extends Component {
   static statsToStateMapper(stats) {
     return {
-      loading: true,
       loadingError: false,
-
       rows: stats.map(statObj => ({
         userId: statObj.user,
         username: statObj.username,
@@ -98,19 +96,16 @@ class StandingsTable extends Component {
     };
   }
 
-  async componentDidMount() {
-    await this.fetchData(`${API_BASE_URL}/rtg/statistics/`, StandingsTable.statsToStateMapper);
-    this.setState({ loading: false });
-  }
-
-  // TODO P3 could this be wrapped in a FetchHelper method using Promises??
-  async fetchData(url, responseToStateMapper) {
-    return fetch(url, { headers: { Authorization: `Token ${AuthService.getToken()}` }})
-      .then(FetchHelper.parseJson).then((response) => {
-        this.setState(() => (response.ok
-          ? responseToStateMapper(response.json) : { loadingError: true }
-        ));
-      }).catch(() => this.setState({ loadingError: true }));
+  componentDidMount() {
+    fetch(`${API_BASE_URL}/rtg/statistics/`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then((response) => {
+      this.setState(() => ({
+        loading: false,
+        ...response.ok ? StandingsTable.statsToStateMapper(response.json) : { loadingError: true },
+      }
+      ));
+    }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   render() {
