@@ -81,7 +81,6 @@ class LoginForm extends Component {
             floatingLabelText="E-Mail / Username"
             fullWidth
             onChange={this.updateUsername}
-            inputStyle={{ margin: 0 }}
           />
           <br />
           <TextField
@@ -90,7 +89,6 @@ class LoginForm extends Component {
             fullWidth
             type="password"
             onChange={this.updatePassword}
-            inputStyle={{ margin: 0 }}
           />
           <br /><br />
 
