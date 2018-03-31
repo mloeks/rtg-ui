@@ -106,9 +106,17 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P1 Plätze korrekt durchnummerieren
+// TODO P1 Korrekte Durchnummerierung testen (Backend berechnet Statistiken nicht neu!)
 // TODO P3 random colours für User ohne Avatar.
 class StandingsTable extends Component {
+  static calculateRank(row, lastRow, lastRank) {
+    if (lastRow) {
+      return lastRow.points === row.points && lastRow.noVolltreffer === row.noVolltreffer
+        ? '' : Number(lastRank) + 1;
+    }
+    return 1;
+  }
+
   static statsToStateMapper(stats) {
     return {
       loadingError: false,
@@ -148,6 +156,9 @@ class StandingsTable extends Component {
   }
 
   render() {
+    let lastRow = null;
+    let lastRank = 1;
+
     return (
       <div className="StandingsTable">
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
@@ -193,9 +204,12 @@ class StandingsTable extends Component {
               </TableRow>
             </TableHeader>
             <TableBody showRowHover displayRowCheckbox={false}>
-              {this.state.rows.map((row, ix) => (
-                <StandingsTableRow key={row.userId} rank={ix + 1} {...row} />
-              ))}
+              {this.state.rows.map((row) => {
+                const rank = StandingsTable.calculateRank(row, lastRow, lastRank);
+                lastRow = row;
+                lastRank = rank;
+                  return <StandingsTableRow key={row.userId} rank={rank} {...row} />;
+                })}
             </TableBody>
           </Table>}
       </div>
