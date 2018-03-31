@@ -38,7 +38,7 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-// TODO P1 touchMove on Avatar edit does not seem to work yet
+// TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
@@ -52,7 +52,7 @@ class BigEditableAvatar extends Component {
       avatarEditScale: 1.2,
 
       uploadInProgress: false,
-      uploadError: false,
+      uploadError: '',
       uploadSuccess: false,
     };
   }
@@ -71,7 +71,11 @@ class BigEditableAvatar extends Component {
     this.handleEditSave = this.handleEditSave.bind(this);
   }
 
-  getCropErrorReadableText() {
+  getCropOrUploadErrorReadableText() {
+    if (this.state.uploadError) {
+      return this.state.uploadError;
+    }
+
     if (this.state.cropError === 'maxsize') {
       const maxSizeReadable = `${this.maxImageSize / 1024 / 1024} MB`;
       return `Das Bild überschreitet die maximale erlaubte Dateigröße von ${maxSizeReadable}`;
@@ -89,7 +93,7 @@ class BigEditableAvatar extends Component {
     e.stopPropagation();
     e.preventDefault();
 
-    this.setState({ editing: false, cropError: false });
+    this.setState({ editing: false, cropError: '', uploadError: '' });
 
     const chosenFile = e.target.files[0];
     if (chosenFile) {
@@ -112,7 +116,7 @@ class BigEditableAvatar extends Component {
 
   handleEditSave() {
     if (this.editor) {
-      this.setState({ uploadInProgress: true });
+      this.setState({ uploadInProgress: true, uploadError: '' });
       const canvasScaled = this.editor.getImageScaledToCanvas();
 
       canvasScaled.toBlob((blob) => {
@@ -131,9 +135,15 @@ class BigEditableAvatar extends Component {
                 uploadSuccess: true,
               }, () => { this.props.onAvatarChanged(response.json.avatar); });
             } else {
-              this.setState({ uploadInProgress: false, uploadError: true });
+              this.setState({
+                uploadInProgress: false,
+                uploadError: response.json.error || 'Bitte versuche es später noch einmal.',
+              });
             }
-          }).catch(() => this.setState({ uploadError: true, uploadInProgress: false }));
+          }).catch(() => this.setState({
+            uploadError: 'Bitte versuche es später noch einmal.',
+            uploadInProgress: false,
+          }));
 
         this.setState(BigEditableAvatar.getInitialState());
       }, 'image/jpeg', 0.95);
@@ -203,7 +213,7 @@ class BigEditableAvatar extends Component {
           {(this.state.cropError || this.state.uploadError) && <Notification
             type={NotificationType.ERROR}
             title="Das hat leider nicht geklappt"
-            subtitle={this.getCropErrorReadableText()}
+            subtitle={this.getCropOrUploadErrorReadableText()}
           />}
           {this.state.uploadSuccess && <Notification
             type={NotificationType.SUCCESS}
