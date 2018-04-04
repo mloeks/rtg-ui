@@ -45,6 +45,7 @@ class News extends Component {
 
     this.handleAddNews = this.handleAddNews.bind(this);
     this.handlePostSaved = this.handlePostSaved.bind(this);
+    this.handleAddPostCancelled = this.handleAddPostCancelled.bind(this);
   }
 
   componentDidMount() {
@@ -71,7 +72,11 @@ class News extends Component {
   }
 
   handlePostSaved(newPost) {
-    // TODO P1 prepend new post to posts list - or reload entirely
+    // TODO P1 prepend new post to posts list - or reload entirely?
+    this.setState({ showAddPostForm: false, showAddPostButton: true });
+  }
+
+  handleAddPostCancelled() {
     this.setState({ showAddPostForm: false, showAddPostButton: true });
   }
 
@@ -87,7 +92,12 @@ class News extends Component {
             style={{ margin: 'auto', maxWidth: '480px' }}
           />}
 
-        {this.state.showAddPostForm && <AddPostForm onSaved={this.handlePostSaved} />}
+        {this.state.showAddPostForm &&
+          <AddPostForm
+            onSaved={this.handlePostSaved}
+            onCancelled={this.handleAddPostCancelled}
+          />
+        }
 
         {(!this.state.loading && !this.state.loadingError) &&
           this.state.posts.map(post => <Post key={post.id} post={post} />)}

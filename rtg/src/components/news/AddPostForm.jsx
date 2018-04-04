@@ -4,14 +4,22 @@ import AddPostFormDisplay from './AddPostFormDisplay';
 
 class AddPostForm extends Component {
   static resetFieldErrors() {
-    return { title: '' };
+    return {
+      title: '',
+      content: '',
+    };
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      title: 'Neuer Post!',
+      title: '',
+      content: '',
+      appearInNews: true,
+      sendMailToSubscribers: true,
+      sendMailToAll: false,
+
       fieldErrors: AddPostForm.resetFieldErrors(),
     };
 
@@ -30,18 +38,26 @@ class AddPostForm extends Component {
   }
 
   render() {
-    return <AddPostFormDisplay
+    return (<AddPostFormDisplay
       title={this.state.title}
+      content={this.state.content}
+      appearInNews={this.state.appearInNews}
+      sendMailToSubscribers={this.state.sendMailToSubscribers}
+      sendMailToAll={this.state.sendMailToAll}
+
       titleError={this.state.fieldErrors.title}
+      contentError={this.state.fieldErrors.content}
 
       onFieldChange={this.handleFieldUpdate}
       onSubmit={this.handleSave}
-    />;
+      onCancel={this.props.onCancelled}
+    />);
   }
 }
 
 AddPostForm.propTypes = {
   onSaved: PropTypes.func.isRequired,
+  onCancelled: PropTypes.func.isRequired,
 };
 
 export default AddPostForm;
