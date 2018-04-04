@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import CircularProgress from 'material-ui/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from '../Post';
+import Notification, { NotificationType } from '../Notification';
 
 // TODO P1 make them look nice
 // TODO P1 Add possibility to create news, at least for Admins
@@ -10,7 +12,7 @@ import Post from '../Post';
 class News extends Component {
   static async loadPosts() {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}/rtg/posts/`, {
+      fetch(`${API_BASE_URL}/rtg/postsss/`, {
         method: 'GET',
         headers: { Authorization: `Token ${AuthService.getToken()}` },
       })
@@ -24,36 +26,48 @@ class News extends Component {
     });
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+      loadingError: null,
+      posts: [],
+    };
+  }
+
   componentDidMount() {
     News.loadPosts()
       .then((response) => {
         this.setState({
+          loading: false,
           loadingError: false,
           posts: response.results,
         });
       })
       .catch((error) => {
         this.setState({
+          loading: false,
           loadingError: error.message,
           posts: [],
         });
       });
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loadingError: null,
-      posts: [],
-    };
-  }
-
   render() {
     return (
       <section className="Foyer__news">
-        {this.state.loadingError && <p>{this.state.loadingError}</p>}
-        {this.state.posts.map(post => <Post key={post.id} post={post}/>)}
+        {this.state.loading && <CircularProgress />}
+        {(!this.state.loading && this.state.loadingError) &&
+          <Notification
+            type={NotificationType.ERROR}
+            title="Fehler beim Laden"
+            subtitle={this.state.loadingError}
+            style={{ margin: 'auto', maxWidth: '480px' }}
+          />}
+
+        {(!this.state.loading && !this.state.loadingError) &&
+          this.state.posts.map(post => <Post key={post.id} post={post}/>)}
       </section>
     );
   }
