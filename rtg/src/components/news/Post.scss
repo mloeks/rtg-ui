@@ -1,5 +1,7 @@
 .Post {
   &__card {
     margin: 30px 10px;
+    overflow: hidden;
+    text-align: left;
   }
 }
