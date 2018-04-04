@@ -12,7 +12,7 @@ import Notification, { NotificationType } from '../Notification';
 class News extends Component {
   static async loadPosts() {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}/rtg/postsss/`, {
+      fetch(`${API_BASE_URL}/rtg/posts/`, {
         method: 'GET',
         headers: { Authorization: `Token ${AuthService.getToken()}` },
       })
