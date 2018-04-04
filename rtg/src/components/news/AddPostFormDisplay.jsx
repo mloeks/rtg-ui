@@ -1,10 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, FlatButton, Paper, TextField } from 'material-ui';
+import { Checkbox, CircularProgress, FlatButton, Paper, TextField } from 'material-ui';
+import Notification, { NotificationType } from '../Notification';
 
 import './AddPostForm.css';
 
 const AddPostFormDisplay = (props) => {
+  const getSuitableSavingErrorSubtitle = () => {
+    if (props.titleError || props.contentError) {
+      return 'Bitte überprüfe Deine Eingaben.'
+    } else if (props.nonFieldError) {
+      return props.nonFieldError;
+    }
+    return 'Bitte versuche es später erneut.';
+  };
+
   return (
     <form className="AddPostForm" noValidate onSubmit={props.onSubmit}>
       <Paper className="AddPostForm__paper" zDepth={3}>
@@ -43,8 +53,19 @@ const AddPostFormDisplay = (props) => {
         /><br /><br />
 
         <div className="AddPostForm__button-row">
-          <FlatButton type="submit" label="Speichern" primary />
+          <FlatButton type="submit" label="Speichern" primary disabled={props.savingInProgress} />
           <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
+        </div>
+
+        <div className="AddPostForm__feedback">
+          {props.savingInProgress &&
+            <CircularProgress size={30} thickness={2.5} />}
+          {props.savingError === true &&
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle={getSuitableSavingErrorSubtitle()}
+            />}
         </div>
       </Paper>
     </form>
@@ -56,8 +77,12 @@ AddPostFormDisplay.defaultProps = {
   sendMailToSubscribers: true,
   sendMailToAll: false,
 
+  nonFieldError: '',
   titleError: '',
   contentError: '',
+
+  savingInProgress: false,
+  savingError: false,
 };
 
 AddPostFormDisplay.propTypes = {
@@ -67,8 +92,12 @@ AddPostFormDisplay.propTypes = {
   sendMailToSubscribers: PropTypes.bool,
   sendMailToAll: PropTypes.bool,
 
+  nonFieldError: PropTypes.string,
   titleError: PropTypes.string,
   contentError: PropTypes.string,
+
+  savingInProgress: PropTypes.bool,
+  savingError: PropTypes.bool,
 
   onFieldChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

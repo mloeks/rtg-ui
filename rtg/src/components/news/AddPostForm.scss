@@ -20,4 +20,9 @@
     display: flex;
     justify-content: space-evenly;
   }
+
+  &__feedback {
+    margin-top: 10px;
+    text-align: center;
+  }
 }

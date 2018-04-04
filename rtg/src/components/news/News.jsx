@@ -73,7 +73,16 @@ class News extends Component {
 
   handlePostSaved(newPost) {
     // TODO P1 prepend new post to posts list - or reload entirely?
-    this.setState({ showAddPostForm: false, showAddPostButton: true });
+    this.setState(prevState => {
+      const newPosts = prevState.posts.slice(0);
+      newPosts.unshift(newPost);
+
+      return {
+        posts: newPosts,
+        showAddPostForm: false,
+        showAddPostButton: true,
+      };
+    });
   }
 
   handleAddPostCancelled() {
@@ -100,7 +109,9 @@ class News extends Component {
         }
 
         {(!this.state.loading && !this.state.loadingError) &&
-          this.state.posts.map(post => <Post key={post.id} post={post} />)}
+          this.state.posts
+            .filter(post => post.news_appear === true)
+            .map(post => <Post key={post.id} post={post} />)}
 
         {this.state.showAddPostButton &&
           <FloatingActionButton className="News__add-button">
