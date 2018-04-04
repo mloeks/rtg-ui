@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
-import Post from '../Post';
+import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
+
+import './News.css';
 
 // TODO P1 make them look nice
 // TODO P1 Add possibility to create news, at least for Admins
@@ -56,7 +58,7 @@ class News extends Component {
 
   render() {
     return (
-      <section className="Foyer__news">
+      <section className="News">
         {this.state.loading && <CircularProgress />}
         {(!this.state.loading && this.state.loadingError) &&
           <Notification
