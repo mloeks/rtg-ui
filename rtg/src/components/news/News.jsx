@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress, FloatingActionButton } from 'material-ui';
+import { ContentAdd } from 'material-ui/svg-icons/index';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 
 import './News.css';
+import AddPostForm from "./AddPostForm";
 
 // TODO P1 make them look nice
 // TODO P1 Add possibility to create news, at least for Admins
@@ -34,8 +36,15 @@ class News extends Component {
     this.state = {
       loading: true,
       loadingError: null,
+
       posts: [],
+
+      showAddPostForm: false,
+      showAddPostButton: true,
     };
+
+    this.handleAddNews = this.handleAddNews.bind(this);
+    this.handlePostSaved = this.handlePostSaved.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +65,16 @@ class News extends Component {
       });
   }
 
+  handleAddNews() {
+    // TODO P1 scroll to top...
+    this.setState({ showAddPostForm: true, showAddPostButton: false });
+  }
+
+  handlePostSaved(newPost) {
+    // TODO P1 prepend new post to posts list - or reload entirely
+    this.setState({ showAddPostForm: false, showAddPostButton: true });
+  }
+
   render() {
     return (
       <section className="News">
@@ -68,8 +87,15 @@ class News extends Component {
             style={{ margin: 'auto', maxWidth: '480px' }}
           />}
 
+        {this.state.showAddPostForm && <AddPostForm onSaved={this.handlePostSaved} />}
+
         {(!this.state.loading && !this.state.loadingError) &&
-          this.state.posts.map(post => <Post key={post.id} post={post}/>)}
+          this.state.posts.map(post => <Post key={post.id} post={post} />)}
+
+        {this.state.showAddPostButton &&
+          <FloatingActionButton className="News__add-button">
+            <ContentAdd onClick={this.handleAddNews} />
+          </FloatingActionButton>}
       </section>
     );
   }

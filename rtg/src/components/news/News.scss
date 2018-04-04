@@ -1,4 +1,10 @@
 .News {
   margin: 20px auto;
   max-width: 1024px;
+
+  &__add-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+  }
 }
