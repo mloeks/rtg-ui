@@ -5,9 +5,9 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
+import AddPostForm from './AddPostForm';
 
 import './News.css';
-import AddPostForm from "./AddPostForm";
 
 // TODO P1 make them look nice
 // TODO P2 Lazy load news
@@ -39,6 +39,7 @@ class News extends Component {
       posts: [],
 
       addingPost: false,
+      addPostSuccess: false,
     };
 
     this.handleAddNews = this.handleAddNews.bind(this);
@@ -66,24 +67,24 @@ class News extends Component {
 
   handleAddNews() {
     // TODO P1 scroll to top...
-    this.setState({ addingPost: true });
+    this.setState({ addingPost: true, addPostSuccess: false });
   }
 
   handlePostSaved(newPost) {
-    // TODO P1 prepend new post to posts list - or reload entirely?
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const newPosts = prevState.posts.slice(0);
       newPosts.unshift(newPost);
 
       return {
         posts: newPosts,
         addingPost: false,
+        addPostSuccess: true,
       };
     });
   }
 
   handleAddPostCancelled() {
-    this.setState({ addingPost: false });
+    this.setState({ addingPost: false, addPostSuccess: false, });
   }
 
   render() {
@@ -104,6 +105,12 @@ class News extends Component {
             onCancelled={this.handleAddPostCancelled}
           />
         }
+        {(AuthService.isAdmin() && this.state.addPostSuccess) &&
+          <Notification
+            type={NotificationType.SUCCESS}
+            title="Neuigkeit erfolgreich hinzugefügt/verschickt."
+            disappearAfterMs={3000}
+          />}
 
         {(!this.state.loading && !this.state.loadingError) &&
           this.state.posts
