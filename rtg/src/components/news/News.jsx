@@ -10,7 +10,6 @@ import './News.css';
 import AddPostForm from "./AddPostForm";
 
 // TODO P1 make them look nice
-// TODO P1 Add possibility to create news, at least for Admins
 // TODO P2 Lazy load news
 // TODO P2 Allow normal users to post and comment on news
 class News extends Component {
@@ -39,8 +38,7 @@ class News extends Component {
 
       posts: [],
 
-      showAddPostForm: false,
-      showAddPostButton: true,
+      addingPost: false,
     };
 
     this.handleAddNews = this.handleAddNews.bind(this);
@@ -68,7 +66,7 @@ class News extends Component {
 
   handleAddNews() {
     // TODO P1 scroll to top...
-    this.setState({ showAddPostForm: true, showAddPostButton: false });
+    this.setState({ addingPost: true });
   }
 
   handlePostSaved(newPost) {
@@ -79,14 +77,13 @@ class News extends Component {
 
       return {
         posts: newPosts,
-        showAddPostForm: false,
-        showAddPostButton: true,
+        addingPost: false,
       };
     });
   }
 
   handleAddPostCancelled() {
-    this.setState({ showAddPostForm: false, showAddPostButton: true });
+    this.setState({ addingPost: false });
   }
 
   render() {
@@ -101,7 +98,7 @@ class News extends Component {
             style={{ margin: 'auto', maxWidth: '480px' }}
           />}
 
-        {this.state.showAddPostForm &&
+        {(AuthService.isAdmin() && this.state.addingPost) &&
           <AddPostForm
             onSaved={this.handlePostSaved}
             onCancelled={this.handleAddPostCancelled}
@@ -113,7 +110,7 @@ class News extends Component {
             .filter(post => post.news_appear === true)
             .map(post => <Post key={post.id} post={post} />)}
 
-        {this.state.showAddPostButton &&
+        {(AuthService.isAdmin() && !this.state.addingPost) &&
           <FloatingActionButton className="News__add-button">
             <ContentAdd onClick={this.handleAddNews} />
           </FloatingActionButton>}
