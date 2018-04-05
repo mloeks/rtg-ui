@@ -8,7 +8,7 @@ import List from 'material-ui/svg-icons/action/list';
 import Today from 'material-ui/svg-icons/action/today';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import UserMenu from './UserMenu';
-import AuthService from '../service/AuthService';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
 
 import './Header.css';
 
@@ -43,7 +43,12 @@ class Header extends Component {
         title={title}
         titleStyle={{ textAlign: 'left' }}
         showMenuIconButton={loggedIn}
-        iconElementRight={loggedIn ? <UserMenu username={AuthService.getUsername()} /> : null}
+        iconElementRight={loggedIn ?
+          <UserMenu
+            avatar={AuthService.getAvatarUrl() ?
+              `${API_BASE_URL}/media/${AuthService.getAvatarUrl()}` : null}
+            username={AuthService.getUsername()}
+          /> : null}
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
       />
