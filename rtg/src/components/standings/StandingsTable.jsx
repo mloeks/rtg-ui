@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   CircularProgress,
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import {
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
+import UserAvatar from '../UserAvatar';
 import { lightGrey } from '../../theme/RtgTheme';
 
 import './StandingsTable.css';
@@ -51,18 +51,12 @@ const StandingsTableRow = (props) => {
         fontSize: '16px',
         paddingLeft: 0,
       }}
-      >{props.userAvatar ?
-        <Avatar
-          size={0.65 * ROW_HEIGHT}
-          style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
-          src={`${API_BASE_URL}/media/${props.userAvatar}`}
-        /> :
-        <Avatar
-          size={0.65 * ROW_HEIGHT}
-          style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
-        >{props.username[0].toUpperCase()}
-        </Avatar>}
-        <span className="TableRowColumn__username">{props.username}</span>
+      ><UserAvatar
+        img={props.userAvatar ? `${API_BASE_URL}/media/${props.userAvatar}` : null}
+        size={0.65 * ROW_HEIGHT}
+        username={props.username}
+        style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+      /><span className="TableRowColumn__username">{props.username}</span>
       </TableRowColumn>
       <TableRowColumn style={betStatColumnStyle}>{props.noVolltreffer}</TableRowColumn>
 
