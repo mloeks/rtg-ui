@@ -43,7 +43,8 @@ class AuthService {
   }
 
   static getAvatarUrl() {
-    return LocalStorageWrapper.get('avatar-url');
+    const avatarUrl = LocalStorageWrapper.get('avatar-url');
+    return avatarUrl && avatarUrl !== 'null' ? avatarUrl : null;
   }
 
   static getOpenBetsCount() {
