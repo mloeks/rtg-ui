@@ -4,7 +4,6 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from "../../service/FetchHelper";
 
-// TODO P1 why do I get a 403 response?
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
@@ -13,15 +12,14 @@ class AddPostForm extends Component {
     };
   }
 
-  // TODO P1 test different possible error responses
   static errorResponseToStateMapper(responseJson) {
     return {
       savingError: true,
-      nonFieldError: responseJson.non_field_errors || responseJson.detail || '',
-      fieldErrors: responseJson.field_errors ? {
-        title: responseJson.field_errors.title || '',
-        content: responseJson.field_errors.content || '',
-      } : {},
+      nonFieldError: responseJson.detail || '',
+      fieldErrors: {
+        title: responseJson.title ? responseJson.title[0] : '',
+        content: responseJson.content ? responseJson.content[0] : '',
+      },
     };
   }
 

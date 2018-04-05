@@ -5,6 +5,7 @@ import Notification, { NotificationType } from '../Notification';
 
 import './AddPostForm.css';
 
+// TODO P3 structure checkboxes more logically (e-mail and force mail)
 const AddPostFormDisplay = (props) => {
   const getSuitableSavingErrorSubtitle = () => {
     if (props.titleError || props.contentError) {
@@ -37,7 +38,7 @@ const AddPostFormDisplay = (props) => {
         /><br /><br />
 
         <Checkbox
-          label="Zu den Neuigkeiten auf dieser Seite hinzufügen"
+          label="Bei den Neuigkeiten auf dieser Seite anzeigen"
           checked={props.appearInNews}
           onCheck={(e, v) => props.onFieldChange('appearInNews', v)}
         /><br />
