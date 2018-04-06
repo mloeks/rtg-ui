@@ -29,6 +29,8 @@ class GameCardBet extends Component {
       homegoalsInput: NO_GOALS_STRING,
       awaygoalsInput: NO_GOALS_STRING,
 
+      hasChanges: false,
+
       isSaving: false,
       savingError: false,
       loadingError: false,
@@ -43,6 +45,12 @@ class GameCardBet extends Component {
 
   componentDidMount() {
     this.fetchUserBet();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.shouldSave && this.state.hasChanges) {
+      console.log(`I will save bet ${nextProps.gameId}: ${this.state.homegoalsInput}:${this.state.awaygoalsInput}`);
+    }
   }
 
   fetchUserBet() {
@@ -109,25 +117,28 @@ class GameCardBet extends Component {
     }
   }
 
-  handleHomegoalsChange(e, value) { this.setState({ homegoalsInput: value }); }
-  handleAwaygoalsChange(e, value) { this.setState({ awaygoalsInput: value }); }
+  handleHomegoalsChange(e, value) { this.setState({ homegoalsInput: value, hasChanges: true }); }
+  handleAwaygoalsChange(e, value) { this.setState({ awaygoalsInput: value, hasChanges: true }); }
 
   handleHomegoalsIncrementalChange(inc) {
-    this.setState(prevState => (
-      { homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc) }
-    ));
+    this.setState(prevState => ({
+      homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
+      hasChanges: true,
+    }));
   }
 
   handleAwaygoalsIncrementalChange(inc) {
-    this.setState(prevState => (
-      { awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc) }
-    ));
+    this.setState(prevState => ({
+      awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
+      hasChanges: true,
+    }));
   }
 
   sanitizeBet() {
     this.setState(prevState => ({
       homegoalsInput: getGoalsString(prevState.homegoalsInput),
       awaygoalsInput: getGoalsString(prevState.awaygoalsInput),
+      hasChanges: true,
     }));
   }
 
@@ -148,8 +159,13 @@ class GameCardBet extends Component {
   }
 }
 
+GameCardBet.defaultProps = {
+  shouldSave: false,
+};
+
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
+  shouldSave: PropTypes.bool,
 };
 
 export default GameCardBet;

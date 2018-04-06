@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, FloatingActionButton } from 'material-ui';
+import ContentSave from 'material-ui/svg-icons/content/save';
 import Timer from 'material-ui/svg-icons/image/timer';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -16,12 +17,16 @@ import './GameBetsTab.css';
 
 // TODO P1 handle save
 // TODO P1 handle update of open bets after save
+// TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 class GameBetsTab extends Component {
   static initialState() {
     return {
       bets: [],
       gamesWithOpenBets: [],
+
+      showSaveButton: false,
+      shouldSave: false,
 
       loading: true,
       loadingError: '',
@@ -33,6 +38,7 @@ class GameBetsTab extends Component {
     this.state = GameBetsTab.initialState();
 
     this.fetchData = this.fetchData.bind(this);
+    this.handleSaveRequest = this.handleSaveRequest.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +68,9 @@ class GameBetsTab extends Component {
     }).then(FetchHelper.parseJson)
       .then((response) => {
         this.setState(() => (
-          response.ok ? { [targetStateField]: response.json } : { loadingError: true }
+          response.ok ?
+            { [targetStateField]: response.json, showSaveButton: true } :
+            { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
   }
@@ -84,6 +92,7 @@ class GameBetsTab extends Component {
         <GameCard key={game.id} {...game} >
           <GameCardBet
             gameId={game.id}
+            shouldSave={this.state.shouldSave}
           />
         </GameCard>
       );
@@ -108,6 +117,10 @@ class GameBetsTab extends Component {
         </span>
       </div>
     );
+  }
+
+  handleSaveRequest() {
+    this.setState({ shouldSave: true });
   }
 
   render() {
@@ -137,6 +150,11 @@ class GameBetsTab extends Component {
           {this.state.loadingError &&
             <div className="GameBetsTab__loadingError">Fehler beim Laden.</div>
           }
+
+          {(!this.state.loading && this.state.showSaveButton) &&
+            <FloatingActionButton className="GameBetsTab__save-button">
+              <ContentSave onClick={this.handleSaveRequest} />
+            </FloatingActionButton>}
         </section>
       </div>
     );
