@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
-import { getGoalsString, NO_GOALS_STRING } from '../service/ResultStringHelper';
+import {
+  getGoalsString,
+  isCompleteResult,
+  isEmptyResult,
+  NO_GOALS_STRING,
+  toResultString,
+} from '../service/ResultStringHelper';
 import GameCardBetPresentational from './GameCardBetPresentational';
 
+export const SavingErrorType = {
+  INCOMPLETE: 'INCOMPLETE',
+};
+
+// TODO P1 refactor such that only userBet us used from state, remove homegoalsInput and awaygoalsInput
+// on update directly update userBet string, and extract home and awaygoals in the render-method
+// TODO ANSCHLUSS save: PUT hat funktioniert, aber aus obigen Gründen werden geladene Bets noch gar nicht
+// richtig angezeigt. Alle anderen Einzelfälle testen, dann um Handling in parent Komponente kümmern.
+// TODO P1 handle & display loadingError
 class GameCardBet extends Component {
   static getIncrementedGoal(previousValue, inc) {
     const previousValueNumber = Number(previousValue);
@@ -32,10 +47,10 @@ class GameCardBet extends Component {
       hasChanges: false,
 
       isSaving: false,
-      savingError: false,
       loadingError: false,
     };
 
+    this.save = this.save.bind(this);
     this.handleHomegoalsChange = this.handleHomegoalsChange.bind(this);
     this.handleAwaygoalsChange = this.handleAwaygoalsChange.bind(this);
     this.handleHomegoalsIncrementalChange = this.handleHomegoalsIncrementalChange.bind(this);
@@ -49,7 +64,7 @@ class GameCardBet extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.shouldSave && this.state.hasChanges) {
-      console.log(`I will save bet ${nextProps.gameId}: ${this.state.homegoalsInput}:${this.state.awaygoalsInput}`);
+      this.save();
     }
   }
 
@@ -60,30 +75,32 @@ class GameCardBet extends Component {
       .then((response) => {
         this.setState(() => (
           response.ok ?
-            { bet: response.json.length > 0 ? response.json[0] : null }
+            { userBet: response.json.length > 0 ? response.json[0] : null }
             : { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  // TODO P1 save when required from parent component (via prop & receiveprops),
-  // require and invoke success and error callbacks
-  // in the parent, remember bets with saving issues
-  // also stay able to save a single bet from here, might be needed for other usages
-  // of GameBetCard!
+  // TODO P2 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
-  handleSave() {
-    if (this.state.userBet && !this.state.isSaving) {
-      this.setState({ isSaving: true, savingSuccess: false, savingError: false });
+  save() {
+    if (!this.state.isSaving) {
+      this.setState({ isSaving: true });
 
-      const newBet = this.state.userBet;
-      const body = newBet !== null ? { bettable: this.props.gameId, result_bet: newBet } : null;
+      const newBet = toResultString(this.state.homegoalsInput, this.state.awaygoalsInput);
+      const emptyResult = isEmptyResult(newBet);
+
+      if (!newBet || !isCompleteResult(newBet)) {
+        this.props.onSavingError(this.props.gameId, SavingErrorType.INCOMPLETE);
+      }
+
+      const body = emptyResult ? null : { bettable: this.props.gameId, result_bet: newBet };
 
       let method;
       let url = `${API_BASE_URL}/rtg/bets/`;
-      if (this.state.userBet.id) {
+      if (this.state.userBet && this.state.userBet.id) {
         url += `${this.state.userBet.id}/`;
-        method = newBet !== null ? 'PUT' : 'DELETE';
+        method = emptyResult ? 'DELETE' : 'PUT';
       } else {
         method = 'POST';
       }
@@ -99,21 +116,26 @@ class GameCardBet extends Component {
         .then((response) => {
           if (response.ok) {
             this.setState({
-              savingSuccess: true,
               isSaving: false,
               hasChanges: false,
               userBet: response.json || null,
             }, () => {
               if (method === 'POST') {
-                this.props.onBetAdded();
+                this.props.onBetAdded(this.props.gameId);
+              } else if (method === 'PUT') {
+                this.props.onBetUpdated(this.props.gameId);
               } else if (method === 'DELETE') {
-                this.props.onBetRemoved();
+                this.props.onBetRemoved(this.props.gameId);
               }
             });
           } else {
-            this.setState({ savingError: true, isSaving: false });
+            this.setState({ isSaving: false }, () => {
+              this.props.onSavingError(this.props.gameId, response.json.detail);
+            });
           }
-        }).catch(() => this.setState({ savingError: true, isSaving: false }));
+        }).catch(() => this.setState({ isSaving: false }, () => {
+          this.props.onSavingError(this.props.gameId);
+        }));
     }
   }
 
@@ -166,6 +188,11 @@ GameCardBet.defaultProps = {
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
   shouldSave: PropTypes.bool,
+
+  onBetAdded: PropTypes.func.isRequired,
+  onBetUpdated: PropTypes.func.isRequired,
+  onBetRemoved: PropTypes.func.isRequired,
+  onSavingError: PropTypes.func.isRequired,
 };
 
 export default GameCardBet;

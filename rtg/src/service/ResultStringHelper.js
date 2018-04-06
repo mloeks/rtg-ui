@@ -2,10 +2,10 @@ export const RESULT_SEPARATOR = ':';
 export const NO_GOALS_STRING = '-';
 export const NO_GOALS_INT = -1;
 
-export const isCompleteResult = resultString => `^\\d{1,2}${RESULT_SEPARATOR}\\d{1,2}$`.test(resultString);
+export const isCompleteResult = resultString => new RegExp(`^\\d{1,2}${RESULT_SEPARATOR}\\d{1,2}$`).test(resultString);
 
 export const isEmptyResult = resultString =>
-  `^${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}$`.test(resultString);
+  `${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}` === resultString;
 
 export const toResultString = (homegoals, awaygoals) => {
   const homegoalsString = (!homegoals || homegoals === NO_GOALS_INT) ? NO_GOALS_STRING : homegoals;

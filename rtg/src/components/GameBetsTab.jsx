@@ -15,7 +15,6 @@ import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
-// TODO P1 handle save
 // TODO P1 handle update of open bets after save
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
@@ -39,6 +38,9 @@ class GameBetsTab extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.handleSaveRequest = this.handleSaveRequest.bind(this);
+    this.handleBetAdded = this.handleBetAdded.bind(this);
+    this.handleBetUpdated = this.handleBetUpdated.bind(this);
+    this.handleBetRemoved = this.handleBetRemoved.bind(this);
   }
 
   componentDidMount() {
@@ -93,6 +95,10 @@ class GameBetsTab extends Component {
           <GameCardBet
             gameId={game.id}
             shouldSave={this.state.shouldSave}
+            onSavingError={this.handleSavingError}
+            onBetAdded={this.handleBetAdded}
+            onBetUpdated={this.handleBetUpdated}
+            onBetRemoved={this.handleBetRemoved}
           />
         </GameCard>
       );
@@ -121,6 +127,24 @@ class GameBetsTab extends Component {
 
   handleSaveRequest() {
     this.setState({ shouldSave: true });
+  }
+
+  // TODO P1 remove successfully saved game from list of games tobe saved and check if we're done with all games.
+  handleBetAdded(gameId) {
+    console.log(`Successfully added new bet for game ${gameId}.`);
+  }
+
+  handleBetUpdated(gameId) {
+    console.log(`Successfully updated bet for game ${gameId}.`);
+  }
+
+  handleBetRemoved(gameId) {
+    console.log(`Successfully removed bet for game ${gameId}.`);
+  }
+
+  // TODO P1 store all bet save failures in state and show error popup/panel.
+  handleSavingError(gameId, errorType) {
+    console.log(`Error while saving game ${gameId} (Type ${errorType}).`);
   }
 
   render() {
