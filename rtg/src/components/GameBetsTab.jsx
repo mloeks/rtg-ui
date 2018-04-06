@@ -14,6 +14,8 @@ import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
+// TODO P1 handle save
+// TODO P1 handle update of open bets after save
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 class GameBetsTab extends Component {
   static initialState() {
@@ -31,7 +33,6 @@ class GameBetsTab extends Component {
     this.state = GameBetsTab.initialState();
 
     this.fetchData = this.fetchData.bind(this);
-    this.handleBetChanged = this.handleBetChanged.bind(this);
   }
 
   componentDidMount() {
@@ -66,11 +67,6 @@ class GameBetsTab extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  handleBetChanged(betId) {
-    console.log(`bet ${betId} changed`);
-    // TODO P1 implement
-  }
-
   createGameCardsWithDeadlineSubheadings(games) {
     const gameCardsWithDeadlineSubheadings = [];
     let lastDeadlineText = null;
@@ -88,9 +84,6 @@ class GameBetsTab extends Component {
         <GameCard key={game.id} {...game} >
           <GameCardBet
             gameId={game.id}
-            onChange={this.handleBetChanged}
-            onBetAdded={() => this.props.onOpenBetsUpdateIncremental(-1)}
-            onBetRemoved={() => this.props.onOpenBetsUpdateIncremental(1)}
           />
         </GameCard>
       );
