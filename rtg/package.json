@@ -5,6 +5,7 @@
   "dependencies": {
     "date-fns": "^1.29.0",
     "eslint-config-airbnb": "^16.1.0",
+    "hsl-to-hex": "^1.0.0",
     "json-server": "^0.12.1",
     "material-ui": "^0.20.0",
     "node-sass-chokidar": "^1.1.1",

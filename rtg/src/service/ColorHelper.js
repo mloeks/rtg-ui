@@ -1,5 +1,10 @@
+import hsl from 'hsl-to-hex';
+
+export const randomHueHexColor = (saturation, luminosity) =>
+  hsl(Math.floor(Math.random() * 359), saturation, luminosity);
+
 // Source: https://jsfiddle.net/gabrieleromanato/hrJ4X/
-const lightenDarkenColor = (col, amt) => {
+export const lightenDarkenColor = (col, amt) => {
   let usePound = false;
   if (col[0] === '#') {
     col = col.slice(1);
@@ -26,5 +31,3 @@ const lightenDarkenColor = (col, amt) => {
   }
   return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16);
 };
-
-export default lightenDarkenColor;

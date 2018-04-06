@@ -6,29 +6,34 @@ import { format, isToday, isYesterday } from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
 import { API_BASE_URL } from '../../service/AuthService';
+import { randomHueHexColor } from '../../service/ColorHelper';
+import { lightGrey } from '../../theme/RtgTheme';
 
 import './Post.css';
 
-// TODO P2 give CardTitle a very pale random colour
 const Post = (props) => {
   const userAvatarUrl = props.post.author_details.avatar ?
     `${API_BASE_URL}/media/${props.post.author_details.avatar}` : null;
 
-  const dateCreatedAsDate = new Date(props.post.date_created);
-  let formattedPostDate =
-    format(dateCreatedAsDate, 'dd. D. MMMM', { locale: de });
-  if (isToday(dateCreatedAsDate)) {
-    formattedPostDate = 'Heute';
-  } else if (isYesterday(dateCreatedAsDate)) {
-    formattedPostDate = 'Gestern';
-  }
-  const formattedPostTime = format(dateCreatedAsDate, 'HH:mm [Uhr]');
+  const getFormattedPostDate = (date) => {
+    if (isToday(date)) {
+      return 'Heute';
+    } else if (isYesterday(date)) {
+      return 'Gestern';
+    }
+    return format(date, 'dd. D. MMMM', { locale: de });
+  };
+
+  const dateCreated = new Date(props.post.date_created);
+  const formattedPostTime = format(dateCreated, 'HH:mm [Uhr]');
+
+  const randomPostColour = randomHueHexColor(45, 97);
 
   return (
     <Card className="Post__card">
       <CardTitle
         title={props.post.title}
-        style={{ paddingBottom: '5px' }}
+        style={{ backgroundColor: randomPostColour, paddingBottom: '5px' }}
         titleStyle={{
           fontSize: '32px',
           fontFamily: '"Lobster Two", sans-serif',
@@ -37,16 +42,17 @@ const Post = (props) => {
       />
       <CardHeader
         title={props.post.author_details.username}
-        subtitle={`${formattedPostDate}, ${formattedPostTime}`}
+        subtitle={`${getFormattedPostDate(dateCreated)}, ${formattedPostTime}`}
         avatar={
           <UserAvatar
             size={40}
             img={userAvatarUrl}
             username={props.post.author_details.username}
           />}
+        style={{ backgroundColor: randomPostColour }}
         subtitleStyle={{ fontWeight: 400 }}
       />
-      <Divider />
+      <Divider style={{ height: '2px', backgroundColor: lightGrey }} />
       <CardText
         style={{
           backgroundColor: 'white',

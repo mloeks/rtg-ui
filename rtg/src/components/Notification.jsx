@@ -4,7 +4,7 @@ import { Avatar, Card, CardHeader } from 'material-ui';
 import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import lightenDarkenColor from '../service/ColorHelper';
+import { lightenDarkenColor } from '../service/ColorHelper';
 
 export const NotificationType = {
   SUCCESS: 'success',
