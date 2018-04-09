@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import {
+  getAwaygoals,
   getGoalsString,
+  getHomegoals,
   isCompleteResult,
   isEmptyResult,
   NO_GOALS_STRING,
@@ -15,10 +17,7 @@ export const SavingErrorType = {
   INCOMPLETE: 'INCOMPLETE',
 };
 
-// TODO P1 refactor such that only userBet us used from state, remove homegoalsInput and awaygoalsInput
-// on update directly update userBet string, and extract home and awaygoals in the render-method
-// TODO ANSCHLUSS save: PUT hat funktioniert, aber aus obigen Gründen werden geladene Bets noch gar nicht
-// richtig angezeigt. Alle anderen Einzelfälle testen, dann um Handling in parent Komponente kümmern.
+// TODO P1 Check all different bet saving methods (POST, PUT, DELETE)
 // TODO P1 handle & display loadingError
 class GameCardBet extends Component {
   static getIncrementedGoal(previousValue, inc) {
@@ -33,6 +32,14 @@ class GameCardBet extends Component {
       return NO_GOALS_STRING;
     }
     return previousValueNumber + inc;
+  }
+
+  static goalsStateFromUserBet(userBet) {
+    const resultAvailable = userBet && userBet.result_bet;
+    return {
+      homegoalsInput: resultAvailable ? getHomegoals(userBet.result_bet) : NO_GOALS_STRING,
+      awaygoalsInput: resultAvailable ? getAwaygoals(userBet.result_bet) : NO_GOALS_STRING,
+    };
   }
 
   constructor(props) {
@@ -73,11 +80,12 @@ class GameCardBet extends Component {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
-        this.setState(() => (
-          response.ok ?
-            { userBet: response.json.length > 0 ? response.json[0] : null }
-            : { loadingError: true }
-        ));
+        if (response.ok) {
+          const userBet = response.json.length > 0 ? response.json[0] : null;
+          this.setState({ userBet, ...GameCardBet.goalsStateFromUserBet(userBet) });
+        } else {
+          this.setState({ loadingError: true });
+        }
       }).catch(() => this.setState({ loadingError: true }));
   }
 
@@ -90,8 +98,9 @@ class GameCardBet extends Component {
       const newBet = toResultString(this.state.homegoalsInput, this.state.awaygoalsInput);
       const emptyResult = isEmptyResult(newBet);
 
-      if (!newBet || !isCompleteResult(newBet)) {
+      if (!emptyResult && !isCompleteResult(newBet)) {
         this.props.onSavingError(this.props.gameId, SavingErrorType.INCOMPLETE);
+        return;
       }
 
       const body = emptyResult ? null : { bettable: this.props.gameId, result_bet: newBet };
@@ -119,6 +128,7 @@ class GameCardBet extends Component {
               isSaving: false,
               hasChanges: false,
               userBet: response.json || null,
+              ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
               if (method === 'POST') {
                 this.props.onBetAdded(this.props.gameId);

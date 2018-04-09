@@ -21,27 +21,15 @@ export const inputToGoals = (input) => {
 };
 
 export const getHomegoals = (resultString) => {
-  if (!resultString || typeof resultString !== 'string') { return NO_GOALS_INT; }
+  if (!resultString || typeof resultString !== 'string') { return NO_GOALS_STRING; }
   const homegoals = resultString.split(RESULT_SEPARATOR)[0];
-  return homegoals !== NO_GOALS_STRING ? homegoals : NO_GOALS_INT;
+  return homegoals !== NO_GOALS_STRING ? homegoals : NO_GOALS_STRING;
 };
 
 export const getAwaygoals = (resultString) => {
-  if (!resultString || typeof resultString !== 'string') { return NO_GOALS_INT; }
+  if (!resultString || typeof resultString !== 'string') { return NO_GOALS_STRING; }
   const awaygoals = resultString.split(RESULT_SEPARATOR)[1];
-  return awaygoals !== NO_GOALS_STRING ? awaygoals : NO_GOALS_INT;
-};
-
-export const setHomegoals = (resultString, homegoalsInput) => {
-  return !resultString
-    ? toResultString(inputToGoals(homegoalsInput), -1)
-    : toResultString(inputToGoals(homegoalsInput), getAwaygoals(resultString));
-};
-
-export const setAwaygoals = (resultString, awaygoalsInput) => {
-  return !resultString
-    ? toResultString(-1, inputToGoals(awaygoalsInput))
-    : toResultString(getHomegoals(resultString), inputToGoals(awaygoalsInput));
+  return awaygoals !== NO_GOALS_STRING ? awaygoals : NO_GOALS_STRING;
 };
 
 export const getGoalsString = (goals) => {
