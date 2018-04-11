@@ -101,6 +101,7 @@ class GameCardBet extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
+  // TODO P1 once again validate input and introduce errortype INVALID
   // TODO P2 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
@@ -152,8 +153,10 @@ class GameCardBet extends Component {
             });
           } else {
             this.setState({ isSaving: false }, () => {
+              const responseDetail = response.json.detail ||
+                (response.json.non_field_errors ? response.json.non_field_errors[0] : null);
               this.props
-                .onSaveDone(this.props.gameId, SavingErrorType.FAILED, response.json.detail);
+                .onSaveDone(this.props.gameId, SavingErrorType.FAILED, responseDetail);
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {

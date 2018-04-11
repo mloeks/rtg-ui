@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { CircularProgress, FloatingActionButton, LinearProgress } from 'material-ui';
+import { CircularProgress, Dialog, FlatButton, FloatingActionButton, LinearProgress } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import Timer from 'material-ui/svg-icons/image/timer';
 import { distanceInWordsToNow, format } from 'date-fns';
@@ -9,13 +9,14 @@ import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
-import GameCardBet from './GameCardBet';
+import GameCardBet, { SavingErrorType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
 // TODO P1 handle update of open bets after save, based on success type
+// TODO P1 test all save cases thoroughly (current issues: repeatedly saving fails)
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
@@ -39,7 +40,7 @@ class GameBetsTab extends Component {
   constructor(props) {
     super(props);
     this.state = GameBetsTab.initialState();
-    this.savedBetsStats = new Map();
+    this.gamesWithSaveType = new Map();
     this.savingIndicatorTimeout = null;
 
     this.fetchData = this.fetchData.bind(this);
@@ -127,28 +128,44 @@ class GameBetsTab extends Component {
   }
 
   handleSaveRequest() {
-    this.savedBetsStats.clear();
+    this.setState((prevState) => {
+      this.gamesWithSaveType.clear();
 
-    this.state.gamesWithOpenBets.forEach(game => {
-      this.savedBetsStats.set(game.id, null);
+      prevState.gamesWithOpenBets.forEach((game) => {
+        this.gamesWithSaveType.set(game.id, game);
+      });
+
+      return { shouldSave: true, gamesWithSavingIssues: [] };
     });
 
     this.savingIndicatorTimeout = setTimeout(() => {
       this.setState({ showSavingIndicator: true });
     }, 500);
-    this.setState({ shouldSave: true });
   }
 
-  // TODO P1 store all bet save failures in state and show error popup/panel.
-  handleBetSaveDone(gameId, successType) {
-    this.savedBetsStats.set(gameId, successType);
+  // TODO P2 refactor this method
+  handleBetSaveDone(gameId, saveType, responseDetail) {
+    const updatedGameWithSaveType = {
+      ...this.gamesWithSaveType.get(gameId), saveType, responseDetail,
+    };
+    this.gamesWithSaveType.set(gameId, updatedGameWithSaveType);
 
     // TODO P1 has no IE support -> does Babel handle this? Polyfill otherwise.
-    const allBetsDone = !Array.from(this.savedBetsStats.values()).some(val => val === null);
+    const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
+    const allBetsDone = !gamesWithSaveTypeValueArray.some(game => !game.saveType);
     if (allBetsDone) {
       clearInterval(this.savingIndicatorTimeout);
+      const gamesWithSavingIssues = gamesWithSaveTypeValueArray
+        .filter((game) => game.saveType &&
+          (game.saveType === SavingErrorType.FAILED ||
+            game.saveType === SavingErrorType.INCOMPLETE));
 
-      this.setState({ shouldSave: false, showSavingIndicator: false, showSavingSuccess: true });
+      this.setState({
+        shouldSave: false,
+        showSavingIndicator: false,
+        showSavingSuccess: gamesWithSavingIssues.length === 0,
+        gamesWithSavingIssues,
+      });
       setTimeout(() => {
         this.setState({ showSavingSuccess: false });
       }, 3000);
@@ -172,7 +189,35 @@ class GameBetsTab extends Component {
         <section className="GameBetsTab__game-bets-container">
           {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 
-          {/* TODO P3 refactor all this notifiaction stuff into an own component */}
+          {/* TODO P3 refactor into an own component */}
+          <Dialog
+            className="GameBetsTab__saving-error-dialog"
+            actions={[
+              <FlatButton
+                label="Schließen"
+                onClick={() => this.setState({ gamesWithSavingIssues: [] })}
+              />,
+            ]}
+            autoScrollBodyContent
+            modal
+            open={this.state.gamesWithSavingIssues.length > 0}
+            title={<h2 style={{ textAlign: 'center' }}>Probleme beim Speichern</h2>}
+            style={{ textAlign: 'left' }}
+            contentStyle={{ width: '95%' }}
+          >
+            <div>
+              <p>Deine Tipps für folgende Spiele konnten leider nicht gespeichert werden:</p>
+              {this.state.gamesWithSavingIssues.map(game => (
+                <div key={game.id}>
+                  {/* TODO P1 finish styling. */}
+                  <h5>{`${game.hometeam_name} - ${game.awayteam_name}`}</h5>
+                  <span>Fehler: {game.saveType} {game.responseDetail}</span>
+                </div>
+              ))}
+            </div>
+          </Dialog>
+
+          {/* TODO P3 refactor all this bottom notifiaction stuff into an own component */}
           {this.state.shouldSave && <div className="GameBetsTab__saving-overlay" />}
           <div
             className={`GameBetsTab__saving-info

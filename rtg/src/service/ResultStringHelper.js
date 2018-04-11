@@ -7,8 +7,8 @@ export const isEmptyResult = resultString =>
   `${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}` === resultString;
 
 export const toResultString = (homegoals, awaygoals) => {
-  const homegoalsString = !homegoals ? NO_GOALS_STRING : homegoals;
-  const awaygoalsString = !awaygoals ? NO_GOALS_STRING : awaygoals;
+  const homegoalsString = (!homegoals && Number(homegoals) !== 0) ? NO_GOALS_STRING : homegoals;
+  const awaygoalsString = (!awaygoals && Number(awaygoals) !== 0) ? NO_GOALS_STRING : awaygoals;
   return `${homegoalsString}${RESULT_SEPARATOR}${awaygoalsString}`;
 };
 
