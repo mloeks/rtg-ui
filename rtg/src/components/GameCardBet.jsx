@@ -13,8 +13,16 @@ import {
 } from '../service/ResultStringHelper';
 import GameCardBetPresentational from './GameCardBetPresentational';
 
+export const SavingSuccessType = {
+  UNCHANGED: 'UNCHANGED',
+  ADDED: 'ADDED',
+  UPDATED: 'UPDATED',
+  DELETED: 'DELETED',
+};
+
 export const SavingErrorType = {
   INCOMPLETE: 'INCOMPLETE',
+  FAILED: 'FAILED',
 };
 
 // TODO P1 Check all different bet saving methods (POST, PUT, DELETE)
@@ -70,8 +78,12 @@ class GameCardBet extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.shouldSave && this.state.hasChanges) {
-      this.save();
+    if (nextProps.shouldSave) {
+      if (this.state.hasChanges) {
+        this.save();
+      } else {
+        this.props.onSaveDone(this.props.gameId, SavingSuccessType.UNCHANGED);
+      }
     }
   }
 
@@ -99,7 +111,7 @@ class GameCardBet extends Component {
       const emptyResult = isEmptyResult(newBet);
 
       if (!emptyResult && !isCompleteResult(newBet)) {
-        this.props.onSavingError(this.props.gameId, SavingErrorType.INCOMPLETE);
+        this.props.onSaveDone(this.props.gameId, SavingErrorType.INCOMPLETE);
         return;
       }
 
@@ -131,20 +143,21 @@ class GameCardBet extends Component {
               ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
               if (method === 'POST') {
-                this.props.onBetAdded(this.props.gameId);
+                this.props.onSaveDone(this.props.gameId, SavingSuccessType.ADDED);
               } else if (method === 'PUT') {
-                this.props.onBetUpdated(this.props.gameId);
+                this.props.onSaveDone(this.props.gameId, SavingSuccessType.UPDATED);
               } else if (method === 'DELETE') {
-                this.props.onBetRemoved(this.props.gameId);
+                this.props.onSaveDone(this.props.gameId, SavingSuccessType.DELETED);
               }
             });
           } else {
             this.setState({ isSaving: false }, () => {
-              this.props.onSavingError(this.props.gameId, response.json.detail);
+              this.props
+                .onSaveDone(this.props.gameId, SavingErrorType.FAILED, response.json.detail);
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
-          this.props.onSavingError(this.props.gameId);
+          this.props.onSaveDone(this.props.gameId, SavingErrorType.FAILED);
         }));
     }
   }
@@ -198,11 +211,7 @@ GameCardBet.defaultProps = {
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
   shouldSave: PropTypes.bool,
-
-  onBetAdded: PropTypes.func.isRequired,
-  onBetUpdated: PropTypes.func.isRequired,
-  onBetRemoved: PropTypes.func.isRequired,
-  onSavingError: PropTypes.func.isRequired,
+  onSaveDone: PropTypes.func.isRequired,
 };
 
 export default GameCardBet;

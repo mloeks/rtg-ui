@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { CircularProgress, FloatingActionButton } from 'material-ui';
+import { CircularProgress, FloatingActionButton, LinearProgress } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import Timer from 'material-ui/svg-icons/image/timer';
 import { distanceInWordsToNow, format } from 'date-fns';
@@ -15,9 +15,11 @@ import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 
-// TODO P1 handle update of open bets after save
+// TODO P1 handle update of open bets after save, based on success type
+// TODO P1 display progress and avoid further input if we're during a save
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
+// TODO P3 switch deadline info between relative distance and absolute date (css only?)
 class GameBetsTab extends Component {
   static initialState() {
     return {
@@ -35,12 +37,11 @@ class GameBetsTab extends Component {
   constructor(props) {
     super(props);
     this.state = GameBetsTab.initialState();
+    this.savedBetsStats = new Map();
 
     this.fetchData = this.fetchData.bind(this);
     this.handleSaveRequest = this.handleSaveRequest.bind(this);
-    this.handleBetAdded = this.handleBetAdded.bind(this);
-    this.handleBetUpdated = this.handleBetUpdated.bind(this);
-    this.handleBetRemoved = this.handleBetRemoved.bind(this);
+    this.handleBetSaveDone = this.handleBetSaveDone.bind(this);
   }
 
   componentDidMount() {
@@ -95,10 +96,7 @@ class GameBetsTab extends Component {
           <GameCardBet
             gameId={game.id}
             shouldSave={this.state.shouldSave}
-            onSavingError={this.handleSavingError}
-            onBetAdded={this.handleBetAdded}
-            onBetUpdated={this.handleBetUpdated}
-            onBetRemoved={this.handleBetRemoved}
+            onSaveDone={this.handleBetSaveDone}
           />
         </GameCard>
       );
@@ -126,25 +124,24 @@ class GameBetsTab extends Component {
   }
 
   handleSaveRequest() {
+    this.savedBetsStats.clear();
+
+    this.state.gamesWithOpenBets.forEach(game => {
+      this.savedBetsStats.set(game.id, null);
+    });
+
     this.setState({ shouldSave: true });
   }
 
-  // TODO P1 remove successfully saved game from list of games tobe saved and check if we're done with all games.
-  handleBetAdded(gameId) {
-    console.log(`Successfully added new bet for game ${gameId}.`);
-  }
-
-  handleBetUpdated(gameId) {
-    console.log(`Successfully updated bet for game ${gameId}.`);
-  }
-
-  handleBetRemoved(gameId) {
-    console.log(`Successfully removed bet for game ${gameId}.`);
-  }
-
   // TODO P1 store all bet save failures in state and show error popup/panel.
-  handleSavingError(gameId, errorType) {
-    console.log(`Error while saving game ${gameId} (Type ${errorType}).`);
+  handleBetSaveDone(gameId, successType) {
+    this.savedBetsStats.set(gameId, successType);
+
+    // TODO P1 has no IE support -> does Babel handle this? Polyfill otherwise.
+    const allBetsUpdated = !Array.from(this.savedBetsStats.values()).some(val => val === null);
+    if (allBetsUpdated) {
+      this.setState({ shouldSave: false });
+    }
   }
 
   render() {
@@ -164,6 +161,15 @@ class GameBetsTab extends Component {
         <section className="GameBetsTab__game-bets-container">
           {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 
+          {this.state.shouldSave &&
+            <div>
+              <div className="GameBetsTab__saving-overlay" />
+              <div className="GameBetsTab__saving-info">
+                <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }}/>
+                <span>Speichern...</span>
+              </div>
+            </div>}
+
           {(!this.state.loading && !this.state.loadingError &&
              this.state.gamesWithOpenBets.length > 0) && gameBetsItems}
 
@@ -176,8 +182,10 @@ class GameBetsTab extends Component {
           }
 
           {(!this.state.loading && this.state.showSaveButton) &&
-            <FloatingActionButton className="GameBetsTab__save-button">
-              <ContentSave onClick={this.handleSaveRequest} />
+            <FloatingActionButton
+              className="GameBetsTab__save-button"
+              disabled={this.state.shouldSave}
+            ><ContentSave onClick={this.handleSaveRequest} />
             </FloatingActionButton>}
         </section>
       </div>
