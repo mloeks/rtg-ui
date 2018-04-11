@@ -1,4 +1,8 @@
+@import '../sass/colors.scss';
 @import '../sass/z-indexes.scss';
+
+$save-button-offset: 24px;
+$saving-info-height: $save-button-offset + 0.5 * 56px;
 
 .GameBetsTab {
   &__game-bets-container {
@@ -17,8 +21,8 @@
 
   &__save-button {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    right: $save-button-offset;
+    bottom: $save-button-offset;
     z-index: $zGameBetsTabSaveButton;
   }
 
@@ -26,8 +30,8 @@
     position: fixed;
     left: -20px;
     right: -20px;
-    bottom: 0;
-    height: 52px;
+    bottom: -$saving-info-height;
+    height: $saving-info-height;
 
     display: flex;
     flex-direction: column;
@@ -39,14 +43,19 @@
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
 
-    animation: heightAnimate 375ms cubic-bezier(0.4, 0.0, 0.2, 1);
-
-    @keyframes heightAnimate {
-      from {height: 0;}
-      to {height: 52px;}
-    }
+    transition:
+            bottom 375ms cubic-bezier(0.4, 0.0, 0.2, 1),
+            background-color 375ms cubic-bezier(0.4, 0.0, 0.2, 1);
 
     z-index: $zGameBetsTabSavingProgress;
+
+    &--show {
+      bottom: 0;
+    }
+
+    &--success {
+      background-color: lighten($success, 30%);
+    }
   }
 
   &__saving-overlay {

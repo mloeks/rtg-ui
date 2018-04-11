@@ -16,7 +16,6 @@ import { countOpenBets } from '../pages/Bets';
 import './GameBetsTab.css';
 
 // TODO P1 handle update of open bets after save, based on success type
-// TODO P1 display progress and avoid further input if we're during a save
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
@@ -25,9 +24,12 @@ class GameBetsTab extends Component {
     return {
       bets: [],
       gamesWithOpenBets: [],
+      gamesWithSavingIssues: [],
 
       showSaveButton: false,
       shouldSave: false,
+      showSavingIndicator: false,
+      showSavingSuccess: false,
 
       loading: true,
       loadingError: '',
@@ -38,6 +40,7 @@ class GameBetsTab extends Component {
     super(props);
     this.state = GameBetsTab.initialState();
     this.savedBetsStats = new Map();
+    this.savingIndicatorTimeout = null;
 
     this.fetchData = this.fetchData.bind(this);
     this.handleSaveRequest = this.handleSaveRequest.bind(this);
@@ -130,6 +133,9 @@ class GameBetsTab extends Component {
       this.savedBetsStats.set(game.id, null);
     });
 
+    this.savingIndicatorTimeout = setTimeout(() => {
+      this.setState({ showSavingIndicator: true });
+    }, 500);
     this.setState({ shouldSave: true });
   }
 
@@ -138,9 +144,14 @@ class GameBetsTab extends Component {
     this.savedBetsStats.set(gameId, successType);
 
     // TODO P1 has no IE support -> does Babel handle this? Polyfill otherwise.
-    const allBetsUpdated = !Array.from(this.savedBetsStats.values()).some(val => val === null);
-    if (allBetsUpdated) {
-      this.setState({ shouldSave: false });
+    const allBetsDone = !Array.from(this.savedBetsStats.values()).some(val => val === null);
+    if (allBetsDone) {
+      clearInterval(this.savingIndicatorTimeout);
+
+      this.setState({ shouldSave: false, showSavingIndicator: false, showSavingSuccess: true });
+      setTimeout(() => {
+        this.setState({ showSavingSuccess: false });
+      }, 3000);
     }
   }
 
@@ -161,14 +172,18 @@ class GameBetsTab extends Component {
         <section className="GameBetsTab__game-bets-container">
           {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 
-          {this.state.shouldSave &&
-            <div>
-              <div className="GameBetsTab__saving-overlay" />
-              <div className="GameBetsTab__saving-info">
-                <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }}/>
-                <span>Speichern...</span>
-              </div>
-            </div>}
+          {/* TODO P3 refactor all this notifiaction stuff into an own component */}
+          {this.state.shouldSave && <div className="GameBetsTab__saving-overlay" />}
+          <div
+            className={`GameBetsTab__saving-info
+              ${(this.state.showSavingIndicator || this.state.showSavingSuccess) ? ' GameBetsTab__saving-info--show' : ''}
+              ${this.state.showSavingSuccess ? ' GameBetsTab__saving-info--success' : ''}`}
+          >
+            {this.state.showSavingIndicator &&
+              <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }} />}
+            {this.state.showSavingIndicator && <span>Speichern...</span>}
+            {this.state.showSavingSuccess && <span>Änderungen gespeichert.</span>}
+          </div>
 
           {(!this.state.loading && !this.state.loadingError &&
              this.state.gamesWithOpenBets.length > 0) && gameBetsItems}
