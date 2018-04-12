@@ -74,7 +74,9 @@ class GameCardBet extends Component {
   }
 
   componentDidMount() {
-    this.fetchUserBet();
+    if (!this.props.userBet) {
+      this.fetchUserBet();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -107,7 +109,6 @@ class GameCardBet extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  // TODO P2 once again validate input and introduce errortype INVALID
   // TODO P2 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
