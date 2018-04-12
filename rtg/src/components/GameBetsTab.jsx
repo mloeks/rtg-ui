@@ -12,9 +12,9 @@ import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
+import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
 import './GameBetsTab.css';
-import SavingIssuesDialog from "./bets/SavingIssuesDialog";
 
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
