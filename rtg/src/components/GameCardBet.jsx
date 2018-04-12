@@ -82,7 +82,11 @@ class GameCardBet extends Component {
       if (this.state.hasChanges) {
         this.save();
       } else {
-        this.props.onSaveDone(this.props.gameId, SavingSuccessType.UNCHANGED);
+        this.props.onSaveDone(
+          this.props.gameId,
+          toResultString(this.state.homegoalsInput, this.state.awaygoalsInput),
+          SavingSuccessType.UNCHANGED,
+        );
       }
     }
   }
@@ -112,7 +116,7 @@ class GameCardBet extends Component {
       const emptyResult = isEmptyResult(newBet);
 
       if (!emptyResult && !isCompleteResult(newBet)) {
-        this.props.onSaveDone(this.props.gameId, SavingErrorType.INCOMPLETE);
+        this.props.onSaveDone(this.props.gameId, newBet, SavingErrorType.INCOMPLETE);
         return;
       }
 
@@ -144,11 +148,11 @@ class GameCardBet extends Component {
               ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
               if (method === 'POST') {
-                this.props.onSaveDone(this.props.gameId, SavingSuccessType.ADDED);
+                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.ADDED);
               } else if (method === 'PUT') {
-                this.props.onSaveDone(this.props.gameId, SavingSuccessType.UPDATED);
+                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.UPDATED);
               } else if (method === 'DELETE') {
-                this.props.onSaveDone(this.props.gameId, SavingSuccessType.DELETED);
+                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.DELETED);
               }
             });
           } else {
@@ -156,11 +160,11 @@ class GameCardBet extends Component {
               const responseDetail = response.json.detail ||
                 (response.json.non_field_errors ? response.json.non_field_errors[0] : null);
               this.props
-                .onSaveDone(this.props.gameId, SavingErrorType.FAILED, responseDetail);
+                .onSaveDone(this.props.gameId, newBet, SavingErrorType.FAILED, responseDetail);
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
-          this.props.onSaveDone(this.props.gameId, SavingErrorType.FAILED);
+          this.props.onSaveDone(this.props.gameId, newBet, SavingErrorType.FAILED);
         }));
     }
   }
