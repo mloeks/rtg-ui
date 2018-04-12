@@ -17,7 +17,6 @@ import './GameBetsTab.css';
 import SavingIssuesDialog from "./bets/SavingIssuesDialog";
 
 // TODO P1 handle update of open bets after save, based on success type
-// TODO P1 test all save cases thoroughly (current issues: repeatedly saving fails)
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)

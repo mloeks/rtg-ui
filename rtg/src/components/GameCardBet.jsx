@@ -88,6 +88,8 @@ class GameCardBet extends Component {
           SavingSuccessType.UNCHANGED,
         );
       }
+    } else {
+      this.setState({ hasChanges: false, isSaving: false });
     }
   }
 
@@ -105,7 +107,7 @@ class GameCardBet extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  // TODO P1 once again validate input and introduce errortype INVALID
+  // TODO P2 once again validate input and introduce errortype INVALID
   // TODO P2 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
@@ -121,13 +123,19 @@ class GameCardBet extends Component {
       }
 
       const body = emptyResult ? null : { bettable: this.props.gameId, result_bet: newBet };
+      const betId = this.state.userBet ? this.state.userBet.id : null;
 
       let method;
       let url = `${API_BASE_URL}/rtg/bets/`;
-      if (this.state.userBet && this.state.userBet.id) {
-        url += `${this.state.userBet.id}/`;
+      if (betId) {
+        url += `${betId}/`;
         method = emptyResult ? 'DELETE' : 'PUT';
       } else {
+        if (emptyResult) {
+          // no previously saved bet and bet is also empty --> return
+          this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.UNCHANGED);
+          return;
+        }
         method = 'POST';
       }
 
