@@ -9,14 +9,13 @@ import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
-import GameCardBet, { SavingErrorType } from './GameCardBet';
+import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
 
 import './GameBetsTab.css';
 import SavingIssuesDialog from "./bets/SavingIssuesDialog";
 
-// TODO P1 handle update of open bets after save, based on success type
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
@@ -35,6 +34,18 @@ class GameBetsTab extends Component {
       loading: true,
       loadingError: '',
     };
+  }
+
+  static getOpenBetsChangeFromSaveTypes(gamesWithSaveTypes) {
+    let incrementalOpenBetsChange = 0;
+    gamesWithSaveTypes.forEach(game => {
+      if (game.saveType === SavingSuccessType.ADDED) {
+        incrementalOpenBetsChange -= 1;
+      } else if (game.saveType === SavingSuccessType.DELETED) {
+        incrementalOpenBetsChange += 1;
+      }
+    });
+    return incrementalOpenBetsChange;
   }
 
   constructor(props) {
@@ -58,6 +69,10 @@ class GameBetsTab extends Component {
     }
   }
 
+  // TODO P1 we currently load every bet twice: once in the bets/ list endpoint - only for the count
+  // and then again within each GameCardBet
+  // solution: pass in the bet into the GameCardBet's and only load the bet in that component
+  // if it was not passed in on creation
   updateData() {
     this.setState(GameBetsTab.initialState(), async () => {
       await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
@@ -159,6 +174,8 @@ class GameBetsTab extends Component {
         .filter(game => game.saveType &&
           (game.saveType === SavingErrorType.FAILED ||
             game.saveType === SavingErrorType.INCOMPLETE));
+      this.props.onOpenBetsUpdateIncremental(GameBetsTab
+        .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray));
 
       this.setState({
         shouldSave: false,
