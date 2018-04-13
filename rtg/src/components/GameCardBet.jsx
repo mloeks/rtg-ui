@@ -25,8 +25,7 @@ export const SavingErrorType = {
   FAILED: 'FAILED',
 };
 
-// TODO P1 Check all different bet saving methods (POST, PUT, DELETE)
-// TODO P1 handle & display loadingError
+// TODO P3 handle and display bet loading failure
 class GameCardBet extends Component {
   static getIncrementedGoal(previousValue, inc) {
     const previousValueNumber = Number(previousValue);
@@ -56,11 +55,8 @@ class GameCardBet extends Component {
     this.state = {
       userBet: this.props.userBet !== null ? Object.assign({}, this.props.userBet) : null,
       ...GameCardBet.goalsStateFromUserBet(this.props.userBet),
-
       hasChanges: false,
-
       isSaving: false,
-      loadingError: false,
     };
 
     this.save = this.save.bind(this);
@@ -101,10 +97,8 @@ class GameCardBet extends Component {
         if (response.ok) {
           const userBet = response.json.length > 0 ? response.json[0] : null;
           this.setState({ userBet, ...GameCardBet.goalsStateFromUserBet(userBet) });
-        } else {
-          this.setState({ loadingError: true });
         }
-      }).catch(() => this.setState({ loadingError: true }));
+      });
   }
 
   // TODO P2 refactor!
