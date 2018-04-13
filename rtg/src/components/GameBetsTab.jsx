@@ -17,6 +17,7 @@ import Notification, { NotificationType } from './Notification';
 
 import './GameBetsTab.css';
 
+// TODO P1 better design of floating button and/or save button on mobile and desktop
 // TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
@@ -66,19 +67,19 @@ class GameBetsTab extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.active && nextProps.active) {
-      this.updateData();
+      this.setState(GameBetsTab.initialState(), () => {
+        this.updateData();
+      });
     }
   }
 
-  updateData() {
-    this.setState(GameBetsTab.initialState(), async () => {
-      await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
-      await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
+  async updateData() {
+    await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
 
-      this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
+    this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
 
-      this.setState({ loading: false });
-    });
+    this.setState({ loading: false });
   }
 
   async fetchData(url, targetStateField) {
@@ -188,7 +189,6 @@ class GameBetsTab extends Component {
   }
 
   render() {
-    // TODO P2 reduce number of re-renders
     const gameBetsItems = this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets);
 
     return (

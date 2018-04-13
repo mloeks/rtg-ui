@@ -35,21 +35,21 @@ export default class ExtraBetsTab extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.active && nextProps.active) {
-      this.updateData();
+      this.setState(ExtraBetsTab.initialState(), () => {
+        this.updateData();
+      });
     }
   }
 
-  updateData() {
-    this.setState(ExtraBetsTab.initialState(), async () => {
-      await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
-      await this.fetchData(`${API_BASE_URL}/rtg/extras/`, 'extras');
-      await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
+  async updateData() {
+    await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
+    await this.fetchData(`${API_BASE_URL}/rtg/extras/`, 'extras');
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
 
-      this.props.onOpenBetsUpdate(countOpenBets(this.state.bettables
-        .filter(bettable => bettable.type === BettableTypes.EXTRA), this.state.bets));
+    this.props.onOpenBetsUpdate(countOpenBets(this.state.bettables
+      .filter(bettable => bettable.type === BettableTypes.EXTRA), this.state.bets));
 
-      this.setState({ loading: false });
-    });
+    this.setState({ loading: false });
   }
 
   async fetchData(url, targetStateField) {
@@ -64,7 +64,6 @@ export default class ExtraBetsTab extends Component {
   }
 
   render() {
-    // TODO P2 reduce number of re-renders
     const extraBettables =
       this.state.bettables.filter(bettable => bettable.type === BettableTypes.EXTRA);
 
