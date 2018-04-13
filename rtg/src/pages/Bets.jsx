@@ -21,6 +21,10 @@ export const countOpenBets = (bettables, allBets) => {
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
+// TODO P1 show prompt if user wanrs to navigate away with unsaved changes
+// tried with updating "hasChanged" in this state by the GameCardBet's --> too many updates all the time
+// next attempt: only when the user wants to navigate away, "ask" the tabs/bets if there are changes
+// (e.g. "mayNavigate" + callback)
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
@@ -37,6 +41,14 @@ class Bets extends Component {
       openGameBetsCt: 0,
       openExtraBetsCt: 0,
     };
+
+    this.handleExtraBetTabClick = this.handleExtraBetTabClick.bind(this);
+  }
+
+  handleExtraBetTabClick(tab) {
+    if (true) {
+      this.setState({ activeTab: tab.props.value });
+    }
   }
 
   render() {
@@ -64,7 +76,7 @@ class Bets extends Component {
               className="BetsPage__tab"
               label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
               value={BettableTypes.EXTRA}
-              onActive={tab => this.setState({ activeTab: tab.props.value })}
+              onActive={this.handleExtraBetTabClick}
             >
               <ExtraBetsTab
                 active={this.state.activeTab === BettableTypes.EXTRA}
