@@ -13,6 +13,7 @@ import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
+import Notification, { NotificationType } from './Notification';
 
 import './GameBetsTab.css';
 
@@ -69,10 +70,6 @@ class GameBetsTab extends Component {
     }
   }
 
-  // TODO P1 we currently load every bet twice: once in the bets/ list endpoint - only for the count
-  // and then again within each GameCardBet
-  // solution: pass in the bet into the GameCardBet's and only load the bet in that component
-  // if it was not passed in on creation
   updateData() {
     this.setState(GameBetsTab.initialState(), async () => {
       await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
@@ -115,6 +112,7 @@ class GameBetsTab extends Component {
           <GameCardBet
             gameId={game.id}
             shouldSave={this.state.shouldSave}
+            userBet={this.state.bets.find(bet => bet.bettable === game.id) || {}}
             onSaveDone={this.handleBetSaveDone}
           />
         </GameCard>
@@ -233,7 +231,7 @@ class GameBetsTab extends Component {
              <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>
           }
           {this.state.loadingError &&
-            <div className="GameBetsTab__loadingError">Fehler beim Laden.</div>
+            <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
           }
 
           {(!this.state.loading && this.state.showSaveButton) &&

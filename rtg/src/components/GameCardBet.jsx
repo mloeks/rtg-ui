@@ -54,10 +54,8 @@ class GameCardBet extends Component {
     super(props);
 
     this.state = {
-      userBet: null,
-
-      homegoalsInput: NO_GOALS_STRING,
-      awaygoalsInput: NO_GOALS_STRING,
+      userBet: this.props.userBet !== null ? Object.assign({}, this.props.userBet) : null,
+      ...GameCardBet.goalsStateFromUserBet(this.props.userBet),
 
       hasChanges: false,
 
@@ -74,7 +72,7 @@ class GameCardBet extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.userBet) {
+    if (this.props.userBet === null || typeof this.props.userBet === 'undefined') {
       this.fetchUserBet();
     }
   }
@@ -96,7 +94,7 @@ class GameCardBet extends Component {
   }
 
   fetchUserBet() {
-    return fetch(`${API_BASE_URL}/rtg/bets/?bettable=${this.props.gameId}`, {
+    fetch(`${API_BASE_URL}/rtg/bets/?bettable=${this.props.gameId}`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
@@ -222,11 +220,13 @@ class GameCardBet extends Component {
 
 GameCardBet.defaultProps = {
   shouldSave: false,
+  userBet: null,
 };
 
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
   shouldSave: PropTypes.bool,
+  userBet: PropTypes.shape(),
   onSaveDone: PropTypes.func.isRequired,
 };
 
