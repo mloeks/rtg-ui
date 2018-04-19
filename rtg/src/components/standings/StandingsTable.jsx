@@ -86,11 +86,15 @@ const StandingsTableRow = (props) => {
   );
 };
 
+StandingsTableRow.defaultProps = {
+  userAvatar: null,
+};
+
 StandingsTableRow.propTypes = {
   rank: PropTypes.number.isRequired,
   userId: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
-  userAvatar: PropTypes.string.isRequired,
+  userAvatar: PropTypes.string,
   points: PropTypes.number.isRequired,
   noBets: PropTypes.number.isRequired,
   noVolltreffer: PropTypes.number.isRequired,
@@ -101,7 +105,8 @@ StandingsTableRow.propTypes = {
 };
 
 // TODO P1 Korrekte Durchnummerierung testen (Backend berechnet Statistiken nicht neu!)
-// TODO P3 random colours für User ohne Avatar.
+// TODO P2 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
+// TODO P3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   static calculateRank(row, lastRow, lastRank) {
     if (lastRow) {
@@ -129,6 +134,25 @@ class StandingsTable extends Component {
     };
   }
 
+  // used when tournament has not yet started and table only contains all users with 0 points
+  static usersOnlyToStateMapper(users) {
+    return {
+      loadingError: false,
+      rows: users.map(user => ({
+        userId: user.pk,
+        username: user.username,
+        userAvatar: user.avatar,
+        points: 0,
+        noBets: 0,
+        noVolltreffer: 0,
+        noDifferenz: 0,
+        noRemisTendenz: 0,
+        noTendenz: 0,
+        noNiete: 0,
+      })),
+    };
+  }
+
   constructor(props) {
     super(props);
 
@@ -141,12 +165,25 @@ class StandingsTable extends Component {
     fetch(`${API_BASE_URL}/rtg/statistics/`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } },
     ).then(FetchHelper.parseJson).then((response) => {
-      this.setState(() => ({
-        loading: false,
-        ...response.ok ? StandingsTable.statsToStateMapper(response.json) : { loadingError: true },
+      if (response.ok) {
+        this.setState({ loading: false, ...StandingsTable.statsToStateMapper(response.json) });
+      } else {
+        this.setState(response.status === 412 ?
+          this.fetchUsersOnly() : { loading: false, loadingError: true });
       }
-      ));
     }).catch(() => this.setState({ loading: false, loadingError: true }));
+  }
+
+  fetchUsersOnly() {
+    fetch(`${API_BASE_URL}/rtg/users_public/`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then(response => (
+      this.setState({
+        loading: false,
+        ...response.ok ?
+          StandingsTable.usersOnlyToStateMapper(response.json) : { loadingError: true },
+      })
+    )).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   render() {
