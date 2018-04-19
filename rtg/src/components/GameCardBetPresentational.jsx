@@ -11,7 +11,6 @@ import './GoalInput.css';
 
 const validGoalInputRegex = /^([0-9]|10)$/;
 
-// TODO P1  handle all kinds of save, propagate to parent when a bet could not be saved
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 const GoalInput = ({ id, goals, onChange, onBlur }) => {
   let textInputRef;

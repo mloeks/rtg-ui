@@ -23,8 +23,7 @@ export const countOpenBets = (bettables, allBets) => {
 
 // TODO P1 show prompt if user wanrs to navigate away with unsaved changes
 // tried with updating "hasChanged" in this state by the GameCardBet's --> too many updates all the time
-// next attempt: only when the user wants to navigate away, "ask" the tabs/bets if there are changes
-// (e.g. "mayNavigate" + callback)
+// but that should be possible with a better implementation
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
