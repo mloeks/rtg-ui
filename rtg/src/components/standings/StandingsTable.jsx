@@ -87,11 +87,12 @@ const StandingsTableRow = (props) => {
 };
 
 StandingsTableRow.defaultProps = {
+  rank: '',
   userAvatar: null,
 };
 
 StandingsTableRow.propTypes = {
-  rank: PropTypes.number.isRequired,
+  rank: PropTypes.string,
   userId: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
   userAvatar: PropTypes.string,
@@ -104,16 +105,12 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P1 Korrekte Durchnummerierung testen (Backend berechnet Statistiken nicht neu!)
 // TODO P2 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
 // TODO P3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
-  static calculateRank(row, lastRow, lastRank) {
-    if (lastRow) {
-      return lastRow.points === row.points && lastRow.noVolltreffer === row.noVolltreffer
-        ? '' : Number(lastRank) + 1;
-    }
-    return 1;
+  static identicalRank(row, lastRow) {
+    return row && lastRow &&
+      row.points === lastRow.points && row.noVolltreffer === lastRow.noVolltreffer;
   }
 
   static statsToStateMapper(stats) {
@@ -188,7 +185,6 @@ class StandingsTable extends Component {
 
   render() {
     let lastRow = null;
-    let lastRank = 1;
 
     return (
       <div className="StandingsTable">
@@ -235,11 +231,11 @@ class StandingsTable extends Component {
               </TableRow>
             </TableHeader>
             <TableBody showRowHover displayRowCheckbox={false}>
-              {this.state.rows.map((row) => {
-                const rank = StandingsTable.calculateRank(row, lastRow, lastRank);
+              {this.state.rows.map((row, ix) => {
+                const displayRank =
+                  StandingsTable.identicalRank(row, lastRow) ? '' : (ix + 1).toString();
                 lastRow = row;
-                lastRank = rank;
-                  return <StandingsTableRow key={row.userId} rank={rank} {...row} />;
+                  return <StandingsTableRow key={row.userId} rank={displayRank} {...row} />;
                 })}
             </TableBody>
           </Table>}
