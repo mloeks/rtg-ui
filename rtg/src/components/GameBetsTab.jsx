@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { CircularProgress, FloatingActionButton, LinearProgress } from 'material-ui';
-import ContentSave from 'material-ui/svg-icons/content/save';
+import { CircularProgress } from 'material-ui';
 import Timer from 'material-ui/svg-icons/image/timer';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -12,13 +11,12 @@ import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
 import { countOpenBets } from '../pages/Bets';
-import SavingIssuesDialog from './bets/SavingIssuesDialog';
 import Notification, { NotificationType } from './Notification';
+import BetsStatusPanel from './bets/BetsStatusPanel';
+import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
 import './GameBetsTab.css';
 
-// TODO P1 better design of floating button and/or save button on mobile and desktop
-// TODO P2 avoid floating button to float over footer
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
 class GameBetsTab extends Component {
@@ -28,9 +26,7 @@ class GameBetsTab extends Component {
       gamesWithOpenBets: [],
       gamesWithSavingIssues: [],
 
-      showSaveButton: false,
       shouldSave: false,
-      showSavingIndicator: false,
       showSavingSuccess: false,
 
       loading: true,
@@ -54,7 +50,6 @@ class GameBetsTab extends Component {
     super(props);
     this.state = GameBetsTab.initialState();
     this.gamesWithSaveType = new Map();
-    this.savingIndicatorTimeout = null;
 
     this.fetchData = this.fetchData.bind(this);
     this.handleSaveRequest = this.handleSaveRequest.bind(this);
@@ -89,7 +84,7 @@ class GameBetsTab extends Component {
       .then((response) => {
         this.setState(() => (
           response.ok ?
-            { [targetStateField]: response.json, showSaveButton: true } :
+            { [targetStateField]: response.json } :
             { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
@@ -151,10 +146,6 @@ class GameBetsTab extends Component {
 
       return { shouldSave: true, gamesWithSavingIssues: [] };
     });
-
-    this.savingIndicatorTimeout = setTimeout(() => {
-      this.setState({ showSavingIndicator: true });
-    }, 500);
   }
 
   // TODO P2 refactor this method
@@ -168,7 +159,6 @@ class GameBetsTab extends Component {
     const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
     const allBetsDone = !gamesWithSaveTypeValueArray.some(game => !game.saveType);
     if (allBetsDone) {
-      clearInterval(this.savingIndicatorTimeout);
       const gamesWithSavingIssues = gamesWithSaveTypeValueArray
         .filter(game => game.saveType &&
           (game.saveType === SavingErrorType.FAILED ||
@@ -178,7 +168,6 @@ class GameBetsTab extends Component {
 
       this.setState({
         shouldSave: false,
-        showSavingIndicator: false,
         showSavingSuccess: gamesWithSavingIssues.length === 0,
         gamesWithSavingIssues,
       });
@@ -190,6 +179,7 @@ class GameBetsTab extends Component {
 
   render() {
     const gameBetsItems = this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets);
+    const gameCount = this.state.gamesWithOpenBets.length;
 
     return (
       <div className="GameBetsTab">
@@ -210,36 +200,22 @@ class GameBetsTab extends Component {
             onClose={() => this.setState({ gamesWithSavingIssues: [] })}
           />
 
-          {/* TODO P3 refactor all this bottom notifiaction stuff into an own component */}
-          {this.state.shouldSave && <div className="GameBetsTab__saving-overlay" />}
-          <div
-            className={`GameBetsTab__saving-info
-              ${(this.state.showSavingIndicator || this.state.showSavingSuccess) ? ' GameBetsTab__saving-info--show' : ''}
-              ${this.state.showSavingSuccess ? ' GameBetsTab__saving-info--success' : ''}`}
-          >
-            {this.state.showSavingIndicator &&
-              <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }} />}
-            {this.state.showSavingIndicator && <span>Speichern...</span>}
-            {this.state.showSavingSuccess && <span>Änderungen gespeichert.</span>}
-          </div>
-
-          {(!this.state.loading && !this.state.loadingError &&
-             this.state.gamesWithOpenBets.length > 0) && gameBetsItems}
-
-          {(!this.state.loading && !this.state.loadingError &&
-             this.state.gamesWithOpenBets.length === 0) &&
-             <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>
+          {(!this.state.loading && gameCount > 0) &&
+            <BetsStatusPanel
+              saving={this.state.shouldSave}
+              success={this.state.showSavingSuccess}
+              onSave={this.handleSaveRequest}
+            />
           }
+
+          {(!this.state.loading && !this.state.loadingError && gameCount > 0) && gameBetsItems}
+
+          {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
+          <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>}
+
           {this.state.loadingError &&
             <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
           }
-
-          {(!this.state.loading && this.state.showSaveButton) &&
-            <FloatingActionButton
-              className="GameBetsTab__save-button"
-              disabled={this.state.shouldSave}
-            ><ContentSave onClick={this.handleSaveRequest} />
-            </FloatingActionButton>}
         </section>
       </div>
     );
