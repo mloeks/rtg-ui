@@ -21,8 +21,10 @@ export const countOpenBets = (bettables, allBets) => {
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
-// TODO P1 show prompt if user wanrs to navigate away with unsaved changes
-// tried with updating "hasChanged" in this state by the GameCardBet's --> too many updates all the time
+// TODO P1 Refresh open bets by registering a UserDetails Consumer and invoking a dedicated callback
+// TODO P1 show prompt if user wants to navigate away with unsaved changes
+// tried with updating "hasChanged" in this state by the GameCardBet's
+// --> too many updates all the time
 // but that should be possible with a better implementation
 class Bets extends Component {
   static openBetsBadge(title, count) {

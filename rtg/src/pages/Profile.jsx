@@ -8,6 +8,8 @@ import FetchHelper from '../service/FetchHelper';
 
 import headingImg from '../theme/img/img8.jpg';
 
+// TODO P2 refresh avatar URL after change by registering a
+// UserDetails Consumer and invoking a dedicated callback
 class Profile extends Component {
   static userToStateMapper(userJson) {
     return {

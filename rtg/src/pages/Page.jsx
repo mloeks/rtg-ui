@@ -2,16 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import UserDetailsProvider from '../components/providers/UserDetailsProvider';
 
 import './Page.css';
 
 const Page = props => (
   <main className="Page">
-    <Header />
-    <section className="Page__content">
-      {props.children}
-    </section>
-    <Footer />
+    <UserDetailsProvider>
+      <Header />
+      <section className="Page__content">
+        {props.children}
+      </section>
+      <Footer />
+    </UserDetailsProvider>
   </main>
 );
 
