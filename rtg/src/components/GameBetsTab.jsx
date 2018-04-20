@@ -157,7 +157,6 @@ class GameBetsTab extends Component {
     };
     this.gamesWithSaveType.set(gameId, updatedGameWithSaveDetails);
 
-    // TODO P1 has no IE support -> does Babel handle this? Polyfill otherwise.
     const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
     const allBetsDone = !gamesWithSaveTypeValueArray.some(game => !game.saveType);
     if (allBetsDone) {
