@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 import './Page.css';
 
-const Page = (props) => (
+const Page = props => (
   <main className="Page">
     <Header />
     <section className="Page__content">
