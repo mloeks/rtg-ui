@@ -12,6 +12,7 @@ const SavingIssuesDialog = (props) => {
     }
     return detail || 'Ein Fehler ist aufgetreten.';
   };
+  const gamesCount = props.games.length;
 
   return (
     <Dialog
@@ -24,7 +25,10 @@ const SavingIssuesDialog = (props) => {
       contentStyle={{ width: '95%' }}
     >
       <div>
-        <p>Einige Deiner Tipps konnten leider nicht gespeichert werden:</p>
+        <p>
+          {gamesCount === 1 ? 'Einer Deiner Tipps konnte ' : 'Einige Deiner Tipps konnten '}
+          leider nicht gespeichert werden:
+        </p>
         <Divider />
         {props.games.map(game => (
           <ListItem
