@@ -10,6 +10,7 @@ import Notification, { NotificationType } from './Notification';
 
 import './ExtraBetCard.css';
 
+// TODO P1 style all kinds of results properly
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
     return distanceInWordsToNow(deadline, { locale: de });
@@ -126,9 +127,16 @@ export default class ExtraBetCard extends Component {
       </div>)
       : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
 
+    let subtitle = `${this.props.points} Punkte`;
+    if (this.props.open) {
+      subtitle += ` - Noch ${this.state.remainingTime}`;
+    }
     return (
       <Card className="ExtraBetCard">
-        <CardTitle title={this.props.name} subtitle={`${this.props.points} Punkte - Noch ${this.state.remainingTime}`} />
+        <CardTitle
+          title={this.props.name}
+          subtitle={subtitle}
+        />
         {!this.props.open && <CardText style={{ padding: 0 }}>{resultInfo}</CardText>}
 
         {this.state.loadingError &&
