@@ -169,14 +169,20 @@ class ProfileForm extends Component {
   }
 }
 
+ProfileForm.defaultProps = {
+  about: null,
+  email2: null,
+  location: null,
+};
+
 ProfileForm.propTypes = {
   userId: PropTypes.number.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  email2: PropTypes.string.isRequired,
-  about: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
+  email2: PropTypes.string,
+  about: PropTypes.string,
+  location: PropTypes.string,
 
   reminderEmails: PropTypes.bool.isRequired,
   dailyEmails: PropTypes.bool.isRequired,
