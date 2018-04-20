@@ -9,11 +9,17 @@ import Today from 'material-ui/svg-icons/action/today';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import UserMenu from './UserMenu';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
+import FetchHelper from '../service/FetchHelper';
 
 import './Header.css';
 
+const LogoutReason = {
+  USER_DETAILS_LOAD_ERROR: 'USER_DETAILS_LOAD_ERROR',
+  INVALID_TOKEN: 'INVALID_TOKEN'
+};
+
 // TODO P1 Show Open Bets in header if there are > 0
-// TODO P1 re-fetch user on each navigation
+// TODO P1 check (refresh?) token on each mount and log out if it's invalid
 // TODO P1 Refresh open bets by passing down a context callback
 // TODO P2 refresh avatar URL after change in profile by passing down a context callback
 // TODO P2 make it appear sticky on up-scroll?
@@ -26,10 +32,36 @@ class Header extends Component {
     super(props);
 
     this.state = {
+      user: null,
       menuOpen: false,
     };
 
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  componentDidMount() {
+    if (AuthService.isAuthenticated()) {
+      this.fetchUserDetails();
+    }
+  }
+
+  fetchUserDetails() {
+    fetch(`${API_BASE_URL}/rtg/users/${AuthService.getUserId()}/`, {
+      headers: { Authorization: `Token ${AuthService.getToken()}` },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        if (response.ok) {
+          this.setState({ user: response.json });
+        } else {
+          this.handleLogout(LogoutReason.USER_DETAILS_LOAD_ERROR);
+        }
+      }).catch(() => this.handleLogout(LogoutReason.USER_DETAILS_LOAD_ERROR));
+  }
+
+  handleLogout(reason) {
+    // TODO P2 set URL parameter if reason is set and render info message on login page
+    AuthService.logout().then(() => this.props.history.push('/'));
   }
 
   handleMenuToggle() {
@@ -37,7 +69,9 @@ class Header extends Component {
   }
 
   render() {
-    const loggedIn = AuthService.isAuthenticated();
+    const loggedIn = AuthService.isAuthenticated() && this.state.user !== null;
+    const { username, avatar } = this.state.user || { username: null, avatar: null };
+
     const createAppBarVariant = (title, className) => (
       <AppBar
         className={`Header__AppBar ${className}`}
@@ -46,9 +80,9 @@ class Header extends Component {
         showMenuIconButton={loggedIn}
         iconElementRight={loggedIn ?
           <UserMenu
-            avatar={AuthService.getAvatarUrl() ?
-              `${API_BASE_URL}/media/${AuthService.getAvatarUrl()}` : null}
-            username={AuthService.getUsername()}
+            avatar={avatar ? `${API_BASE_URL}/media/${avatar}` : null}
+            username={username}
+            onLogout={this.handleLogout}
           /> : null}
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
