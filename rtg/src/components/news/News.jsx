@@ -66,7 +66,8 @@ class News extends Component {
   }
 
   handleAddNews() {
-    // TODO P1 scroll to top...
+    // TODO P3 animated scroll (lib?)
+    window.scrollTo(0, 0);
     this.setState({ addingPost: true, addPostSuccess: false });
   }
 
