@@ -58,8 +58,12 @@ const GoalChangeArrow = (props) => {
     color: 'white',
   };
   return (props.direction === 'up' ?
-    <KeyboardArrowUp style={arrowStyle} onClick={props.onClick} /> :
-    <KeyboardArrowDown style={arrowStyle} onClick={props.onClick} />);
+    <KeyboardArrowUp className="GameCardBet__arrow" style={arrowStyle} onClick={props.onClick} /> :
+    <KeyboardArrowDown
+      className="GameCardBet__arrow"
+      style={arrowStyle}
+      onClick={props.onClick}
+    />);
 };
 
 GoalChangeArrow.propTypes = {
