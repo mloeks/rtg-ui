@@ -33,6 +33,10 @@ export default class ExtraBetsTab extends Component {
     this.updateData();
   }
 
+  // TODO P3 replace by getDerivedStateFromProps, as this will be deprecated
+  // that method is static though and my first attempt was unsuccessful in
+  // achieving the same behaviour
+  // Cf. https://github.com/reactjs/reactjs.org/issues/721
   componentWillReceiveProps(nextProps) {
     if (!this.props.active && nextProps.active) {
       this.setState(ExtraBetsTab.initialState(), () => {
