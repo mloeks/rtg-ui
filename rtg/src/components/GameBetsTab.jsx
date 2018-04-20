@@ -107,6 +107,8 @@ class GameBetsTab extends Component {
         <GameCard key={game.id} {...game} >
           <GameCardBet
             gameId={game.id}
+            hadSaveIssues={this.state.gamesWithSavingIssues
+              .some(failedGame => game.id === failedGame.id)}
             shouldSave={this.state.shouldSave}
             userBet={this.state.bets.find(bet => bet.bettable === game.id) || {}}
             onSaveDone={this.handleBetSaveDone}

@@ -85,7 +85,7 @@ class GameCardBet extends Component {
         );
       }
     } else if (this.props.shouldSave && !nextProps.shouldSave) {
-      this.setState({ hasChanges: false, isSaving: false });
+      this.setState({ hasChanges: nextProps.hadSaveIssues, isSaving: false });
     }
   }
 
@@ -213,12 +213,14 @@ class GameCardBet extends Component {
 }
 
 GameCardBet.defaultProps = {
+  hadSaveIssues: false,
   shouldSave: false,
   userBet: null,
 };
 
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
+  hadSaveIssues: PropTypes.bool,
   shouldSave: PropTypes.bool,
   userBet: PropTypes.shape(),
   onSaveDone: PropTypes.func.isRequired,
