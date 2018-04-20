@@ -13,8 +13,9 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import './Header.css';
 
 // TODO P1 Show Open Bets in header if there are > 0
-// TODO P1 refresh avatar URL and open bets on each navigation
-// (request or have it written to local storage by profile page)
+// TODO P1 re-fetch user on each navigation
+// TODO P1 Refresh open bets by passing down a context callback
+// TODO P2 refresh avatar URL after change in profile by passing down a context callback
 // TODO P2 make it appear sticky on up-scroll?
 // TODO P2 Display little down arrow beneath user avatar
 // TODO P2 Pimp Drawer menu --> Add logo to the top
