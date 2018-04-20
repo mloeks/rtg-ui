@@ -74,7 +74,7 @@ class GameCardBet extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.shouldSave) {
+    if (!this.props.shouldSave && nextProps.shouldSave) {
       if (this.state.hasChanges) {
         this.save();
       } else {
@@ -84,7 +84,7 @@ class GameCardBet extends Component {
           SavingSuccessType.UNCHANGED,
         );
       }
-    } else {
+    } else if (this.props.shouldSave && !nextProps.shouldSave) {
       this.setState({ hasChanges: false, isSaving: false });
     }
   }
