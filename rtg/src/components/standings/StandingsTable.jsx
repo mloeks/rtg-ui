@@ -55,7 +55,7 @@ const StandingsTableRow = (props) => {
         paddingLeft: 0,
       }}
       ><UserAvatar
-        img={props.userAvatar ? `${API_BASE_URL}/media/${props.userAvatar}` : null}
+        img={props.userAvatar}
         size={0.65 * ROW_HEIGHT}
         username={props.username}
         style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}

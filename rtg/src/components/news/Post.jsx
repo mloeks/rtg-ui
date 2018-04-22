@@ -5,16 +5,12 @@ import { Card, CardHeader, CardText, CardTitle, Divider } from 'material-ui';
 import { format, isToday, isYesterday } from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
-import { API_BASE_URL } from '../../service/AuthService';
 import { randomHueHexColor } from '../../service/ColorHelper';
 import { lightGrey } from '../../theme/RtgTheme';
 
 import './Post.css';
 
 const Post = (props) => {
-  const userAvatarUrl = props.post.author_details.avatar ?
-    `${API_BASE_URL}/media/${props.post.author_details.avatar}` : null;
-
   const getFormattedPostDate = (date) => {
     if (isToday(date)) {
       return 'Heute';
@@ -46,7 +42,7 @@ const Post = (props) => {
         avatar={
           <UserAvatar
             size={40}
-            img={userAvatarUrl}
+            img={props.post.author_details.avatar}
             username={props.post.author_details.username}
           />}
         style={{ backgroundColor: randomPostColour }}

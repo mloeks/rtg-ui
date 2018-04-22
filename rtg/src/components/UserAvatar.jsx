@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar } from 'material-ui';
 import { randomHueHexColor } from '../service/ColorHelper';
+import { API_BASE_URL } from "../service/AuthService";
 
 /**
  * An avatar showing the user image if given or the first letter of
@@ -18,7 +19,11 @@ class UserAvatar extends Component {
 
   render() {
     return (this.props.img ?
-      <Avatar size={this.props.size} src={this.props.img} style={this.props.style} /> :
+      <Avatar
+        size={this.props.size}
+        src={`${API_BASE_URL}/media/${this.props.img}`}
+        style={this.props.style}
+      /> :
       <Avatar
         color="#ffffff"
         backgroundColor={randomHueHexColor(45, 80)}
