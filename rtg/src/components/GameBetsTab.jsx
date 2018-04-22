@@ -164,8 +164,8 @@ class GameBetsTab extends Component {
         .filter(game => game.saveType &&
           (game.saveType === SavingErrorType.FAILED ||
             game.saveType === SavingErrorType.INCOMPLETE));
-      this.props.onOpenBetsUpdateIncremental(GameBetsTab
-        .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray));
+      this.props.onOpenBetsUpdate(GameBetsTab
+        .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray), true);
 
       this.setState({
         shouldSave: false,
@@ -201,7 +201,7 @@ class GameBetsTab extends Component {
             onClose={() => this.setState({ gamesWithSavingIssues: [] })}
           />
 
-          {(!this.state.loading && gameCount > 0) &&
+          {(this.props.active && !this.state.loading && gameCount > 0) &&
             <BetsStatusPanel
               saving={this.state.shouldSave}
               success={this.state.showSavingSuccess}
@@ -227,7 +227,6 @@ GameBetsTab.propTypes = {
   active: PropTypes.bool.isRequired,
   muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onOpenBetsUpdate: PropTypes.func.isRequired,
-  onOpenBetsUpdateIncremental: PropTypes.func.isRequired,
 };
 
 export default muiThemeable()(GameBetsTab);

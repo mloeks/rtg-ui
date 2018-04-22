@@ -84,8 +84,8 @@ export default class ExtraBetsTab extends Component {
             .map(extraBet => (
               <ExtraBetCard
                 key={extraBet.id}
-                onBetAdded={() => this.props.onOpenBetsUpdateIncremental(-1)}
-                onBetRemoved={() => this.props.onOpenBetsUpdateIncremental(1)}
+                onBetAdded={() => this.props.onOpenBetsUpdate(-1, true)}
+                onBetRemoved={() => this.props.onOpenBetsUpdate(1, true)}
                 {...extraBet}
               />
             ))
@@ -107,5 +107,4 @@ export default class ExtraBetsTab extends Component {
 ExtraBetsTab.propTypes = {
   active: PropTypes.bool.isRequired,
   onOpenBetsUpdate: PropTypes.func.isRequired,
-  onOpenBetsUpdateIncremental: PropTypes.func.isRequired,
 };

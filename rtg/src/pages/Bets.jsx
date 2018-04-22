@@ -44,12 +44,26 @@ class Bets extends Component {
     };
 
     this.handleExtraBetTabClick = this.handleExtraBetTabClick.bind(this);
+    this.handleOpenGameBetsCtUpdate = this.handleOpenGameBetsCtUpdate.bind(this);
+    this.handleOpenExtraBetsCtUpdate = this.handleOpenExtraBetsCtUpdate.bind(this);
   }
 
   handleExtraBetTabClick(tab) {
     if (true) {
       this.setState({ activeTab: tab.props.value });
     }
+  }
+
+  handleOpenGameBetsCtUpdate(value, incremental) {
+    this.setState(prevState => (
+      { openGameBetsCt: incremental ? prevState.openGameBetsCt + value : value }
+    ));
+  }
+
+  handleOpenExtraBetsCtUpdate(value, incremental) {
+    this.setState(prevState => (
+      { openExtraBetsCt: incremental ? prevState.openExtraBetsCt + value : value }
+    ));
   }
 
   render() {
@@ -68,9 +82,7 @@ class Bets extends Component {
             >
               <GameBetsTab
                 active={this.state.activeTab === BettableTypes.GAME}
-                onOpenBetsUpdate={openBets => this.setState({ openGameBetsCt: openBets })}
-                onOpenBetsUpdateIncremental={openBetsChange => this.setState(prevState =>
-                  ({ openGameBetsCt: prevState.openGameBetsCt + openBetsChange }))}
+                onOpenBetsUpdate={this.handleOpenGameBetsCtUpdate}
               />
             </Tab>
             <Tab
@@ -81,9 +93,7 @@ class Bets extends Component {
             >
               <ExtraBetsTab
                 active={this.state.activeTab === BettableTypes.EXTRA}
-                onOpenBetsUpdate={openBets => this.setState({ openExtraBetsCt: openBets })}
-                onOpenBetsUpdateIncremental={openBetsChange => this.setState(prevState =>
-                  ({ openExtraBetsCt: prevState.openExtraBetsCt + openBetsChange }))}
+                onOpenBetsUpdate={this.handleOpenExtraBetsCtUpdate}
               />
             </Tab>
           </Tabs>
