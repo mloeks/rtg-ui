@@ -7,9 +7,9 @@ import Home from 'material-ui/svg-icons/action/home';
 import List from 'material-ui/svg-icons/action/list';
 import Today from 'material-ui/svg-icons/action/today';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
-import UserMenu from './UserMenu';
-import { API_BASE_URL } from '../service/AuthService';
-import { UserDetailsContext } from './providers/UserDetailsProvider';
+import UserMenu from '../UserMenu';
+import { API_BASE_URL } from '../../service/AuthService';
+import { UserDetailsContext } from '../providers/UserDetailsProvider';
 
 import './Header.css';
 
