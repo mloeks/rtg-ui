@@ -4,10 +4,10 @@ import AppBar from 'material-ui/AppBar';
 import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
+import OpenBetsIndicator from './OpenBetsIndicator';
 
 import './Header.css';
 
-// TODO P1 Show Open Bets in header if there are > 0
 // TODO P1 Pimp Drawer menu --> Add google-like avatar & profile to the top
 // TODO P2 make it appear sticky on up-scroll?
 // TODO P3 Display open bets as badge on the "Tipps abgeben" Drawer menu entry
@@ -30,6 +30,9 @@ class Header extends Component {
         title={title}
         titleStyle={{ textAlign: 'left' }}
         showMenuIconButton={loggedIn}
+        iconElementRight={loggedIn ?
+          <OpenBetsIndicator number={userContext.openBetsCount} /> : null}
+        iconStyleRight={{ display: 'flex', alignItems: 'center', margin: 0 }}
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
       />
