@@ -8,7 +8,7 @@ import List from 'material-ui/svg-icons/action/list';
 import Today from 'material-ui/svg-icons/action/today';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import UserMenu from './UserMenu';
-import AuthService, { API_BASE_URL } from '../service/AuthService';
+import { API_BASE_URL } from '../service/AuthService';
 import { UserDetailsContext } from './providers/UserDetailsProvider';
 
 import './Header.css';
@@ -31,31 +31,27 @@ class Header extends Component {
   }
 
   render() {
-    const createAppBarVariant = (userContext, loggedIn, title, className) => {
-      const { username, avatar } = userContext.user || { username: null, avatar: null };
-
-      return (
-        <AppBar
-          className={`Header__AppBar ${className}`}
-          title={title}
-          titleStyle={{ textAlign: 'left' }}
-          showMenuIconButton={loggedIn}
-          iconElementRight={loggedIn ?
-            <UserMenu
-              avatar={avatar ? `${API_BASE_URL}/media/${avatar}` : null}
-              username={username}
-              onLogout={userContext.doLogout}
-            /> : null}
-          onLeftIconButtonClick={this.handleMenuToggle}
-          onTitleClick={() => { this.props.history.push('/'); }}
-        />
-      );
-    };
+    const createAppBarVariant = (userContext, loggedIn, title, className) => (
+      <AppBar
+        className={`Header__AppBar ${className}`}
+        title={title}
+        titleStyle={{ textAlign: 'left' }}
+        showMenuIconButton={loggedIn}
+        iconElementRight={loggedIn ?
+          <UserMenu
+            avatar={userContext.avatar ? `${API_BASE_URL}/media/${userContext.avatar}` : null}
+            username={userContext.username}
+            onLogout={userContext.doLogout}
+          /> : null}
+        onLeftIconButtonClick={this.handleMenuToggle}
+        onTitleClick={() => { this.props.history.push('/'); }}
+      />
+    );
 
     return (
       <UserDetailsContext.Consumer>
         {(userContext) => {
-          const loggedIn = AuthService.isAuthenticated() && userContext.user !== null;
+          const loggedIn = userContext.isAuthenticated;
           return (
             <header className="Header">
               {createAppBarVariant(userContext, loggedIn, 'RTG', 'Header__AppBar--mobile')}
