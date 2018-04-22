@@ -8,7 +8,6 @@ import OpenBetsIndicator from './OpenBetsIndicator';
 
 import './Header.css';
 
-// TODO P1 Pimp Drawer menu --> Add google-like avatar & profile to the top
 // TODO P2 make it appear sticky on up-scroll?
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
