@@ -10,7 +10,6 @@ import './Header.css';
 
 // TODO P1 Pimp Drawer menu --> Add google-like avatar & profile to the top
 // TODO P2 make it appear sticky on up-scroll?
-// TODO P3 Display open bets as badge on the "Tipps abgeben" Drawer menu entry
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
   constructor(props) {
@@ -48,6 +47,7 @@ class Header extends Component {
               {createAppBarVariant(userContext, loggedIn, 'Royale Tippgemeinschaft', 'Header__AppBar--desktop')}
               {loggedIn && <DrawerMenu
                 open={this.state.menuOpen}
+                openBetsCount={userContext.openBetsCount}
                 onLogout={userContext.doLogout}
                 onRequestChange={menuOpen => this.setState({ menuOpen })}
               />}
