@@ -1,3 +1,5 @@
+import jwtDecode from 'jwt-decode';
+import differenceInSeconds from 'date-fns/difference_in_seconds';
 import FetchHelper from './FetchHelper';
 
 // Unfortunately this does not work as elegantly as described here:
@@ -17,13 +19,15 @@ const LocalStorageWrapper = {
   remove: key => localStorage.removeItem(`rtg-${key}`), // eslint-disable-line no-undef
 };
 
+const REFRESH_IF_EXPIRY_IN_SECONDS = 5 * 60;
+
 class AuthService {
   static getToken() {
     return LocalStorageWrapper.get('token');
   }
 
-  static isAuthenticated() {
-    return LocalStorageWrapper.get('authenticated') === 'true';
+  static getTokenExpiryDate() {
+    return LocalStorageWrapper.get('token-expiry');
   }
 
   static isAdmin() {
@@ -38,13 +42,17 @@ class AuthService {
     return LocalStorageWrapper.get('username');
   }
 
+  static getEmail() {
+    return LocalStorageWrapper.get('email');
+  }
+
   static getHasPaid() {
     return LocalStorageWrapper.get('has-paid') === 'true';
   }
 
-  static getAvatarUrl() {
-    const avatarUrl = LocalStorageWrapper.get('avatar-url');
-    return avatarUrl && avatarUrl !== 'null' ? avatarUrl : null;
+  static getAvatar() {
+    const avatar = LocalStorageWrapper.get('avatar');
+    return avatar && avatar !== 'null' ? avatar : null;
   }
 
   static getOpenBetsCount() {
@@ -55,15 +63,50 @@ class AuthService {
     localStorage.clear(); // eslint-disable-line no-undef
   }
 
-  static setPropsFromAuthResponse(authResponse) {
-    LocalStorageWrapper.set('authenticated', true);
-    LocalStorageWrapper.set('admin', authResponse.admin === true);
-    LocalStorageWrapper.set('token', authResponse.token);
-    LocalStorageWrapper.set('user-id', authResponse.user_id);
-    LocalStorageWrapper.set('username', authResponse.username);
-    LocalStorageWrapper.set('has-paid', authResponse.has_paid);
-    LocalStorageWrapper.set('avatar-url', authResponse.avatar_url);
-    LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);
+  static isAuthenticated() {
+    return AuthService.getToken() && !AuthService.isUnauthenticatedOrExpired();
+  }
+
+  static refreshTokenIfNecessary() {
+    if (AuthService.isAuthenticated() && AuthService.isAboutToExpire()) {
+      AuthService.refreshToken();
+    }
+  }
+
+  static isAboutToExpire() {
+    if (AuthService.getTokenExpiryDate()) {
+      return AuthService.getSecondsUntilExpiry() < REFRESH_IF_EXPIRY_IN_SECONDS;
+    }
+    return false;
+  }
+
+  static isUnauthenticatedOrExpired() {
+    if (!AuthService.getToken() || !AuthService.getTokenExpiryDate()) {
+      return true;
+    }
+    return AuthService.getSecondsUntilExpiry() <= 0;
+  }
+
+  static getSecondsUntilExpiry() {
+    return differenceInSeconds(new Date(AuthService.getTokenExpiryDate() * 1000), Date.now());
+  }
+
+  static updatePropsFromAuthResponse(authResponse) {
+    try {
+      const decodedToken = jwtDecode(authResponse.token);
+
+      LocalStorageWrapper.set('admin', authResponse.admin === true);
+      LocalStorageWrapper.set('token', authResponse.token);
+      LocalStorageWrapper.set('token-expiry', decodedToken.exp);
+      LocalStorageWrapper.set('user-id', authResponse.user_id);
+      LocalStorageWrapper.set('username', decodedToken.username);
+      LocalStorageWrapper.set('email', authResponse.email);
+      LocalStorageWrapper.set('has-paid', authResponse.has_paid);
+      LocalStorageWrapper.set('avatar', authResponse.avatar);
+      LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);
+    } catch (error) {
+      // TODO P3 handle invalid token (how?)
+    }
   }
 
   static async authenticate(username, password) {
@@ -78,7 +121,7 @@ class AuthService {
         .then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
-            AuthService.setPropsFromAuthResponse(response.json);
+            AuthService.updatePropsFromAuthResponse(response.json);
             resolve(response.json);
           } else {
             AuthService.resetProps();
@@ -116,7 +159,7 @@ class AuthService {
         .then((response) => {
           const responseJson = response.json;
           if (response.ok) {
-            AuthService.setPropsFromAuthResponse(responseJson);
+            AuthService.updatePropsFromAuthResponse(responseJson);
             resolve(responseJson);
           } else {
             AuthService.resetProps();
@@ -208,6 +251,27 @@ class AuthService {
           reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });
+  }
+
+  static async refreshToken() {
+    console.log('REFRESHing TOKEN');
+
+    return fetch(`${API_BASE_URL}/api-token-refresh/`, {
+      method: 'POST',
+      body: JSON.stringify({ token: AuthService.getToken() }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(FetchHelper.parseJson)
+      .then((response) => {
+        if (response.ok) {
+          AuthService.updatePropsFromAuthResponse(response.json);
+        } else {
+          console.error('Could not refresh token');
+        }
+      })
+      .catch(() => {
+        console.error('Could not refresh token');
+      });
   }
 
   static async logout() {

@@ -14,7 +14,6 @@ import { UserDetailsContext } from './providers/UserDetailsProvider';
 import './Header.css';
 
 // TODO P1 Show Open Bets in header if there are > 0
-// TODO P1 check (refresh?) token on each mount and log out if it's invalid
 // TODO P2 make it appear sticky on up-scroll?
 // TODO P2 Display little down arrow beneath user avatar
 // TODO P2 Pimp Drawer menu --> Add logo to the top

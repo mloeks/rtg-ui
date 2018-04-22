@@ -20,6 +20,13 @@ class Reception extends Component {
     this.login = this.login.bind(this);
   }
 
+  componentDidMount() {
+    if (!AuthService.isAuthenticated()) {
+      // make sure a non-authenticated user always has a clean slate...
+      AuthService.resetProps();
+    }
+  }
+
   login(username, password, errorCallback) {
     AuthService.authenticate(username, password)
       .then(() => {

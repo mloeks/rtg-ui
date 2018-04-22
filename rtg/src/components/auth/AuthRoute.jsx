@@ -7,12 +7,15 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={props => (
-        AuthService.isAuthenticated() === true
-          ? <Component {...props} />
+      render={(props) => {
+        if (!AuthService.isAuthenticated()) {
           // eslint-disable-next-line react/prop-types
-          : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-      )}
+          return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
+        }
+
+        AuthService.refreshTokenIfNecessary();
+        return <Component {...props} />;
+      }}
     />);
 };
 

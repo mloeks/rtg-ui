@@ -20,6 +20,8 @@ class UserDetailsProvider extends Component {
     };
   }
 
+  // TODO P1 use user info from local storage for state and also update on refresh token
+  // instead of fetching the user every time
   componentDidMount() {
     if (AuthService.isAuthenticated()) {
       this.fetchUserDetails();
