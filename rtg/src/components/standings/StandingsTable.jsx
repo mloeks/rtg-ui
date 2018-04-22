@@ -42,7 +42,10 @@ const pointsColumnStyle = {
 
 const StandingsTableRow = (props) => {
   return (
-    <TableRow style={{ height: ROW_HEIGHT }} className="StandingsTableRow">
+    <TableRow
+      style={{ height: ROW_HEIGHT }}
+      className={`StandingsTableRow ${props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
+    >
       <TableRowColumn style={rankColumnStyle}>{props.rank}</TableRowColumn>
       <TableRowColumn style={{
         height: ROW_HEIGHT,
@@ -105,7 +108,6 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P1 Highlight own user
 // TODO P2 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
 // TODO P3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
