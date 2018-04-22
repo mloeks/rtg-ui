@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar } from 'material-ui';
 import { randomHueHexColor } from '../service/ColorHelper';
-import { API_BASE_URL } from "../service/AuthService";
+import { API_BASE_URL } from '../service/AuthService';
 
 /**
  * An avatar showing the user image if given or the first letter of
