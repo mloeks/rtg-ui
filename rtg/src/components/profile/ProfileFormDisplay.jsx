@@ -79,6 +79,10 @@ const ProfileFormDisplay = props => (
 );
 
 ProfileFormDisplay.defaultProps = {
+  about: '',
+  location: '',
+  email2: '',
+
   firstNameError: null,
   lastNameError: null,
   email2Error: null,
@@ -92,9 +96,9 @@ ProfileFormDisplay.propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  email2: PropTypes.string.isRequired,
-  about: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
+  email2: PropTypes.string,
+  about: PropTypes.string,
+  location: PropTypes.string,
 
   reminderEmails: PropTypes.bool.isRequired,
   dailyEmails: PropTypes.bool.isRequired,
