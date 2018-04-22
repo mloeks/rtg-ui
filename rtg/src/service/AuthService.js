@@ -63,6 +63,10 @@ class AuthService {
     return Number(LocalStorageWrapper.get('open-bets-count'));
   }
 
+  static setOpenBetsCount(openBetsCount) {
+    LocalStorageWrapper.set('open-bets-count', openBetsCount);
+  }
+
   static resetProps() {
     localStorage.clear(); // eslint-disable-line no-undef
   }

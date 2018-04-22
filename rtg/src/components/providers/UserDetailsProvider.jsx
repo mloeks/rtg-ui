@@ -30,6 +30,7 @@ class UserDetailsProvider extends Component {
 
       doLogout: this.handleLogout.bind(this),
       updateAvatar: this.handleUpdateAvatar.bind(this),
+      updateOpenBetsCount: this.handleOpenBetsCount.bind(this),
     };
   }
 
@@ -60,6 +61,11 @@ class UserDetailsProvider extends Component {
   handleUpdateAvatar(avatar) {
     AuthService.setAvatar(avatar);
     this.setState({ avatar });
+  }
+
+  handleOpenBetsCount(openBetsCount) {
+    AuthService.setOpenBetsCount(openBetsCount);
+    this.setState({ openBetsCount });
   }
 
   render() {

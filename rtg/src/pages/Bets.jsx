@@ -4,6 +4,7 @@ import { Tab, Tabs } from 'material-ui/Tabs';
 import { Badge } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
+import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
@@ -21,7 +22,6 @@ export const countOpenBets = (bettables, allBets) => {
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
-// TODO P1 Refresh open bets by registering a UserDetails Consumer and invoking a dedicated callback
 // TODO P1 show prompt if user wants to navigate away with unsaved changes
 // tried with updating "hasChanged" in this state by the GameCardBet's
 // --> too many updates all the time
@@ -54,16 +54,20 @@ class Bets extends Component {
     }
   }
 
-  handleOpenGameBetsCtUpdate(value, incremental) {
+  handleOpenGameBetsCtUpdate(value, incremental, userContext) {
     this.setState(prevState => (
       { openGameBetsCt: incremental ? prevState.openGameBetsCt + value : value }
-    ));
+    ), () => {
+      userContext.updateOpenBetsCount(this.state.openExtraBetsCt + this.state.openGameBetsCt);
+    });
   }
 
-  handleOpenExtraBetsCtUpdate(value, incremental) {
+  handleOpenExtraBetsCtUpdate(value, incremental, userContext) {
     this.setState(prevState => (
       { openExtraBetsCt: incremental ? prevState.openExtraBetsCt + value : value }
-    ));
+    ), () => {
+      userContext.updateOpenBetsCount(this.state.openExtraBetsCt + this.state.openGameBetsCt);
+    });
   }
 
   render() {
@@ -73,30 +77,36 @@ class Bets extends Component {
           <h1 className="BigPicture__heading">Deine Tipps</h1>
         </BigPicture>
         <section className="BetsPage__bets-area">
-          <Tabs className="BetsPage__tabs" value={this.state.activeTab}>
-            <Tab
-              className="BetsPage__tab"
-              label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
-              value={BettableTypes.GAME}
-              onActive={tab => this.setState({ activeTab: tab.props.value })}
-            >
-              <GameBetsTab
-                active={this.state.activeTab === BettableTypes.GAME}
-                onOpenBetsUpdate={this.handleOpenGameBetsCtUpdate}
-              />
-            </Tab>
-            <Tab
-              className="BetsPage__tab"
-              label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
-              value={BettableTypes.EXTRA}
-              onActive={this.handleExtraBetTabClick}
-            >
-              <ExtraBetsTab
-                active={this.state.activeTab === BettableTypes.EXTRA}
-                onOpenBetsUpdate={this.handleOpenExtraBetsCtUpdate}
-              />
-            </Tab>
-          </Tabs>
+          <UserDetailsContext.Consumer>
+            {userContext => (
+              <Tabs className="BetsPage__tabs" value={this.state.activeTab}>
+                <Tab
+                  className="BetsPage__tab"
+                  label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
+                  value={BettableTypes.GAME}
+                  onActive={tab => this.setState({ activeTab: tab.props.value })}
+                >
+                  <GameBetsTab
+                    active={this.state.activeTab === BettableTypes.GAME}
+                    onOpenBetsUpdate={(val, inc) =>
+                      this.handleOpenGameBetsCtUpdate(val, inc, userContext)}
+                  />
+                </Tab>
+                <Tab
+                  className="BetsPage__tab"
+                  label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
+                  value={BettableTypes.EXTRA}
+                  onActive={this.handleExtraBetTabClick}
+                >
+                  <ExtraBetsTab
+                    active={this.state.activeTab === BettableTypes.EXTRA}
+                    onOpenBetsUpdate={(val, inc) =>
+                      this.handleOpenExtraBetsCtUpdate(val, inc, userContext)}
+                  />
+                </Tab>
+              </Tabs>
+            )}
+          </UserDetailsContext.Consumer>
         </section>
       </Page>
     );
