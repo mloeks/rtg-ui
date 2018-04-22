@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-state */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -5,7 +7,7 @@ import AuthService from '../../service/AuthService';
 
 export const UserDetailsContext = React.createContext();
 
-const LogoutReason = {
+export const LogoutReason = {
   USER_DETAILS_LOAD_ERROR: 'USER_DETAILS_LOAD_ERROR',
   INVALID_TOKEN: 'INVALID_TOKEN',
 };
@@ -27,6 +29,7 @@ class UserDetailsProvider extends Component {
       openBetsCount: null,
 
       doLogout: this.handleLogout.bind(this),
+      updateAvatar: this.handleUpdateAvatar.bind(this),
     };
   }
 
@@ -52,6 +55,11 @@ class UserDetailsProvider extends Component {
   handleLogout(reason) {
     // TODO P2 set URL parameter if reason is set and render info message on login page
     AuthService.logout().then(() => this.props.history.push('/'));
+  }
+
+  handleUpdateAvatar(avatar) {
+    AuthService.setAvatar(avatar);
+    this.setState({ avatar });
   }
 
   render() {

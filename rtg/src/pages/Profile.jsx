@@ -5,11 +5,11 @@ import ProfileForm from '../components/profile/ProfileForm';
 import BigEditableAvatar from '../components/profile/BigEditableAvatar';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
+import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 
 import headingImg from '../theme/img/img8.jpg';
 
-// TODO P2 refresh avatar URL after change by registering a
-// UserDetails Consumer and invoking a dedicated callback
+// TODO P3 offer possibility to delete avatar
 class Profile extends Component {
   static userToStateMapper(userJson) {
     return {
@@ -18,9 +18,9 @@ class Profile extends Component {
       firstName: userJson.first_name,
       lastName: userJson.last_name,
       email: userJson.email,
-      email2: userJson.email2,
-      location: userJson.location,
-      about: userJson.about,
+      email2: userJson.email2 || '',
+      location: userJson.location || '',
+      about: userJson.about || '',
       avatar: userJson.avatar,
       reminderEmails: userJson.reminder_emails,
       dailyEmails: userJson.daily_emails,
@@ -36,13 +36,13 @@ class Profile extends Component {
 
       userId: AuthService.getUserId(),
       username: AuthService.getUsername(),
-      email: '',
+      email: AuthService.getEmail(),
       email2: '',
       firstName: '',
       lastName: '',
       about: '',
       location: '',
-      avatar: '',
+      avatar: AuthService.getAvatar(),
 
       dailyEmails: true,
       reminderEmails: true,
@@ -75,8 +75,10 @@ class Profile extends Component {
     this.setState(Profile.userToStateMapper(newUser));
   }
 
-  handleAvatarChanged(newAvatar) {
-    this.setState({ avatar: newAvatar });
+  handleAvatarChanged(newAvatar, userContext) {
+    this.setState({ avatar: newAvatar }, () => {
+      userContext.updateAvatar(newAvatar);
+    });
   }
 
   render() {
@@ -84,16 +86,22 @@ class Profile extends Component {
       <Page className="ProfilePage">
         <BigPicture className="ProfilePage__heading" img={headingImg} />
         <section className="ProfilePage__content">
-          <BigEditableAvatar
-            userId={this.state.userId}
-            username={this.state.username}
-            avatarUrl={this.state.avatar && `${API_BASE_URL}/media/${this.state.avatar}`}
 
-            loading={this.state.loading}
-            loadingError={this.state.loadingError}
+          <UserDetailsContext.Consumer>
+            {userContext => (
+              <BigEditableAvatar
+                userId={this.state.userId}
+                username={this.state.username}
+                avatarUrl={this.state.avatar && `${API_BASE_URL}/media/${this.state.avatar}`}
 
-            onAvatarChanged={this.handleAvatarChanged}
-          />
+                loading={this.state.loading}
+                loadingError={this.state.loadingError}
+
+                onAvatarChanged={avatar => this.handleAvatarChanged(avatar, userContext)}
+              />
+            )}
+          </UserDetailsContext.Consumer>
+
           <ProfileForm
             userId={this.state.userId}
             firstName={this.state.firstName}

@@ -55,6 +55,10 @@ class AuthService {
     return avatar && avatar !== 'null' ? avatar : null;
   }
 
+  static setAvatar(avatar) {
+    LocalStorageWrapper.set('avatar', avatar);
+  }
+
   static getOpenBetsCount() {
     return Number(LocalStorageWrapper.get('open-bets-count'));
   }
