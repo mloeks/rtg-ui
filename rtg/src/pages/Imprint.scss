@@ -1,0 +1,45 @@
+@import '../sass/colors.scss';
+
+.ImprintPage {
+  &__content {
+    padding: 15px;
+    box-sizing: border-box;
+    color: $darkGrey;
+    font-size: 14px;
+
+    a {
+      text-decoration: none;
+      color: $purple;
+    }
+
+    @media only screen and (min-width : 480px) {
+      max-width: 768px;
+      margin: 25px auto;
+    }
+  }
+
+  &__used-frameworks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      padding: 20px;
+      width: 100px;
+    }
+
+    @media only screen and (min-width : 480px) {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  &__react-logo {
+    animation: rotation 13s infinite linear;
+
+    @keyframes rotation {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(359deg); }
+    }
+  }
+}
