@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
+import { Paper } from 'material-ui';
 import ContactFormPresentational from './ContactFormDisplay';
-import { API_BASE_URL } from '../../service/AuthService';
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 
 import './ContactForm.css';
-import { Paper } from "material-ui";
 
+// TODO P2 include reCAPTCHA
 class ContactForm extends Component {
   static getInitialState() {
+    const isLoggedIn = AuthService.isAuthenticated();
+
     return {
-      author: '',
-      email: '',
+      author: isLoggedIn ? AuthService.getUsername() : '',
+      email: isLoggedIn ? AuthService.getEmail() : '',
       content: '',
 
       formHasErrors: false,
