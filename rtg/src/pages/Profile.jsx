@@ -85,7 +85,7 @@ class Profile extends Component {
     return (
       <Page className="ProfilePage">
         <BigPicture className="ProfilePage__heading" img={headingImg} />
-        <section className="ProfilePage__content">
+        <section className="ProfilePage__content" style={{ position: 'relative' }}>
 
           <UserDetailsContext.Consumer>
             {userContext => (
