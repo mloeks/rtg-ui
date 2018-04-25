@@ -5,20 +5,25 @@ import { RaisedButton, TextField } from 'material-ui';
 const ContactFormPresentational = props => (
   <Fragment>
     <TextField
+      name="author"
       floatingLabelText="Dein Name"
       fullWidth
       value={props.author}
       errorText={props.authorError}
+      style={{ textAlign: 'left' }}
       onChange={(e, v) => props.onFieldChange('author', v)}
     /><br />
     <TextField
+      name="email"
       floatingLabelText="Deine E-Mail Adresse"
       fullWidth
       value={props.email}
       errorText={props.emailError}
+      style={{ textAlign: 'left' }}
       onChange={(e, v) => props.onFieldChange('email', v)}
     /><br />
     <TextField
+      name="content"
       floatingLabelText="Nachricht an das Königshaus"
       fullWidth
       multiLine

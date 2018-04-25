@@ -8,6 +8,8 @@ import Notification, { NotificationType } from '../Notification';
 import './ContactForm.css';
 
 // TODO P2 include reCAPTCHA
+// TODO P2 Handle CSRF by reading the token from the Cookie of the first GET
+// response to the backend and sending it with AJAX requests
 class ContactForm extends Component {
   static getInitialState() {
     const isLoggedIn = AuthService.isAuthenticated();
@@ -31,7 +33,9 @@ class ContactForm extends Component {
     };
   }
 
-  static userErrorResponseToState(responseJson) {
+  static errorResponseToStateMapper(responseJson) {
+    if (!responseJson) { return {}; }
+
     return {
       formHasErrors: true,
       nonFieldErrors: responseJson.non_field_errors && responseJson.non_field_errors[0],
@@ -54,30 +58,30 @@ class ContactForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.setState({ isSaving: true }, () => {
-      const payload = {
-        author: this.state.author,
-        email: this.state.email,
-        content: this.state.content,
-      };
+    if (e.target) {
+      const formData = new FormData(e.target);
 
-      fetch(`${API_BASE_URL}/contact/`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'content-type': 'application/json' },
-      }).then(FetchHelper.parseJson)
-        .then((response) => {
-          if (response.ok) {
-            this.setState({ isSaving: false, savingSuccess: true });
-          } else {
-            this.setState(() => ({
-              isSaving: false,
-              savingError: true,
-              ...ContactForm.errorResponseToStateMapper(response.json),
-            }));
-          }
-        }).catch(() => this.setState({ isSaving: false, savingError: true }));
-    });
+      this.setState({ isSaving: true }, () => {
+        fetch(`${API_BASE_URL}/contact/`, {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        }).then(FetchHelper.parseJson)
+          .then((response) => {
+            if (response.ok) {
+              this.setState({ isSaving: false, savingSuccess: true });
+            } else {
+              this.setState(() => ({
+                isSaving: false,
+                savingError: true,
+                ...ContactForm.errorResponseToStateMapper(response.json),
+              }));
+            }
+          }).catch(() => this.setState({ isSaving: false, savingError: true }));
+      });
+    } else {
+      this.setState({ savingError: true });
+    }
   }
 
   render() {
@@ -99,7 +103,8 @@ class ContactForm extends Component {
             isSaving={this.state.isSaving}
             formHasErrors={this.state.formHasErrors}
 
-            onFieldChange={(field, value) => this.setState({ [field]: value })}
+            onFieldChange={(field, value) =>
+              this.setState({ [field]: value, formHasErrors: false })}
           /><br />
 
           {this.state.savingError &&
