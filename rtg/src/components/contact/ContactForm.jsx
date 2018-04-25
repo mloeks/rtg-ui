@@ -69,7 +69,11 @@ class ContactForm extends Component {
         }).then(FetchHelper.parseJson)
           .then((response) => {
             if (response.ok) {
-              this.setState({ isSaving: false, savingSuccess: true });
+              this.setState({
+                ...ContactForm.getInitialState(),
+                isSaving: false,
+                savingSuccess: true,
+              });
             } else {
               this.setState(() => ({
                 isSaving: false,
