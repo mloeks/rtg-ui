@@ -98,6 +98,7 @@ const Footer = props => {
         </div>
       </div>
 
+      {/* TODO P3 add 10 years jubilee logo  */}
       <div className="Footer__copyright">© Copyright 2008 - 2018 Royale Tippgemeinschaft</div>
     </footer>
   );
