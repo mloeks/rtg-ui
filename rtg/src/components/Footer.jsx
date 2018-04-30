@@ -68,9 +68,8 @@ const Footer = props => {
               hoverColor={socialMediaIconHoverColor}
             />
           </a>
-          {/* TODO P1 add correct links to our instagram group */}
           <a
-            href="http://www.instagram.com"
+            href="https://www.instagram.com/royaletippgemeinschaft/"
             title="Zur Instagram-Gruppe"
             target="_blank"
             rel="noopener noreferrer"
