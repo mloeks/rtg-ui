@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
 import AuthService from '../service/AuthService';
+import BigPicture from '../components/BigPicture';
 
+import headingImg from '../theme/img/img7.jpg';
+import './PasswordReset.css';
+
+// TODO P2 only show one password field with option to display password
 class PasswordReset extends Component {
   constructor(props) {
     super(props);
@@ -75,12 +80,10 @@ class PasswordReset extends Component {
 
     return (
       <Page className="PasswordResetPage">
-        <h1>Neues Passwort vergeben</h1>
-        <Paper
-          className="PasswordResetForm"
-          zDepth={1}
-          style={{ margin: '0 auto 100px', padding: '20px', width: '50%', textAlign: 'left' }}
-        >
+        <BigPicture className="RulesPage__heading" img={headingImg}>
+          <h1 className="BigPicture__heading">Neues Passwort vergeben</h1>
+        </BigPicture>
+        <Paper className="PasswordResetForm" zDepth={1}>
           <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort zweimal ein:</p>
           <form className="PasswordResetForm__form" onSubmit={this.handleSubmit}>
             <TextField
