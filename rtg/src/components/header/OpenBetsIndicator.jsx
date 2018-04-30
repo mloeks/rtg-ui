@@ -11,6 +11,7 @@ const OpenBetsIndicator = props => (
         color="#FFF"
         backgroundColor={error}
         size={28}
+        style={{ fontWeight: '500' }}
       >{props.number}
       </Avatar>
     </Link>
