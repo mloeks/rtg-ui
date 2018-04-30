@@ -1,0 +1,23 @@
+@import '../sass/colors.scss';
+
+.RulesPage {
+  &__content {
+    width: 100%;
+    padding: 15px;
+    margin: 0 auto 50px;
+    box-sizing: border-box;
+
+    @media only screen and (min-width : 480px) {
+      max-width: 580px;
+    }
+
+    a, a:hover, a:focus, a:active {
+      color: $purple;
+      text-decoration: none;
+    }
+
+    hr {
+      margin: 30px 0;
+    }
+  }
+}
