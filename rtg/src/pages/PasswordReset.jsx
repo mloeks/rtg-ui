@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterProptypes from 'react-router-prop-types';
-import { FlatButton, Paper, RaisedButton, TextField } from 'material-ui';
+import { FlatButton, Paper, RaisedButton } from 'material-ui';
 import { Link } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
+import VisiblePasswordField from '../components/VisiblePasswordField';
 
 import headingImg from '../theme/img/img7.jpg';
 import './PasswordReset.css';
 
-// TODO P2 only show one password field with option to display password
 class PasswordReset extends Component {
   constructor(props) {
     super(props);
@@ -27,17 +27,13 @@ class PasswordReset extends Component {
   getInitialState() {
     return {
       password: '',
-      passwordRepeat: '',
       uid: this.props.match.params.uid,
       token: this.props.match.params.token,
 
       requestInProgress: false,
       resetSuccessful: false,
 
-      fieldErrors: {
-        password: null,
-        passwordRepeat: null,
-      },
+      fieldErrors: { password: null },
 
       formHasErrors: false,
       formError: null,
@@ -55,14 +51,12 @@ class PasswordReset extends Component {
 
   handleSubmit(e) {
     this.setState({ requestInProgress: true });
-    AuthService.confirmPasswordReset(
-      this.state.password, this.state.passwordRepeat,
-      this.state.uid, this.state.token,
-    ).then(() => {
-      this.setState({
-        ...this.getInitialState(), resetSuccessful: true, requestInProgress: false,
-      });
-    })
+    AuthService.confirmPasswordReset(this.state.password, this.state.uid, this.state.token)
+      .then(() => {
+        this.setState({
+          ...this.getInitialState(), resetSuccessful: true, requestInProgress: false,
+        });
+      })
       .catch((errors) => {
         this.setState({
           requestInProgress: false,
@@ -84,24 +78,14 @@ class PasswordReset extends Component {
           <h1 className="BigPicture__heading">Neues Passwort vergeben</h1>
         </BigPicture>
         <Paper className="PasswordResetForm" zDepth={1}>
-          <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort zweimal ein:</p>
+          <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort ein:</p>
           <form className="PasswordResetForm__form" onSubmit={this.handleSubmit}>
-            <TextField
+            <VisiblePasswordField
               errorText={this.state.fieldErrors.password || false}
               floatingLabelText="Passwort"
               fullWidth
-              type="password"
               value={this.state.password}
               onChange={this.updatePassword}
-            />
-            <br />
-            <TextField
-              errorText={this.state.fieldErrors.passwordRepeat || false}
-              floatingLabelText="Passwort wiederholen"
-              fullWidth
-              type="password"
-              value={this.state.passwordRepeat}
-              onChange={this.updatePasswordRepeat}
             /><br /><br />
 
             <RaisedButton

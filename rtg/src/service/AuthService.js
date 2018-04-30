@@ -222,13 +222,13 @@ class AuthService {
     });
   }
 
-  static async confirmPasswordReset(newPassword, newPasswordRepeat, uid, token) {
+  static async confirmPasswordReset(newPassword, uid, token) {
     return new Promise((resolve, reject) => {
       fetch(`${API_BASE_URL}/rest-auth/password/reset/confirm/`, {
         method: 'POST',
         body: JSON.stringify({
           new_password1: newPassword,
-          new_password2: newPasswordRepeat,
+          new_password2: newPassword,
           uid,
           token,
         }),
@@ -245,8 +245,7 @@ class AuthService {
             // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               fieldErrors: {
-                password: responseJson.new_password1 || '',
-                passwordRepeat: responseJson.new_password2 || '',
+                password: responseJson.new_password1 || responseJson.new_password2 || '',
                 uid: responseJson.uid || '',
                 token: responseJson.token || '',
               },
@@ -262,8 +261,6 @@ class AuthService {
   }
 
   static async refreshToken() {
-    console.log('REFRESHing TOKEN');
-
     return fetch(`${API_BASE_URL}/api-token-refresh/`, {
       method: 'POST',
       body: JSON.stringify({ token: AuthService.getToken() }),
@@ -273,12 +270,7 @@ class AuthService {
       .then((response) => {
         if (response.ok) {
           AuthService.updatePropsFromAuthResponse(response.json);
-        } else {
-          console.error('Could not refresh token');
         }
-      })
-      .catch(() => {
-        console.error('Could not refresh token');
       });
   }
 

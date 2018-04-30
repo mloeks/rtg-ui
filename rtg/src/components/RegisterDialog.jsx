@@ -5,6 +5,7 @@ import { Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 
+// TODO P2 only show one password field with option to display password
 class RegisterDialog extends Component {
   static getInitialState() {
     return {
