@@ -68,7 +68,7 @@ const Footer = props => {
               hoverColor={socialMediaIconHoverColor}
             />
           </a>
-          {/* TODO P1 add correct links to our instagram and twitter groups */}
+          {/* TODO P1 add correct links to our instagram group */}
           <a
             href="http://www.instagram.com"
             title="Zur Instagram-Gruppe"
@@ -88,12 +88,13 @@ const Footer = props => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <TwitterIcon
-              className="Footer__socialmedia-icon"
-              viewBox="0 0 24 24"
-              color={socialMediaIconColor}
-              hoverColor={socialMediaIconHoverColor}
-            />
+            {/* TODO P2 kick off Twitter account */}
+            {/*<TwitterIcon*/}
+              {/*className="Footer__socialmedia-icon"*/}
+              {/*viewBox="0 0 24 24"*/}
+              {/*color={socialMediaIconColor}*/}
+              {/*hoverColor={socialMediaIconHoverColor}*/}
+            {/*/>*/}
           </a>
         </div>
       </div>
