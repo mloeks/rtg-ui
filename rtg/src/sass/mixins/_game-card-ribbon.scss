@@ -1,6 +1,7 @@
 @mixin game-card-ribbon($color, $wrapped-el-height, $width) {
   $added-height: 15px;
   $bottom-arrow-height: 10px;
+  $ribbon-callout-width: $added-height - 0.2*$added-height;
   $darken-left-right: 3%;
   $darken-ribbon-callout: 25%;
 
@@ -18,13 +19,13 @@
   &:before {
     position: absolute;
     top: 0;
-    left: -$added-height;
+    left: -$ribbon-callout-width;
     content: "";
     width: 0;
     height: 0;
 
     border-bottom: $added-height solid darken($color, $darken-ribbon-callout);
-    border-left: $added-height solid transparent;
+    border-left: $ribbon-callout-width solid transparent;
   }
 
   &:after {
