@@ -17,11 +17,9 @@
     }
 
     hr {
-      border: 0;
-      height: 1px;
       margin: 30px 0;
-
-      background-color: lighten($lightGold, 15%);
+      border-top: 1px dotted #E9C467;
+      border-bottom: 0;
     }
   }
 }
