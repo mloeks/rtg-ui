@@ -4,7 +4,7 @@ import { FlatButton } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/img5.jpg';
 import './Rules.css';
 
 const Rules = () => (
