@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
 
+import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.css';
 
 const DrawerMenu = (props) => {
@@ -40,6 +41,20 @@ const DrawerMenu = (props) => {
       </Link>
 
       <Divider />
+
+      {!AuthService.getHasPaid() &&
+        <a
+          className="DrawerMenu__paypal-link"
+          href="https://paypal.me/rtg2018/5"
+          target="_blank"
+          rel="noopener noreferrer"
+        ><img
+          src={payPalLogo}
+          alt="PayPal link"
+          style={{ width: '100px' }}
+        /><span>Tippeinsatz jetzt bezahlen</span>
+        </a>}
+      {!AuthService.getHasPaid() && <Divider />}
 
       <Link to="/foyer">
         <MenuItem primaryText="Neuigkeiten" leftIcon={<Home />} />
