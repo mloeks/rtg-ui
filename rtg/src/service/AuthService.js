@@ -145,12 +145,12 @@ class AuthService {
     });
   }
 
-  static async register(username, email, password, passwordRepeat, firstName, lastName) {
+  static async register(username, email, password, firstName, lastName) {
     const payload = {
       username,
       email,
       password,
-      password2: passwordRepeat,
+      password2: password,
       first_name: firstName,
       last_name: lastName,
     };
@@ -178,8 +178,10 @@ class AuthService {
                 email: responseJson.email || '',
                 firstName: responseJson.first_name || '',
                 lastName: responseJson.last_name || '',
-                password: responseJson.password1 || '', // password1 is intentional, because the backend serializers returns it like this
-                passwordRepeat: responseJson.password2 || '',
+
+                // password1 is intentional, because the backend serializers currently
+                // returns it like this
+                password: responseJson.password1 || responseJson.password2 || '',
               },
               nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
             });

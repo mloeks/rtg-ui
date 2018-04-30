@@ -4,8 +4,10 @@ import { Redirect } from 'react-router-dom';
 import { Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
+import VisiblePasswordField from './VisiblePasswordField';
 
-// TODO P2 only show one password field with option to display password
+// TODO P2 improve communication why first and last name are required
+// TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
   static getInitialState() {
     return {
@@ -13,7 +15,6 @@ class RegisterDialog extends Component {
 
       username: null,
       password: null,
-      passwordRepeat: null,
       firstName: null,
       lastName: null,
       email: null,
@@ -21,7 +22,6 @@ class RegisterDialog extends Component {
       fieldErrors: {
         username: null,
         password: null,
-        passwordRepeat: null,
         firstName: null,
         lastName: null,
         email: null,
@@ -41,7 +41,6 @@ class RegisterDialog extends Component {
     this.updateFormField = this.updateFormField.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-    this.updatePasswordRepeat = this.updatePasswordRepeat.bind(this);
     this.updateFirstName = this.updateFirstName.bind(this);
     this.updateLastName = this.updateLastName.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
@@ -64,7 +63,6 @@ class RegisterDialog extends Component {
 
   updateUsername(event, newValue) { this.updateFormField('username', newValue); }
   updatePassword(event, newValue) { this.updateFormField('password', newValue); }
-  updatePasswordRepeat(event, newValue) { this.updateFormField('passwordRepeat', newValue); }
   updateFirstName(event, newValue) { this.updateFormField('firstName', newValue); }
   updateLastName(event, newValue) { this.updateFormField('lastName', newValue); }
   updateEmail(event, newValue) { this.updateFormField('email', newValue); }
@@ -72,7 +70,7 @@ class RegisterDialog extends Component {
   handleSubmit() {
     AuthService.register(
       this.state.username, this.state.email, this.state.password,
-      this.state.passwordRepeat, this.state.firstName, this.state.lastName,
+      this.state.firstName, this.state.lastName,
     ).then(() => {
       this.setState({ registerSuccessful: true });
     })
@@ -109,11 +107,12 @@ class RegisterDialog extends Component {
         open={this.props.open}
         title={
           <div style={{ textAlign: 'center' }}>
-            <h2>Werde Teil der Royalen Tippgemeinschaft</h2>
+            <h2 style={{ margin: '15px auto' }}>Werde Teil der Royalen Tippgemeinschaft</h2>
             {this.state.formHasErrors &&
             <p style={{ color: this.props.muiTheme.palette.errorColor }}>{this.state.formError}</p>}
           </div>}
         style={{ textAlign: 'left' }}
+        titleStyle={{ padding: '12px' }}
         contentStyle={{ width: '95%' }}
       >
 
@@ -131,22 +130,12 @@ class RegisterDialog extends Component {
           onChange={this.updateEmail}
         />
         <br />
-        <TextField
+        <VisiblePasswordField
           errorText={this.state.fieldErrors.password || false}
           floatingLabelText="Passwort"
           fullWidth
-          type="password"
           onChange={this.updatePassword}
         />
-        <br />
-        <TextField
-          errorText={this.state.fieldErrors.passwordRepeat || false}
-          floatingLabelText="Passwort wiederholen"
-          fullWidth
-          type="password"
-          onChange={this.updatePasswordRepeat}
-        />
-        <br />
         <div style={{ display: 'flex' }}>
           <TextField
             style={{ marginRight: '10px', width: '50%' }}
