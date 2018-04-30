@@ -2,10 +2,6 @@
   &__content {
     position: relative;
     margin-top: -60px;
-
-    @media only screen and (min-width : 480px) {
-      margin-top: -90px;
-    }
   }
 
   &__about {
