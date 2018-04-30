@@ -25,10 +25,13 @@
   }
 
   &__city, &__userBet, &__points {
-    font-size: 14px;
-    word-wrap: break-word;
-    font-weight: 300;
+    padding: 0 3px;
+
     text-align: center;
+    word-wrap: break-word;
+
+    font-size: 14px;
+    font-weight: 400;
     line-height: 1.2;
   }
 }
