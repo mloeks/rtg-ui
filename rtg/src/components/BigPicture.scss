@@ -22,6 +22,8 @@
   &__heading {
     color: white;
     z-index: $zBigPictureHeading;
+
+    text-shadow: black 1px 1px 4px;
   }
 
   &:after {
