@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card';
 import { MenuItem, RaisedButton, SelectField } from 'material-ui';
-import { distanceInWordsToNow } from 'date-fns';
+import Star from 'material-ui/svg-icons/toggle/star';
+import Alarm from 'material-ui/svg-icons/action/alarm';
+import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import Notification, { NotificationType } from './Notification';
+import { error, grey } from '../theme/RtgTheme';
 
 import './ExtraBetCard.css';
 
@@ -32,6 +35,7 @@ export default class ExtraBetCard extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.createSubtitleDiv = this.createSubtitleDiv.bind(this);
   }
 
   componentDidMount() {
@@ -118,6 +122,28 @@ export default class ExtraBetCard extends Component {
     }
   }
 
+  createSubtitleDiv() {
+    const iconStyle = {
+      height: '20px',
+      marginRight: '5px',
+    };
+
+    return (
+      <div className="ExtraBetCard__subtitle">
+        <span className="ExtraBetCard__subtitle-points">
+          <Star style={iconStyle} color={grey} />{this.props.points} Punkte
+        </span>
+        {this.props.open &&
+          <span
+            className="ExtraBetCard__subtitle-deadline"
+            title={format(this.props.deadline, 'dd. DD. MMMM - HH:mm [Uhr]', { locale: de })}
+          >
+            <br /><Alarm style={iconStyle} color={error} />Noch {this.state.remainingTime}
+          </span>}
+      </div>
+    );
+  }
+
   render() {
     const userResultBet = this.state.userBet ? this.state.userBet.result_bet : null;
     const isUserBetCorrect = this.props.result && userResultBet === this.props.result;
@@ -127,15 +153,11 @@ export default class ExtraBetCard extends Component {
       </div>)
       : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
 
-    let subtitle = `${this.props.points} Punkte`;
-    if (this.props.open) {
-      subtitle += ` - Noch ${this.state.remainingTime}`;
-    }
     return (
       <Card className="ExtraBetCard">
         <CardTitle
           title={this.props.name}
-          subtitle={subtitle}
+          subtitle={this.createSubtitleDiv()}
         />
         {!this.props.open && <CardText style={{ padding: 0 }}>{resultInfo}</CardText>}
 

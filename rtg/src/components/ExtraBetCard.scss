@@ -3,6 +3,17 @@
 .ExtraBetCard {
   margin: 25px 0;
 
+  &__subtitle-points,
+  &__subtitle-deadline {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+
+  &__subtitle-deadline {
+    color: $error;
+  }
+
   &__actions {
     display: flex;
     flex-direction: column;
