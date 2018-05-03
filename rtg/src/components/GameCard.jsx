@@ -7,6 +7,8 @@ import GameCardGameInfo from './GameCardGameInfo';
 import './GameCard.css';
 
 // TODO P1 add the possibility to display user bet for not-yet-started games
+// TODO P1 in general, consolidate different views and test them
+// TODO P2 add possibility to unfold and show calculated bet stats below the card
 const GameCard = (props) => {
   const centerContent = props.children || (
     // if no other children are passed in,

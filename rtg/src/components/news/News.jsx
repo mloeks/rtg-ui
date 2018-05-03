@@ -9,8 +9,9 @@ import AddPostForm from './AddPostForm';
 
 import './News.css';
 
-// TODO P2 Lazy load news
+// TODO P2 add section "recent games" to the top
 // TODO P2 Allow normal users to post and comment on news
+// TODO P2 Lazy load news
 // TODO P2 Save drafts while adding a post
 class News extends Component {
   static async loadPosts() {

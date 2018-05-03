@@ -9,6 +9,7 @@ import { UserDetailsContext } from '../components/providers/UserDetailsProvider'
 
 import headingImg from '../theme/img/img8.jpg';
 
+// TODO P2 offer possibility to delete account
 // TODO P3 offer possibility to delete avatar
 class Profile extends Component {
   static userToStateMapper(userJson) {
