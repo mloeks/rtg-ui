@@ -90,11 +90,6 @@ export default class ExtraBetsTab extends Component {
               />
             ))
           }
-          {(!this.state.loading && !this.state.loadingError && extraBettables.length === 0) &&
-            <div className="ExtraBetsTab__no-games-present">
-              Keine offenen Zusatztipps vorhanden.
-            </div>
-          }
           {this.state.loadingError &&
             <div className="ExtraBetsTab__loadingError">Fehler beim Laden.</div>
           }

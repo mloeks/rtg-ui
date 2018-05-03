@@ -13,7 +13,6 @@ import { error, grey } from '../theme/RtgTheme';
 
 import './ExtraBetCard.css';
 
-// TODO P1 style all kinds of results properly
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
     return distanceInWordsToNow(deadline, { locale: de });
@@ -148,8 +147,8 @@ export default class ExtraBetCard extends Component {
     const userResultBet = this.state.userBet ? this.state.userBet.result_bet : null;
     const isUserBetCorrect = this.props.result && userResultBet === this.props.result;
     const resultInfo = this.props.result ? (
-      <div className={`ExtraBetCard__result-info--finished ${isUserBetCorrect ? 'volltreffer' : ''}`}>
-        Ergebnis: {this.props.result} - {isUserBetCorrect ? `${this.props.points} Punkte!` : 'Keine Punkte.'}
+      <div className={`ExtraBetCard__result-info ExtraBetCard__result-info--finished ${isUserBetCorrect ? 'volltreffer' : ''}`}>
+        Ergebnis: {this.props.result} –&nbsp;<b>{isUserBetCorrect ? `${this.props.points} Punkte!` : 'Keine Punkte.'}</b>
       </div>)
       : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
 
@@ -159,6 +158,14 @@ export default class ExtraBetCard extends Component {
           title={this.props.name}
           subtitle={this.createSubtitleDiv()}
         />
+
+        {(!this.state.loadingError && !this.props.open) &&
+        <div className="ExtraBetCard__bet-info">Dein Tipp:&nbsp;
+          <span className="ExtraBetCard__bet-info-bet">
+            {(this.state.userBet && this.state.userBet.result_bet) ? this.state.userBet.result_bet : '---'}
+          </span>
+        </div>}
+
         {!this.props.open && <CardText style={{ padding: 0 }}>{resultInfo}</CardText>}
 
         {this.state.loadingError &&
@@ -206,13 +213,6 @@ export default class ExtraBetCard extends Component {
               subtitle="Bitte versuche es später erneut."
             />}
         </div>
-
-        {(!this.state.loadingError && !this.props.open) &&
-          <div className="ExtraBetCard__bet-info">Dein Tipp:
-            <span className="ExtraBetCard__bet-info-bet">
-              {(this.state.userBet && this.state.userBet.result_bet) ? this.state.userBet.result_bet : '---'}
-            </span>
-          </div>}
       </Card>);
   }
 }
