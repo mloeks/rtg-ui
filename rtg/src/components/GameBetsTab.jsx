@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CircularProgress } from 'material-ui';
-import Timer from 'material-ui/svg-icons/image/timer';
+import Alarm from 'material-ui/svg-icons/action/alarm';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -125,7 +125,7 @@ class GameBetsTab extends Component {
   createDeadlineWithIcon(deadlineDate, readableDeadlineText) {
     return (
       <div className="GameBetsTab__deadline-separator">
-        <Timer
+        <Alarm
           className="GameBetsTab__deadline-separator-icon"
           color={this.props.muiTheme.palette.errorColor}
           style={{ width: '28px', height: '28px', marginRight: '5px' }}
