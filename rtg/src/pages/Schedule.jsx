@@ -14,6 +14,7 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import './Schedule.css';
 import headingImg from '../theme/img/img2.jpg';
 
+// TODO P2 switch to current game/round automatically
 class Schedule extends Component {
   static createGameCardsWithDateSubheadings(games, bets) {
     const gameCardsWithDateSubheadings = [];
@@ -189,6 +190,7 @@ class Schedule extends Component {
           {(!this.state.loading && !this.state.loadingError) &&
             gameContainerItems.map(game => game)
           }
+          {/* TODO P2 style empty-state nicer */}
           {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
           <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
           }

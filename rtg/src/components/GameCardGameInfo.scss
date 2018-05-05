@@ -8,10 +8,12 @@
   flex-direction: column;
   align-content: center;
   height: 95%;
-  padding-bottom: 5px;
+  padding: 3px 0 5px;
 
   &__kickoff, &__result {
     padding-top: 3px;
+    margin-bottom: 5px;
+
     font-size: 26px;
     font-weight: 600;
     flex-grow: 1;
@@ -35,6 +37,53 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 1.2;
+  }
+
+  &__points {
+    padding: 10px 0;
+    margin: auto;
+    border: 1px solid white;
+    background-color: transparent;
+    box-sizing: border-box;
+  }
+
+  &__game-running-crown {
+    margin-top: 5px;
+    flex-grow: 1;
+
+    img {
+      width: 18px;
+
+      animation: twist 2.5s infinite linear;
+      @keyframes twist {
+        0% {
+          transform: translateX(0) rotate(0deg);
+        }
+        25% {
+          transform: translateX(20px) rotate(90deg);
+        }
+        50% {
+          transform: translateX(0px) rotate(180deg);
+        }
+        75% {
+          transform: translateX(-20px) rotate(270deg);
+        }
+        100% {
+          transform: translateX(0) rotate(359deg);
+        }
+      }
+    }
+  }
+
+  &__game-running-text {
+    font-size: 12px;
+
+    animation: glow 2s infinite linear;
+    @keyframes glow {
+      0% { opacity: 1; }
+      50% { opacity: 0.25; }
+      100% { opacity: 1; }
+    }
   }
 
   &__city, &__userBet, &__points {

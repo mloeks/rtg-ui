@@ -7,7 +7,7 @@
   &.neutral { @include game-card-ribbon($ribbonNeutral, 65px, 80px); }
   &.niete { @include game-card-ribbon($ribbonNiete, 65px, 80px); }
   &.tendenz { @include game-card-ribbon($ribbonTendenz, 65px, 80px); }
-  &.remis-tendenz { @include game-card-ribbon($remisTendenz, 65px, 80px); }
+  &.remis_tendenz { @include game-card-ribbon($ribbonRemisTendenz, 65px, 80px); }
   &.differenz { @include game-card-ribbon($ribbonDifferenz, 65px, 80px); }
   &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 65px, 80px); }
 
@@ -16,9 +16,6 @@
   justify-content: center;
 
   color: white;
-  &.differenz {
-    color: $darkGrey;
-  }
 
   &__content {
     box-sizing: border-box;

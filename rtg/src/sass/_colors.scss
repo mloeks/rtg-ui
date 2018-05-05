@@ -20,9 +20,10 @@ $pantoneTcxHarborMist: #AFB1B4;
 
 $ribbonBet: #303030;
 $ribbonNeutral: $pantoneTcxHarborMist;
+// TODO P1 choose a nicer red
 $ribbonNiete: #ED2939;
 $ribbonTendenz: #FF9966;
 // TODO P1 choose other color
 $ribbonRemisTendenz: #FF9966;
-$ribbonDifferenz: #FADA5E;
+$ribbonDifferenz: darken(#FADA5E, 10%);
 $ribbonVolltreffer: #00A550;
