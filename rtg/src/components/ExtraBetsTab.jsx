@@ -68,9 +68,6 @@ export default class ExtraBetsTab extends Component {
   }
 
   render() {
-    const extraBettables =
-      this.state.bettables.filter(bettable => bettable.type === BettableTypes.EXTRA);
-
     return (
       <div className="ExtraBetsTab">
         <h2>Zusatztipps</h2>
