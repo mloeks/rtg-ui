@@ -5,6 +5,7 @@ import { Dialog, FlatButton, TextField } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
+import Notification, { NotificationType } from './Notification';
 
 // TODO P2 improve communication why first and last name are required
 // TODO P3 fix error messages "darf nicht null sein"
@@ -99,6 +100,7 @@ class RegisterDialog extends Component {
     ];
 
     return (
+      // TODO P2 fix line height in error notification
       <Dialog
         className="RegisterDialog"
         actions={actions}
@@ -109,7 +111,11 @@ class RegisterDialog extends Component {
           <div style={{ textAlign: 'center' }}>
             <h2 style={{ margin: '15px auto' }}>Werde Teil der Royalen Tippgemeinschaft</h2>
             {this.state.formHasErrors &&
-            <p style={{ color: this.props.muiTheme.palette.errorColor }}>{this.state.formError}</p>}
+              <Notification
+                type={NotificationType.ERROR}
+                title={this.state.formError}
+                subtitle="Bitte versuche es erneut."
+              />}
           </div>}
         style={{ textAlign: 'left' }}
         titleStyle={{ padding: '12px' }}
