@@ -8,6 +8,7 @@ import {
   getHomegoals,
   isCompleteResult,
   isEmptyResult,
+  MAX_GOALS_INPUT,
   NO_GOALS_STRING,
   toResultString,
 } from '../service/ResultStringHelper';
@@ -33,7 +34,7 @@ class GameCardBet extends Component {
       return 0;
     } else if (previousValue === NO_GOALS_STRING && inc === -1) {
       return previousValue;
-    } else if (previousValueNumber === 10 && inc === 1) {
+    } else if (previousValueNumber === MAX_GOALS_INPUT && inc === 1) {
       return previousValueNumber;
     } else if (previousValueNumber === 0 && inc === -1) {
       return NO_GOALS_STRING;

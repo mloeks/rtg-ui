@@ -4,19 +4,17 @@ import TextField from 'material-ui/TextField';
 import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import GameCardRibbon from './GameCardRibbon';
-import { RESULT_SEPARATOR } from '../service/ResultStringHelper';
+import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStringHelper';
 
 import './GameCardBet.css';
 import './GoalInput.css';
-
-const validGoalInputRegex = /^([0-9]|10)$/;
 
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 const GoalInput = ({ id, goals, onChange, onBlur }) => {
   let textInputRef;
 
   const validateAndNotifyChange = (e, val) => {
-    if (val.length === 0 || validGoalInputRegex.test(val)) {
+    if (val.length === 0 || VALID_GOAL_INPUT_REGEX.test(val)) {
       onChange(e, val);
     }
   };
