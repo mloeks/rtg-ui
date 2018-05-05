@@ -127,9 +127,12 @@ const Imprint = () => (
         Verwendete Icons von&nbsp;
         <a href="http://www.material-ui.com" target="_blank" rel="noopener noreferrer">
           Material-UI
-        </a> &&nbsp;
+        </a>,&nbsp;
         <a href="https://materialdesignicons.com" target="_blank" rel="noopener noreferrer">
           Material Design Icons
+        </a> &&nbsp;
+        <a href="https://www.svgrepo.com" target="_blank" rel="noopener noreferrer">
+          SVG Repo
         </a>.
       </p>
       <p>
