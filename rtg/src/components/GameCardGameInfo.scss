@@ -7,31 +7,38 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: space-around;
-  height: 90%;
+  height: 95%;
+  padding-bottom: 5px;
 
-  &__kickoff {
+  &__kickoff, &__result {
+    padding-top: 3px;
     font-size: 26px;
     font-weight: 600;
+    flex-grow: 1;
   }
 
-  &__result {
-    font-size: 28px;
-    font-weight: 600;
+  &__userBet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    color: white;
+    opacity: 0.75;
   }
 
-  &__userBet, &__points {
-    opacity: .75;
+  &__city {
+    padding: 0 3px;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
   }
 
   &__city, &__userBet, &__points {
-    padding: 0 3px;
-
     text-align: center;
     word-wrap: break-word;
-
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.2;
   }
 }

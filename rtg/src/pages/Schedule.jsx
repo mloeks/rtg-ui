@@ -15,7 +15,7 @@ import './Schedule.css';
 import headingImg from '../theme/img/img2.jpg';
 
 class Schedule extends Component {
-  static createGameCardsWithDateSubheadings(games) {
+  static createGameCardsWithDateSubheadings(games, bets) {
     const gameCardsWithDateSubheadings = [];
     let lastGameDay = null;
     games.forEach((game) => {
@@ -27,7 +27,13 @@ class Schedule extends Component {
           />);
         lastGameDay = game.kickoff;
       }
-      gameCardsWithDateSubheadings.push(<GameCard key={game.id} {...game} />);
+      gameCardsWithDateSubheadings.push(
+        <GameCard
+          key={game.id}
+          userBet={bets.find(bet => bet.bettable === game.id) || {}}
+          {...game}
+        />,
+      );
     });
     return gameCardsWithDateSubheadings;
   }
@@ -41,6 +47,7 @@ class Schedule extends Component {
       games: [],
       rounds: [],
       groups: [],
+      bets: [],
 
       loading: true,
       loadingError: '',
@@ -75,6 +82,7 @@ class Schedule extends Component {
     this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds');
     this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups');
     this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
+    this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
   }
 
   componentWillUnmount() {
@@ -113,7 +121,8 @@ class Schedule extends Component {
 
   render() {
     const gamesToDisplay = this.state.games.filter(this.gamesFilter);
-    const gameContainerItems = Schedule.createGameCardsWithDateSubheadings(gamesToDisplay);
+    const gameContainerItems =
+      Schedule.createGameCardsWithDateSubheadings(gamesToDisplay, this.state.bets);
 
     return (
       <Page className="SchedulePage">

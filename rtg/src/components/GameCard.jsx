@@ -7,6 +7,7 @@ import GameCardGameInfo from './GameCardGameInfo';
 import './GameCard.css';
 
 // TODO P1 add the possibility to display user bet for not-yet-started games
+// (load user bets first!)
 // TODO P1 in general, consolidate different views and test them
 // TODO P2 add possibility to unfold and show calculated bet stats below the card
 const GameCard = (props) => {
@@ -16,7 +17,10 @@ const GameCard = (props) => {
     <GameCardGameInfo
       city={props.city}
       kickoff={parse(props.kickoff)}
-      result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} - ${props.awaygoals}` : null}
+      result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} : ${props.awaygoals}` : null}
+      resultBetType={props.userBet.result_bet_type}
+      points={props.userBet.points}
+      userBet={props.userBet.result_bet}
     />
   );
   return (
@@ -32,6 +36,7 @@ const GameCard = (props) => {
 GameCard.defaultProps = {
   group: null,
   children: null,
+  userBet: null,
 };
 
 GameCard.propTypes = {
@@ -55,6 +60,8 @@ GameCard.propTypes = {
     abbreviation: PropTypes.string.isRequired,
   }),
   bets_open: PropTypes.bool.isRequired,
+
+  userBet: PropTypes.shape(),
 
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
