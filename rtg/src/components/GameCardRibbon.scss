@@ -3,13 +3,13 @@
 @import '../sass/mixins/game-card-ribbon.scss';
 
 .GameCardRibbon {
-  &.bet { @include game-card-ribbon($ribbonBet, 65px, 80px); }
-  &.neutral { @include game-card-ribbon($ribbonNeutral, 65px, 80px); }
-  &.niete { @include game-card-ribbon($ribbonNiete, 65px, 80px); }
-  &.tendenz { @include game-card-ribbon($ribbonTendenz, 65px, 80px); }
-  &.remis_tendenz { @include game-card-ribbon($ribbonRemisTendenz, 65px, 80px); }
-  &.differenz { @include game-card-ribbon($ribbonDifferenz, 65px, 80px); }
-  &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 65px, 80px); }
+  &.bet { @include game-card-ribbon($ribbonBet, 65px, 75px); }
+  &.neutral { @include game-card-ribbon($ribbonNeutral, 65px, 75px); }
+  &.niete { @include game-card-ribbon($ribbonNiete, 65px, 75px); }
+  &.tendenz { @include game-card-ribbon($ribbonTendenz, 65px, 75px); }
+  &.remis_tendenz { @include game-card-ribbon($ribbonRemisTendenz, 65px, 75px); }
+  &.differenz { @include game-card-ribbon($ribbonDifferenz, 65px, 75px); }
+  &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 65px, 75px); }
 
   display: flex;
   align-items: center;
