@@ -8,7 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import ScrollToTop from './components/ScrollToTop';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
 
@@ -22,5 +21,3 @@ ReactDOM.render(
   </BrowserRouter>
   , document.getElementById('root'), // eslint-disable-line no-undef
 );
-
-registerServiceWorker();
