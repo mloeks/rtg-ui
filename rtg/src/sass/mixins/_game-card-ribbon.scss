@@ -2,12 +2,13 @@
   $added-height: 15px;
   $bottom-arrow-height: 10px;
   $ribbon-callout-width: $added-height - 0.2*$added-height;
-  $darken-left-right: 3%;
-  $darken-ribbon-callout: 25%;
+  $darken-left-right: 4%;
+  $darken-ribbon-callout: 28%;
 
   box-sizing: border-box;
 
   position: absolute;
+  top: -$added-height;
   left: calc(50% - #{$width / 2});
   height: $wrapped-el-height + 2 * $added-height;
 
