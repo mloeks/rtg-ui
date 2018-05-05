@@ -7,13 +7,10 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  height: 95%;
-  padding: 3px 0 5px;
+  height: 98%;
+  padding: 3px 0 0;
 
   &__kickoff, &__result {
-    padding-top: 3px;
-    margin-bottom: 5px;
-
     font-size: 26px;
     font-weight: 600;
     flex-grow: 1;
@@ -23,6 +20,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-height: 20px;
 
     font-size: 12px;
     font-weight: 400;
@@ -43,7 +41,6 @@
     padding: 10px 0;
     margin: auto;
     border: 1px solid white;
-    background-color: transparent;
     box-sizing: border-box;
   }
 
