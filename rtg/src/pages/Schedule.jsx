@@ -10,6 +10,7 @@ import GameCard from '../components/GameCard';
 import GameCardSeparator from '../components/GameCardSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
+import Notification, { NotificationType } from '../components/Notification';
 
 import './Schedule.css';
 import headingImg from '../theme/img/img2.jpg';
@@ -197,7 +198,11 @@ class Schedule extends Component {
 
           {this.state.loading && <CircularProgress />}
           {this.state.loadingError &&
-            <div className="SchedulePage__loadingError">Fehler beim Laden.</div>
+            <Notification
+              type={NotificationType.ERROR}
+              title="Fehler beim Laden"
+              subtitle="Bitte versuche es erneut."
+            />
           }
         </section>
       </Page>);
