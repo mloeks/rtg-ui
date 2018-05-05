@@ -16,8 +16,9 @@ NPM_SCRIPT=$([ "$ENV" == "PROD" ] && echo "build" || echo "build:demo")
 
 echo "Uploading new assets..."
 TARGET_APP=$([ "$ENV" == "PROD" ] && echo "rtg" || echo "rtg_demo")
-ssh ${SSH} rm -rf ~/${TARGET_APP}/rtg_frontend/*
-scp -r build/* ${SSH}:~/${TARGET_APP}/rtg_frontend
+ssh ${SSH} rm -rf /home/muden/${TARGET_APP}/rtg_frontend
+ssh ${SSH} mkdir /home/muden/${TARGET_APP}/rtg_frontend
+scp -r build/* ${SSH}:/home/muden/${TARGET_APP}/rtg_frontend
 
 
 
