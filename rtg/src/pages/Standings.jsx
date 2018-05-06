@@ -3,7 +3,7 @@ import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import StandingsTable from '../components/standings/StandingsTable';
 
-import headingImg from '../theme/img/headings/hakon_mette_marit.jpg';
+import headingImg from '../theme/img/headings/mountain_pitch.jpg';
 
 const Standings = () => (
   <Page className="StandingsPage">

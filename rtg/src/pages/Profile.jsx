@@ -7,7 +7,7 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 
-import headingImg from '../theme/img/headings/mountain_pitch.jpg';
+import headingImg from '../theme/img/headings/bed.jpg';
 
 // TODO P1 offer possibility to change password
 // TODO P2 offer possibility to delete account
