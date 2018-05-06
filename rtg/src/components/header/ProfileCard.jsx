@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserAvatar from '../UserAvatar';
 
-import profileBgImage from '../../theme/img/img9.jpg';
+import profileBgImage from '../../theme/img/headings/french_windows.jpg';
 import './ProfileCard.css';
 
 const ProfileCard = props => (

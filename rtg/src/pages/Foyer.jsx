@@ -3,7 +3,7 @@ import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import News from '../components/news/News';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/courtyard_2.jpg';
 import './Foyer.css';
 
 const Foyer = () => (

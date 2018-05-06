@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { FlatButton } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
-// TODO P1 set all new pictures everywhere
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/neuschwanstein.jpg';
 import djangoLogo from '../theme/img/libs/django.svg';
 import reactLogo from '../theme/img/libs/react.svg';
 import postgresLogo from '../theme/img/libs/postgresql.svg';

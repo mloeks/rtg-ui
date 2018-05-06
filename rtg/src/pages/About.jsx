@@ -5,7 +5,7 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/silvia_zlatan.jpg';
 import './About.css';
 
 const About = (props) => (
@@ -15,7 +15,6 @@ const About = (props) => (
     </BigPicture>
 
     <section className="AboutPage__content">
-      <h3>Über Uns</h3>
       <p>
         Die Royale Tippgemeinschaft ist ein alle zwei Jahre zur Fußball-WM oder EM
         stattfindendes Tippspiel, welches vom Royalen Paar (Dorothee von Schweden und

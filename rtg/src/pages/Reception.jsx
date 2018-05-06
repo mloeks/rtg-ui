@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
 
-import headingImg from '../theme/img/img1.jpg';
+import headingImg from '../theme/img/headings/gate.jpg';
 import './Reception.css';
 
 class Reception extends Component {

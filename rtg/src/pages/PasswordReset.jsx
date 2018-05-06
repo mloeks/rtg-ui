@@ -9,7 +9,7 @@ import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
 import VisiblePasswordField from '../components/VisiblePasswordField';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/gate_head_emblem.jpg';
 import './PasswordReset.css';
 
 class PasswordReset extends Component {

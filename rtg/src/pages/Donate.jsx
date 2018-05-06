@@ -4,7 +4,7 @@ import { FlatButton } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/room_flowers.jpg';
 import payPalLogo from '../theme/img/paypal/de-pp-logo-100px.png';
 import './Donate.css';
 

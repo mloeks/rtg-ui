@@ -4,13 +4,13 @@ import { FlatButton } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
-import headingImg from '../theme/img/img5.jpg';
+import headingImg from '../theme/img/headings/queens_guard.jpg';
 import './Rules.css';
 
 const Rules = () => (
   <Page className="RulesPage">
     <BigPicture className="RulesPage__heading" img={headingImg}>
-      <h1 className="BigPicture__heading">Die RTG-Regeln für die WM 2018</h1>
+      <h1 className="BigPicture__heading">Die Regeln der RTG</h1>
     </BigPicture>
     <section className="RulesPage__content">
       <h4>Tipps Vorrunde</h4>

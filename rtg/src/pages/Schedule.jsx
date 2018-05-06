@@ -13,7 +13,7 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
 
 import './Schedule.css';
-import headingImg from '../theme/img/img2.jpg';
+import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
 // TODO P2 switch to current game/round automatically
 class Schedule extends Component {

@@ -3,7 +3,7 @@ import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import ContactForm from '../components/contact/ContactForm';
 
-import headingImg from '../theme/img/img7.jpg';
+import headingImg from '../theme/img/headings/aisle_chairs.jpg';
 
 const Contact = () => (
   <Page className="ContactPage">
