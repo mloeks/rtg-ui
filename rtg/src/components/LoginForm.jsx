@@ -4,6 +4,7 @@ import { FlatButton, RaisedButton } from 'material-ui';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import VisiblePasswordField from './VisiblePasswordField';
 import RegisterDialog from './RegisterDialog';
 import ForgotPasswordDialog from './ForgotPasswordDialog';
 
@@ -83,11 +84,10 @@ class LoginForm extends Component {
             onChange={this.updateUsername}
           />
           <br />
-          <TextField
+          <VisiblePasswordField
             errorText={this.state.fieldErrors.password || false}
             floatingLabelText="Passwort"
             fullWidth
-            type="password"
             onChange={this.updatePassword}
           />
           <br /><br />
