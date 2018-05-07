@@ -120,8 +120,8 @@ class News extends Component {
             .map(post => <Post key={post.id} post={post} />)}
 
         {(AuthService.isAdmin() && !this.state.addingPost) &&
-          <FloatingActionButton className="News__add-button">
-            <ContentAdd onClick={this.handleAddNews} />
+          <FloatingActionButton className="News__add-button" onClick={this.handleAddNews}>
+            <ContentAdd />
           </FloatingActionButton>}
       </section>
     );
