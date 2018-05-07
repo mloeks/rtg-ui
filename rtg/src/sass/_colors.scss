@@ -18,12 +18,10 @@ $pantoneCherryBlossom: #F4CFE0;
 $pantoneAshRose: #B27F7F;
 $pantoneTcxHarborMist: #AFB1B4;
 
-$ribbonBet: #303030;
-$ribbonNeutral: $pantoneTcxHarborMist;
-// TODO P1 choose a nicer red
-$ribbonNiete: #ED2939;
-$ribbonTendenz: #FF9966;
-// TODO P1 choose other color
-$ribbonRemisTendenz: #FF9966;
-$ribbonDifferenz: darken(#FADA5E, 10%);
-$ribbonVolltreffer: #00A550;
+$ribbonBet: darken($pantoneAshRose, 20%);
+$ribbonNeutral: darken($pantoneTcxHarborMist, 5%);
+$ribbonNiete: hsl(18, 85%, 40%);
+$ribbonTendenz: hsl(45, 85%, 40%);
+$ribbonRemisTendenz: hsl(65, 85%, 40%);
+$ribbonDifferenz: hsl(180, 85%, 40%);
+$ribbonVolltreffer: hsl(138, 85%, 40%);
