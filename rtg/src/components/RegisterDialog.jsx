@@ -7,6 +7,8 @@ import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
 
+// TODO P1 Decrease distance to viewport top (dialog content height is really small on mobile
+// devices when keyboard is displayed)
 // TODO P2 improve communication why first and last name are required
 // TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
@@ -109,7 +111,7 @@ class RegisterDialog extends Component {
         open={this.props.open}
         title={
           <div style={{ textAlign: 'center' }}>
-            <h2 style={{ margin: '15px auto' }}>Werde Teil der Royalen Tippgemeinschaft</h2>
+            <h3 style={{ margin: '10px auto' }}>Werde Teil der RTG</h3>
             {this.state.formHasErrors &&
               <Notification
                 type={NotificationType.ERROR}
