@@ -57,6 +57,7 @@ class Notification extends Component {
             textAlign: 'left',
             display: 'flex',
             alignItems: 'center',
+            lineHeight: '1.4',
           }}
           textStyle={{ paddingRight: 0 }}
           avatar={
