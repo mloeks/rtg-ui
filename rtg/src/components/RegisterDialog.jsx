@@ -102,7 +102,6 @@ class RegisterDialog extends Component {
     ];
 
     return (
-      // TODO P2 fix line height in error notification
       <Dialog
         className="RegisterDialog"
         actions={actions}
