@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "blob-polyfill": "^2.0.20171115",
+    "canvas-toBlob": "^1.0.0",
     "date-fns": "^1.29.0",
     "eslint-config-airbnb": "^16.1.0",
     "hsl-to-hex": "^1.0.0",

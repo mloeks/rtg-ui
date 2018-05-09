@@ -39,7 +39,7 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-// TODO P1 IE: form submit does not work. toBlob or object on which it is called
+// TODO P1 IE: Test if form submit now works with Blob polyfill
 // does not seem to be defined
 // TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
 // is it related to the console error about preventDefault which appears after it

@@ -2,8 +2,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import 'blob-polyfill';
+import 'canvas-toBlob';
+
 import { BrowserRouter } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import ScrollToTop from './components/ScrollToTop';
