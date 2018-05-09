@@ -8,6 +8,7 @@ import { UserDetailsContext } from '../components/providers/UserDetailsProvider'
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
+import { black, error, purple, white } from '../theme/RtgTheme';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
 
@@ -31,8 +32,12 @@ class Bets extends Component {
     if (count > 0) {
       return (<Badge
         badgeContent={count}
-        secondary
-        badgeStyle={{ top: '3px', right: '-25px' }}
+        badgeStyle={{
+          backgroundColor: error,
+          color: white,
+          top: '3px',
+          right: '-25px',
+        }}
         style={{ padding: '15px 2px 15px 0' }}
       >{title}</Badge>);
     }
@@ -84,12 +89,18 @@ class Bets extends Component {
         <section className="BetsPage__bets-area">
           <UserDetailsContext.Consumer>
             {userContext => (
-              <Tabs className="BetsPage__tabs" value={this.state.activeTab}>
+              <Tabs
+                className="BetsPage__tabs"
+                value={this.state.activeTab}
+                inkBarStyle={{ backgroundColor: purple }}
+                tabItemContainerStyle={{ backgroundColor: white }}
+              >
                 <Tab
                   className="BetsPage__tab"
                   label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
                   value={BettableTypes.GAME}
                   onActive={tab => this.setState({ activeTab: tab.props.value })}
+                  buttonStyle={{ color: black }}
                 >
                   <GameBetsTab
                     active={this.state.activeTab === BettableTypes.GAME}
@@ -102,6 +113,7 @@ class Bets extends Component {
                   label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
                   value={BettableTypes.EXTRA}
                   onActive={this.handleExtraBetTabClick}
+                  buttonStyle={{ color: black }}
                 >
                   <ExtraBetsTab
                     active={this.state.activeTab === BettableTypes.EXTRA}

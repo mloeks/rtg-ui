@@ -10,6 +10,7 @@ import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import { Link } from 'react-router-dom';
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
+import { error, white } from '../../theme/RtgTheme';
 
 import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.css';
@@ -21,9 +22,13 @@ const DrawerMenu = (props) => {
       return (
         <Badge
           badgeContent={count}
-          secondary
           style={{ padding: '0' }}
-          badgeStyle={{ top: '3px', right: '-25px' }}
+          badgeStyle={{
+            backgroundColor: error,
+            color: white,
+            top: '3px',
+            right: '-25px',
+          }}
         >{title}
         </Badge>);
     }
