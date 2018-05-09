@@ -7,7 +7,6 @@ import GameCardRibbon from './GameCardRibbon';
 import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStringHelper';
 
 import './GameCardBet.css';
-import './GoalInput.css';
 
 // TODO P1 increase size of arrows
 // TODO P1 IE: arrows not centered
@@ -31,7 +30,7 @@ const GoalInput = ({ id, goals, onChange, onBlur }) => {
       onBlur={onBlur}
       onChange={validateAndNotifyChange}
       onFocus={() => { textInputRef.select(); }}
-      style={{ height: '100%' }}
+      style={{ height: '100%', width: '40%' }}
       inputStyle={{
         color: '#F2CE00',
         fontFamily: '"Oswald", sans-serif',
