@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CircularProgress, FloatingActionButton } from 'material-ui';
 import { ContentAdd } from 'material-ui/svg-icons/index';
+import ChatBubbleOutline from 'material-ui/svg-icons/communication/chat-bubble-outline';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
@@ -8,8 +9,8 @@ import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
 
 import './News.css';
+import { lightGrey } from "../../theme/RtgTheme";
 
-// TODO P1 empty state
 // TODO P2 add section "recent games" to the top
 // TODO P2 Allow normal users to post and comment on news
 // TODO P2 Lazy load news
@@ -120,6 +121,12 @@ class News extends Component {
           this.state.posts
             .filter(post => post.news_appear === true)
             .map(post => <Post key={post.id} post={post} />)}
+
+        {(!this.state.loading && !this.state.loadingError) && this.state.posts.length === 0 &&
+          <div className="News__empty-state" style={{ color: lightGrey }}>
+            <ChatBubbleOutline color={lightGrey} style={{ height: 80, width: 80 }} /><br />
+            Keine Neuigkeiten.
+          </div>}
 
         {(AuthService.isAdmin() && !this.state.addingPost) &&
           <FloatingActionButton className="News__add-button" onClick={this.handleAddNews}>
