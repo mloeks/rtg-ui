@@ -9,6 +9,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.css';
+import { white } from "../../theme/RtgTheme";
 
 const EditingActions = props => (
   <div className="BigEditableAvatar__edit-actions" style={props.style}>
@@ -132,7 +133,7 @@ class BigEditableAvatar extends Component {
             fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
               method: 'POST',
               body: formData,
-              headers: {Authorization: `Token ${AuthService.getToken()}`},
+              headers: { Authorization: `Token ${AuthService.getToken()}` },
             }).then(FetchHelper.parseJson)
               .then((response) => {
                 if (response.ok) {
@@ -170,6 +171,23 @@ class BigEditableAvatar extends Component {
       margin: 'auto',
     };
 
+    const noAvatarPlaceholder = (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: 'auto',
+          height: 'auto',
+        }}
+      >
+        <Person
+          color="white"
+          style={{ pointerEvents: 'none', width: '100%', height: '100%' }}
+        />
+        <span style={{ fontSize: '14px', opacity: 0.8 }}>Klicken zum Ändern</span>
+      </div>
+    );
+
     return (
       <div className="BigEditableAvatar" style={{ marginTop: -avatarPlusBorderSize / 2 }}>
         <div className="BigEditableAvatar__avatar" style={avatarDivStyle}>
@@ -200,7 +218,7 @@ class BigEditableAvatar extends Component {
                 <Avatar
                   className="BigEditableAvatar__avatar-elem"
                   backgroundColor={!this.props.avatarUrl ? teal400 : null}
-                  icon={!this.props.avatarUrl ? <Person style={{ pointerEvents: 'none' }} /> : null}
+                  icon={!this.props.avatarUrl ? noAvatarPlaceholder : null}
                   src={this.props.avatarUrl}
                   size={this.avatarSize}
                 />
