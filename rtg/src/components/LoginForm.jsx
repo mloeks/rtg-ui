@@ -10,7 +10,6 @@ import ForgotPasswordDialog from './ForgotPasswordDialog';
 
 import './LoginForm.css';
 
-// TODO P1 IE: when focused, a huge X is displayed on the right
 class LoginForm extends Component {
   constructor(props) {
     super(props);
