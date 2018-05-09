@@ -22,7 +22,6 @@ export const countOpenBets = (bettables, allBets) => {
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
-// TODO P1 Clean up tabs title style with badge
 // TODO P2 make tabs header also sticky
 // TODO P2 show prompt if user wants to navigate away with unsaved changes
 // tried with updating "hasChanged" in this state by the GameCardBet's
@@ -31,7 +30,12 @@ export const countOpenBets = (bettables, allBets) => {
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
-      return <Badge badgeContent={count} secondary badgeStyle={{ top: '10px' }}>{title}</Badge>;
+      return (<Badge
+        badgeContent={count}
+        secondary
+        badgeStyle={{ top: '3px', right: '-25px' }}
+        style={{ padding: '15px 2px 15px 0' }}
+      >{title}</Badge>);
     }
     return title;
   }
