@@ -4,7 +4,6 @@
   &__toolbar {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
     z-index: $zScheduleToolbar;
     padding: 15px 5px;
@@ -26,7 +25,22 @@
   }
   &__toolbar-title {
     margin-left: 20px;
-    font-size: 18px;
+    flex-grow: 1;
+    text-align: left;
+    width: 100%;
+
+    @media only screen and (min-width : 480px) {
+      width: auto;
+    }
+  }
+
+  &__toolbar-dropdown {
+    top: -8px;
+    margin-top: 5px;
+
+    @media only screen and (min-width : 480px) {
+      margin-top: 0;
+    }
   }
 
   &__game-container {

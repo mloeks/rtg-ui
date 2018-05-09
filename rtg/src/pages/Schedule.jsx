@@ -143,8 +143,9 @@ class Schedule extends Component {
             backgroundColor: this.props.muiTheme.palette.scheduleToolbarColor,
           }}
         >
-          <div className="SchedulePage__toolbar-title">Spiele auswählen:</div>
+          <div className="SchedulePage__toolbar-title">Spiele wählen</div>
           <DropDownMenu
+            className="SchedulePage__toolbar-dropdown"
             anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             value={this.state.selectedRoundIndex}
             onChange={this.handleSelectedRoundChange}
@@ -163,6 +164,7 @@ class Schedule extends Component {
           </DropDownMenu>
           {this.state.selectedRoundIndex === 'VOR' &&
           <DropDownMenu
+            className="SchedulePage__toolbar-dropdown"
             anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             value={this.state.selectedGroupFilter}
             onChange={this.handleGroupFilterChanged}

@@ -22,7 +22,6 @@ export const countOpenBets = (bettables, allBets) => {
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
 
-// TODO P1 Filter icon instead of "Spiele auswählen"
 // TODO P1 Clean up tabs title style with badge
 // TODO P2 make tabs header also sticky
 // TODO P2 show prompt if user wants to navigate away with unsaved changes
