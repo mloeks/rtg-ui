@@ -8,7 +8,6 @@ import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStrin
 
 import './GameCardBet.css';
 
-// TODO P1 increase size of arrows
 // TODO P1 IE: arrows not centered
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 const GoalInput = ({ id, goals, onChange, onBlur }) => {
@@ -48,13 +47,13 @@ GoalInput.propTypes = {
 };
 
 
-const ARROW_SIZE = 16;
+const ARROW_SIZE = 26;
 const GoalChangeArrow = (props) => {
   const arrowStyle = {
     height: `${ARROW_SIZE}px`,
     width: `${ARROW_SIZE}px`,
-    padding: '0 5px',
     color: 'white',
+    opacity: 0.8,
   };
   return (props.direction === 'up' ?
     <KeyboardArrowUp className="GameCardBet__arrow" style={arrowStyle} onClick={props.onClick} /> :
