@@ -185,14 +185,17 @@ class GameBetsTab extends Component {
 
     return (
       <div className="GameBetsTab">
-        <h2>Tipps für die Spiele</h2>
-        <p>
-          Hier kannst du Deine Tipps für alle Spiele der Weltmeisterschaft abgeben.
-          Bitte tippe vor Beginn der WM sämtliche Vorrundenspiele. Anschließend werden auch
-          die Partien der K.O.-Runde hier auftauchen, sobald sie feststehen.
-          <br /><br />Bitte beachte insbesondere die Deadlines zur Abgabe Deiner Tipps
-          für die jeweiligen Spiele.
-        </p>
+        <div style={{ padding: '0 10px' }}>
+          <h2>Tipps für die Spiele</h2>
+          <p>
+            Hier kannst du Deine Tipps für alle Spiele der Weltmeisterschaft abgeben.
+            Bitte tippe vor Beginn der WM sämtliche Vorrundenspiele. Anschließend werden auch
+            die Partien der K.O.-Runde hier auftauchen, sobald sie feststehen.
+            <br /><br />Bitte beachte insbesondere die Deadlines zur Abgabe Deiner Tipps
+            für die jeweiligen Spiele.
+          </p>
+        </div>
+
         <section className="GameBetsTab__game-bets-container">
           {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 

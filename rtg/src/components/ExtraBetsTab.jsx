@@ -70,8 +70,10 @@ export default class ExtraBetsTab extends Component {
   render() {
     return (
       <div className="ExtraBetsTab">
-        <h2>Zusatztipps</h2>
-        <p>Hier kannst du Deine Zusatztipps abgeben.</p>
+        <div style={{ padding: '0 10px' }}>
+          <h2>Zusatztipps</h2>
+          <p>Hier kannst du Deine Zusatztipps abgeben.</p>
+        </div>
 
         <section className="ExtraBetsTab__extra-bets-container">
           {this.state.loading &&
