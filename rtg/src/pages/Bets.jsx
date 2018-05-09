@@ -100,7 +100,7 @@ class Bets extends Component {
                   label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
                   value={BettableTypes.GAME}
                   onActive={tab => this.setState({ activeTab: tab.props.value })}
-                  buttonStyle={{ color: black }}
+                  buttonStyle={{ color: black, height: '60px' }}
                 >
                   <GameBetsTab
                     active={this.state.activeTab === BettableTypes.GAME}
@@ -113,7 +113,7 @@ class Bets extends Component {
                   label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
                   value={BettableTypes.EXTRA}
                   onActive={this.handleExtraBetTabClick}
-                  buttonStyle={{ color: black }}
+                  buttonStyle={{ color: black, height: '60px' }}
                 >
                   <ExtraBetsTab
                     active={this.state.activeTab === BettableTypes.EXTRA}

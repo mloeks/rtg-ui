@@ -188,9 +188,8 @@ class GameBetsTab extends Component {
         <div style={{ padding: '0 10px' }}>
           <h2>Tipps für die Spiele</h2>
           <p>
-            Hier kannst du Deine Tipps für alle Spiele der Weltmeisterschaft abgeben.
-            Bitte tippe vor Beginn der WM sämtliche Vorrundenspiele. Anschließend werden auch
-            die Partien der K.O.-Runde hier auftauchen, sobald sie feststehen.
+            Bitte tippe zunächst <b>vor Beginn der WM</b> sämtliche Vorrundenspiele. Die
+            Partien der K.O.-Runde werden hier auftauchen, sobald sie feststehen.
             <br /><br />Bitte beachte insbesondere die Deadlines zur Abgabe Deiner Tipps
             für die jeweiligen Spiele.
           </p>

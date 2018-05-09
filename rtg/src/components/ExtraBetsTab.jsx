@@ -6,8 +6,6 @@ import FetchHelper from '../service/FetchHelper';
 import ExtraBetCard from './ExtraBetCard';
 import { BettableTypes, countOpenBets } from '../pages/Bets';
 
-import './ExtraBetsTab.css';
-
 // TODO P3 a LOT of this is identical to GameBetsTab --> can a HOC be used?
 export default class ExtraBetsTab extends Component {
   static initialState() {
@@ -72,12 +70,15 @@ export default class ExtraBetsTab extends Component {
       <div className="ExtraBetsTab">
         <div style={{ padding: '0 10px' }}>
           <h2>Zusatztipps</h2>
-          <p>Hier kannst du Deine Zusatztipps abgeben.</p>
+          <p>Bitte gib alle Zusatztipps <b>vor Beginn der WM</b> ab.</p>
         </div>
 
         <section className="ExtraBetsTab__extra-bets-container">
           {this.state.loading &&
-            <CircularProgress className="ExtraBetsTab__loadingSpinner" style={{ display: 'block' }} />}
+            <CircularProgress
+              className="ExtraBetsTab__loadingSpinner"
+              style={{ display: 'block', margin: '30px auto' }}
+            />}
 
           {(!this.state.loading && !this.state.loadingError) && this.state.extras
             .map(extraBet => (
