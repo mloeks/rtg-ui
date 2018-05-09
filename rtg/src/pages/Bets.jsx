@@ -10,7 +10,6 @@ import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
-import './Bets.css';
 
 export const BettableTypes = {
   GAME: 'game',
