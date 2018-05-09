@@ -61,6 +61,7 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
+    // TODO P2 avoid jumping content when slowly scrolling below threshold
     // TODO P3 clean up and only do this after data has been loaded? otherwise it does not seem
     // to work properly when top is no 0 on page load.
     const toolbar = document.getElementById('schedule-toolbar');

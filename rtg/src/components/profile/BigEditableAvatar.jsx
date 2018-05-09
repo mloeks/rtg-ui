@@ -38,9 +38,11 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
+// TODO P1 IE: form submit does not work. toBlob or object on which it is called
+// does not seem to be defined
 // TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
 // is it related to the console error about preventDefault which appears after it
-// has worked properly for a short time?
+// has worked properly for a short time? disable certain touch events?
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)

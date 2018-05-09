@@ -13,6 +13,7 @@ import { error, grey } from '../theme/RtgTheme';
 
 import './ExtraBetCard.css';
 
+// TODO P3 display country flags in drop down
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
     return distanceInWordsToNow(deadline, { locale: de });

@@ -18,6 +18,7 @@ const StateEnum = {
   VOLLTREFFER: 'volltreffer',
 };
 
+// TODO P2 IE: word wrap does not work for cities
 // TODO P2 handle display of running games and games which have started but no result
 const GameCardGameInfo = (props) => {
   const gameHasStarted = () => isAfter(new Date(), props.kickoff);
