@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import './RtgSeparator.css';
 
-const RtgSeparator = props => (
-  <div className="RtgSeparator">
-    {props.content && <div className="RtgSeparator__text">{props.content}</div>}
+const RtgSeparator = ({ content, ...rest }) => (
+  <div className="RtgSeparator" {...rest}>
+    {content && <div className="RtgSeparator__text">{content}</div>}
   </div>
 );
 
