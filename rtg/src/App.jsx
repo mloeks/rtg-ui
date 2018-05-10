@@ -35,10 +35,7 @@ const App = () => {
     <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
       <div className="App">
         {(isDemo || isLocal) &&
-          <div className="App__demo-indicator">
-            {isDemo ? 'DEMO' : 'LOCAL'}
-          </div>
-        }
+          <div className="App__demo-indicator">{isDemo ? 'DEMO' : 'LOCAL'}</div>}
 
         <Switch>
           <Route exact path="/" component={Reception} />
