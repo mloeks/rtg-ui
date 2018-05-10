@@ -10,7 +10,7 @@ import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import GameCardSeparator from './GameCardSeparator';
-import { countOpenBets } from '../pages/Bets';
+import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
@@ -91,7 +91,7 @@ class GameBetsTab extends Component {
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  createGameCardsWithDeadlineSubheadings(games) {
+  createGameCardsWithDeadlineSubheadings(games, betsStatusContext) {
     const gameCardsWithDeadlineSubheadings = [];
     let lastDeadlineText = null;
     games.forEach((game) => {
@@ -112,7 +112,8 @@ class GameBetsTab extends Component {
               .some(failedGame => game.id === failedGame.id)}
             shouldSave={this.state.shouldSave}
             userBet={this.state.bets.find(bet => bet.bettable === game.id) || {}}
-            onSaveDone={this.handleBetSaveDone}
+            onSaveDone={(id, bet, type, detail) =>
+              this.handleBetSaveDone(id, bet, type, detail, betsStatusContext)}
           />
         </GameCard>
       );
@@ -152,7 +153,7 @@ class GameBetsTab extends Component {
   }
 
   // TODO P2 refactor this method
-  handleBetSaveDone(gameId, newBet, saveType, responseDetail) {
+  handleBetSaveDone(gameId, newBet, saveType, responseDetail, betsStatusContext) {
     const updatedGameWithSaveDetails = {
       ...this.gamesWithSaveType.get(gameId), newBet, saveType, responseDetail,
     };
@@ -173,6 +174,11 @@ class GameBetsTab extends Component {
         showSavingSuccess: gamesWithSavingIssues.length === 0,
         gamesWithSavingIssues,
       });
+
+      if (gamesWithSavingIssues.length === 0) {
+        betsStatusContext.updateBetsHaveChanges(false);
+      }
+
       setTimeout(() => {
         this.setState({ showSavingSuccess: false });
       }, 3000);
@@ -180,7 +186,6 @@ class GameBetsTab extends Component {
   }
 
   render() {
-    const gameBetsItems = this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets);
     const gameCount = this.state.gamesWithOpenBets.length;
 
     return (
@@ -194,32 +199,38 @@ class GameBetsTab extends Component {
           </p>
         </div>
 
-        <section className="GameBetsTab__game-bets-container">
-          {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
+        <BetsStatusContext.Consumer>
+          {betsStatusContext => (
+            <section className="GameBetsTab__game-bets-container">
+              {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
 
-          <SavingIssuesDialog
-            open={this.state.gamesWithSavingIssues.length > 0}
-            games={this.state.gamesWithSavingIssues}
-            onClose={() => this.setState({ gamesWithSavingIssues: [] })}
-          />
+              <SavingIssuesDialog
+                open={this.state.gamesWithSavingIssues.length > 0}
+                games={this.state.gamesWithSavingIssues}
+                onClose={() => this.setState({ gamesWithSavingIssues: [] })}
+              />
 
-          {(this.props.active && !this.state.loading && gameCount > 0) &&
-            <BetsStatusPanel
-              saving={this.state.shouldSave}
-              success={this.state.showSavingSuccess}
-              onSave={this.handleSaveRequest}
-            />
-          }
+              {/* TODO P2 only slide in when changes are made --> user recognises it better */}
+              {(this.props.active && !this.state.loading && gameCount > 0) &&
+                <BetsStatusPanel
+                  saving={this.state.shouldSave}
+                  success={this.state.showSavingSuccess}
+                  onSave={this.handleSaveRequest}
+                />
+              }
 
-          {(!this.state.loading && !this.state.loadingError && gameCount > 0) && gameBetsItems}
+              {(!this.state.loading && !this.state.loadingError && gameCount > 0) &&
+                this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets, betsStatusContext)}
 
-          {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
-          <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>}
+              {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
+              <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>}
 
-          {this.state.loadingError &&
-            <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
-          }
-        </section>
+              {this.state.loadingError &&
+                <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
+              }
+            </section>
+          )}
+        </BetsStatusContext.Consumer>
       </div>
     );
   }

@@ -12,6 +12,8 @@ import { black, error, purple, white } from '../theme/RtgTheme';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
 
+export const BetsStatusContext = React.createContext();
+
 export const BettableTypes = {
   GAME: 'game',
   EXTRA: 'extra',
@@ -27,6 +29,7 @@ export const countOpenBets = (bettables, allBets) => {
 // tried with updating "hasChanged" in this state by the GameCardBet's
 // --> too many updates all the time
 // but that should be possible with a better implementation
+// TODO P3 also handle bet value updates via context instead of passing callback props down
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
@@ -51,11 +54,19 @@ class Bets extends Component {
       activeTab: BettableTypes.GAME,
       openGameBetsCt: 0,
       openExtraBetsCt: 0,
+      betsHaveChanges: false,
+
+      // eslint-disable-next-line react/no-unused-state
+      updateBetsHaveChanges: this.handleBetsHaveChanges.bind(this),
     };
 
     this.handleExtraBetTabClick = this.handleExtraBetTabClick.bind(this);
     this.handleOpenGameBetsCtUpdate = this.handleOpenGameBetsCtUpdate.bind(this);
     this.handleOpenExtraBetsCtUpdate = this.handleOpenExtraBetsCtUpdate.bind(this);
+  }
+
+  handleBetsHaveChanges(betsHaveChanges) {
+    this.setState({ betsHaveChanges });
   }
 
   handleExtraBetTabClick(tab) {
@@ -82,50 +93,53 @@ class Bets extends Component {
 
   render() {
     return (
-      <Page className="BetsPage">
-        <BigPicture className="BetsPage__heading" img={headingImg}>
-          <h1 className="BigPicture__heading">Deine Tipps</h1>
-        </BigPicture>
-        <section className="BetsPage__bets-area">
-          <UserDetailsContext.Consumer>
-            {userContext => (
-              <Tabs
-                className="BetsPage__tabs"
-                value={this.state.activeTab}
-                inkBarStyle={{ backgroundColor: purple }}
-                tabItemContainerStyle={{ backgroundColor: white }}
-              >
-                <Tab
-                  className="BetsPage__tab"
-                  label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
-                  value={BettableTypes.GAME}
-                  onActive={tab => this.setState({ activeTab: tab.props.value })}
-                  buttonStyle={{ color: black, height: '60px' }}
+      <BetsStatusContext.Provider value={this.state}>
+        <Page className="BetsPage">
+          <BigPicture className="BetsPage__heading" img={headingImg}>
+            <h1 className="BigPicture__heading">Deine Tipps</h1>
+          </BigPicture>
+
+          <section className="BetsPage__bets-area">
+            <UserDetailsContext.Consumer>
+              {userContext => (
+                <Tabs
+                  className="BetsPage__tabs"
+                  value={this.state.activeTab}
+                  inkBarStyle={{ backgroundColor: purple }}
+                  tabItemContainerStyle={{ backgroundColor: white }}
                 >
-                  <GameBetsTab
-                    active={this.state.activeTab === BettableTypes.GAME}
-                    onOpenBetsUpdate={(val, inc) =>
-                      this.handleOpenGameBetsCtUpdate(val, inc, userContext)}
-                  />
-                </Tab>
-                <Tab
-                  className="BetsPage__tab"
-                  label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
-                  value={BettableTypes.EXTRA}
-                  onActive={this.handleExtraBetTabClick}
-                  buttonStyle={{ color: black, height: '60px' }}
-                >
-                  <ExtraBetsTab
-                    active={this.state.activeTab === BettableTypes.EXTRA}
-                    onOpenBetsUpdate={(val, inc) =>
-                      this.handleOpenExtraBetsCtUpdate(val, inc, userContext)}
-                  />
-                </Tab>
-              </Tabs>
-            )}
-          </UserDetailsContext.Consumer>
-        </section>
-      </Page>
+                  <Tab
+                    className="BetsPage__tab"
+                    label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
+                    value={BettableTypes.GAME}
+                    onActive={tab => this.setState({ activeTab: tab.props.value })}
+                    buttonStyle={{ color: black, height: '60px' }}
+                  >
+                    <GameBetsTab
+                      active={this.state.activeTab === BettableTypes.GAME}
+                      onOpenBetsUpdate={(val, inc) =>
+                        this.handleOpenGameBetsCtUpdate(val, inc, userContext)}
+                    />
+                  </Tab>
+                  <Tab
+                    className="BetsPage__tab"
+                    label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
+                    value={BettableTypes.EXTRA}
+                    onActive={this.handleExtraBetTabClick}
+                    buttonStyle={{ color: black, height: '60px' }}
+                  >
+                    <ExtraBetsTab
+                      active={this.state.activeTab === BettableTypes.EXTRA}
+                      onOpenBetsUpdate={(val, inc) =>
+                        this.handleOpenExtraBetsCtUpdate(val, inc, userContext)}
+                    />
+                  </Tab>
+                </Tabs>
+              )}
+            </UserDetailsContext.Consumer>
+          </section>
+        </Page>
+      </BetsStatusContext.Provider>
     );
   }
 }

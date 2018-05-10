@@ -12,6 +12,7 @@ import {
   NO_GOALS_STRING,
   toResultString,
 } from '../service/ResultStringHelper';
+import { BetsStatusContext } from '../pages/Bets';
 import GameCardBetPresentational from './GameCardBetPresentational';
 
 export const SavingSuccessType = {
@@ -48,6 +49,12 @@ class GameCardBet extends Component {
       homegoalsInput: resultAvailable ? getHomegoals(userBet.result_bet) : NO_GOALS_STRING,
       awaygoalsInput: resultAvailable ? getAwaygoals(userBet.result_bet) : NO_GOALS_STRING,
     };
+  }
+
+  static updateBetsHaveChanges(context) {
+    if (!context.betsHaveChanges) {
+      context.updateBetsHaveChanges(true);
+    }
   }
 
   constructor(props) {
@@ -171,17 +178,26 @@ class GameCardBet extends Component {
     }
   }
 
-  handleHomegoalsChange(e, value) { this.setState({ homegoalsInput: value, hasChanges: true }); }
-  handleAwaygoalsChange(e, value) { this.setState({ awaygoalsInput: value, hasChanges: true }); }
+  handleHomegoalsChange(value, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState({ homegoalsInput: value, hasChanges: true });
+  }
 
-  handleHomegoalsIncrementalChange(inc) {
+  handleAwaygoalsChange(value, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState({ awaygoalsInput: value, hasChanges: true });
+  }
+
+  handleHomegoalsIncrementalChange(inc, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
     this.setState(prevState => ({
       homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
       hasChanges: true,
     }));
   }
 
-  handleAwaygoalsIncrementalChange(inc) {
+  handleAwaygoalsIncrementalChange(inc, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
     this.setState(prevState => ({
       awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
       hasChanges: true,
@@ -198,17 +214,21 @@ class GameCardBet extends Component {
 
   render() {
     return (
-      <GameCardBetPresentational
-        id={this.props.gameId}
-        homegoals={this.state.homegoalsInput}
-        awaygoals={this.state.awaygoalsInput}
+      <BetsStatusContext.Consumer>
+        {betsStatusContext => (
+          <GameCardBetPresentational
+            id={this.props.gameId}
+            homegoals={this.state.homegoalsInput}
+            awaygoals={this.state.awaygoalsInput}
 
-        onBlur={this.sanitizeBet}
-        onHomegoalsChange={this.handleHomegoalsChange}
-        onAwaygoalsChange={this.handleAwaygoalsChange}
-        onHomegoalsIncrementalChange={this.handleHomegoalsIncrementalChange}
-        onAwaygoalsIncrementalChange={this.handleAwaygoalsIncrementalChange}
-      />
+            onBlur={this.sanitizeBet}
+            onHomegoalsChange={(e, val) => this.handleHomegoalsChange(val, betsStatusContext)}
+            onAwaygoalsChange={(e, val) => this.handleAwaygoalsChange(val, betsStatusContext)}
+            onHomegoalsIncrementalChange={(inc) => this.handleHomegoalsIncrementalChange(inc, betsStatusContext)}
+            onAwaygoalsIncrementalChange={(inc) => this.handleAwaygoalsIncrementalChange(inc, betsStatusContext)}
+          />
+        )}
+      </BetsStatusContext.Consumer>
     );
   }
 }
