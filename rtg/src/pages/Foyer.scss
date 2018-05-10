@@ -3,13 +3,18 @@
     margin: 20px 0;
   }
 
+  &__top-logo {
+    width: 50px;
+  }
+
   &__greeting {
     margin: 0;
     word-wrap: break-word;
   }
 
-  &__top-logo {
-    width: 60px;
+  &__first-visit {
+    margin: 20px auto;
+    max-width: 480px;
   }
 
   &__news {

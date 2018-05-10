@@ -3,6 +3,8 @@ import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import News from '../components/news/News';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
+import AuthService from '../service/AuthService';
+import Notification, { NotificationType } from '../components/Notification';
 
 import logo from '../theme/img/logo_100px.png';
 import headingImg from '../theme/img/headings/courtyard_2.jpg';
@@ -16,10 +18,19 @@ const Foyer = () => (
           <Fragment>
             <img className="Foyer__top-logo" src={logo} alt="RTG Logo" /><br />
             <h3 className="Foyer__greeting">Herzlich Willkommen, {userContext.username}!</h3>
+
+            {!AuthService.getLastLogin() &&
+              <Notification
+                className="Foyer__first-visit"
+                type={NotificationType.SUCCESS}
+                title="Anmeldung erfolgreich"
+                subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
+              />}
           </Fragment>
         )}
       </UserDetailsContext.Consumer>
     </section>
+
     <BigPicture className="Foyer__news" img={headingImg}>
       <h1 className="BigPicture__heading">Neuigkeiten</h1>
     </BigPicture>

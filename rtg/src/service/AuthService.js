@@ -67,6 +67,11 @@ class AuthService {
     LocalStorageWrapper.set('open-bets-count', openBetsCount);
   }
 
+  static getLastLogin() {
+    const lastLoginProp = LocalStorageWrapper.get('last-login');
+    return lastLoginProp === 'null' ? null : new Date(lastLoginProp);
+  }
+
   static resetProps() {
     localStorage.clear(); // eslint-disable-line no-undef
   }
@@ -112,6 +117,7 @@ class AuthService {
       LocalStorageWrapper.set('has-paid', authResponse.has_paid);
       LocalStorageWrapper.set('avatar', authResponse.avatar);
       LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);
+      LocalStorageWrapper.set('last-login', authResponse.last_login);
     } catch (error) {
       // TODO P3 handle invalid token (how?)
     }

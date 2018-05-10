@@ -47,6 +47,7 @@ class Notification extends Component {
 
     return (
       <Card
+        className={this.props.className}
         style={{ ...this.props.style, backgroundColor: lightenDarkenColor(notificationColor, 150) }}
       >
         <CardHeader
@@ -77,6 +78,7 @@ class Notification extends Component {
 Notification.defaultProps = {
   disappearAfterMs: null,
   subtitle: null,
+  className: null,
   style: {},
 };
 
@@ -86,6 +88,7 @@ Notification.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 
+  className: PropTypes.string,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
