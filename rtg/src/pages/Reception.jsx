@@ -58,8 +58,8 @@ class Reception extends Component {
               Bekannte, Kollegen und Familienmitglieder der Organisatoren.
             </p>
             <p>
-              Stetig wächst die Gruppe der RTG, die Mitglieder sind nicht nur
-              in ganz Deutschland sondern mittlerweile auch in der ganzen Welt verteilt.
+              Stetig wächst die RTG, deren Mitglieder mittlerweile nicht nur
+              in ganz Deutschland, sondern auch in der ganzen Welt verteilt sind.
               Wenn Du mit dem Royalen Paar bekannt bist, fühl Dich herzlich eingeladen,
               an diesem wunderbaren und hochroyalen Spaß teilzuhaben!
             </p>

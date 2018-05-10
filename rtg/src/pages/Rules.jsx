@@ -16,8 +16,8 @@ const Rules = () => (
       <h4>Tipps Vorrunde</h4>
       <p>
         Sämtliche Vorrundenspiele werden vor Beginn der WM getippt. Ihr könnt Eure Tipps bis zum
-        Anstoß des Eröffnungsspiels am <b>14.06.2018 um 17 Uhr (MESZ)</b> ändern. Danach könnt Ihr
-        nichts verändern. Geht also sicher, dass Ihr JEDES Spiel getippt habt und ALLES
+        Anstoß des Eröffnungsspiels am <b>14.06.2018 um 17 Uhr (MESZ)</b> ändern. Danach könnt ihr
+        nichts verändern. Geht also sicher, dass ihr JEDES Spiel getippt habt und ALLES
         ausgefüllt ist!
       </p>
 
@@ -28,9 +28,9 @@ const Rules = () => (
         Ab dem Achtelfinale (Nach der Vorrunde, letztes Spiel Gruppe H) wird wieder losgetippt.
         Das bedeutet: vergesst nicht zu tippen! Die anstehenden Paarungen und fehlenden Tipps
         werden euch natürlich hier in der RTG angezeigt. Das Königshaus bietet euch überdies
-        den Service einer Tipperinnerung an. Ab jetzt könnt Ihr also jedes K.O.-Spiel&nbsp;
+        den Service einer Tipperinnerung an. Ab jetzt könnt ihr also jedes K.O.-Spiel&nbsp;
         <b>bis zum Spielbeginn</b> tippen.<br /><br />
-        Getippt wird das Ergebnis für JEDES Spiel <b>nach 90 Minuten</b>! Das bedeutet, Ihr könnt
+        Getippt wird das Ergebnis für JEDES Spiel <b>nach 90 Minuten</b>! Das bedeutet, ihr könnt
         IMMER ein Unentschieden tippen, auch in den K.O.-Spielen, in denen es theoretisch auch
         Verlängerung und Elfmeterschießen gibt.
       </p>
@@ -40,7 +40,7 @@ const Rules = () => (
       <h4>Wetteinsatz</h4>
       <p>
         Der Wetteinsatz beträgt 5 €. Bitte übermittelt den Betrag bis spätestens&nbsp;
-        <b>Donnerstag, 21.06.16</b> an das Royale Paar, via&nbsp;
+        <b>Donnerstag, 21.06.2018</b> an das Royale Paar, via&nbsp;
         <a href="https://paypal.me/rtg2018/5" target="_blank" rel="noopener noreferrer">
           PayPal
         </a>,&nbsp;
@@ -54,7 +54,9 @@ const Rules = () => (
         Die Gewinnausschüttung hängt von der Teilnehmerzahl ab. Wenn wir am 14. Juni sehen, wie
         viele Teilnehmer es geworden sind, werden wir alle gemeinsam demokratisch (Demokratie
         trotz Monarchie!) abstimmen, wie der Gewinn ausgeschüttet wird. Dann können wir auch
-        eine genaue Angabe zu den Gewinnsummen geben.
+        eine genaue Angabe zu den Gewinnsummen geben.<br /><br />
+        Wer am Ende auf einer Schnapszahl landet, wird sich über einen kleinen materiellen
+        Trostpreis freuen können.
       </p>
 
       <hr />
@@ -62,13 +64,14 @@ const Rules = () => (
       <h4>Punktevergabe</h4>
       <p>
         Für einen komplett richtigen Tipp gibt es <b>5 Punkte</b> (z.B. Deutschland - Mexiko
-        geht 5:0 aus und Ihr tippt 5:0).<br /><br />
+        geht 5:0 aus und ihr tippt 5:0).<br /><br />
 
-        Für einen richtigen Differenztipp (z.B. Deutschland - Mexiko geht 5:0 aus und Ihr
+        Für einen richtigen Differenztipp (z.B. Deutschland - Mexiko geht 5:0 aus und ihr
         tippt 6:1) gibt es <b>3 Punkte</b>.<br /><br />
 
-        Für eine richtige Tendenz (Ihr tippt z.B., dass Deutschland gegen Mexiko
-        gewinnt und Deutschland gewinnt auch) dann bekommt Ihr <b>1 Punkt</b>.<br /><br />
+        Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Mexiko
+        gewinnt, Deutschland gewinnt auch, aber nur mit 1:0) dann bekommt&nbsp;
+        ihr <b>1 Punkt</b>.<br /><br />
 
         Tippt ihr Unentschieden, z.B. 1:1, das Spiel geht aber 2:2 aus, dann gibt es&nbsp;
         <b>2 Punkte</b>, weil man zwar die Differenz richtig hat, aber es ja auch nicht so
