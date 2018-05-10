@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Card, CardHeader } from 'material-ui';
-import Done from 'material-ui/svg-icons/action/done';
+import { Card, CardHeader } from 'material-ui';
+import CheckCircle from 'material-ui/svg-icons/action/check-circle';
 import Close from 'material-ui/svg-icons/navigation/close';
+import Error from 'material-ui/svg-icons/alert/error';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { lightenDarkenColor } from '../service/ColorHelper';
 
@@ -13,12 +14,13 @@ export const NotificationType = {
 
 // TODO P3 animated show/hide
 class Notification extends Component {
-  static getIconByType(type) {
+  static getIconByType(type, color) {
+    const iconStyle = { width: '30px', height: '30px' };
     if (type === NotificationType.SUCCESS) {
-      return <Done />;
+      return <CheckCircle color={color} style={iconStyle} />;
     }
-    return <Close />;
-  };
+    return <Error color={color} style={iconStyle} />;
+  }
 
   constructor(props) {
     super(props);
@@ -51,7 +53,9 @@ class Notification extends Component {
         style={{ ...this.props.style, backgroundColor: lightenDarkenColor(notificationColor, 150) }}
       >
         <CardHeader
+          closeIcon={<Close onClick={() => this.setState({ visible: false })} />}
           title={this.props.title}
+          showExpandableButton={this.props.dismissable}
           subtitle={this.props.subtitle}
           subtitleStyle={{ fontWeight: 400 }}
           style={{
@@ -60,15 +64,8 @@ class Notification extends Component {
             alignItems: 'center',
             lineHeight: '1.4',
           }}
-          textStyle={{ paddingRight: 0 }}
-          avatar={
-            <Avatar
-              icon={Notification.getIconByType(this.props.type)}
-              color="#FFFFFF"
-              backgroundColor={lightenDarkenColor(notificationColor, 0)}
-              size={30}
-            />
-          }
+          textStyle={{ paddingRight: this.props.dismissable ? '23px' : '0' }}
+          avatar={Notification.getIconByType(this.props.type, notificationColor)}
         />
       </Card>
     );
@@ -77,6 +74,7 @@ class Notification extends Component {
 
 Notification.defaultProps = {
   disappearAfterMs: null,
+  dismissable: false,
   subtitle: null,
   className: null,
   style: {},
@@ -84,6 +82,7 @@ Notification.defaultProps = {
 
 Notification.propTypes = {
   disappearAfterMs: PropTypes.number,
+  dismissable: PropTypes.bool,
   subtitle: PropTypes.string,
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
