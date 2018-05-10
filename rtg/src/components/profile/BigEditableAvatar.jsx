@@ -10,15 +10,36 @@ import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.css';
 
+const MIN_AVATAR_ZOOM = 1;
+const MAX_AVATAR_ZOOM = 3;
+const AVATAR_ZOOM_INCREMENT = 0.2;
+
 const EditingActions = props => (
   <div className="BigEditableAvatar__edit-actions" style={props.style}>
-    <Slider
-      min={1}
-      max={3}
-      defaultValue={props.initialSliderValue}
-      sliderStyle={{ margin: '10px' }}
-      onChange={props.onChange}
-    />
+    <div className="BigEditableAvatar__slider-wrapper">
+      <FlatButton
+        primary
+        style={{ minWidth: '10px' }}
+        onClick={props.onZoomOut}
+      >–
+      </FlatButton>
+
+      <Slider
+        className="BigEditableAvatar__slider"
+        min={props.minSliderValue}
+        max={props.maxSliderValue}
+        value={props.sliderValue}
+        sliderStyle={{ margin: '0 10px', width: 'auto' }}
+        onChange={props.onZoomChange}
+      />
+
+      <FlatButton
+        primary
+        style={{ minWidth: '10px' }}
+        onClick={props.onZoomIn}
+      >+
+      </FlatButton>
+    </div>
 
     <FlatButton label="Speichern" primary onClick={props.onSave} />
     <FlatButton label="Abbrechen" onClick={props.onCancel} />
@@ -26,14 +47,20 @@ const EditingActions = props => (
 );
 
 EditingActions.defaultProps = {
-  initialSliderValue: 1.0,
+  minSliderValue: MIN_AVATAR_ZOOM,
+  maxSliderValue: MAX_AVATAR_ZOOM,
+  sliderValue: 1.0,
   style: {},
 };
 
 EditingActions.propTypes = {
-  initialSliderValue: PropTypes.number,
+  maxSliderValue: PropTypes.number,
+  minSliderValue: PropTypes.number,
+  sliderValue: PropTypes.number,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  onChange: PropTypes.func.isRequired,
+  onZoomIn: PropTypes.func.isRequired,
+  onZoomOut: PropTypes.func.isRequired,
+  onZoomChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
@@ -75,6 +102,7 @@ class BigEditableAvatar extends Component {
 
     this.setEditorRef = this.setEditorRef.bind(this);
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
+    this.handleAvatarZoom = this.handleAvatarZoom.bind(this);
     this.handleEditSave = this.handleEditSave.bind(this);
   }
 
@@ -119,6 +147,15 @@ class BigEditableAvatar extends Component {
 
   handleCropError(errorType) {
     this.setState({ editing: false, cropError: errorType });
+  }
+
+  handleAvatarZoom(scale) {
+    this.setState((prevState) => {
+      let newVal = prevState.avatarEditScale + (scale * AVATAR_ZOOM_INCREMENT);
+      if (newVal <= MIN_AVATAR_ZOOM) { newVal = MIN_AVATAR_ZOOM; }
+      if (newVal >= MAX_AVATAR_ZOOM) { newVal = MAX_AVATAR_ZOOM; }
+      return { avatarEditScale: newVal };
+    });
   }
 
   handleEditSave() {
@@ -230,8 +267,10 @@ class BigEditableAvatar extends Component {
 
         {(this.state.editing && !this.state.uploadInProgress) &&
           <EditingActions
-            initialSliderValue={this.state.avatarEditScale}
-            onChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
+            sliderValue={this.state.avatarEditScale}
+            onZoomIn={() => this.handleAvatarZoom(1)}
+            onZoomOut={() => this.handleAvatarZoom(-1)}
+            onZoomChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
             onSave={this.handleEditSave}
             onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
             style={{ maxWidth: avatarPlusBorderSize, margin: '0 auto' }}

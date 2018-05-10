@@ -7,4 +7,13 @@
     margin: 15px auto;
     max-width: 500px;
   }
+
+  &__slider-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__slider {
+    flex-grow: 1;
+  }
 }
