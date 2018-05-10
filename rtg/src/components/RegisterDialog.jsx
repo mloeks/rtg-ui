@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Dialog, FlatButton, TextField } from 'material-ui';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
 
 // TODO P2 improve communication why first and last name are required
+// TODO P2 confirm on enter
 // TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
   static getInitialState() {
@@ -163,10 +163,8 @@ class RegisterDialog extends Component {
 }
 
 RegisterDialog.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
 
-export default muiThemeable()(RegisterDialog);
+export default RegisterDialog;
