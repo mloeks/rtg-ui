@@ -9,6 +9,7 @@ import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import Notification, { NotificationType } from './Notification';
+import { BetsStatusContext } from '../pages/Bets';
 import { error, grey } from '../theme/RtgTheme';
 
 import './ExtraBetCard.css';
@@ -68,16 +69,20 @@ export default class ExtraBetCard extends Component {
     this.setState({ deadlineCountdownIntervalId: intervalId });
   }
 
-  handleChange(event, index, value) {
+  handleChange(value, betsStatusContext) {
     this.setState((prevState) => {
       const prevUserBet = prevState.userBet || { result_bet: null };
       const userBet = Object.assign({}, prevUserBet);
       userBet.result_bet = value;
       return { userBet, hasChanges: value !== prevUserBet.result_bet, savingError: false };
+    }, () => {
+      if (!betsStatusContext.betsHaveChanges) {
+        betsStatusContext.updateBetsHaveChanges(true);
+      }
     });
   }
 
-  handleSave() {
+  handleSave(betsStatusContext) {
     if (this.state.userBet && !this.state.isSaving) {
       this.setState({ isSaving: true, savingSuccess: false, savingError: false });
 
@@ -109,6 +114,7 @@ export default class ExtraBetCard extends Component {
               hasChanges: false,
               userBet: response.json || null,
             }, () => {
+              betsStatusContext.updateBetsHaveChanges(false);
               if (method === 'POST') {
                 this.props.onBetAdded();
               } else if (method === 'DELETE') {
@@ -173,33 +179,37 @@ export default class ExtraBetCard extends Component {
           <div className="ExtraBetCard__loading-error">Fehler beim Laden.</div>}
 
         {(!this.state.loadingError && this.props.open) &&
-          <CardActions
-            className="ExtraBetCard__actions"
-            style={{ padding: '0 20px 10px' }}
-          >
-            <SelectField
-              floatingLabelText="Dein Tipp"
-              maxHeight={300}
-              value={userResultBet}
-              onChange={this.handleChange}
-              menuItemStyle={{ textAlign: 'left' }}
-              style={{ marginBottom: '20px' }}
+        <BetsStatusContext.Consumer>
+          {betsStatusContext => (
+            <CardActions
+              className="ExtraBetCard__actions"
+              style={{ padding: '0 20px 10px' }}
             >
-              <MenuItem value={null} primaryText="" />
-              {this.props.choices
-                .map(choice => <MenuItem key={choice} value={choice} primaryText={choice} />)}
-            </SelectField>
-            <div>
-              <RaisedButton
-                label="Speichern"
-                primary
-                onClick={this.handleSave}
-                disabled={this.state.isSaving || !this.state.hasChanges}
-                style={{ margin: '0 15px' }}
-              />
-            </div>
-          </CardActions>
-        }
+              <SelectField
+                floatingLabelText="Dein Tipp"
+                maxHeight={300}
+                value={userResultBet}
+                onChange={(e, i, val) => this.handleChange(val, betsStatusContext)}
+                menuItemStyle={{ textAlign: 'left' }}
+                style={{ marginBottom: '20px' }}
+              >
+                <MenuItem value={null} primaryText="" />
+                {this.props.choices
+                  .map(choice => <MenuItem key={choice} value={choice} primaryText={choice} />)}
+              </SelectField>
+              <div>
+                <RaisedButton
+                  label="Speichern"
+                  primary
+                  onClick={() => this.handleSave(betsStatusContext)}
+                  disabled={this.state.isSaving || !this.state.hasChanges}
+                  style={{ margin: '0 15px' }}
+                />
+              </div>
+            </CardActions>
+          )}
+        </BetsStatusContext.Consumer>}
+
         <div>
           {this.state.savingSuccess &&
             <Notification
