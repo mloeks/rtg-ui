@@ -6,7 +6,7 @@ import './BigPicture.css';
 const BigPicture = props => (
   <section
     className="BigPicture"
-    style={{ backgroundImage: `url(${props.img})` }}
+    style={{ backgroundImage: `url(${props.img})`, backgroundPositionY: `${props.positionY}%` }}
   >
     {props.children}
   </section>
@@ -15,10 +15,12 @@ const BigPicture = props => (
 BigPicture.propTypes = {
   children: PropTypes.node,
   img: PropTypes.string.isRequired,
+  positionY: PropTypes.number,
 };
 
 BigPicture.defaultProps = {
   children: null,
+  positionY: 50,
 };
 
 export default BigPicture;
