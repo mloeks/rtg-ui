@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Route, Switch } from 'react-router-dom';
@@ -27,46 +27,45 @@ import rtg from './theme/RtgTheme';
 import './App.css';
 
 // TODO P3 Implement bottom navigation for mobile breakpoints
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const isDemo = window.location.href.match(/.*demo.*/i);
+  const isLocal = window.location.href.match(/.*localhost.*/i);
 
-    this.state = {
-      user: 'foo',
-    };
-  }
+  return (
+    <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
+      <div className="App">
+        {(isDemo || isLocal) &&
+          <div className="App__demo-indicator">
+            {isDemo ? 'DEMO' : 'LOCAL'}
+          </div>
+        }
 
-  render() {
-    return (
-      <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
-        <div className="App">
-          <Switch>
-            <Route exact path="/" component={Reception} />
-            <Route exact path="/403" component={PermissionDenied} />
+        <Switch>
+          <Route exact path="/" component={Reception} />
+          <Route exact path="/403" component={PermissionDenied} />
 
-            {/* Static, public pages */}
-            <Route exact path="/rules" component={Rules} />
-            <Route exact path="/contact" component={Contact} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/imprint" component={Imprint} />
-            <Route exact path="/donate" component={Donate} />
+          {/* Static, public pages */}
+          <Route exact path="/rules" component={Rules} />
+          <Route exact path="/contact" component={Contact} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/imprint" component={Imprint} />
+          <Route exact path="/donate" component={Donate} />
 
-            {/* Password reset - protected by token in URL */}
-            <Route exact path="/passwordreset/:uid/:token" component={PasswordReset} />
+          {/* Password reset - protected by token in URL */}
+          <Route exact path="/passwordreset/:uid/:token" component={PasswordReset} />
 
-            {/* Login Area */}
-            <AuthRoute exact path="/foyer" component={Foyer} />
-            <AuthRoute exact path="/bets" component={Bets} />
-            <AuthRoute exact path="/schedule" component={Schedule} />
-            <AuthRoute exact path="/standings" component={Standings} />
-            <AuthRoute exact path="/profile" component={Profile} />
+          {/* Login Area */}
+          <AuthRoute exact path="/foyer" component={Foyer} />
+          <AuthRoute exact path="/bets" component={Bets} />
+          <AuthRoute exact path="/schedule" component={Schedule} />
+          <AuthRoute exact path="/standings" component={Standings} />
+          <AuthRoute exact path="/profile" component={Profile} />
 
-            <AdminRoute exact path="/admin" component={Admin} />
-          </Switch>
-        </div>
-      </MuiThemeProvider>
-    );
-  }
-}
+          <AdminRoute exact path="/admin" component={Admin} />
+        </Switch>
+      </div>
+    </MuiThemeProvider>
+  );
+};
 
 export default App;

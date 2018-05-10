@@ -1,3 +1,5 @@
+@import 'sass/z-indexes.scss';
+
 body {
   font-family: 'Roboto', sans-serif;
   text-align: center;
@@ -15,4 +17,21 @@ body {
   h5 { font-size: 18px; }
   h6 { font-size: 14px; }
 
+}
+
+.App__demo-indicator {
+  position: fixed;
+
+  top: 0;
+  width: 90px;
+  margin: 0 calc(50% - 45px);
+  padding: 10px;
+
+  font-size: 10px;
+
+  pointer-events: none;
+
+  background-color: rgba(255, 255, 0, 0.6);
+  z-index: $zDemoIndicator;
+  box-sizing: border-box;
 }
