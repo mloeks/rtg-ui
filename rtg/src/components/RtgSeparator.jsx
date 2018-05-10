@@ -5,14 +5,16 @@ import './RtgSeparator.css';
 
 const RtgSeparator = props => (
   <div className="RtgSeparator">
-    <div className="RtgSeparator__text">
-      {props.content}
-    </div>
+    {props.content && <div className="RtgSeparator__text">{props.content}</div>}
   </div>
 );
 
+RtgSeparator.defaultProps = {
+  content: null,
+};
+
 RtgSeparator.propTypes = {
-  content: PropTypes.node.isRequired,
+  content: PropTypes.node,
 };
 
 export default RtgSeparator;
