@@ -6,6 +6,8 @@ import BigEditableAvatar from '../components/profile/BigEditableAvatar';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
+import RtgSeparator from '../components/RtgSeparator';
+import ChangePasswordForm from '../components/profile/ChangePasswordForm';
 
 import headingImg from '../theme/img/headings/bed.jpg';
 
@@ -88,7 +90,7 @@ class Profile extends Component {
     return (
       <Page className="ProfilePage">
         <BigPicture className="ProfilePage__heading" img={headingImg} positionY={75} />
-        <section className="ProfilePage__content" style={{ position: 'relative' }}>
+        <section className="ProfilePage__content" style={{ position: 'relative', padding: '10px' }}>
 
           <UserDetailsContext.Consumer>
             {userContext => (
@@ -123,6 +125,10 @@ class Profile extends Component {
             onFieldChange={this.handleFormFieldUpdate}
             onUserUpdate={this.handleUserUpdate}
           />
+
+          <RtgSeparator style={{ maxWidth: '500px' }} />
+
+          <ChangePasswordForm />
         </section>
       </Page>
     );
