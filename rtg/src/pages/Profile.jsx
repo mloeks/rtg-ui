@@ -11,7 +11,6 @@ import ChangePasswordForm from '../components/profile/ChangePasswordForm';
 
 import headingImg from '../theme/img/headings/bed.jpg';
 
-// TODO P1 offer possibility to change email
 // TODO P2 offer possibility to delete account
 // TODO P3 offer possibility to delete avatar
 class Profile extends Component {
@@ -39,14 +38,14 @@ class Profile extends Component {
       loadingError: false,
 
       userId: AuthService.getUserId(),
-      username: AuthService.getUsername(),
-      email: AuthService.getEmail(),
+      username: '',
+      email: '',
       email2: '',
       firstName: '',
       lastName: '',
       about: '',
       location: '',
-      avatar: AuthService.getAvatar(),
+      avatar: '',
 
       dailyEmails: true,
       reminderEmails: true,
