@@ -11,7 +11,6 @@ import AddPostForm from './AddPostForm';
 import './News.css';
 import { lightGrey } from "../../theme/RtgTheme";
 
-// TODO P1 Welcome message after registration
 // TODO P1 Allow normal users to comment on news
 // TODO P2 FEATURE Prio 1 - add section "recent games" to the top
 // TODO P2 Lazy load news
@@ -129,6 +128,7 @@ class News extends Component {
             Keine Neuigkeiten.
           </div>}
 
+        {/* TODO P1 Stop fixing button to bottom left corner if user scrolls further down */}
         {(AuthService.isAdmin() && !this.state.addingPost) &&
           <FloatingActionButton className="News__add-button" onClick={this.handleAddNews}>
             <ContentAdd />
