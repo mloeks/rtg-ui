@@ -108,8 +108,8 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P2 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
-// TODO P3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
+// TODO P1 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
+// TODO P2 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   static identicalRank(row, lastRow) {
     return row && lastRow &&

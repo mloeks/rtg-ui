@@ -11,8 +11,9 @@ import AddPostForm from './AddPostForm';
 import './News.css';
 import { lightGrey } from "../../theme/RtgTheme";
 
-// TODO P2 add section "recent games" to the top
-// TODO P2 Allow normal users to post and comment on news
+// TODO P1 Welcome message after registration
+// TODO P1 Allow normal users to comment on news
+// TODO P2 FEATURE Prio 1 - add section "recent games" to the top
 // TODO P2 Lazy load news
 // TODO P2 Save drafts while adding a post
 // TODO P2 Allow deletion of news if admin

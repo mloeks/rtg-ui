@@ -9,7 +9,6 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.css';
-import { white } from "../../theme/RtgTheme";
 
 const EditingActions = props => (
   <div className="BigEditableAvatar__edit-actions" style={props.style}>
@@ -41,9 +40,12 @@ EditingActions.propTypes = {
 
 // TODO P1 IE: Test if form submit now works with Blob polyfill
 // does not seem to be defined
+
 // TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
-// is it related to the console error about preventDefault which appears after it
-// has worked properly for a short time? disable certain touch events?
+// this only seems to be an issue with Chrome, preventing passive events from using
+// prevent default, cf. https://www.chromestatus.com/features/5093566007214080
+// works on firefox. How to disable it in Chrome? Open issue in github?
+
 // TODO P2 investigate about console error on editing save and cancel
 // TODO P3 offer rotate buttons
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)

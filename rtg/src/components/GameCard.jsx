@@ -6,7 +6,7 @@ import GameCardGameInfo from './GameCardGameInfo';
 
 import './GameCard.css';
 
-// TODO P2 add possibility to unfold and show calculated bet stats below the card
+// TODO P2 FEATURE Prio 2 - add possibility to unfold and show calculated bet stats below the card
 const GameCard = (props) => {
   const centerContent = props.children || (
     // if no other children are passed in,
