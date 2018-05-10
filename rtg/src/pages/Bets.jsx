@@ -63,7 +63,7 @@ class Bets extends Component {
       updateBetsHaveChanges: this.handleBetsHaveChanges.bind(this),
     };
 
-    this.handleExtraBetTabClick = this.handleExtraBetTabClick.bind(this);
+    this.handleTabActive = this.handleTabActive.bind(this);
     this.handleOpenGameBetsCtUpdate = this.handleOpenGameBetsCtUpdate.bind(this);
     this.handleOpenExtraBetsCtUpdate = this.handleOpenExtraBetsCtUpdate.bind(this);
   }
@@ -72,8 +72,9 @@ class Bets extends Component {
     this.setState({ betsHaveChanges });
   }
 
-  handleExtraBetTabClick(tab) {
-    if (true) {
+  handleTabActive(tab) {
+    // TODO P1 Test if that works properly on IE
+    if (!this.state.betsHaveChanges || window.confirm(unsavedChangesConfirmText)) {
       this.setState({ activeTab: tab.props.value });
     }
   }
@@ -120,7 +121,7 @@ class Bets extends Component {
                     className="BetsPage__tab"
                     label={Bets.openBetsBadge('Spiele', this.state.openGameBetsCt)}
                     value={BettableTypes.GAME}
-                    onActive={tab => this.setState({ activeTab: tab.props.value })}
+                    onActive={this.handleTabActive}
                     buttonStyle={{ color: black, height: '60px' }}
                   >
                     <GameBetsTab
@@ -133,7 +134,7 @@ class Bets extends Component {
                     className="BetsPage__tab"
                     label={Bets.openBetsBadge('Zusatztipps', this.state.openExtraBetsCt)}
                     value={BettableTypes.EXTRA}
-                    onActive={this.handleExtraBetTabClick}
+                    onActive={this.handleTabActive}
                     buttonStyle={{ color: black, height: '60px' }}
                   >
                     <ExtraBetsTab
