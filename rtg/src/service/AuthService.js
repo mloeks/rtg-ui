@@ -124,6 +124,16 @@ class AuthService {
   }
 
   static async authenticate(username, password) {
+    const getResponseErrorMessage = (responseJson) => {
+      if (responseJson && responseJson.non_field_errors) {
+        return responseJson.non_field_errors[0];
+      }
+      if (responseJson && responseJson.error) {
+        return responseJson.error;
+      }
+      return 'Ein Fehler ist aufgetreten';
+    };
+
     return new Promise((resolve, reject) => {
       fetch(`${API_BASE_URL}/api-token-auth/`, {
         method: 'POST',
@@ -139,9 +149,7 @@ class AuthService {
             resolve(response.json);
           } else {
             AuthService.resetProps();
-            reject(new Error(response.json && response.json.non_field_errors
-              ? response.json.non_field_errors[0]
-              : 'Ein Fehler ist aufgetreten.'));
+            reject(new Error(getResponseErrorMessage(response.json)));
           }
         })
         .catch(() => {
