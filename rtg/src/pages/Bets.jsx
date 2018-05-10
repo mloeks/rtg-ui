@@ -23,7 +23,7 @@ export const countOpenBets = (bettables, allBets) => {
 };
 
 // TODO P2 make tabs header also sticky
-// TODO P2 show prompt if user wants to navigate away with unsaved changes
+// TODO P1 show prompt if user wants to navigate away with unsaved changes
 // tried with updating "hasChanged" in this state by the GameCardBet's
 // --> too many updates all the time
 // but that should be possible with a better implementation
