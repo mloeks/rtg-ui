@@ -46,6 +46,10 @@ class AuthService {
     return LocalStorageWrapper.get('email');
   }
 
+  static setEmail(email) {
+    LocalStorageWrapper.set('email', email);
+  }
+
   static getHasPaid() {
     return LocalStorageWrapper.get('has-paid') === 'true';
   }

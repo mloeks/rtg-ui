@@ -8,12 +8,12 @@ import Notification, { NotificationType } from '../Notification';
 
 // TODO P2 Clean up such that the form related fields are not updated up to the Profile,
 // it should not need to know about that
-// TODO P2 make e-mail changeable --> probably needs a re-login? evaluate..
 class ProfileForm extends Component {
   static userErrorResponseToState(responseJson) {
     return {
       formHasErrors: true,
       fieldErrors: {
+        email: responseJson.email && responseJson.email[0],
         email2: responseJson.email2 && responseJson.email2[0],
         firstName: responseJson.firstName && responseJson.firstName[0],
         lastName: responseJson.lastName && responseJson.lastName[0],
@@ -25,6 +25,7 @@ class ProfileForm extends Component {
 
   static resetFieldErrors() {
     return {
+      email: '',
       email2: '',
       firstName: '',
       lastName: '',
@@ -53,6 +54,7 @@ class ProfileForm extends Component {
   propsToUserPatchPayload() {
     return {
       pk: this.props.userId,
+      email: this.props.email || '',
       email2: this.props.email2 || '',
       first_name: this.props.firstName || '',
       last_name: this.props.lastName || '',
@@ -135,6 +137,7 @@ class ProfileForm extends Component {
 
             aboutError={this.state.fieldErrors.about}
             dailyEmailsError={this.state.fieldErrors.dailyEmails}
+            emailError={this.state.fieldErrors.email}
             email2Error={this.state.fieldErrors.email2}
             firstNameError={this.state.fieldErrors.firstName}
             lastNameError={this.state.fieldErrors.lastName}

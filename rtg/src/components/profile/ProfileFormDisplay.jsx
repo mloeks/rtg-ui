@@ -25,10 +25,11 @@ const ProfileFormDisplay = props => (
     </div>
 
     <TextField
-      floatingLabelText="E-Mail (nicht änderbar)"
+      floatingLabelText="E-Mail"
       fullWidth
       value={props.email}
-      disabled
+      errorText={props.emailError}
+      onChange={(e, v) => props.onFieldChange('email', v)}
     /><br />
     <TextField
       floatingLabelText="Weitere E-Mail (nur für News)"
@@ -85,6 +86,7 @@ ProfileFormDisplay.defaultProps = {
 
   firstNameError: null,
   lastNameError: null,
+  emailError: null,
   email2Error: null,
   aboutError: null,
   locationError: null,
@@ -105,6 +107,7 @@ ProfileFormDisplay.propTypes = {
 
   firstNameError: PropTypes.string,
   lastNameError: PropTypes.string,
+  emailError: PropTypes.string,
   email2Error: PropTypes.string,
   aboutError: PropTypes.string,
   locationError: PropTypes.string,

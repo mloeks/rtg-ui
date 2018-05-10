@@ -75,7 +75,9 @@ class Profile extends Component {
   }
 
   handleUserUpdate(newUser) {
-    this.setState(Profile.userToStateMapper(newUser));
+    this.setState(Profile.userToStateMapper(newUser), () => {
+      AuthService.setEmail(this.state.email);
+    });
   }
 
   handleAvatarChanged(newAvatar, userContext) {
