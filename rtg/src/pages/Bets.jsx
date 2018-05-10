@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Prompt } from 'react-router-dom';
 import { Tab, Tabs } from 'material-ui/Tabs';
 import { Badge } from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -23,6 +24,8 @@ export const countOpenBets = (bettables, allBets) => {
   const allBetBettablesIds = new Set(allBets.map(bet => bet.bettable));
   return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
 };
+
+export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
 // TODO P2 make tabs header also sticky
 // TODO P1 show prompt if user wants to navigate away with unsaved changes
@@ -95,6 +98,11 @@ class Bets extends Component {
     return (
       <BetsStatusContext.Provider value={this.state}>
         <Page className="BetsPage">
+          <Prompt
+            when={this.state.betsHaveChanges}
+            message={unsavedChangesConfirmText}
+          />
+
           <BigPicture className="BetsPage__heading" img={headingImg}>
             <h1 className="BigPicture__heading">Deine Tipps</h1>
           </BigPicture>
