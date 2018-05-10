@@ -4,13 +4,12 @@ body {
   font-family: sans-serif;
 }
 
-// TODO P1 IE: check if it worked
-// Remove automatically appearing clear button in IE11
+// Remove automatically appearing clear/reveal icons in IE
 // https://stackoverflow.com/a/23067969
-input[type="text"] {
-  &::-ms-clear {
-    display: none;
-    width:0;
-    height:0;
-  }
+input[type="text"]::-ms-clear,
+input[type="password"]::-ms-clear,
+input[type="password"]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
 }
