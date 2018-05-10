@@ -28,10 +28,6 @@ export const countOpenBets = (bettables, allBets) => {
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
 // TODO P2 make tabs header also sticky
-// TODO P1 show prompt if user wants to navigate away with unsaved changes
-// tried with updating "hasChanged" in this state by the GameCardBet's
-// --> too many updates all the time
-// but that should be possible with a better implementation
 // TODO P3 also handle bet value updates via context instead of passing callback props down
 class Bets extends Component {
   static openBetsBadge(title, count) {
@@ -63,9 +59,26 @@ class Bets extends Component {
       updateBetsHaveChanges: this.handleBetsHaveChanges.bind(this),
     };
 
+    this.confirmNavigationWithUnsavedChanges = this.confirmNavigationWithUnsavedChanges.bind(this);
     this.handleTabActive = this.handleTabActive.bind(this);
     this.handleOpenGameBetsCtUpdate = this.handleOpenGameBetsCtUpdate.bind(this);
     this.handleOpenExtraBetsCtUpdate = this.handleOpenExtraBetsCtUpdate.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", this.confirmNavigationWithUnsavedChanges, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
+  }
+
+  confirmNavigationWithUnsavedChanges(e) {
+    if (this.state.betsHaveChanges) {
+      e.returnValue = unsavedChangesConfirmText;
+      return unsavedChangesConfirmText;
+    }
+    return null;
   }
 
   handleBetsHaveChanges(betsHaveChanges) {
