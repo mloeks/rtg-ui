@@ -69,7 +69,6 @@ export default class ExtraBetsTab extends Component {
     return (
       <div className="ExtraBetsTab">
         <div style={{ padding: '0 10px' }}>
-          <h2>Zusatztipps</h2>
           <p>Bitte gib alle Zusatztipps <b>vor Beginn der WM</b> ab.</p>
         </div>
 

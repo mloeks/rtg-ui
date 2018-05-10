@@ -186,7 +186,6 @@ class GameBetsTab extends Component {
     return (
       <div className="GameBetsTab">
         <div style={{ padding: '0 10px' }}>
-          <h2>Tipps für die Spiele</h2>
           <p>
             Bitte tippe zunächst <b>vor Beginn der WM</b> sämtliche Vorrundenspiele. Die
             Partien der K.O.-Runde werden hier auftauchen, sobald sie feststehen.
