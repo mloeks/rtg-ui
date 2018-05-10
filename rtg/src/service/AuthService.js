@@ -209,6 +209,44 @@ class AuthService {
     });
   }
 
+  static async changePassword(oldPassword, newPassword) {
+    const payload = {
+      old_password: oldPassword,
+      new_password1: newPassword,
+      new_password2: newPassword,
+    };
+
+    return new Promise((resolve, reject) => {
+      fetch(`${API_BASE_URL}/rest-auth/password/change/`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          Authorization: `Token ${AuthService.getToken()}`,
+          'content-type': 'application/json',
+        },
+      }).then(FetchHelper.parseJson)
+        .then((response) => {
+          const responseJson = response.json;
+          if (response.ok) {
+            resolve(responseJson);
+          } else {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject({
+              formHasErrors: true,
+              fieldErrors: {
+                oldPassword: responseJson.old_password && responseJson.old_password[0],
+                newPassword: responseJson.new_password1 && responseJson.new_password1[0],
+              },
+              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
+            });
+          }
+        }).catch(() => {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject({ formHasErrors: false, nonFieldError: 'Ein Fehler ist aufgetreten' });
+        });
+    });
+  }
+
   static async requestPasswordReset(email) {
     return new Promise((resolve, reject) => {
       fetch(`${API_BASE_URL}/rest-auth/password/reset/`, {
