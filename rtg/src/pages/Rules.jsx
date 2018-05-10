@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FlatButton } from 'material-ui';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
+import RtgSeparator from '../components/RtgSeparator';
 
 import headingImg from '../theme/img/headings/queens_guard.jpg';
 import './Rules.css';
@@ -21,7 +22,7 @@ const Rules = () => (
         ausgefüllt ist!
       </p>
 
-      <hr />
+      <RtgSeparator />
 
       <h4>Tipps K.O.-Runde</h4>
       <p>
@@ -35,7 +36,7 @@ const Rules = () => (
         Verlängerung und Elfmeterschießen gibt.
       </p>
 
-      <hr />
+      <RtgSeparator />
 
       <h4>Wetteinsatz</h4>
       <p>
@@ -47,7 +48,7 @@ const Rules = () => (
         bar auf die Kralle oder per Überweisung (Bankdaten siehe Willkommens-Email).
       </p>
 
-      <hr />
+      <RtgSeparator />
 
       <h4>Gewinn</h4>
       <p>
@@ -59,7 +60,7 @@ const Rules = () => (
         Trostpreis freuen können.
       </p>
 
-      <hr />
+      <RtgSeparator />
 
       <h4>Punktevergabe</h4>
       <p>
@@ -79,7 +80,7 @@ const Rules = () => (
         2 Punkte als Kompromiss.
       </p>
 
-      <hr />
+      <RtgSeparator />
 
       <h4>Paare</h4>
       <p>
