@@ -235,7 +235,8 @@ class AuthService {
               formHasErrors: true,
               fieldErrors: {
                 oldPassword: responseJson.old_password && responseJson.old_password[0],
-                newPassword: responseJson.new_password1 && responseJson.new_password1[0],
+                newPassword: (responseJson.new_password1 && responseJson.new_password1[0]) ||
+                (responseJson.new_password2 && responseJson.new_password2[0]),
               },
               nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
             });
