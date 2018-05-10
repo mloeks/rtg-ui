@@ -10,7 +10,7 @@ import './About.css';
 
 const About = (props) => (
   <Page className="AboutPage">
-    <BigPicture className="AboutPage__heading" img={headingImg}>
+    <BigPicture className="AboutPage__heading" img={headingImg} positionY={21}>
       <h1 className="BigPicture__heading">Über die RTG</h1>
     </BigPicture>
 

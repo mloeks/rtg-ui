@@ -117,7 +117,7 @@ class Bets extends Component {
             message={unsavedChangesConfirmText}
           />
 
-          <BigPicture className="BetsPage__heading" img={headingImg}>
+          <BigPicture className="BetsPage__heading" img={headingImg} positionY={25}>
             <h1 className="BigPicture__heading">Deine Tipps</h1>
           </BigPicture>
 
