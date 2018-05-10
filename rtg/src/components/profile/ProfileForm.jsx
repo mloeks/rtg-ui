@@ -6,8 +6,9 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification, { NotificationType } from '../Notification';
 
-// TODO P2 Clean up such that the form related fields are not updated up to the Profile,
-// it should not need to know about that
+// TODO P1 Clean up such that the form related fields are not updated up to the Profile,
+// it should not need to know about that. This probably causes buggy ipnut field state
+// updates --> cursor always jumps to the end on update.
 class ProfileForm extends Component {
   static userErrorResponseToState(responseJson) {
     return {
