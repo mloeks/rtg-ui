@@ -1,4 +1,17 @@
 .Foyer {
+  &__welcome {
+    margin: 20px 0;
+  }
+
+  &__greeting {
+    margin: 0;
+    word-wrap: break-word;
+  }
+
+  &__top-logo {
+    width: 60px;
+  }
+
   &__news {
     margin-top: 50px;
   }

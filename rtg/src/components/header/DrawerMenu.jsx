@@ -63,7 +63,7 @@ const DrawerMenu = (props) => {
       {!AuthService.getHasPaid() && <Divider />}
 
       <Link to="/foyer">
-        <MenuItem primaryText="Neuigkeiten" leftIcon={<Home />} />
+        <MenuItem primaryText="Foyer" leftIcon={<Home />} />
       </Link>
       <Link to="/schedule">
         <MenuItem primaryText="Spielplan" leftIcon={<Today />} />
