@@ -22,6 +22,7 @@ const Foyer = () => (
             {!AuthService.getLastLogin() &&
               <Notification
                 className="Foyer__first-visit"
+                dismissable
                 type={NotificationType.SUCCESS}
                 title="Anmeldung erfolgreich"
                 subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
