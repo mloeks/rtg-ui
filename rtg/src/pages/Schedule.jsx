@@ -7,7 +7,7 @@ import de from 'date-fns/locale/de';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
-import GameCardSeparator from '../components/GameCardSeparator';
+import RtgSeparator from '../components/RtgSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
@@ -23,7 +23,7 @@ class Schedule extends Component {
     games.forEach((game) => {
       if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
         gameCardsWithDateSubheadings
-          .push(<GameCardSeparator
+          .push(<RtgSeparator
             key={game.kickoff}
             content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
           />);

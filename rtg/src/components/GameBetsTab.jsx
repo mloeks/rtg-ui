@@ -9,7 +9,7 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
-import GameCardSeparator from './GameCardSeparator';
+import RtgSeparator from './RtgSeparator';
 import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
@@ -98,7 +98,7 @@ class GameBetsTab extends Component {
       const deadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
       if (lastDeadlineText === null || deadlineText !== lastDeadlineText) {
         gameCardsWithDeadlineSubheadings
-          .push(<GameCardSeparator
+          .push(<RtgSeparator
             key={`${game.id}-${game.deadline}`}
             content={this.createDeadlineWithIcon(game.deadline, deadlineText)}
           />);
