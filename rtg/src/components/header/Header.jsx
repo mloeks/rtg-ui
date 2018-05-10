@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
-import OpenBetsIndicator from './OpenBetsIndicator';
+import HeaderMenuItems from './HeaderMenuItems';
 
 import './Header.css';
 
@@ -29,7 +29,7 @@ class Header extends Component {
         titleStyle={{ textAlign: 'left' }}
         showMenuIconButton={loggedIn}
         iconElementRight={loggedIn ?
-          <OpenBetsIndicator number={userContext.openBetsCount} /> : null}
+          <HeaderMenuItems openBetsCount={userContext.openBetsCount} /> : null}
         iconStyleRight={{ display: 'flex', alignItems: 'center', margin: 0 }}
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
