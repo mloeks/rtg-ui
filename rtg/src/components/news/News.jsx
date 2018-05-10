@@ -7,9 +7,9 @@ import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
+import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
-import { lightGrey } from "../../theme/RtgTheme";
 
 // TODO P1 Allow normal users to comment on news
 // TODO P2 FEATURE Prio 1 - add section "recent games" to the top
