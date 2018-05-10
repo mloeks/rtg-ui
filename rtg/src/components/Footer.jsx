@@ -47,7 +47,7 @@ const Footer = props => {
 
       <div className="Footer__content">
         <ul className="Footer__links">
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/">Foyer</Link></li>
           <li><Link to="/about">Über die RTG</Link></li>
           <li><Link to="/rules">Regeln</Link></li>
           <li><Link to="/imprint">Impressum</Link></li>
