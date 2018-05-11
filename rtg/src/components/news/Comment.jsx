@@ -5,6 +5,7 @@ import { FlatButton } from 'material-ui';
 import CommentsList from './CommentsList';
 import { grey, lightGrey } from '../../theme/RtgTheme';
 
+// TODO P1 styling of comments
 class Comment extends Component {
   static getRepliesLabel(noReplies) {
     if (noReplies === 0) {
@@ -29,13 +30,15 @@ class Comment extends Component {
   render() {
     return (
       <div className="Comment">
-        <div className="Comment_content">{this.props.comment.content}</div>
+        <div className="Comment_content" style={{ wordWrap: 'break-word' }}>
+          {this.props.comment.content}
+          </div>
         <div className="Comment_author">{this.props.comment.author_details.username}</div>
         <div className="Comment_avatar">{this.props.comment.author_details.avatar}</div>
 
         <FlatButton
           label={Comment.getRepliesLabel(this.props.comment.no_replies)}
-          icon={<ContentReply color={lightGrey} style={{ width: '14px' }} />}
+          icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
           style={{ color: grey, fontSize: '12px' }}
           onClick={this.toggleReplies}
         />

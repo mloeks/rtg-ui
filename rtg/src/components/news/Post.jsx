@@ -100,7 +100,7 @@ class Post extends Component {
         </CardActions>
 
         <CardText expandable>
-          <CommentsList postId={this.props.post.id} />
+          <CommentsList postId={this.props.post.id} showAddComment />
         </CardText>
       </Card>
     );

@@ -11,7 +11,6 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
-// TODO P1 Allow normal users to comment on news
 // TODO P2 FEATURE Prio 1 - add section "recent games" to the top
 // TODO P2 Lazy load news
 // TODO P2 Save drafts while adding a post
