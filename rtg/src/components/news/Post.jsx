@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { Card, CardActions, CardHeader, CardText, CardTitle, Divider, FlatButton } from 'material-ui';
+import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import { format, isToday, isYesterday } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -51,27 +51,16 @@ class Post extends Component {
     return (
       <Card className="Post__card" expanded={this.state.expanded}>
         <CardTitle
+          className="Post__card-title"
           title={this.props.post.title}
-          style={{ backgroundColor: randomPostColour, paddingBottom: '5px' }}
+          style={{ backgroundColor: randomPostColour }}
           titleStyle={{
             fontSize: '32px',
             fontFamily: '"Lobster Two", sans-serif',
             wordBreak: 'break-word',
           }}
         />
-        <CardHeader
-          title={this.props.post.author_details.username}
-          subtitle={`${Post.getFormattedPostDate(dateCreated)}, ${formattedPostTime}`}
-          avatar={
-            <UserAvatar
-              size={40}
-              img={this.props.post.author_details.avatar}
-              username={this.props.post.author_details.username}
-            />}
-          style={{ backgroundColor: randomPostColour }}
-          subtitleStyle={{ fontWeight: 400 }}
-        />
-        <Divider style={{ height: '2px', backgroundColor: lightGrey }} />
+
         <CardText
           style={{
             backgroundColor: 'white',
@@ -79,15 +68,37 @@ class Post extends Component {
           }}
         >{this.props.post.content}
         </CardText>
-        <Divider style={{ height: '1px', backgroundColor: lightGrey }} />
-        <CardActions>
-          <FlatButton
-            label={Post.getCommentsLabel(this.props.post.no_comments)}
-            icon={<EditorModeComment color={lightGrey} style={{ width: '20px' }}/>}
-            style={{ color: grey, fontSize: '12px' }}
-            onClick={this.toggleExpanded}
+
+        <CardActions
+          className="Post__card-actions"
+          style={{ backgroundColor: randomPostColour, padding: 0 }}
+        >
+          <ListItem
+            disabled
+            primaryText={this.props.post.author_details.username}
+            secondaryText={`${Post.getFormattedPostDate(dateCreated)}, ${formattedPostTime}`}
+            leftAvatar={
+              <UserAvatar
+                size={40}
+                img={this.props.post.author_details.avatar}
+                username={this.props.post.author_details.username}
+              />}
+            rightIcon={<FlatButton
+              label={Post.getCommentsLabel(this.props.post.no_comments)}
+              labelPosition="before"
+              icon={<EditorModeComment color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
+              style={{
+                color: grey,
+                fontSize: '12px',
+                lineHeight: 'inherit',
+                marginRight: 0,
+                width: 'auto',
+              }}
+              onClick={this.toggleExpanded}
+            />}
           />
         </CardActions>
+
         <CardText expandable>
           <CommentsList postId={this.props.post.id} />
         </CardText>
