@@ -108,7 +108,8 @@ StandingsTableRow.propTypes = {
   noNiete: PropTypes.number.isRequired,
 };
 
-// TODO P1 User Details onClick --> Spalte wird höher und zeigt Details des Users + größeren Avatar
+// TODO P1 User Details onClick --> User Details als Popover, schönes Pattern als bg,
+// runde Ecken, Avatar steht oben raus
 // TODO P2 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   static identicalRank(row, lastRow) {
