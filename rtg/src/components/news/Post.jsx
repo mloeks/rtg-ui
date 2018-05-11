@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
@@ -14,13 +14,22 @@ import './Post.css';
 
 class Post extends Component {
   static getCommentsLabel(noComments) {
+    let desktopLabel;
+    let mobileLabel = noComments;
+
     if (noComments === 0) {
-      return 'Kommentieren';
+      desktopLabel = 'Kommentieren';
+    } else if (noComments === 1) {
+      desktopLabel = '1 Kommentar';
+    } else {
+      desktopLabel = `${noComments} Kommentare`;
     }
-    if (noComments === 1) {
-      return '1 Kommentar';
-    }
-    return `${noComments} Kommentare`;
+    return (
+      <Fragment>
+        <span className="Post__comments-label-mobile">{mobileLabel}</span>
+        <span className="Post__comments-label-desktop">{desktopLabel}</span>
+      </Fragment>
+    );
   }
 
   static getFormattedPostDate(date) {
@@ -75,7 +84,14 @@ class Post extends Component {
         >
           <ListItem
             disabled
-            primaryText={this.props.post.author_details.username}
+            primaryText={
+              <div
+                style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                title={this.props.post.author_details.username}
+              >
+                {this.props.post.author_details.username}
+              </div>
+            }
             secondaryText={`${Post.getFormattedPostDate(dateCreated)}, ${formattedPostTime}`}
             leftAvatar={
               <UserAvatar
@@ -92,6 +108,7 @@ class Post extends Component {
                 fontSize: '12px',
                 lineHeight: 'inherit',
                 marginRight: 0,
+                minWidth: '10px',
                 width: 'auto',
               }}
               onClick={this.toggleExpanded}
