@@ -6,8 +6,9 @@ import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import { format, isToday, isYesterday } from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
+import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
-import { lightGrey } from '../../theme/RtgTheme';
+import { grey, lightGrey } from '../../theme/RtgTheme';
 
 import './Post.css';
 
@@ -82,12 +83,13 @@ class Post extends Component {
         <CardActions>
           <FlatButton
             label={Post.getCommentsLabel(this.props.post.no_comments)}
-            icon={<EditorModeComment />}
+            icon={<EditorModeComment color={lightGrey} style={{ width: '20px' }}/>}
+            style={{ color: grey, fontSize: '12px' }}
             onClick={this.toggleExpanded}
           />
         </CardActions>
         <CardText expandable>
-          Bla bla bla
+          <CommentsList postId={this.props.post.id} />
         </CardText>
       </Card>
     );
