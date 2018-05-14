@@ -40,11 +40,14 @@ class ForgotPasswordDialog extends Component {
     this.setState({
       formError: null,
       formHasErrors: false,
+      fieldErrors: {},
       email: newValue,
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
+
     this.setState({ requestInProgress: true });
     AuthService.requestPasswordReset(this.state.email).then(() => {
       this.setState({
@@ -78,17 +81,17 @@ class ForgotPasswordDialog extends Component {
       actions.push(<FlatButton
         label="Abschicken"
         primary
+        type="submit"
         disabled={
           !this.state.email || this.state.email.length === 0 || this.state.requestInProgress
         }
-        onClick={this.handleSubmit}
       />);
     }
 
     const titleDiv = (
-      <div style={{ fontSize: '16px', textAlign: 'center' }}>
-        <h2>Passwort vergessen</h2>
-        <p style={{ marginBottom: '0' }}>Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.</p>
+      <div style={{ fontSize: '16px', textAlign: 'center', marginBottom: 0, paddingBottom: 0 }}>
+        <h2 style={{ margin: 0 }}>Passwort vergessen</h2>
+        <p style={{ marginBottom: '0', lineHeight: 1.4 }}>Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.</p>
 
         {this.state.formHasErrors &&
         <p style={{ color: this.props.muiTheme.palette.errorColor, marginBottom: '0' }}>{this.state.formError}</p>}
@@ -107,13 +110,15 @@ class ForgotPasswordDialog extends Component {
       >
 
         {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
-        <TextField
-          errorText={this.state.fieldErrors.email || false}
-          floatingLabelText="E-Mail Adresse"
-          fullWidth
-          value={this.state.email}
-          onChange={this.updateEmail}
-        />}
+        <form onSubmit={this.handleSubmit} noValidate>
+          <TextField
+            errorText={this.state.fieldErrors.email || false}
+            floatingLabelText="E-Mail Adresse"
+            fullWidth
+            value={this.state.email}
+            onChange={this.updateEmail}
+          />
+        </form>}
 
         {this.state.requestInProgress && <CircularProgress />}
         {this.state.passwordReminderSuccessful &&
