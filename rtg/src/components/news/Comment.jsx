@@ -4,10 +4,13 @@ import ContentReply from 'material-ui/svg-icons/content/reply';
 import { FlatButton } from 'material-ui';
 import CommentsList from './CommentsList';
 import { grey, lightGrey } from '../../theme/RtgTheme';
+import UserAvatar from '../UserAvatar';
+import { getFormattedPostDate } from './Post';
+
+import './Comment.css';
 
 export const MAX_REPLY_DEPTH = 4;
 
-// TODO P1 styling of comments
 class Comment extends Component {
   constructor(props) {
     super(props);
@@ -27,18 +30,39 @@ class Comment extends Component {
   render() {
     return (
       <div className="Comment">
-        <div className="Comment_content" style={{ wordWrap: 'break-word' }}>
-          {this.props.comment.content}
+        <div className="Comment__avatar-content-wrapper">
+          <div className="Comment__avatar">
+            <UserAvatar
+              size={40}
+              username={this.props.comment.author_details.username}
+              img={this.props.comment.author_details.avatar}
+            />
+          </div>
+          <div>
+            <div className="Comment__author-date">
+              <span className="Comment__author">
+                {this.props.comment.author_details.username} –&nbsp;
+              </span>
+              <span>{getFormattedPostDate(this.props.comment.date_created)}</span>
+            </div>
+            <div className="Comment__content">{this.props.comment.content}</div>
+          </div>
         </div>
-        <div className="Comment_author">{this.props.comment.author_details.username}</div>
-        <div className="Comment_avatar">{this.props.comment.author_details.avatar}</div>
 
-        {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <FlatButton
-          label="Antworten"
-          icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
-          style={{ color: grey, fontSize: '12px' }}
-          onClick={this.toggleAddReply}
-        />}
+        <div className="Comment__actions">
+          {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <FlatButton
+            label="Antworten"
+            labelPosition="after"
+            icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
+            style={{
+              color: grey,
+              height: '24px',
+              lineHeight: '24px',
+            }}
+            labelStyle={{ fontSize: '12px' }}
+            onClick={this.toggleAddReply}
+          />}
+        </div>
 
         {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <CommentsList
           showAddComment={this.state.showAddComment}

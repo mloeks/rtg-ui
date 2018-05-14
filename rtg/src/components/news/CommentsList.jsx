@@ -8,6 +8,8 @@ import Comment from './Comment';
 import AddComment from './AddComment';
 
 import './CommentsList.css';
+import { grey, lightGrey } from "../../theme/RtgTheme";
+import { lightenDarkenColor } from "../../service/ColorHelper";
 
 class CommentsList extends Component {
   static getRepliesLabel(count) {
@@ -75,17 +77,17 @@ class CommentsList extends Component {
             <CircularProgress size={25} thickness={2} style={{ margin: '0 auto' }} />
           </div>}
 
-        {(this.props.showAddComment && !this.state.loading) &&
-          <AddComment
-            postId={this.props.postId}
-            replyTo={this.props.replyTo}
-            onAdded={this.handleCommentAdded}
-          />}
-
         {(this.state.collapsed && this.props.commentCount > 0) &&
           <FlatButton
             className="CommentsList__load-more-replies"
+            fullWidth
             label={CommentsList.getRepliesLabel(this.props.commentCount)}
+            labelStyle={{ fontSize: '12px', color: grey }}
+            style={{
+              backgroundColor: lightenDarkenColor(lightGrey, 55),
+              height: '24px',
+              lineHeight: '24px',
+            }}
             onClick={this.loadComments}
           />}
 
@@ -98,6 +100,13 @@ class CommentsList extends Component {
               comment={comment}
             />))
         }
+
+        {(this.props.showAddComment && !this.state.loading) &&
+          <AddComment
+            postId={this.props.postId}
+            replyTo={this.props.replyTo}
+            onAdded={this.handleCommentAdded}
+          />}
 
         {this.state.loadingError &&
           <Notification

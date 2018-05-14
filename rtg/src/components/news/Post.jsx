@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
-import { format, isToday, isYesterday } from 'date-fns';
+import { differenceInMinutes, distanceInWordsStrict, format, isToday, isYesterday } from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
@@ -12,11 +12,25 @@ import { grey, lightGrey } from '../../theme/RtgTheme';
 
 import './Post.css';
 
+// TODO P1 change colors a bit (author and comments white, comments colored)
+export const getFormattedPostDate = (date) => {
+  if (differenceInMinutes(new Date(), date) < 60) {
+    return distanceInWordsStrict(new Date(), date, { locale: de, addSuffix: true, unit: 'm' });
+  }
+
+  const formattedTime = format(date, 'HH:mm [Uhr]');
+  if (isToday(date)) {
+    return `Heute, ${formattedTime}`;
+  } else if (isYesterday(date)) {
+    return `Gestern, ${formattedTime}`;
+  }
+
+  return `${format(date, 'dd. D. MMMM', { locale: de })}, ${formattedTime}`;
+};
+
 class Post extends Component {
   static getCommentsLabel(noComments) {
     let desktopLabel;
-    let mobileLabel = noComments;
-
     if (noComments === 0) {
       desktopLabel = 'Kommentieren';
     } else if (noComments === 1) {
@@ -26,19 +40,10 @@ class Post extends Component {
     }
     return (
       <Fragment>
-        <span className="Post__comments-label-mobile">{mobileLabel}</span>
+        <span className="Post__comments-label-mobile">{noComments}</span>
         <span className="Post__comments-label-desktop">{desktopLabel}</span>
       </Fragment>
     );
-  }
-
-  static getFormattedPostDate(date) {
-    if (isToday(date)) {
-      return 'Heute';
-    } else if (isYesterday(date)) {
-      return 'Gestern';
-    }
-    return format(date, 'dd. D. MMMM', { locale: de });
   }
 
   constructor(props) {
@@ -53,8 +58,6 @@ class Post extends Component {
 
   render() {
     const dateCreated = new Date(this.props.post.date_created);
-    const formattedPostTime = format(dateCreated, 'HH:mm [Uhr]');
-
     const randomPostColour = randomHueHexColor(45, 97);
 
     return (
@@ -93,7 +96,7 @@ class Post extends Component {
                 {this.props.post.author_details.username}
               </div>
             }
-            secondaryText={`${Post.getFormattedPostDate(dateCreated)}, ${formattedPostTime}`}
+            secondaryText={`${getFormattedPostDate(dateCreated)}`}
             leftAvatar={
               <UserAvatar
                 size={40}
@@ -117,7 +120,7 @@ class Post extends Component {
           />
         </CardActions>
 
-        <CardText expandable style={{ marginTop: '-20px' }}>
+        <CardText expandable style={{ paddingBottom: 0, marginBottom: 0 }}>
           <CommentsList
             hierarchyLevel={0}
             postId={this.props.post.id}

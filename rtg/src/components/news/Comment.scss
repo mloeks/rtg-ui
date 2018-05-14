@@ -1,0 +1,36 @@
+@import '../../sass/colors.scss';
+
+// TODO P1 mark entire comment on hover
+// TODO P2 animate new comments with fading background color
+.Comment {
+  &__avatar-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__avatar {
+    padding-right: 10px;
+  }
+
+  &__author-date {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 3px;
+
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 12px;
+  }
+
+  &__author {
+    word-break: break-all;
+  }
+
+  &__content {
+    word-break: break-all;
+  }
+
+  &__actions {
+    text-align: right;
+    margin-bottom: 5px;
+  }
+}
