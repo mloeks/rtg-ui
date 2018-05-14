@@ -81,13 +81,14 @@ class AddComment extends Component {
           />
           <IconButton
             type="submit"
-            disabled={this.state.saving || this.state.contentError.length > 0}
+            disabled={this.state.saving || this.state.content.length === 0 ||
+              this.state.contentError.length > 0}
             style={{ paddingRight: 0 }}
           ><ContentSend color={purple} />
           </IconButton>
         </form>
 
-        {this.state.savingError &&
+        {(this.state.savingError && this.state.content.length > 0) &&
           <Notification
             type={NotificationType.ERROR}
             dismissable
