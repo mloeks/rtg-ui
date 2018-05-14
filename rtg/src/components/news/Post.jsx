@@ -73,6 +73,7 @@ class Post extends Component {
         <CardText
           style={{
             backgroundColor: 'white',
+            fontSize: '16px',
             wordBreak: 'break-word',
           }}
         >{this.props.post.content}
@@ -117,7 +118,11 @@ class Post extends Component {
         </CardActions>
 
         <CardText expandable>
-          <CommentsList postId={this.props.post.id} showAddComment />
+          <CommentsList
+            postId={this.props.post.id}
+            commentCount={this.props.post.no_comments}
+            showAddComment
+          />
         </CardText>
       </Card>
     );
