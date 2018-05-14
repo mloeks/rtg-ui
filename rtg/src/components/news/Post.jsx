@@ -117,8 +117,9 @@ class Post extends Component {
           />
         </CardActions>
 
-        <CardText expandable>
+        <CardText expandable style={{ marginTop: '-20px' }}>
           <CommentsList
+            hierarchyLevel={0}
             postId={this.props.post.id}
             commentCount={this.props.post.no_comments}
             showAddComment

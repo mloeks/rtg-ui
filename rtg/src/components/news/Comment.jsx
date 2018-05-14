@@ -5,26 +5,23 @@ import { FlatButton } from 'material-ui';
 import CommentsList from './CommentsList';
 import { grey, lightGrey } from '../../theme/RtgTheme';
 
+export const MAX_REPLY_DEPTH = 4;
+
 // TODO P1 styling of comments
 class Comment extends Component {
-  static getRepliesLabel(noReplies) {
-    if (noReplies === 0) {
-      return 'Antworten';
-    }
-    if (noReplies === 1) {
-      return '1 Antwort';
-    }
-    return `${noReplies} Antworten`;
-  }
-
   constructor(props) {
     super(props);
-    this.state = { expandReplies: false };
-    this.toggleReplies = this.toggleReplies.bind(this);
+    this.state = { showAddComment: false };
+    this.toggleAddReply = this.toggleAddReply.bind(this);
+    this.handleReplyAdded = this.handleReplyAdded.bind(this);
   }
 
-  toggleReplies() {
-    this.setState(prevState => ({ expandReplies: !prevState.expandReplies }));
+  toggleAddReply() {
+    this.setState(prevState => ({ showAddComment: !prevState.showAddComment }));
+  }
+
+  handleReplyAdded() {
+    this.setState({ showAddComment: false });
   }
 
   render() {
@@ -32,25 +29,33 @@ class Comment extends Component {
       <div className="Comment">
         <div className="Comment_content" style={{ wordWrap: 'break-word' }}>
           {this.props.comment.content}
-          </div>
+        </div>
         <div className="Comment_author">{this.props.comment.author_details.username}</div>
         <div className="Comment_avatar">{this.props.comment.author_details.avatar}</div>
 
-        <FlatButton
-          label={Comment.getRepliesLabel(this.props.comment.no_replies)}
+        {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <FlatButton
+          label="Antworten"
           icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
           style={{ color: grey, fontSize: '12px' }}
-          onClick={this.toggleReplies}
-        />
+          onClick={this.toggleAddReply}
+        />}
 
-        {this.state.expandReplies &&
-          <CommentsList postId={this.props.postId} replyTo={this.props.comment.id} />}
+        {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <CommentsList
+          showAddComment={this.state.showAddComment}
+          collapsed
+          hierarchyLevel={this.props.hierarchyLevel + 1}
+          postId={this.props.postId}
+          commentCount={this.props.comment.no_replies}
+          replyTo={this.props.comment.id}
+          onReplyAdded={this.handleReplyAdded}
+        />}
       </div>
     );
   }
 }
 
 Comment.propTypes = {
+  hierarchyLevel: PropTypes.number.isRequired,
   postId: PropTypes.number.isRequired,
   comment: PropTypes.object.isRequired,
 };
