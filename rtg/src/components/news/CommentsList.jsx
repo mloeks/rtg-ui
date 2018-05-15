@@ -11,7 +11,7 @@ import { lightenDarkenColor } from '../../service/ColorHelper';
 
 import './CommentsList.css';
 
-// TODO P1 scroll to add comment, it could be out of view!
+// TODO P2 scroll to add comment, it could be out of view!
 class CommentsList extends Component {
   static getRepliesLabel(count) {
     if (count === 1) {

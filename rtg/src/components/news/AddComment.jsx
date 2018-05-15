@@ -7,6 +7,7 @@ import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 import { purple } from '../../theme/RtgTheme';
 
+// TODO P2 focus on mount
 class AddComment extends Component {
   constructor(props) {
     super(props);

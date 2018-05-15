@@ -13,7 +13,6 @@ import { grey, lightGrey } from '../../theme/RtgTheme';
 import './Post.css';
 import AddComment from "./AddComment";
 
-// TODO P1 change colors a bit (author and comments white, comments colored)
 // TODO P2 improve comment loading and maybe do load _all_ comments and replies
 // directly, the current behaviour leads to many small requests and a un-smooth UI
 export const getFormattedPostDate = (date) => {
