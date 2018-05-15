@@ -58,14 +58,17 @@ class Post extends Component {
 
   render() {
     const dateCreated = new Date(this.props.post.date_created);
-    const randomPostColour = randomHueHexColor(45, 97);
 
     return (
-      <Card className="Post__card" expanded={this.state.expanded}>
+      <Card
+        className="Post__card"
+        expanded={this.state.expanded}
+        containerStyle={{ paddingBottom: 0 }}
+      >
         <CardTitle
           className="Post__card-title"
           title={this.props.post.title}
-          style={{ backgroundColor: randomPostColour }}
+          style={{ backgroundColor: randomHueHexColor(40, 90) }}
           titleStyle={{
             fontSize: '32px',
             fontFamily: '"Lobster Two", sans-serif',
@@ -84,13 +87,14 @@ class Post extends Component {
 
         <CardActions
           className="Post__card-actions"
-          style={{ backgroundColor: randomPostColour, padding: 0 }}
+          onClick={this.toggleExpanded}
+          style={{ backgroundColor: 'white', padding: 0 }}
         >
           <ListItem
             disabled
             primaryText={
               <div
-                style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', padding: 0 }}
                 title={this.props.post.author_details.username}
               >
                 {this.props.post.author_details.username}
@@ -115,12 +119,11 @@ class Post extends Component {
                 minWidth: '10px',
                 width: 'auto',
               }}
-              onClick={this.toggleExpanded}
             />}
           />
         </CardActions>
 
-        <CardText expandable style={{ paddingBottom: 0, marginBottom: 0 }}>
+        <CardText className="Post__comments" expandable>
           <CommentsList
             hierarchyLevel={0}
             postId={this.props.post.id}

@@ -6,11 +6,12 @@ import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 import Comment from './Comment';
 import AddComment from './AddComment';
+import { grey, lightGrey } from '../../theme/RtgTheme';
+import { lightenDarkenColor } from '../../service/ColorHelper';
 
 import './CommentsList.css';
-import { grey, lightGrey } from "../../theme/RtgTheme";
-import { lightenDarkenColor } from "../../service/ColorHelper";
 
+// TODO P1 scroll to add comment, it could be out of view!
 class CommentsList extends Component {
   static getRepliesLabel(count) {
     if (count === 1) {
