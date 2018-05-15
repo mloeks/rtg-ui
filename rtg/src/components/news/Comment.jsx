@@ -24,7 +24,7 @@ class Comment extends Component {
   }
 
   handleReplyAdded() {
-    this.setState({ showAddComment: false });
+    this.setState({ showAddComment: false }, this.props.onReplyAdded);
   }
 
   render() {
@@ -78,10 +78,15 @@ class Comment extends Component {
   }
 }
 
+Comment.defaultProps = {
+  onReplyAdded: () => {},
+};
+
 Comment.propTypes = {
   hierarchyLevel: PropTypes.number.isRequired,
   postId: PropTypes.number.isRequired,
   comment: PropTypes.object.isRequired,
+  onReplyAdded: PropTypes.func,
 };
 
 export default Comment;

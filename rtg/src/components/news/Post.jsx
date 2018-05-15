@@ -14,6 +14,8 @@ import './Post.css';
 import AddComment from "./AddComment";
 
 // TODO P1 change colors a bit (author and comments white, comments colored)
+// TODO P2 improve comment loading and maybe do load _all_ comments and replies
+// directly, the current behaviour leads to many small requests and a un-smooth UI
 export const getFormattedPostDate = (date) => {
   if (differenceInMinutes(new Date(), date) < 60) {
     return distanceInWordsStrict(new Date(), date, { locale: de, addSuffix: true, unit: 'm' });
@@ -49,9 +51,18 @@ class Post extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { expanded: false };
+    this.state = {
+      expanded: false,
+      commentCount: props.post.no_comments || 0,
+    };
+
     this.toggleExpanded = this.toggleExpanded.bind(this);
     this.handleCommentAdded = this.handleCommentAdded.bind(this);
+    this.getCommentCountIncrementedBy = this.getCommentCountIncrementedBy.bind(this);
+  }
+
+  getCommentCountIncrementedBy(inc, state = this.state) {
+    return state.commentCount + 1;
   }
 
   toggleExpanded() {
@@ -59,8 +70,9 @@ class Post extends Component {
   }
 
   handleCommentAdded() {
-    this.setState({ expanded: true });
-
+    this.setState(prevState => (
+      { expanded: true, commentCount: this.getCommentCountIncrementedBy(1, prevState) }
+    ));
   }
 
   render() {
@@ -120,7 +132,7 @@ class Post extends Component {
                 style={{ left: 0, top: 0 }}
               />}
             rightIcon={<FlatButton
-              label={Post.getCommentsLabel(this.props.post.no_comments)}
+              label={Post.getCommentsLabel(this.state.commentCount)}
               labelPosition="before"
               icon={<EditorModeComment color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
               onClick={this.toggleExpanded}
@@ -144,7 +156,9 @@ class Post extends Component {
           <CommentsList
             hierarchyLevel={0}
             postId={this.props.post.id}
-            commentCount={this.props.post.no_comments}
+            commentCount={this.state.commentCount}
+            onReplyAdded={() =>
+              this.setState({ commentCount: this.getCommentCountIncrementedBy(1) })}
           />
         </CardText>
       </Card>

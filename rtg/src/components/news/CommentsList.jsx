@@ -58,7 +58,6 @@ class CommentsList extends Component {
   }
 
   handleCommentAdded(comment) {
-    // TODO P1 update comments/replies count (bubble up)
     this.setState((prevState) => {
       const newComments = prevState.comments.slice(0);
       newComments.push(comment);
@@ -108,6 +107,7 @@ class CommentsList extends Component {
               hierarchyLevel={this.props.hierarchyLevel}
               postId={this.props.postId}
               comment={comment}
+              onReplyAdded={this.props.onReplyAdded}
             />))
         }
 
