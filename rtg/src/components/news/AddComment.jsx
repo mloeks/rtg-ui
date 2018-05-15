@@ -66,6 +66,7 @@ class AddComment extends Component {
           style={{
             display: 'flex',
             alignItems: 'flex-end',
+            marginTop: '-10px',
             width: '100%',
           }}
         >

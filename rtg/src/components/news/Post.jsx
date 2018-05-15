@@ -11,6 +11,7 @@ import { randomHueHexColor } from '../../service/ColorHelper';
 import { grey, lightGrey } from '../../theme/RtgTheme';
 
 import './Post.css';
+import AddComment from "./AddComment";
 
 // TODO P1 change colors a bit (author and comments white, comments colored)
 export const getFormattedPostDate = (date) => {
@@ -50,10 +51,16 @@ class Post extends Component {
     super(props);
     this.state = { expanded: false };
     this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.handleCommentAdded = this.handleCommentAdded.bind(this);
   }
 
   toggleExpanded() {
     this.setState(prevState => ({ expanded: !prevState.expanded }));
+  }
+
+  handleCommentAdded() {
+    this.setState({ expanded: true });
+
   }
 
   render() {
@@ -87,14 +94,18 @@ class Post extends Component {
 
         <CardActions
           className="Post__card-actions"
-          onClick={this.toggleExpanded}
-          style={{ padding: 0 }}
+          style={{ padding: '16px' }}
         >
           <ListItem
             disabled
             primaryText={
               <div
-                style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', padding: 0 }}
+                style={{
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  padding: '2px 0',
+                }}
                 title={this.props.post.author_details.username}
               >
                 {this.props.post.author_details.username}
@@ -106,21 +117,27 @@ class Post extends Component {
                 size={40}
                 img={this.props.post.author_details.avatar}
                 username={this.props.post.author_details.username}
+                style={{ left: 0, top: 0 }}
               />}
             rightIcon={<FlatButton
               label={Post.getCommentsLabel(this.props.post.no_comments)}
               labelPosition="before"
               icon={<EditorModeComment color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
+              onClick={this.toggleExpanded}
               style={{
                 color: grey,
                 fontSize: '12px',
                 lineHeight: 'inherit',
-                marginRight: 0,
+                margin: 0,
+                right: 0,
+                top: '10px',
                 minWidth: '10px',
                 width: 'auto',
               }}
             />}
+            style={{ padding: '0 0 0 50px' }}
           />
+          <AddComment postId={this.props.post.id} onAdded={this.handleCommentAdded} />
         </CardActions>
 
         <CardText className="Post__comments" expandable>
@@ -128,7 +145,6 @@ class Post extends Component {
             hierarchyLevel={0}
             postId={this.props.post.id}
             commentCount={this.props.post.no_comments}
-            showAddComment
           />
         </CardText>
       </Card>
