@@ -78,6 +78,15 @@ class CommentsList extends Component {
             <CircularProgress size={25} thickness={2} style={{ margin: '0 auto' }} />
           </div>}
 
+        {(this.props.showAddComment && !this.state.loading) &&
+          <AddComment
+            label="Antwort hinzufügen..."
+            postId={this.props.postId}
+            replyTo={this.props.replyTo}
+            onAdded={this.handleCommentAdded}
+          />}
+
+
         {(this.state.collapsed && this.props.commentCount > 0) &&
           <FlatButton
             className="CommentsList__load-more-replies"
@@ -101,13 +110,6 @@ class CommentsList extends Component {
               comment={comment}
             />))
         }
-
-        {(this.props.showAddComment && !this.state.loading) &&
-          <AddComment
-            postId={this.props.postId}
-            replyTo={this.props.replyTo}
-            onAdded={this.handleCommentAdded}
-          />}
 
         {this.state.loadingError &&
           <Notification

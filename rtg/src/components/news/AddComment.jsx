@@ -72,7 +72,7 @@ class AddComment extends Component {
         >
           <TextField
             name="content"
-            floatingLabelText="Kommentar schreiben..."
+            floatingLabelText={this.props.label}
             value={this.state.content}
             errorText={this.state.contentError}
             style={{ textAlign: 'left', flexGrow: 1 }}
@@ -101,10 +101,12 @@ class AddComment extends Component {
 }
 
 AddComment.defaultProps = {
+  label: 'Kommentar hinzufügen...',
   replyTo: null,
 };
 
 AddComment.propTypes = {
+  label: PropTypes.string,
   postId: PropTypes.number.isRequired,
   replyTo: PropTypes.number,
   onAdded: PropTypes.func.isRequired,
