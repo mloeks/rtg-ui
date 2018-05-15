@@ -88,7 +88,7 @@ class Post extends Component {
         <CardActions
           className="Post__card-actions"
           onClick={this.toggleExpanded}
-          style={{ backgroundColor: 'white', padding: 0 }}
+          style={{ padding: 0 }}
         >
           <ListItem
             disabled
