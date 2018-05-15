@@ -15,9 +15,9 @@ import './CommentsList.css';
 class CommentsList extends Component {
   static getRepliesLabel(count) {
     if (count === 1) {
-      return '1 Antwort';
+      return '1 weitere Antwort anzeigen';
     }
-    return `${count} Antworten`;
+    return `${count} weitere Antworten anzeigen`;
   }
 
   constructor(props) {
@@ -83,7 +83,7 @@ class CommentsList extends Component {
             className="CommentsList__load-more-replies"
             fullWidth
             label={CommentsList.getRepliesLabel(this.props.commentCount)}
-            labelStyle={{ fontSize: '12px', color: grey }}
+            labelStyle={{ fontSize: '11px', fontWeight: 400, color: grey }}
             style={{
               backgroundColor: lightenDarkenColor(lightGrey, 55),
               height: '24px',

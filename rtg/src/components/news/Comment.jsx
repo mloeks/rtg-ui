@@ -66,7 +66,7 @@ class Comment extends Component {
 
         {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <CommentsList
           showAddComment={this.state.showAddComment}
-          collapsed
+          collapsed={this.props.hierarchyLevel > 0}
           hierarchyLevel={this.props.hierarchyLevel + 1}
           postId={this.props.postId}
           commentCount={this.props.comment.no_replies}

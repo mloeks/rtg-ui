@@ -34,6 +34,9 @@
   }
 
   &__comments {
+    max-height: 85vh;
+    overflow-y: scroll;
+
     border-top: 1px solid lighten($lightGrey, 20%);
     background-color: lighten($lightGrey, 27%);
     box-shadow: inset 0px 2px 6px -2px rgba(0,0,0,0.25);
