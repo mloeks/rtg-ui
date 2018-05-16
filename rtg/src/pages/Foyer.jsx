@@ -10,6 +10,8 @@ import logo from '../theme/img/logo_100px.png';
 import headingImg from '../theme/img/headings/courtyard_2.jpg';
 import './Foyer.css';
 
+// TODO P1 add more BigPicture sections for introducing various available features/pages
+// on scroll down
 const Foyer = () => (
   <Page className="FoyerPage">
     <section className="Foyer__welcome">
