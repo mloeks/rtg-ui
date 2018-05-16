@@ -35,8 +35,8 @@
   }
 
   &__comments {
-    max-height: 85vh;
-    overflow-y: scroll;
+    max-height: 80vh;
+    overflow-y: auto;
 
     border-top: 1px solid lighten($lightGrey, 20%);
     background-color: lighten($lightGrey, 27%);
