@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
-import { differenceInMinutes, distanceInWordsStrict, format, isToday, isYesterday } from 'date-fns';
+import {
+  differenceInMinutes,
+  differenceInSeconds,
+  distanceInWordsStrict,
+  format,
+  isToday,
+  isYesterday
+} from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
@@ -14,8 +21,13 @@ import AddComment from './AddComment';
 import './Post.css';
 
 export const getFormattedPostDate = (date) => {
-  if (differenceInMinutes(new Date(), date) < 60) {
-    return distanceInWordsStrict(new Date(), date, { locale: de, addSuffix: true, unit: 'm' });
+  const now = new Date();
+
+  if (differenceInSeconds(now, date) < 60) {
+    return 'Gerade eben';
+  }
+  if (differenceInMinutes(now, date) < 60) {
+    return distanceInWordsStrict(now, date, { locale: de, addSuffix: true, unit: 'm' });
   }
 
   const formattedTime = format(date, 'HH:mm [Uhr]');
