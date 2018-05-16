@@ -169,6 +169,13 @@ class Post extends Component {
             onReplyAdded={() =>
               this.setState({ commentCount: this.getCommentCountIncrementedBy(1) })}
           />
+          <div style={{ textAlign: 'center' }}>
+            <FlatButton
+              label="Zuklappen"
+              labelStyle={{ color: grey, fontSize: '12px', fontWeight: 400 }}
+              onClick={this.toggleExpanded}
+            />
+          </div>
         </CardText>
       </Card>
     );
