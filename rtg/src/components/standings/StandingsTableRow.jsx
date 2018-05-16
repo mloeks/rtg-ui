@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { TableRow, TableRowColumn } from 'material-ui';
+import { Popover, TableRow, TableRowColumn } from 'material-ui';
 import AuthService from '../../service/AuthService';
 import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle, ROW_HEIGHT } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
+import UserDetailsPopoverContent from './UserDetailsPopoverContent';
 
 import './StandingsTableRow.css';
 
@@ -12,55 +13,87 @@ import './StandingsTableRow.css';
 class StandingsTableRow extends Component {
   constructor(props) {
     super(props);
-    this.state = { userDetailsPopoverOpen: false };
+    this.state = { userDetailsPopoverAnchorEl: null, userDetailsPopoverOpen: false };
+    this.showUserDetailsPopover = this.showUserDetailsPopover.bind(this);
+    this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
+  }
+
+  showUserDetailsPopover(e) {
+    e.preventDefault();
+    this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
+  }
+
+  hideUserDetailsPopover() {
+    this.setState({ userDetailsPopoverOpen: false });
   }
 
   render() {
     return (
-      <TableRow
-        style={{ height: ROW_HEIGHT }}
-        className={`StandingsTableRow ${this.props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
-      >
-        <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
-        <TableRowColumn style={{
-          height: ROW_HEIGHT,
-          display: 'flex',
-          alignItems: 'center',
-          fontSize: '16px',
-          paddingLeft: 0,
-        }}
-        ><UserAvatar
-          img={this.props.userAvatar}
-          size={0.65 * ROW_HEIGHT}
-          username={this.props.username}
-          style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
-        /><span className="TableRowColumn__username">{this.props.username}</span>
-        </TableRowColumn>
-        <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
+      <Fragment>
+        <TableRow
+          style={{ height: ROW_HEIGHT }}
+          className={`StandingsTableRow ${this.props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
+          onClick={this.showUserDetailsPopover}
+        >
+          <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
+          <TableRowColumn
+            style={{
+              height: ROW_HEIGHT,
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '16px',
+              paddingLeft: 0,
+            }}
+          >
+            <Popover
+              open={this.state.userDetailsPopoverOpen}
+              anchorEl={this.state.userDetailsPopoverAnchorEl}
+              anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+              onRequestClose={this.hideUserDetailsPopover}
+            >
+              <UserDetailsPopoverContent
+                avatar={this.props.userAvatar}
+                userId={this.props.userId}
+                username={this.props.username}
+                onClose={this.hideUserDetailsPopover}
+              />
+            </Popover>
 
-        <TableRowColumn
-          className="StandingsTable__stat-col-desktop"
-          style={betStatColumnStyle}
-        >{this.props.noDifferenz}
-        </TableRowColumn>
-        <TableRowColumn
-          className="StandingsTable__stat-col-desktop"
-          style={betStatColumnStyle}
-        >{this.props.noRemisTendenz}
-        </TableRowColumn>
-        <TableRowColumn
-          className="StandingsTable__stat-col-desktop"
-          style={betStatColumnStyle}
-        >{this.props.noTendenz}
-        </TableRowColumn>
-        <TableRowColumn
-          className="StandingsTable__stat-col-desktop"
-          style={betStatColumnStyle}
-        >{this.props.noNiete}
-        </TableRowColumn>
+            <UserAvatar
+              img={this.props.userAvatar}
+              size={0.65 * ROW_HEIGHT}
+              username={this.props.username}
+              style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+            />
+            <span className="TableRowColumn__username">{this.props.username}</span>
+          </TableRowColumn>
+          <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
 
-        <TableRowColumn style={pointsColumnStyle}>{this.props.points}</TableRowColumn>
-      </TableRow>
+          <TableRowColumn
+            className="StandingsTable__stat-col-desktop"
+            style={betStatColumnStyle}
+          >{this.props.noDifferenz}
+          </TableRowColumn>
+          <TableRowColumn
+            className="StandingsTable__stat-col-desktop"
+            style={betStatColumnStyle}
+          >{this.props.noRemisTendenz}
+          </TableRowColumn>
+          <TableRowColumn
+            className="StandingsTable__stat-col-desktop"
+            style={betStatColumnStyle}
+          >{this.props.noTendenz}
+          </TableRowColumn>
+          <TableRowColumn
+            className="StandingsTable__stat-col-desktop"
+            style={betStatColumnStyle}
+          >{this.props.noNiete}
+          </TableRowColumn>
+
+          <TableRowColumn style={pointsColumnStyle}>{this.props.points}</TableRowColumn>
+        </TableRow>
+      </Fragment>
     );
   }
 }

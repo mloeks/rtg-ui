@@ -1,13 +1,19 @@
 @import '../../sass/colors.scss';
 
-.StandingsTableRow--self {
-  background-color: lighten($purple, 50%);
-  font-weight: bold;
-}
+.StandingsTableRow {
+  &:hover {
+    cursor: pointer;
+  }
 
-.TableRowColumn {
-  &__username {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  &--self {
+    background-color: lighten($purple, 50%);
+    font-weight: bold;
+  }
+
+  .TableRowColumn {
+    &__username {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
