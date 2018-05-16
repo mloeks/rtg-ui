@@ -36,16 +36,35 @@ class UserDetailsPopover extends Component {
   render() {
     return (
       <Popover
-        open={this.props.open}
+        animated={false}
         anchorEl={this.props.anchorEl}
         anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-        targetOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
         onRequestClose={this.props.onClose}
+        open={this.props.open}
+        targetOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+        style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
       >
         <div className="UserDetailsPopover">
-          <UserAvatar size={130} username={this.props.username} img={this.props.avatar} />
           <div className="UserDetailsPopover__content">
-            <IconButton onClick={this.props.onClose}><Close /></IconButton>
+            <div className="UserDetailsPopover__avatar-wrapper">
+              <div className="UserDetailsPopover__avatar-background">
+                <UserAvatar
+                  className="UserDetailsPopover__avatar"
+                  size={130}
+                  username={this.props.username}
+                  img={this.props.avatar}
+                />
+              </div>
+            </div>
+
+            <IconButton
+              className="UserDetailsPopover__close-icon"
+              onClick={this.props.onClose}
+              title="Schließen"
+              style={{ position: 'absolute', top: 0, right: 0 }}
+              iconStyle={{ width: 18, height: 18 }}
+            ><Close />
+            </IconButton>
 
             <h3 className="UserDetailsPopover__username">{this.props.username}</h3>
 

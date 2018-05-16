@@ -1,3 +1,70 @@
+// keep in sync with avatar size in React inline-style!
+$avatarSize: 140px;
+
+// TODO P1 finish styling
 .UserDetailsPopover {
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+
+  margin-bottom: 60px;
+
+  background: transparent;
+
+  &__content {
+    position: relative;
+
+    padding: 20px 10px 10px;
+    margin-top: -50px;
+    border-radius: 10px;
+    text-align: center;
+
+    &:after {
+      position: absolute;
+      content: '';
+      // TODO P1 find better pattern, less detailed, more pale
+      background: url(../../theme/img/damask-pattern-100.jpg) repeat;
+      //opacity: 0.8;
+      border-radius: 10px;
+      box-shadow: -6px 3px 19px -7px black;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+    }
+  }
+
+  &__avatar-wrapper {
+    position: absolute;
+    top: -0.7 * $avatarSize;
+    left: 0;
+
+    width: 100%;
+    text-align: center;
+  }
+
+  &__avatar-background {
+    width: $avatarSize;
+    height: $avatarSize;
+
+    margin: auto;
+
+    border: 5px solid white;
+    border-radius: 100%;
+    background-color: white;
+
+    // TODO P1 only works on absolutely positioned elements
+    // try: model background as pseudo element from avatar once again, positioned absolutely
+    //clip: rect(100px, 300px, 140px, 100px);
+
+    box-sizing: border-box;
+  }
+
+  &__close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
 
 }
