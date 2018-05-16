@@ -24,7 +24,7 @@ class CommentsList extends Component {
     super(props);
     this.state = {
       collapsed: props.collapsed,
-      comments: [],
+      comments: props.comments,
       loading: false,
       loadingError: false,
     };
@@ -34,7 +34,7 @@ class CommentsList extends Component {
   }
 
   componentDidMount() {
-    if (!this.state.collapsed) {
+    if (this.props.hierarchyLevel === 0) {
       this.loadComments();
     }
   }
@@ -42,8 +42,7 @@ class CommentsList extends Component {
   async loadComments() {
     this.setState({ loading: true, collapsed: false });
 
-    const commentFilterParam = this.props.replyTo ? `reply_to=${this.props.replyTo}` : 'toplevel=true';
-    return fetch(`${API_BASE_URL}/rtg/comments/?post=${this.props.postId}&${commentFilterParam}`, {
+    return fetch(`${API_BASE_URL}/rtg/comments/?post=${this.props.postId}`, {
       method: 'GET',
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     })
@@ -68,6 +67,10 @@ class CommentsList extends Component {
   }
 
   render() {
+    const comments = this.props.hierarchyLevel === 0 ?
+      this.state.comments.filter(c => !c.reply_to) :
+      this.state.comments.filter(c => c.reply_to === this.props.replyTo);
+
     return (
       <div
         className={`CommentsList ${this.state.collapsed ? 'CommentsList--collapsed' : ''} ${this.props.hierarchyLevel === 0 ? 'CommentsList--top-level' : ''}`}
@@ -97,16 +100,17 @@ class CommentsList extends Component {
               height: '24px',
               lineHeight: '24px',
             }}
-            onClick={this.loadComments}
+            onClick={() => this.setState({ collapsed: false })}
           />}
 
         {(!this.state.loading && !this.state.collapsed && !this.state.loadingError) &&
-          this.state.comments.map(comment => (
+          comments.map(comment => (
             <Comment
               key={`comment-${comment.id}`}
               hierarchyLevel={this.props.hierarchyLevel}
               postId={this.props.postId}
               comment={comment}
+              replies={this.state.comments}
               onReplyAdded={this.props.onReplyAdded}
             />))
         }
@@ -124,6 +128,7 @@ class CommentsList extends Component {
 
 CommentsList.defaultProps = {
   collapsed: false,
+  comments: [],
   replyTo: null,
   showAddComment: false,
   onReplyAdded: () => {},
@@ -131,6 +136,7 @@ CommentsList.defaultProps = {
 
 CommentsList.propTypes = {
   collapsed: PropTypes.bool,
+  comments: PropTypes.arrayOf(PropTypes.object),
   commentCount: PropTypes.number.isRequired,
   hierarchyLevel: PropTypes.number.isRequired,
   postId: PropTypes.number.isRequired,

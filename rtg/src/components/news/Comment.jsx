@@ -69,6 +69,7 @@ class Comment extends Component {
           collapsed={this.props.hierarchyLevel > 0}
           hierarchyLevel={this.props.hierarchyLevel + 1}
           postId={this.props.postId}
+          comments={this.props.replies}
           commentCount={this.props.comment.no_replies}
           replyTo={this.props.comment.id}
           onReplyAdded={this.handleReplyAdded}
@@ -79,6 +80,7 @@ class Comment extends Component {
 }
 
 Comment.defaultProps = {
+  replies: [],
   onReplyAdded: () => {},
 };
 
@@ -86,6 +88,7 @@ Comment.propTypes = {
   hierarchyLevel: PropTypes.number.isRequired,
   postId: PropTypes.number.isRequired,
   comment: PropTypes.object.isRequired,
+  replies: PropTypes.array,
   onReplyAdded: PropTypes.func,
 };
 

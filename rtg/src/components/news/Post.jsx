@@ -9,12 +9,10 @@ import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
 import { grey, lightGrey } from '../../theme/RtgTheme';
+import AddComment from './AddComment';
 
 import './Post.css';
-import AddComment from "./AddComment";
 
-// TODO P2 improve comment loading and maybe do load _all_ comments and replies
-// directly, the current behaviour leads to many small requests and a un-smooth UI
 export const getFormattedPostDate = (date) => {
   if (differenceInMinutes(new Date(), date) < 60) {
     return distanceInWordsStrict(new Date(), date, { locale: de, addSuffix: true, unit: 'm' });
