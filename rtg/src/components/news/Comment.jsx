@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ContentReply from 'material-ui/svg-icons/content/reply';
 import { FlatButton } from 'material-ui';
 import CommentsList from './CommentsList';
-import { grey, lightGrey } from '../../theme/RtgTheme';
+import { lightGrey } from '../../theme/RtgTheme';
 import UserAvatar from '../UserAvatar';
 import { getFormattedPostDate } from './Post';
 
@@ -55,11 +55,11 @@ class Comment extends Component {
             labelPosition="after"
             icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
             style={{
-              color: grey,
+              color: lightGrey,
               height: '24px',
               lineHeight: '24px',
             }}
-            labelStyle={{ fontSize: '12px' }}
+            labelStyle={{ fontSize: '12px', fontWeight: 400 }}
             onClick={this.toggleAddReply}
           />}
         </div>
