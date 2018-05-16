@@ -1,0 +1,13 @@
+@import '../../sass/colors.scss';
+
+.StandingsTableRow--self {
+  background-color: lighten($purple, 50%);
+  font-weight: bold;
+}
+
+.TableRowColumn {
+  &__username {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

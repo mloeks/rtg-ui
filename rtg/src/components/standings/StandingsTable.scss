@@ -21,15 +21,3 @@
     box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
   }
 }
-
-.StandingsTableRow--self {
-  background-color: lighten($purple, 50%);
-  font-weight: bold;
-}
-
-.TableRowColumn {
-  &__username {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}

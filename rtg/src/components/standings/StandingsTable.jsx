@@ -1,38 +1,29 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {
-  CircularProgress,
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from 'material-ui';
+import { CircularProgress, Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
-import UserAvatar from '../UserAvatar';
 import { lightGrey } from '../../theme/RtgTheme';
+import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.css';
 
-const ROW_HEIGHT = 65;
+export const ROW_HEIGHT = 65;
 
-const rankColumnStyle = {
+export const rankColumnStyle = {
   width: '23px',
   textAlign: 'center',
   padding: '0 5px',
 };
 
-const betStatColumnStyle = {
+export const betStatColumnStyle = {
   width: '20px',
   textAlign: 'center',
   padding: '0 5px',
   color: lightGrey,
 };
 
-const pointsColumnStyle = {
+export const pointsColumnStyle = {
   width: '30px',
   textAlign: 'right',
   padding: '0 15px 0 5px',
@@ -40,76 +31,6 @@ const pointsColumnStyle = {
   fontWeight: 'bold',
 };
 
-const StandingsTableRow = (props) => {
-  return (
-    <TableRow
-      style={{ height: ROW_HEIGHT }}
-      className={`StandingsTableRow ${props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
-    >
-      <TableRowColumn style={rankColumnStyle}>{props.rank}</TableRowColumn>
-      <TableRowColumn style={{
-        height: ROW_HEIGHT,
-        display: 'flex',
-        alignItems: 'center',
-        fontSize: '16px',
-        paddingLeft: 0,
-      }}
-      ><UserAvatar
-        img={props.userAvatar}
-        size={0.65 * ROW_HEIGHT}
-        username={props.username}
-        style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
-      /><span className="TableRowColumn__username">{props.username}</span>
-      </TableRowColumn>
-      <TableRowColumn style={betStatColumnStyle}>{props.noVolltreffer}</TableRowColumn>
-
-      <TableRowColumn
-        className="StandingsTable__stat-col-desktop"
-        style={betStatColumnStyle}
-      >{props.noDifferenz}
-      </TableRowColumn>
-      <TableRowColumn
-        className="StandingsTable__stat-col-desktop"
-        style={betStatColumnStyle}
-      >{props.noRemisTendenz}
-      </TableRowColumn>
-      <TableRowColumn
-        className="StandingsTable__stat-col-desktop"
-        style={betStatColumnStyle}
-      >{props.noTendenz}
-      </TableRowColumn>
-      <TableRowColumn
-        className="StandingsTable__stat-col-desktop"
-        style={betStatColumnStyle}
-      >{props.noNiete}
-      </TableRowColumn>
-
-      <TableRowColumn style={pointsColumnStyle}>{props.points}</TableRowColumn>
-    </TableRow>
-  );
-};
-
-StandingsTableRow.defaultProps = {
-  rank: '',
-  userAvatar: null,
-};
-
-StandingsTableRow.propTypes = {
-  rank: PropTypes.string,
-  userId: PropTypes.number.isRequired,
-  username: PropTypes.string.isRequired,
-  userAvatar: PropTypes.string,
-  points: PropTypes.number.isRequired,
-  noBets: PropTypes.number.isRequired,
-  noVolltreffer: PropTypes.number.isRequired,
-  noDifferenz: PropTypes.number.isRequired,
-  noRemisTendenz: PropTypes.number.isRequired,
-  noTendenz: PropTypes.number.isRequired,
-  noNiete: PropTypes.number.isRequired,
-};
-
-// TODO P1 User Details onClick --> User Details als Popover, schönes Pattern als bg,
-// runde Ecken, Avatar steht oben raus
 // TODO P2 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   static identicalRank(row, lastRow) {
