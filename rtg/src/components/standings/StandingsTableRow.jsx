@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Popover, TableRow, TableRowColumn } from 'material-ui';
+import { TableRow, TableRowColumn } from 'material-ui';
 import AuthService from '../../service/AuthService';
 import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle, ROW_HEIGHT } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
-import UserDetailsPopoverContent from './UserDetailsPopoverContent';
+import UserDetailsPopover from './UserDetailsPopover';
 
 import './StandingsTableRow.css';
 
@@ -45,20 +45,14 @@ class StandingsTableRow extends Component {
               paddingLeft: 0,
             }}
           >
-            <Popover
-              open={this.state.userDetailsPopoverOpen}
+            <UserDetailsPopover
               anchorEl={this.state.userDetailsPopoverAnchorEl}
-              anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-              targetOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-              onRequestClose={this.hideUserDetailsPopover}
-            >
-              <UserDetailsPopoverContent
-                avatar={this.props.userAvatar}
-                userId={this.props.userId}
-                username={this.props.username}
-                onClose={this.hideUserDetailsPopover}
-              />
-            </Popover>
+              avatar={this.props.userAvatar}
+              userId={this.props.userId}
+              username={this.props.username}
+              open={this.state.userDetailsPopoverOpen}
+              onClose={this.hideUserDetailsPopover}
+            />
 
             <UserAvatar
               img={this.props.userAvatar}
