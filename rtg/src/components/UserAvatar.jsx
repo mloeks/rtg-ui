@@ -20,11 +20,13 @@ class UserAvatar extends Component {
   render() {
     return (this.props.img ?
       <Avatar
+        className={this.props.className}
         size={this.props.size}
         src={`${API_BASE_URL}/media/${this.props.img}`}
         style={this.props.style}
       /> :
       <Avatar
+        className={this.props.className}
         color="#ffffff"
         backgroundColor={randomHueHexColor(45, 80)}
         size={this.props.size}
@@ -35,11 +37,13 @@ class UserAvatar extends Component {
 }
 
 UserAvatar.defaultProps = {
+  className: null,
   img: null,
   style: {},
 };
 
 UserAvatar.propTypes = {
+  className: PropTypes.string,
   img: PropTypes.string,
   size: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
