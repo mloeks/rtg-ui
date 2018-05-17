@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ContentReply from 'material-ui/svg-icons/content/reply';
 import { FlatButton } from 'material-ui';
 import CommentsList from './CommentsList';
 import { lightGrey } from '../../theme/RtgTheme';
@@ -53,11 +52,11 @@ class Comment extends Component {
           {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <FlatButton
             label="Antworten"
             labelPosition="after"
-            icon={<ContentReply color={lightGrey} style={{ width: '18px' }} />}
             style={{
               color: lightGrey,
               height: '24px',
               lineHeight: '24px',
+              marginLeft: '35px',
             }}
             labelStyle={{ fontSize: '12px', fontWeight: 400 }}
             onClick={this.toggleAddReply}
