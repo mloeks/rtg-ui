@@ -33,34 +33,37 @@ class StandingsTableRow extends Component {
         <TableRow
           style={{ height: ROW_HEIGHT }}
           className={`StandingsTableRow ${this.props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
-          onClick={this.showUserDetailsPopover}
         >
           <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
-          <TableRowColumn
-            style={{
-              height: ROW_HEIGHT,
-              display: 'flex',
-              alignItems: 'center',
-              fontSize: '16px',
-              paddingLeft: 0,
-            }}
-          >
-            <UserDetailsPopover
-              anchorEl={this.state.userDetailsPopoverAnchorEl}
-              avatar={this.props.userAvatar}
-              userId={this.props.userId}
-              username={this.props.username}
-              open={this.state.userDetailsPopoverOpen}
-              onClose={this.hideUserDetailsPopover}
-            />
+          <TableRowColumn style={{ height: ROW_HEIGHT }}>
+            <div
+              role="button"
+              className="TableRowColumn__user-wrapper"
+              onClick={this.showUserDetailsPopover}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '16px',
+                paddingLeft: 0,
+              }}
+            >
+              <UserDetailsPopover
+                anchorEl={this.state.userDetailsPopoverAnchorEl}
+                avatar={this.props.userAvatar}
+                userId={this.props.userId}
+                username={this.props.username}
+                open={this.state.userDetailsPopoverOpen}
+                onClose={this.hideUserDetailsPopover}
+              />
 
-            <UserAvatar
-              img={this.props.userAvatar}
-              size={0.65 * ROW_HEIGHT}
-              username={this.props.username}
-              style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
-            />
-            <span className="TableRowColumn__username">{this.props.username}</span>
+              <UserAvatar
+                img={this.props.userAvatar}
+                size={0.65 * ROW_HEIGHT}
+                username={this.props.username}
+                style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+              />
+              <span className="TableRowColumn__username">{this.props.username}</span>
+            </div>
           </TableRowColumn>
           <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
 
