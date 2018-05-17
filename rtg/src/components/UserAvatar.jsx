@@ -24,6 +24,7 @@ class UserAvatar extends Component {
         size={this.props.size}
         src={`${API_BASE_URL}/media/${this.props.img}`}
         style={this.props.style}
+        onClick={this.props.onClick}
       /> :
       <Avatar
         className={this.props.className}
@@ -31,6 +32,7 @@ class UserAvatar extends Component {
         backgroundColor={randomHueHexColor(45, 80)}
         size={this.props.size}
         style={this.props.style}
+        onClick={this.props.onClick}
       >{this.props.username[0].toUpperCase()}
       </Avatar>);
   }
@@ -40,6 +42,7 @@ UserAvatar.defaultProps = {
   className: null,
   img: null,
   style: {},
+  onClick: () => {},
 };
 
 UserAvatar.propTypes = {
@@ -48,6 +51,7 @@ UserAvatar.propTypes = {
   size: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  onClick: PropTypes.func,
 };
 
 export default UserAvatar;
