@@ -1,13 +1,15 @@
+@import '../../sass/colors.scss';
+
 // keep in sync with avatar size in React inline-style!
 $avatarSize: 140px;
 
 // TODO P1 finish styling
 .UserDetailsPopover {
-  width: 280px;
-  min-width: 280px;
-  max-width: 280px;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
 
-  margin-bottom: 60px;
+  margin-bottom: 55px;
 
   background: transparent;
 
@@ -16,17 +18,27 @@ $avatarSize: 140px;
 
     padding: 20px 10px 10px;
     margin-top: -50px;
-    border-radius: 10px;
     text-align: center;
+
+    &:before {
+      position: absolute;
+      content: '';
+      background-color: white;
+      border-radius: 10px;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -2;
+    }
 
     &:after {
       position: absolute;
       content: '';
-      // TODO P1 find better pattern, less detailed, more pale
-      background: url(../../theme/img/damask-pattern-100.jpg) repeat;
-      //opacity: 0.8;
+      background: url(../../theme/img/damask-pattern-400.jpg) repeat;
+      opacity: 0.6;
       border-radius: 10px;
-      box-shadow: -6px 3px 19px -7px black;
+      box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
       top: 0;
       left: 0;
       bottom: 0;
@@ -50,15 +62,11 @@ $avatarSize: 140px;
 
     margin: auto;
 
-    border: 5px solid white;
-    border-radius: 100%;
-    background-color: white;
+      border: 5px solid white;
+      border-radius: 100%;
+      background-color: white;
 
-    // TODO P1 only works on absolutely positioned elements
-    // try: model background as pseudo element from avatar once again, positioned absolutely
-    //clip: rect(100px, 300px, 140px, 100px);
-
-    box-sizing: border-box;
+      box-sizing: border-box;
   }
 
   &__close-icon {
@@ -67,4 +75,31 @@ $avatarSize: 140px;
     right: 10px;
   }
 
+  &__username {
+    color: $purple;
+  }
+
+  &__about {
+    margin: 0 0 15px;
+    font-size: 24px;
+    font-style: italic;
+
+    color: $darkGrey;
+    font-weight: 300;
+  }
+
+  &__location {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: $grey;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &__username {
+    margin-bottom: 15px;
+  }
 }

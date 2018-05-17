@@ -133,7 +133,7 @@ const Imprint = () => (
         <a href="https://www.svgrepo.com" target="_blank" rel="noopener noreferrer">
           SVG Repo
         </a> &&nbsp;
-        <a href="https://www.freepik.com/free-vector/damask-seamless-pattern-background_1534426.htm" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.freepik.com/free-vector/damask-seamless-pattern-background_1534340.htm" target="_blank" rel="noopener noreferrer">
           Freepik
         </a>.
       </p>

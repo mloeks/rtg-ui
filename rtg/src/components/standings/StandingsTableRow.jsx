@@ -8,8 +8,6 @@ import UserDetailsPopover from './UserDetailsPopover';
 
 import './StandingsTableRow.css';
 
-// TODO P1 User Details onClick --> User Details als Popover, schönes Pattern als bg,
-// runde Ecken, Avatar steht oben raus
 class StandingsTableRow extends Component {
   constructor(props) {
     super(props);

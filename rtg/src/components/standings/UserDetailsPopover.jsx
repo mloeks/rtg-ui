@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress, IconButton, Popover } from 'material-ui';
+import MapsPlace from 'material-ui/svg-icons/maps/place';
 import Close from 'material-ui/svg-icons/navigation/close';
 import UserAvatar from '../UserAvatar';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import { darkGrey, grey } from '../../theme/RtgTheme';
 
 import './UserDetailsPopover.css';
 
-// TODO P2 when appearing, it is displayed in the top left viewport corner for
-// a very short moment
+// TODO P2 also load statistics and offer to show rank, bet stats etc. to other users
 class UserDetailsPopover extends Component {
   constructor(props) {
     super(props);
@@ -62,17 +63,23 @@ class UserDetailsPopover extends Component {
               onClick={this.props.onClose}
               title="Schließen"
               style={{ position: 'absolute', top: 0, right: 0 }}
-              iconStyle={{ width: 18, height: 18 }}
+              iconStyle={{ color: darkGrey, width: 18, height: 18 }}
             ><Close />
             </IconButton>
 
             <h3 className="UserDetailsPopover__username">{this.props.username}</h3>
 
             {this.state.detailsLoading && <CircularProgress />}
+
             {!this.state.detailsLoading && this.state.user && (
               <div className="UserDetailsPopover__details">
-                <span>{this.state.user.about}</span>
-                <span>{this.state.user.location}</span>
+                {this.state.user.about &&
+                  <p className="UserDetailsPopover__about">» {this.state.user.about} «</p>}
+                {this.state.user.location &&
+                  <p className="UserDetailsPopover__location">
+                    <MapsPlace style={{ color: grey, width: '18px', height: '18px' }}/>&nbsp;
+                    {this.state.user.location}
+                  </p>}
               </div>
             )}
           </div>
@@ -85,8 +92,8 @@ class UserDetailsPopover extends Component {
 UserDetailsPopover.defaultProps = {
   anchorEl: null,
   avatar: null,
-  anchorOrigin: { horizontal: 'middle', vertical: 'bottom' },
-  targetOrigin: { horizontal: 'middle', vertical: 'bottom' },
+  anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
+  targetOrigin: { horizontal: 'left', vertical: 'bottom' },
 };
 
 UserDetailsPopover.propTypes = {
