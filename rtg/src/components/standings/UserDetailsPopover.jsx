@@ -20,8 +20,10 @@ class UserDetailsPopover extends Component {
     };
   }
 
-  componentDidMount() {
-    this.loadDetails();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open) {
+      this.loadDetails();
+    }
   }
 
   async loadDetails() {
