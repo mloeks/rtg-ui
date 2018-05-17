@@ -228,7 +228,7 @@ class BigEditableAvatar extends Component {
     );
 
     return (
-      <div className="BigEditableAvatar" style={{ marginTop: -avatarPlusBorderSize / 2 }}>
+      <div className="BigEditableAvatar" style={{ marginTop: -(avatarPlusBorderSize / 2) - 10 }}>
         <div className="BigEditableAvatar__avatar" style={avatarDivStyle}>
           {(this.state.editing && this.state.chosenFile) &&
             <AvatarEditor
