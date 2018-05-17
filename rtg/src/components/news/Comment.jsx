@@ -10,6 +10,7 @@ import './Comment.css';
 
 export const MAX_REPLY_DEPTH = 4;
 
+// TODO P1 also show user details popover on avatar click
 class Comment extends Component {
   constructor(props) {
     super(props);

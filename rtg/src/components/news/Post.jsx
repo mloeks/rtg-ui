@@ -17,6 +17,7 @@ import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
 import { grey, lightGrey } from '../../theme/RtgTheme';
 import AddComment from './AddComment';
+import UserDetailsPopover from '../standings/UserDetailsPopover';
 
 import './Post.css';
 
@@ -63,9 +64,13 @@ class Post extends Component {
     this.state = {
       expanded: false,
       commentCount: props.post.no_comments || 0,
+      userDetailsPopoverAnchorEl: null,
+      userDetailsPopoverOpen: false,
     };
 
     this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.showUserDetailsPopover = this.showUserDetailsPopover.bind(this);
+    this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
     this.handleCommentAdded = this.handleCommentAdded.bind(this);
     this.getCommentCountIncrementedBy = this.getCommentCountIncrementedBy.bind(this);
   }
@@ -76,6 +81,15 @@ class Post extends Component {
 
   toggleExpanded() {
     this.setState(prevState => ({ expanded: !prevState.expanded }));
+  }
+
+  showUserDetailsPopover(e) {
+    e.preventDefault();
+    this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
+  }
+
+  hideUserDetailsPopover() {
+    this.setState({ userDetailsPopoverOpen: false });
   }
 
   handleCommentAdded() {
@@ -117,10 +131,20 @@ class Post extends Component {
           className="Post__card-actions"
           style={{ padding: '16px' }}
         >
+          <UserDetailsPopover
+            anchorEl={this.state.userDetailsPopoverAnchorEl}
+            avatar={this.props.post.author_details.avatar}
+            userId={this.props.post.author_details.pk}
+            username={this.props.post.author_details.username}
+            open={this.state.userDetailsPopoverOpen}
+            onClose={this.hideUserDetailsPopover}
+          />
+
           <ListItem
             disabled
             primaryText={
               <div
+                role="button"
                 style={{
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
@@ -135,9 +159,11 @@ class Post extends Component {
             secondaryText={`${getFormattedPostDate(dateCreated)}`}
             leftAvatar={
               <UserAvatar
+                className="Post__author-avatar"
                 size={40}
                 img={this.props.post.author_details.avatar}
                 username={this.props.post.author_details.username}
+                onClick={this.showUserDetailsPopover}
                 style={{ left: 0, top: 0 }}
               />}
             rightIcon={<FlatButton

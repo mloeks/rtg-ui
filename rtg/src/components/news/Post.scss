@@ -21,6 +21,10 @@
     border-top: 1px solid lighten($lightGrey, 20%);
   }
 
+  &__author-avatar:hover {
+    cursor: pointer;
+  }
+
   &__comments-label-desktop {
     display: none;
     @media only screen and (min-width: 480px) {
