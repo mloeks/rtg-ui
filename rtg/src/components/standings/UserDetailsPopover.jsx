@@ -77,7 +77,9 @@ class UserDetailsPopover extends Component {
             {!this.state.detailsLoading && this.state.user && (
               <div className="UserDetailsPopover__details">
                 {this.state.user.about &&
-                  <p className="UserDetailsPopover__about">» {this.state.user.about} «</p>}
+                  <p className="UserDetailsPopover__about">
+                    »&nbsp;{this.state.user.about}&nbsp;«
+                  </p>}
                 {this.state.user.location &&
                   <p className="UserDetailsPopover__location">
                     <MapsPlace style={{ color: grey, width: '18px', height: '18px' }}/>&nbsp;
