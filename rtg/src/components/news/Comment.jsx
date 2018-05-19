@@ -5,7 +5,7 @@ import CommentsList from './CommentsList';
 import { lightGrey } from '../../theme/RtgTheme';
 import UserAvatar from '../UserAvatar';
 import { getFormattedPostDate } from './Post';
-import UserDetailsPopover from '../standings/UserDetailsPopover';
+import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Comment.css';
 

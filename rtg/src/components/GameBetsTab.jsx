@@ -17,6 +17,7 @@ import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
 import './GameBetsTab.css';
 
+// TODO P1 only show save button when user actually makes changes --> button will be noticed better
 // TODO P2 takes pretty long to load if there are many bets
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)

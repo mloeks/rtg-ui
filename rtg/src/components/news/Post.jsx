@@ -17,7 +17,7 @@ import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
 import { grey, lightGrey } from '../../theme/RtgTheme';
 import AddComment from './AddComment';
-import UserDetailsPopover from '../standings/UserDetailsPopover';
+import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Post.css';
 

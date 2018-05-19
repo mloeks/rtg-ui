@@ -68,7 +68,7 @@ EditingActions.propTypes = {
 // TODO P1 IE: Test if form submit now works with Blob polyfill
 // does not seem to be defined
 
-// TODO P1 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
+// TODO P2 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
 // this only seems to be an issue with Chrome, preventing passive events from using
 // prevent default, cf. https://www.chromestatus.com/features/5093566007214080
 // works on firefox. How to disable it in Chrome? Open issue in github?

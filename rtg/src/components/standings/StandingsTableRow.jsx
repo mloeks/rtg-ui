@@ -4,7 +4,7 @@ import { TableRow, TableRowColumn } from 'material-ui';
 import AuthService from '../../service/AuthService';
 import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle, ROW_HEIGHT } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
-import UserDetailsPopover from './UserDetailsPopover';
+import UserDetailsPopover from '../UserDetailsPopover';
 
 import './StandingsTableRow.css';
 

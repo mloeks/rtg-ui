@@ -1,4 +1,4 @@
-@import '../../sass/colors.scss';
+@import '../sass/colors';
 
 // keep in sync with avatar size in React inline-style!
 $avatarSize: 140px;
@@ -34,7 +34,7 @@ $avatarSize: 140px;
     &:after {
       position: absolute;
       content: '';
-      background: url(../../theme/img/damask-pattern-400.jpg) repeat;
+      background: url(../theme/img/damask-pattern-400.jpg) repeat;
       opacity: 0.85;
       border-radius: 10px;
       box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
