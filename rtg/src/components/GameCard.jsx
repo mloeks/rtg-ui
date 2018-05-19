@@ -10,34 +10,43 @@ import { isEnter } from '../service/KeyHelper';
 import './GameCard.css';
 
 // TODO P2 FEATURE Prio 2 - add possibility to unfold and show calculated bet stats below the card
-const GameCard = (props) => {
-  const centerContent = props.children || (
+const GameCard = (props) => (
+  props.children ? (
+    <section className="GameCard">
+      <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
+      <div className="hometeam">{props.hometeam_name}</div>
+      {props.children}
+      <div className="awayteam">{props.awayteam_name}</div>
+      <CountryFlag country={props.awayteam_name} countryCode={props.awayteam_abbreviation} />
+    </section>
+  ) : (
     // if no other children are passed in,
-    // display the usual read-only information about the game per default
-    <GameCardGameInfo
-      city={props.city}
-      kickoff={parse(props.kickoff)}
-      result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} : ${props.awaygoals}` : null}
-      resultBetType={props.userBet.result_bet_type}
-      points={props.userBet.points}
-      userBet={props.userBet.result_bet}
-    />
-  );
-  return (
+    // display the usual read-only information about the game per default,
+    // and make sure the user can go to the bets page by clicking on the game
     <section
       role="button"
-      className="GameCard"
+      className="GameCard GameCard--clickable"
       tabIndex={0}
       onClick={() => props.history.push('/bets')}
       onKeyPress={e => (isEnter(e) && props.history.push('/bets'))}
     >
       <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
       <div className="hometeam">{props.hometeam_name}</div>
-      {centerContent}
+
+      <GameCardGameInfo
+        city={props.city}
+        kickoff={parse(props.kickoff)}
+        result={props.homegoals !== -1 && props.awaygoals !== -1 ? `${props.homegoals} : ${props.awaygoals}` : null}
+        resultBetType={props.userBet.result_bet_type}
+        points={props.userBet.points}
+        userBet={props.userBet.result_bet}
+      />
+
       <div className="awayteam">{props.awayteam_name}</div>
       <CountryFlag country={props.awayteam_name} countryCode={props.awayteam_abbreviation} />
-    </section>);
-};
+    </section>
+  )
+);
 
 GameCard.defaultProps = {
   group: null,
