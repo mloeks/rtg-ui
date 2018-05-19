@@ -7,7 +7,6 @@ import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 import { purple } from '../../theme/RtgTheme';
 
-// TODO P2 focus on mount
 class AddComment extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +18,14 @@ class AddComment extends Component {
       savingError: false,
     };
 
+    this.textInput = null;
     this.postComment = this.postComment.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.textInput && this.props.focusOnMount) {
+      this.textInput.focus();
+    }
   }
 
   async postComment(e) {
@@ -72,6 +78,7 @@ class AddComment extends Component {
           }}
         >
           <TextField
+            ref={(input) => { this.textInput = input; }}
             name="content"
             floatingLabelText={this.props.label}
             value={this.state.content}
@@ -102,11 +109,13 @@ class AddComment extends Component {
 }
 
 AddComment.defaultProps = {
+  focusOnMount: true,
   label: 'Kommentar hinzufügen...',
   replyTo: null,
 };
 
 AddComment.propTypes = {
+  focusOnMount: PropTypes.bool,
   label: PropTypes.string,
   postId: PropTypes.number.isRequired,
   replyTo: PropTypes.number,

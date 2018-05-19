@@ -184,7 +184,11 @@ class Post extends Component {
             />}
             style={{ padding: '0 0 0 50px' }}
           />
-          <AddComment postId={this.props.post.id} onAdded={this.handleCommentAdded} />
+          <AddComment
+            focusOnMount={false}
+            postId={this.props.post.id}
+            onAdded={this.handleCommentAdded}
+          />
         </CardActions>
 
         <CardText className="Post__comments" expandable>
