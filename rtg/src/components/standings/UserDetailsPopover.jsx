@@ -42,10 +42,10 @@ class UserDetailsPopover extends Component {
       <Popover
         animated={false}
         anchorEl={this.props.anchorEl}
-        anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+        anchorOrigin={this.props.anchorOrigin}
         onRequestClose={this.props.onClose}
         open={this.props.open}
-        targetOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+        targetOrigin={this.props.targetOrigin}
         style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
       >
         <div className="UserDetailsPopover">
@@ -97,7 +97,7 @@ class UserDetailsPopover extends Component {
 UserDetailsPopover.defaultProps = {
   anchorEl: null,
   avatar: null,
-  anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
+  anchorOrigin: { horizontal: 'left', vertical: 'top' },
   targetOrigin: { horizontal: 'left', vertical: 'bottom' },
 };
 
