@@ -15,7 +15,12 @@ const MAX_AVATAR_ZOOM = 3;
 const AVATAR_ZOOM_INCREMENT = 0.2;
 
 const EditingActions = props => (
-  <div className="BigEditableAvatar__edit-actions" style={props.style}>
+  <form
+    className="BigEditableAvatar__edit-actions"
+    style={props.style}
+    onSubmit={(e) => { e.preventDefault(); props.onSave(); }}
+    noValidate
+  >
     <div className="BigEditableAvatar__slider-wrapper">
       <FlatButton
         primary
@@ -41,9 +46,9 @@ const EditingActions = props => (
       </FlatButton>
     </div>
 
-    <FlatButton label="Speichern" primary onClick={props.onSave} />
+    <FlatButton type="submit" label="Speichern" primary />
     <FlatButton label="Abbrechen" onClick={props.onCancel} />
-  </div>
+  </form>
 );
 
 EditingActions.defaultProps = {
@@ -65,16 +70,13 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-// TODO P1 IE: Test if form submit now works with Blob polyfill
-// does not seem to be defined
-
 // TODO P2 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
 // this only seems to be an issue with Chrome, preventing passive events from using
 // prevent default, cf. https://www.chromestatus.com/features/5093566007214080
 // works on firefox. How to disable it in Chrome? Open issue in github?
 
 // TODO P2 investigate about console error on editing save and cancel
-// TODO P3 offer rotate buttons
+// TODO P3 offer rotate button(s)
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -178,7 +180,7 @@ class BigEditableAvatar extends Component {
 
           canvasScaled.toBlob((blob) => {
             const formData = new FormData();
-            formData.set('upload', blob, 'avatar.jpg');
+            formData.append('upload', blob, 'avatar.jpg');
 
             fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
               method: 'POST',
