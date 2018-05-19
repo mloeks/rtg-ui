@@ -1,19 +1,21 @@
 @import '../sass/colors.scss';
 
 .GameCardBet {
+  padding: 0 3px;
   width: 100%;
   font-family: 'Oswald', sans-serif;
+  box-sizing: border-box;
 
   &__goal-input-row {
     height: 32px;
-    padding: 0 5px 4px;
+    padding: 0 2px 4px;
     font-size: 18px;
 
     display: flex;
     align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
 
     text-align: center;
   }
@@ -22,7 +24,7 @@
   &__down-arrow-row {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
   }
 
   &__up-arrow-row {

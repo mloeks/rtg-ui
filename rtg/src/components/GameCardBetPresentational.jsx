@@ -8,7 +8,6 @@ import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStrin
 
 import './GameCardBet.css';
 
-// TODO P1 IE: arrows not centered
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 const GoalInput = ({ id, goals, onChange, onBlur }) => {
   let textInputRef;
