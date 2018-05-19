@@ -1,19 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, CircularProgress, FlatButton, Paper, TextField } from 'material-ui';
+import { Checkbox, CircularProgress, FlatButton, Paper, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import Notification, { NotificationType } from '../Notification';
 
 import './AddPostForm.css';
 
-// TODO P3 structure checkboxes more logically (e-mail and force mail)
 const AddPostFormDisplay = (props) => {
   const getSuitableSavingErrorSubtitle = () => {
     if (props.titleError || props.contentError) {
-      return 'Bitte überprüfe Deine Eingaben.'
+      return 'Bitte überprüfe Deine Eingaben.';
     } else if (props.nonFieldError) {
       return props.nonFieldError;
     }
     return 'Bitte versuche es später erneut.';
+  };
+
+  const onMailChoiceChanged = (event, value) => {
+    const mailChoices = ['sendMailToSubscribers', 'sendMailToActive', 'sendMailToAll'];
+    const updatedMailRelatedFields = {};
+    for (let i = 0; i < mailChoices.length; i += 1) {
+      updatedMailRelatedFields[mailChoices[i]] = value === mailChoices[i];
+    }
+    props.onFieldsChange(updatedMailRelatedFields);
   };
 
   return (
@@ -43,15 +51,35 @@ const AddPostFormDisplay = (props) => {
           onCheck={(e, v) => props.onFieldChange('appearInNews', v)}
         /><br />
         <Checkbox
-          label="Per E-Mail an Abonennten versenden"
-          checked={props.sendMailToSubscribers}
-          onCheck={(e, v) => props.onFieldChange('sendMailToSubscribers', v)}
+          label="Per E-Mail senden ..."
+          checked={props.sendMail}
+          onCheck={(e, v) => props.onFieldChange('sendMail', v)}
         /><br />
-        <Checkbox
-          label="Per E-Mail an alle Mitspieler versenden"
-          checked={props.sendMailToAll}
-          onCheck={(e, v) => props.onFieldChange('sendMailToAll', v)}
-        /><br /><br />
+
+        <RadioButtonGroup
+          className="AddPostForm__mail-choices-row"
+          name="mailChoices"
+          defaultSelected="sendMailToSubscribers"
+          onChange={onMailChoiceChanged}
+        >
+          <RadioButton
+            disabled={!props.sendMail}
+            label="... an alle Abonnenten"
+            value="sendMailToSubscribers"
+          />
+          <RadioButton
+            disabled={!props.sendMail}
+            label="... an alle aktiven User"
+            value="sendMailToActive"
+          />
+          <RadioButton
+            disabled={!props.sendMail}
+            label="... an alle bekannten User"
+            value="sendMailToAll"
+          />
+        </RadioButtonGroup>
+
+        <br /><br />
 
         <div className="AddPostForm__button-row">
           <FlatButton type="submit" label="Speichern" primary disabled={props.savingInProgress} />
@@ -75,7 +103,9 @@ const AddPostFormDisplay = (props) => {
 
 AddPostFormDisplay.defaultProps = {
   appearInNews: true,
+  sendMail: true,
   sendMailToSubscribers: true,
+  sendMailToActive: false,
   sendMailToAll: false,
 
   nonFieldError: '',
@@ -90,7 +120,9 @@ AddPostFormDisplay.propTypes = {
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   appearInNews: PropTypes.bool,
+  sendMail: PropTypes.bool,
   sendMailToSubscribers: PropTypes.bool,
+  sendMailToActive: PropTypes.bool,
   sendMailToAll: PropTypes.bool,
 
   nonFieldError: PropTypes.string,
@@ -101,6 +133,7 @@ AddPostFormDisplay.propTypes = {
   savingError: PropTypes.bool,
 
   onFieldChange: PropTypes.func.isRequired,
+  onFieldsChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
-import FetchHelper from "../../service/FetchHelper";
+import FetchHelper from '../../service/FetchHelper';
 
 class AddPostForm extends Component {
   static resetFieldErrors() {
@@ -30,7 +30,9 @@ class AddPostForm extends Component {
       title: '',
       content: '',
       appearInNews: true,
+      sendMail: true,
       sendMailToSubscribers: true,
+      sendMailToActive: false,
       sendMailToAll: false,
 
       savingInProgress: false,
@@ -41,6 +43,7 @@ class AddPostForm extends Component {
 
     this.postPost = this.postPost.bind(this);
     this.handleFieldUpdate = this.handleFieldUpdate.bind(this);
+    this.handleFieldsUpdate = this.handleFieldsUpdate.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
 
@@ -71,6 +74,10 @@ class AddPostForm extends Component {
     this.setState({ [fieldName]: value });
   }
 
+  handleFieldsUpdate(updatedFieldsObject) {
+    this.setState(updatedFieldsObject);
+  }
+
   handleSave(e) {
     e.preventDefault();
     const newPost = {
@@ -79,8 +86,9 @@ class AddPostForm extends Component {
       content: this.state.content,
       finished: true,
       news_appear: this.state.appearInNews,
-      as_mail: this.state.sendMailToSubscribers,
-      force_mail: this.state.sendMailToAll,
+      as_mail: this.state.sendMail,
+      force_active_users: this.state.sendMailToActive,
+      force_all_users: this.state.sendMailToAll,
     };
     this.postPost(newPost);
   }
@@ -90,7 +98,10 @@ class AddPostForm extends Component {
       title={this.state.title}
       content={this.state.content}
       appearInNews={this.state.appearInNews}
+
+      sendMail={this.state.sendMail}
       sendMailToSubscribers={this.state.sendMailToSubscribers}
+      sendMailToActive={this.state.sendMailToActive}
       sendMailToAll={this.state.sendMailToAll}
 
       nonFieldError={this.state.nonFieldError}
@@ -101,6 +112,7 @@ class AddPostForm extends Component {
       savingError={this.state.savingError}
 
       onFieldChange={this.handleFieldUpdate}
+      onFieldsChange={this.handleFieldsUpdate}
       onSubmit={this.handleSave}
       onCancel={this.props.onCancelled}
     />);
