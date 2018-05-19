@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterProptypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 import { parse } from 'date-fns';
 import CountryFlag from './CountryFlag';
 import GameCardGameInfo from './GameCardGameInfo';
+import { isEnter } from '../service/KeyHelper';
 
 import './GameCard.css';
 
@@ -21,7 +24,13 @@ const GameCard = (props) => {
     />
   );
   return (
-    <section className="GameCard">
+    <section
+      role="button"
+      className="GameCard"
+      tabIndex={0}
+      onClick={() => props.history.push('/bets')}
+      onKeyPress={e => (isEnter(e) && props.history.push('/bets'))}
+    >
       <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
       <div className="hometeam">{props.hometeam_name}</div>
       {centerContent}
@@ -64,6 +73,8 @@ GameCard.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+
+  history: ReactRouterProptypes.history.isRequired, // eslint-disable-line react/no-typos
 };
 
-export default GameCard;
+export default withRouter(GameCard);

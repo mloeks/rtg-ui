@@ -15,8 +15,6 @@ import Notification, { NotificationType } from '../components/Notification';
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
-// TODO P1 navigate directly to bets page on game click
-// (even better: be able to change bet right here?)
 // TODO P2 switch to current game/round automatically
 class Schedule extends Component {
   static createGameCardsWithDateSubheadings(games, bets) {
