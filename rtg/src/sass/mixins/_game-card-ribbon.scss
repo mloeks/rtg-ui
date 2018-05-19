@@ -1,4 +1,3 @@
-// TODO P1 rendering on Firefox looks crappy
 @mixin game-card-ribbon($color, $wrapped-el-height, $width) {
   $added-height: 15px;
   $bottom-arrow-height: 10px;
@@ -56,6 +55,7 @@
     background: darken($color, $darken-left-right);
 
     &:after {
+      left: -0.5px;
       border-right: $width / 2 solid transparent;
       border-top: $bottom-arrow-height solid darken($color, $darken-left-right);
     }
