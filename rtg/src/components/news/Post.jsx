@@ -68,6 +68,7 @@ class Post extends Component {
       userDetailsPopoverOpen: false,
     };
 
+    this.randomPostColour = randomHueHexColor(40, 90);
     this.toggleExpanded = this.toggleExpanded.bind(this);
     this.showUserDetailsPopover = this.showUserDetailsPopover.bind(this);
     this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
@@ -110,7 +111,7 @@ class Post extends Component {
         <CardTitle
           className="Post__card-title"
           title={this.props.post.title}
-          style={{ backgroundColor: randomHueHexColor(40, 90) }}
+          style={{ backgroundColor: this.randomPostColour }}
           titleStyle={{
             fontSize: '32px',
             fontFamily: '"Lobster Two", sans-serif',
