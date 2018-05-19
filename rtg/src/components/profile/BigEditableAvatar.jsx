@@ -77,7 +77,14 @@ EditingActions.propTypes = {
 // TODO P3 offer rotate buttons
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
-  static getInitialState() {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.avatarUrl && nextProps.avatarUrl) {
+      return { avatarUrl: nextProps.avatarUrl };
+    }
+    return null;
+  }
+
+  static getInitialState(props) {
     return {
       chosenFile: null,
       editing: false,
@@ -90,10 +97,14 @@ class BigEditableAvatar extends Component {
       uploadSuccess: false,
     };
   }
+
   constructor(props) {
     super(props);
 
-    this.state = BigEditableAvatar.getInitialState();
+    this.state = {
+      avatarUrl: null,
+      ...BigEditableAvatar.getInitialState(props),
+    };
 
     this.editor = null;
     this.maxImageSize = 1024 * 1024 * 5;
@@ -178,6 +189,7 @@ class BigEditableAvatar extends Component {
                 if (response.ok) {
                   this.setState({
                     ...BigEditableAvatar.getInitialState(),
+                    avatarUrl: response.json.avatar,
                     uploadSuccess: true,
                   }, () => {
                     this.props.onAvatarChanged(response.json.avatar);
@@ -256,9 +268,9 @@ class BigEditableAvatar extends Component {
               <label htmlFor="fileElem">
                 <Avatar
                   className="BigEditableAvatar__avatar-elem"
-                  backgroundColor={!this.props.avatarUrl ? teal400 : null}
-                  icon={!this.props.avatarUrl ? noAvatarPlaceholder : null}
-                  src={this.props.avatarUrl}
+                  backgroundColor={!this.state.avatarUrl ? teal400 : null}
+                  icon={!this.state.avatarUrl ? noAvatarPlaceholder : null}
+                  src={`${API_BASE_URL}/media/${this.state.avatarUrl}`}
                   size={this.avatarSize}
                 />
               </label>

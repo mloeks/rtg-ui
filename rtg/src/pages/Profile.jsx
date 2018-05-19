@@ -14,7 +14,7 @@ import headingImg from '../theme/img/headings/bed.jpg';
 // TODO P2 offer possibility to delete account
 // TODO P3 offer possibility to delete avatar
 class Profile extends Component {
-  static userToStateMapper(userJson) {
+  static userMapper(userJson) {
     return {
       userId: userJson.pk,
       username: userJson.username,
@@ -30,6 +30,14 @@ class Profile extends Component {
     };
   }
 
+  static handleAvatarChanged(newAvatar, userContext) {
+    userContext.updateAvatar(newAvatar);
+  }
+
+  static handleUserUpdate(newUser) {
+    AuthService.setEmail(newUser.email);
+  }
+
   constructor(props) {
     super(props);
 
@@ -38,22 +46,8 @@ class Profile extends Component {
       loadingError: false,
 
       userId: AuthService.getUserId(),
-      username: '',
-      email: '',
-      email2: '',
-      firstName: '',
-      lastName: '',
-      about: '',
-      location: '',
-      avatar: '',
-
-      dailyEmails: true,
-      reminderEmails: true,
+      user: null,
     };
-
-    this.handleFormFieldUpdate = this.handleFormFieldUpdate.bind(this);
-    this.handleUserUpdate = this.handleUserUpdate.bind(this);
-    this.handleAvatarChanged = this.handleAvatarChanged.bind(this);
   }
 
   componentDidMount() {
@@ -63,27 +57,11 @@ class Profile extends Component {
       .then((response) => {
         this.setState(() => ({
           loading: false,
-          ...(response.ok ? Profile.userToStateMapper(response.json)
+          ...(response.ok ? { user: Profile.userMapper(response.json) }
             : { loadingError: true }
           ),
         }));
       }).catch(() => this.setState({ loadingError: true, loading: false }));
-  }
-
-  handleFormFieldUpdate(fieldName, value) {
-    this.setState({ [fieldName]: value });
-  }
-
-  handleUserUpdate(newUser) {
-    this.setState(Profile.userToStateMapper(newUser), () => {
-      AuthService.setEmail(this.state.email);
-    });
-  }
-
-  handleAvatarChanged(newAvatar, userContext) {
-    this.setState({ avatar: newAvatar }, () => {
-      userContext.updateAvatar(newAvatar);
-    });
   }
 
   render() {
@@ -92,38 +70,28 @@ class Profile extends Component {
         <BigPicture className="ProfilePage__heading" img={headingImg} positionY={75} />
         <section className="ProfilePage__content" style={{ position: 'relative', padding: '10px' }}>
 
-          <UserDetailsContext.Consumer>
-            {userContext => (
-              <BigEditableAvatar
-                userId={this.state.userId}
-                username={this.state.username}
-                avatarUrl={this.state.avatar && `${API_BASE_URL}/media/${this.state.avatar}`}
+          {this.state.user &&
+            <UserDetailsContext.Consumer>
+              {userContext => (
+                <BigEditableAvatar
+                  userId={this.state.userId}
+                  username={this.state.user.username || ''}
+                  avatarUrl={this.state.user.avatar || ''}
 
-                loading={this.state.loading}
-                loadingError={this.state.loadingError}
+                  loading={this.state.loading}
+                  loadingError={this.state.loadingError}
 
-                onAvatarChanged={avatar => this.handleAvatarChanged(avatar, userContext)}
-              />
-            )}
-          </UserDetailsContext.Consumer>
+                  onAvatarChanged={avatar => Profile.handleAvatarChanged(avatar, userContext)}
+                />
+              )}
+            </UserDetailsContext.Consumer>}
 
           <ProfileForm
             userId={this.state.userId}
-            firstName={this.state.firstName}
-            lastName={this.state.lastName}
-            email={this.state.email}
-            email2={this.state.email2}
-            about={this.state.about}
-            location={this.state.location}
-
-            reminderEmails={this.state.reminderEmails}
-            dailyEmails={this.state.dailyEmails}
-
+            user={this.state.user}
             loading={this.state.loading}
             loadingError={this.state.loadingError}
-
-            onFieldChange={this.handleFormFieldUpdate}
-            onUserUpdate={this.handleUserUpdate}
+            onUserUpdate={Profile.handleUserUpdate}
           />
 
           <RtgSeparator style={{ maxWidth: '500px' }} />

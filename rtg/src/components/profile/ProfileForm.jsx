@@ -6,10 +6,14 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification, { NotificationType } from '../Notification';
 
-// TODO P1 Clean up such that the form related fields are not updated up to the Profile,
-// it should not need to know about that. This probably causes buggy ipnut field state
-// updates --> cursor always jumps to the end on update.
 class ProfileForm extends Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.user && nextProps.user) {
+      return { user: nextProps.user };
+    }
+    return null;
+  }
+
   static userErrorResponseToState(responseJson) {
     return {
       formHasErrors: true,
@@ -39,6 +43,8 @@ class ProfileForm extends Component {
     super(props);
 
     this.state = {
+      user: null,
+
       saving: false,
       savingError: false,
       savingSuccess: false,
@@ -49,20 +55,20 @@ class ProfileForm extends Component {
 
     this.handleFormFieldUpdate = this.handleFormFieldUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.propsToUserPatchPayload = this.propsToUserPatchPayload.bind(this);
+    this.stateToUserPatchPayload = this.stateToUserPatchPayload.bind(this);
   }
 
-  propsToUserPatchPayload() {
+  stateToUserPatchPayload() {
     return {
       pk: this.props.userId,
-      email: this.props.email || '',
-      email2: this.props.email2 || '',
-      first_name: this.props.firstName || '',
-      last_name: this.props.lastName || '',
-      about: this.props.about || '',
-      location: this.props.location || '',
-      reminder_emails: this.props.reminderEmails,
-      daily_emails: this.props.dailyEmails,
+      email: this.state.user.email || '',
+      email2: this.state.user.email2 || '',
+      first_name: this.state.user.firstName || '',
+      last_name: this.state.user.lastName || '',
+      about: this.state.user.about || '',
+      location: this.state.user.location || '',
+      reminder_emails: this.state.user.reminderEmails,
+      daily_emails: this.state.user.dailyEmails,
     };
   }
 
@@ -90,7 +96,7 @@ class ProfileForm extends Component {
 
     await this.patchData(
       `${API_BASE_URL}/rtg/users/${this.props.userId}/`,
-      this.propsToUserPatchPayload(),
+      this.stateToUserPatchPayload(),
       this.props.onUserUpdate,
       ProfileForm.userErrorResponseToState,
     );
@@ -99,10 +105,12 @@ class ProfileForm extends Component {
   }
 
   handleFormFieldUpdate(fieldName, value) {
-    this.setState((prevState, prevProps) => {
-      prevProps.onFieldChange(fieldName, value);
+    this.setState((prevState) => {
+      const updatedUser = Object.assign({}, prevState.user);
+      updatedUser[fieldName] = value;
 
       return {
+        user: updatedUser,
         formHasErrors: false,
         savingError: false,
         savingSuccess: false,
@@ -125,16 +133,16 @@ class ProfileForm extends Component {
             />
           </div>}
 
-        {(!this.props.loading && !this.props.loadingError) &&
+        {(!this.props.loading && !this.props.loadingError && this.state.user) &&
           <ProfileFormDisplay
-            about={this.props.about}
-            dailyEmails={this.props.dailyEmails}
-            email={this.props.email}
-            email2={this.props.email2}
-            firstName={this.props.firstName}
-            lastName={this.props.lastName}
-            location={this.props.location}
-            reminderEmails={this.props.reminderEmails}
+            about={this.state.user.about}
+            dailyEmails={this.state.user.dailyEmails}
+            email={this.state.user.email}
+            email2={this.state.user.email2}
+            firstName={this.state.user.firstName}
+            lastName={this.state.user.lastName}
+            location={this.state.user.location}
+            reminderEmails={this.state.user.reminderEmails}
 
             aboutError={this.state.fieldErrors.about}
             dailyEmailsError={this.state.fieldErrors.dailyEmails}
@@ -173,28 +181,25 @@ class ProfileForm extends Component {
   }
 }
 
-ProfileForm.defaultProps = {
-  about: null,
-  email2: null,
-  location: null,
-};
+ProfileForm.defaultProps = { user: null };
 
 ProfileForm.propTypes = {
   userId: PropTypes.number.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  email2: PropTypes.string,
-  about: PropTypes.string,
-  location: PropTypes.string,
+  user: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    email2: PropTypes.string,
+    about: PropTypes.string,
+    location: PropTypes.string,
 
-  reminderEmails: PropTypes.bool.isRequired,
-  dailyEmails: PropTypes.bool.isRequired,
+    reminderEmails: PropTypes.bool.isRequired,
+    dailyEmails: PropTypes.bool.isRequired,
+  }),
 
   loading: PropTypes.bool.isRequired,
   loadingError: PropTypes.bool.isRequired,
 
-  onFieldChange: PropTypes.func.isRequired,
   onUserUpdate: PropTypes.func.isRequired,
 };
 
