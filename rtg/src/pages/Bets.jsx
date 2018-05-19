@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Prompt } from 'react-router-dom';
 import { Tab, Tabs } from 'material-ui/Tabs';
 import { Badge } from 'material-ui';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import BigPicture from '../components/BigPicture';
@@ -66,7 +64,7 @@ class Bets extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", this.confirmNavigationWithUnsavedChanges, false);
+    window.addEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
   }
 
   componentWillUnmount() {
@@ -78,7 +76,7 @@ class Bets extends Component {
       e.returnValue = unsavedChangesConfirmText;
       return unsavedChangesConfirmText;
     }
-    return null;
+    return undefined;
   }
 
   handleBetsHaveChanges(betsHaveChanges) {
@@ -86,7 +84,6 @@ class Bets extends Component {
   }
 
   handleTabActive(tab) {
-    // TODO P1 Test if that works properly on IE
     if (!this.state.betsHaveChanges || window.confirm(unsavedChangesConfirmText)) {
       this.setState({ activeTab: tab.props.value });
     }
@@ -166,9 +163,4 @@ class Bets extends Component {
   }
 }
 
-Bets.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
-};
-
-export default muiThemeable()(Bets);
+export default Bets;
