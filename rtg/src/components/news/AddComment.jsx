@@ -32,7 +32,6 @@ class AddComment extends Component {
     e.preventDefault();
 
     const newComment = {
-      author: AuthService.getUserId(),
       content: this.state.content,
       post: this.props.postId,
       reply_to: this.props.replyTo,
