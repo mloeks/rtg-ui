@@ -8,7 +8,7 @@ import BigPicture from '../components/BigPicture';
 import headingImg from '../theme/img/headings/silvia_zlatan.jpg';
 import './About.css';
 
-const About = (props) => (
+const About = props => (
   <Page className="AboutPage">
     <BigPicture className="AboutPage__heading" img={headingImg} positionY={21}>
       <h1 className="BigPicture__heading">Über die RTG</h1>
