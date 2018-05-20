@@ -4,11 +4,13 @@
 $height: 60px;
 
 .BetsStatusPanel {
-  position: fixed;
-  left: 0;
-  right: 0;
+  position: sticky;
   bottom: 0;
   height: $height;
+  padding: 0 10px;
+  margin: 0 -10px;
+
+  width: 100%;
 
   display: flex;
   flex-direction: column;
@@ -17,7 +19,7 @@ $height: 60px;
   align-items: center;
 
   background-color: white;
-  box-sizing: border-box;
+  box-sizing: content-box; // in order to have padding token into account with width 100 %
   box-shadow: rgba(0, 0, 0, 0.32) 0 5px 30px, rgba(0, 0, 0, 0.32) 0 0 15px;
 
   transition:

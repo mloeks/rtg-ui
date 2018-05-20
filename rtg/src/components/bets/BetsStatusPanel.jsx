@@ -1,17 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import stickybits from 'stickybits';
 import { FlatButton, LinearProgress } from 'material-ui';
 import Done from 'material-ui/svg-icons/action/done';
 import { success } from '../../theme/RtgTheme';
 
 import './BetsStatusPanel.css';
 
-// TODO P2 avoid to float over footer, stick at bottom of content
 class BetsStatusPanel extends Component {
   constructor(props) {
     super(props);
     this.state = { showSavingIndicator: false };
+    this.stickybitsInstance = null;
     this.savingIndicatorTimeout = null;
+  }
+
+  componentDidMount() {
+    this.stickybitsInstance = stickybits('.BetsStatusPanel', { verticalPosition: 'bottom' });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,6 +27,12 @@ class BetsStatusPanel extends Component {
     } else if (!nextProps.saving) {
       clearTimeout(this.savingIndicatorTimeout);
       this.setState({ showSavingIndicator: false });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.stickybitsInstance) {
+      this.stickybitsInstance.cleanup();
     }
   }
 

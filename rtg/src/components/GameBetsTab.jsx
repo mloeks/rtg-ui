@@ -211,15 +211,6 @@ class GameBetsTab extends Component {
                 onClose={() => this.setState({ gamesWithSavingIssues: [] })}
               />
 
-              {/* TODO P2 only slide in when changes are made --> user recognises it better */}
-              {(this.props.active && !this.state.loading && gameCount > 0) &&
-                <BetsStatusPanel
-                  saving={this.state.shouldSave}
-                  success={this.state.showSavingSuccess}
-                  onSave={this.handleSaveRequest}
-                />
-              }
-
               {(!this.state.loading && !this.state.loadingError && gameCount > 0) &&
                 this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets, betsStatusContext)}
 
@@ -229,6 +220,14 @@ class GameBetsTab extends Component {
               {this.state.loadingError &&
                 <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
               }
+
+              {/* TODO P2 only slide in when changes are made --> user recognises it better */}
+              {(this.props.active && !this.state.loading && gameCount > 0) &&
+                <BetsStatusPanel
+                  saving={this.state.shouldSave}
+                  success={this.state.showSavingSuccess}
+                  onSave={this.handleSaveRequest}
+                />}
             </section>
           )}
         </BetsStatusContext.Consumer>
