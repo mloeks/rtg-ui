@@ -41,12 +41,11 @@ export const getFormattedPostDate = (date) => {
   return `${format(date, 'dd. D. MMMM', { locale: de })}, ${formattedTime}`;
 };
 
+// TODO P1 wrap long posts and offer "show all" to unfold full content
 class Post extends Component {
   static getCommentsLabel(noComments) {
     let desktopLabel;
-    if (noComments === 0) {
-      desktopLabel = 'Kommentieren';
-    } else if (noComments === 1) {
+    if (noComments === 1) {
       desktopLabel = '1 Kommentar';
     } else {
       desktopLabel = `${noComments} Kommentare`;
@@ -176,6 +175,7 @@ class Post extends Component {
                 style={{ left: 0, top: 0 }}
               />}
             rightIcon={<FlatButton
+              disabled={this.state.commentCount === 0}
               label={Post.getCommentsLabel(this.state.commentCount)}
               labelPosition="before"
               icon={<EditorModeComment color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
