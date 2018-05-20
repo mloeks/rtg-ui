@@ -4,6 +4,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 
+// TODO P2 add another email choice: only known but inactive users
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
