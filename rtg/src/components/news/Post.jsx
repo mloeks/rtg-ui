@@ -41,7 +41,6 @@ export const getFormattedPostDate = (date) => {
   return `${format(date, 'dd. D. MMMM', { locale: de })}, ${formattedTime}`;
 };
 
-// TODO P1 wrap long posts and offer "show all" to unfold full content
 class Post extends Component {
   static getCommentsLabel(noComments) {
     let desktopLabel;
