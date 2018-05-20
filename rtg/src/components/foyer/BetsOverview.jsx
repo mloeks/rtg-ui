@@ -15,7 +15,7 @@ const BetsOverview = () => {
   };
 
   return (
-    <section className="BetsOverview" style={{ padding: '15px', margin: '20px auto', maxWidth: 640 }}>
+    <section style={{ padding: '15px', margin: '20px auto', maxWidth: 640 }}>
       <p>
         In der RTG werden traditionell <b>alle Spiele</b> der Fußball-Weltmeisterschaft getippt.
         Bitte gib deine Tipps für sämtliche Vorrundenspiele rechtzeitig bis zum Beginn des
@@ -37,7 +37,7 @@ const BetsOverview = () => {
         {({ openBetsCount }) => (
           <Fragment>
             {openBetsCount > 0 &&
-            <p className="BetsOverview__open-bets-info">
+            <p>
               Du hast aktuell noch&nbsp;
               <span style={openBetsCountStyle}>{openBetsCount}</span>&nbsp;
               {openBetsCount === 1 ? 'offenen Tipp' : 'offene Tipps'}.
