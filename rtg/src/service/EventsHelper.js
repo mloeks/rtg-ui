@@ -1,3 +1,5 @@
+import { rectangle, viewportH } from 'verge';
+
 // throttle event listeners using requestAnimationFrames
 // Adopted from https://developer.mozilla.org/en-US/docs/Web/Events/resize
 // Made an ES6 class from the code, made generic for arbitrary event, added remove method
@@ -93,3 +95,5 @@ export class ThrottledScrollPositionListener {
     window.removeEventListener('scroll', this._listener);
   }
 }
+
+export const hasScrolledBehind = elem => rectangle(elem).bottom < viewportH();

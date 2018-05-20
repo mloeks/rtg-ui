@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { CircularProgress, FloatingActionButton } from 'material-ui';
 import { ContentAdd } from 'material-ui/svg-icons/index';
 import ChatBubbleOutline from 'material-ui/svg-icons/communication/chat-bubble-outline';
-import { rectangle, viewportH } from 'verge';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
-import { ThrottledScrollPositionListener } from '../../service/EventsHelper';
+import { hasScrolledBehind, ThrottledScrollPositionListener } from '../../service/EventsHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
@@ -34,10 +33,6 @@ class News extends Component {
     });
   }
 
-  static hasScrolledBehind() {
-    return rectangle(document.querySelector('.News')).bottom < viewportH();
-  }
-
   constructor(props) {
     super(props);
 
@@ -50,7 +45,7 @@ class News extends Component {
       addingPost: false,
       addPostSuccess: false,
 
-      scrolledBehind: News.hasScrolledBehind(),
+      scrolledBehind: hasScrolledBehind(document.querySelector('.News')),
     };
 
     this.throttledScrollListener = new ThrottledScrollPositionListener();
@@ -88,7 +83,7 @@ class News extends Component {
   adjustFloatingAddButtonClasses() {
     this.setState((prevState) => {
       const prevScrolledBehind = prevState.scrolledBehind;
-      const scrolledBehind = News.hasScrolledBehind();
+      const scrolledBehind = hasScrolledBehind(document.querySelector('.News'));
 
       if (!prevScrolledBehind && scrolledBehind) {
         return { scrolledBehind: true };
