@@ -17,7 +17,6 @@ import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
 import './GameBetsTab.css';
 
-// TODO P1 only show save button when user actually makes changes --> button will be noticed better
 // TODO P2 takes pretty long to load if there are many bets
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 switch deadline info between relative distance and absolute date (css only?)
@@ -221,9 +220,9 @@ class GameBetsTab extends Component {
                 <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
               }
 
-              {/* TODO P2 only slide in when changes are made --> user recognises it better */}
               {(this.props.active && !this.state.loading && gameCount > 0) &&
                 <BetsStatusPanel
+                  hasChanges={betsStatusContext.betsHaveChanges}
                   saving={this.state.shouldSave}
                   success={this.state.showSavingSuccess}
                   onSave={this.handleSaveRequest}

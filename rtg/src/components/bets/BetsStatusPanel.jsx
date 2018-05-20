@@ -37,17 +37,19 @@ class BetsStatusPanel extends Component {
   }
 
   render() {
+    const shouldDisplay = this.props.hasChanges || this.props.success;
     return (
       <Fragment>
         {this.props.saving && <div className="BetsStatusPanel__saving-overlay" />}
-        <div className={`BetsStatusPanel ${this.props.success ? ' BetsStatusPanel--success' : ''}`}>
-          {(!this.state.showSavingIndicator && !this.props.success) &&
+        <div className={`BetsStatusPanel ${this.props.success ? 'BetsStatusPanel--success' : ''} ${!shouldDisplay ? 'BetsStatusPanel--hidden' : ''}`}>
+          {(this.props.hasChanges && !this.state.showSavingIndicator && !this.props.success) &&
           <FlatButton
-            label="Speichern"
+            label="Änderungen Speichern"
             fullWidth
             primary
             disabled={this.props.saving}
             onClick={this.props.onSave}
+            labelStyle={{ fontSize: '16px' }}
           />}
 
           {this.state.showSavingIndicator &&
@@ -65,11 +67,13 @@ class BetsStatusPanel extends Component {
 }
 
 BetsStatusPanel.defaultProps = {
+  hasChanges: false,
   saving: false,
   success: false,
 };
 
 BetsStatusPanel.propTypes = {
+  hasChanges: PropTypes.bool,
   saving: PropTypes.bool,
   success: PropTypes.bool,
   onSave: PropTypes.func.isRequired,
