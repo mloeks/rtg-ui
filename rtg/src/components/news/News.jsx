@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { CircularProgress, FloatingActionButton } from 'material-ui';
 import { ContentAdd } from 'material-ui/svg-icons/index';
 import ChatBubbleOutline from 'material-ui/svg-icons/communication/chat-bubble-outline';
+import { rectangle, viewportH } from 'verge';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
+import { ThrottledScrollPositionListener } from '../../service/EventsHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
@@ -32,6 +34,10 @@ class News extends Component {
     });
   }
 
+  static hasScrolledBehind() {
+    return rectangle(document.querySelector('.News')).bottom < viewportH();
+  }
+
   constructor(props) {
     super(props);
 
@@ -43,14 +49,21 @@ class News extends Component {
 
       addingPost: false,
       addPostSuccess: false,
+
+      scrolledBehind: News.hasScrolledBehind(),
     };
 
+    this.throttledScrollListener = new ThrottledScrollPositionListener();
+
+    this.adjustFloatingAddButtonClasses = this.adjustFloatingAddButtonClasses.bind(this);
     this.handleAddNews = this.handleAddNews.bind(this);
     this.handlePostSaved = this.handlePostSaved.bind(this);
     this.handleAddPostCancelled = this.handleAddPostCancelled.bind(this);
   }
 
   componentDidMount() {
+    this.throttledScrollListener.addCallback(this.adjustFloatingAddButtonClasses);
+
     News.loadPosts()
       .then((response) => {
         this.setState({
@@ -66,6 +79,25 @@ class News extends Component {
           posts: [],
         });
       });
+  }
+
+  componentWillUnmount() {
+    this.throttledScrollListener.removeAll();
+  }
+
+  adjustFloatingAddButtonClasses() {
+    this.setState((prevState) => {
+      const prevScrolledBehind = prevState.scrolledBehind;
+      const scrolledBehind = News.hasScrolledBehind();
+
+      if (!prevScrolledBehind && scrolledBehind) {
+        return { scrolledBehind: true };
+      }
+      if (prevScrolledBehind && !scrolledBehind) {
+        return { scrolledBehind: false };
+      }
+      return null;
+    });
   }
 
   handleAddNews() {
@@ -127,10 +159,11 @@ class News extends Component {
             Keine Neuigkeiten.
           </div>}
 
-        {/* TODO P1 Stop fixing button to bottom left corner if user scrolls further down */}
         {(AuthService.isAdmin() && !this.state.addingPost) &&
-          <FloatingActionButton className="News__add-button" onClick={this.handleAddNews}>
-            <ContentAdd />
+          <FloatingActionButton
+            className={`News__add-button ${!this.state.scrolledBehind ? 'News__add-button--fixed' : ''}`}
+            onClick={this.handleAddNews}
+          ><ContentAdd />
           </FloatingActionButton>}
       </section>
     );
