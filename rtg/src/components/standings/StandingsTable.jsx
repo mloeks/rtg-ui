@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { CircularProgress, Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -112,7 +113,10 @@ class StandingsTable extends Component {
     let lastRow = null;
 
     return (
-      <div className="StandingsTable">
+      <div
+        className={`StandingsTable ${this.props.showOnlyTopPart > 0 ? 'StandingsTable--part' : ''}`}
+        style={this.props.showOnlyTopPart > 0 ? { height: this.props.showOnlyTopPart } : {}}
+      >
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
         {this.state.loadingError &&
           <Notification
@@ -124,43 +128,57 @@ class StandingsTable extends Component {
 
         {(!this.state.loading && !this.state.loadingError) &&
           <Table className="StandingsTable__table" selectable={false}>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
-              <TableRow>
-                <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
-                <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
-                <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
-                <TableHeaderColumn
-                  className="StandingsTable__stat-col-desktop"
-                  style={betStatColumnStyle}
-                >D
-                </TableHeaderColumn>
-                <TableHeaderColumn
-                  className="StandingsTable__stat-col-desktop"
-                  style={betStatColumnStyle}
-                >RT
-                </TableHeaderColumn>
-                <TableHeaderColumn
-                  className="StandingsTable__stat-col-desktop"
-                  style={betStatColumnStyle}
-                >T
-                </TableHeaderColumn>
-                <TableHeaderColumn
-                  className="StandingsTable__stat-col-desktop"
-                  style={betStatColumnStyle}
-                >N
-                </TableHeaderColumn>
-                <TableHeaderColumn
-                  style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
-                >Pkt.
-                </TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
+            {this.props.showTableHeader &&
+              <TableHeader
+                displaySelectAll={false}
+                adjustForCheckbox={false}
+                enableSelectAll={false}
+              >
+                <TableRow>
+                  <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
+                  <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
+                  {this.props.showStatsColumns &&
+                    <Fragment>
+                      <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
+                      <TableHeaderColumn
+                        className="StandingsTable__stat-col-desktop"
+                        style={betStatColumnStyle}
+                      >D
+                      </TableHeaderColumn>
+                      <TableHeaderColumn
+                        className="StandingsTable__stat-col-desktop"
+                        style={betStatColumnStyle}
+                      >RT
+                      </TableHeaderColumn>
+                      <TableHeaderColumn
+                        className="StandingsTable__stat-col-desktop"
+                        style={betStatColumnStyle}
+                      >T
+                      </TableHeaderColumn>
+                      <TableHeaderColumn
+                        className="StandingsTable__stat-col-desktop"
+                        style={betStatColumnStyle}
+                      >N
+                      </TableHeaderColumn>
+                    </Fragment>}
+                  <TableHeaderColumn
+                    style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
+                  >Pkt.
+                  </TableHeaderColumn>
+                </TableRow>
+              </TableHeader>}
+
             <TableBody showRowHover displayRowCheckbox={false}>
               {this.state.rows.map((row, ix) => {
                 const displayRank =
                   StandingsTable.identicalRank(row, lastRow) ? '' : (ix + 1).toString();
                 lastRow = row;
-                  return <StandingsTableRow key={row.userId} rank={displayRank} {...row} />;
+                  return (<StandingsTableRow
+                    key={row.userId}
+                    rank={displayRank}
+                    showStatsColumns={this.props.showStatsColumns}
+                    {...row}
+                  />);
                 })}
             </TableBody>
           </Table>}
@@ -168,5 +186,17 @@ class StandingsTable extends Component {
     );
   }
 }
+
+StandingsTable.defaultProps = {
+  showOnlyTopPart: -1,
+  showStatsColumns: true,
+  showTableHeader: true,
+};
+
+StandingsTable.propTypes = {
+  showOnlyTopPart: PropTypes.number,
+  showStatsColumns: PropTypes.bool,
+  showTableHeader: PropTypes.bool,
+};
 
 export default StandingsTable;

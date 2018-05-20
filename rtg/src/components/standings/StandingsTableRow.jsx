@@ -5,6 +5,7 @@ import AuthService from '../../service/AuthService';
 import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle, ROW_HEIGHT } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
+import { isEnter } from '../../service/KeyHelper';
 
 import './StandingsTableRow.css';
 
@@ -37,7 +38,9 @@ class StandingsTableRow extends Component {
             <div
               role="button"
               className="TableRowColumn__user-wrapper"
+              tabIndex={0}
               onClick={this.showUserDetailsPopover}
+              onKeyPress={e => (isEnter(e) && this.showUserDetailsPopover(e))}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -63,28 +66,31 @@ class StandingsTableRow extends Component {
               <span className="TableRowColumn__username">{this.props.username}</span>
             </div>
           </TableRowColumn>
-          <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
 
-          <TableRowColumn
-            className="StandingsTable__stat-col-desktop"
-            style={betStatColumnStyle}
-          >{this.props.noDifferenz}
-          </TableRowColumn>
-          <TableRowColumn
-            className="StandingsTable__stat-col-desktop"
-            style={betStatColumnStyle}
-          >{this.props.noRemisTendenz}
-          </TableRowColumn>
-          <TableRowColumn
-            className="StandingsTable__stat-col-desktop"
-            style={betStatColumnStyle}
-          >{this.props.noTendenz}
-          </TableRowColumn>
-          <TableRowColumn
-            className="StandingsTable__stat-col-desktop"
-            style={betStatColumnStyle}
-          >{this.props.noNiete}
-          </TableRowColumn>
+          {this.props.showStatsColumns &&
+            <Fragment>
+              <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
+              <TableRowColumn
+                className="StandingsTable__stat-col-desktop"
+                style={betStatColumnStyle}
+              >{this.props.noDifferenz}
+              </TableRowColumn>
+              <TableRowColumn
+                className="StandingsTable__stat-col-desktop"
+                style={betStatColumnStyle}
+              >{this.props.noRemisTendenz}
+              </TableRowColumn>
+              <TableRowColumn
+                className="StandingsTable__stat-col-desktop"
+                style={betStatColumnStyle}
+              >{this.props.noTendenz}
+              </TableRowColumn>
+              <TableRowColumn
+                className="StandingsTable__stat-col-desktop"
+                style={betStatColumnStyle}
+              >{this.props.noNiete}
+              </TableRowColumn>
+            </Fragment>}
 
           <TableRowColumn style={pointsColumnStyle}>{this.props.points}</TableRowColumn>
         </TableRow>
@@ -96,6 +102,7 @@ class StandingsTableRow extends Component {
 StandingsTableRow.defaultProps = {
   rank: '',
   userAvatar: null,
+  showStatsColumns: true,
 };
 
 StandingsTableRow.propTypes = {
@@ -110,6 +117,8 @@ StandingsTableRow.propTypes = {
   noRemisTendenz: PropTypes.number.isRequired,
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
+
+  showStatsColumns: PropTypes.bool,
 };
 
 export default StandingsTableRow;

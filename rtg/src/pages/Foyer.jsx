@@ -6,6 +6,7 @@ import { UserDetailsContext } from '../components/providers/UserDetailsProvider'
 import AuthService from '../service/AuthService';
 import BetsOverview from '../components/foyer/BetsOverview';
 import ScheduleOverview from '../components/foyer/ScheduleOverview';
+import StandingsOverview from '../components/foyer/StandingsOverview';
 import Notification, { NotificationType } from '../components/Notification';
 
 import logo from '../theme/img/logo_100px.png';
@@ -58,6 +59,7 @@ const Foyer = () => (
     <BigPicture className="Foyer__standings-overview" img={standingsHeadingImg}>
       <h1 className="BigPicture__heading">Aktueller Spielstand</h1>
     </BigPicture>
+    <StandingsOverview />
   </Page>
 );
 
