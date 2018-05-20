@@ -123,11 +123,16 @@ class Post extends Component {
           style={{
             backgroundColor: 'white',
             fontSize: '16px',
-            wordBreak: 'break-word',
           }}
         >
-          <pre style={{ margin: 0, fontFamily: '"Roboto", sans-serif' }}>
-            {this.props.post.content}
+          <pre style={{
+            margin: 0,
+            fontFamily: '"Roboto", sans-serif',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+            wordWrap: 'break-word',
+          }}
+          >{this.props.post.content}
           </pre>
         </CardText>
 
