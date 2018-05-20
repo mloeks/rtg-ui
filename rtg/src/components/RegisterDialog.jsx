@@ -5,8 +5,8 @@ import { Dialog, FlatButton, TextField } from 'material-ui';
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
+import { lightGrey } from '../theme/RtgTheme';
 
-// TODO P2 improve communication why first and last name are required
 // TODO P2 confirm on enter
 // TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
@@ -146,17 +146,19 @@ class RegisterDialog extends Component {
             style={{ marginRight: '10px', width: '50%' }}
             errorText={this.state.fieldErrors.firstName || false}
             floatingLabelText="Vorname"
-            title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
             onChange={this.updateFirstName}
           />
           <TextField
             style={{ marginLeft: '10px', width: '50%' }}
             errorText={this.state.fieldErrors.lastName || false}
             floatingLabelText="Nachname"
-            title="Wir benötigen deinen Namen, um deine royale Identität zu prüfen."
             onChange={this.updateLastName}
           />
-        </div>
+        </div><br />
+        <p style={{ margin: 0, color: lightGrey, fontSize: '14px' }}>
+          Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
+          Dein Name ist nicht für andere Mitspieler sichtbar.
+        </p>
       </Dialog>
     );
   }
