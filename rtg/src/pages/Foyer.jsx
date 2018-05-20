@@ -5,6 +5,7 @@ import News from '../components/news/News';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import AuthService from '../service/AuthService';
 import BetsOverview from '../components/foyer/BetsOverview';
+import ScheduleOverview from '../components/foyer/ScheduleOverview';
 import Notification, { NotificationType } from '../components/Notification';
 
 import logo from '../theme/img/logo_100px.png';
@@ -52,6 +53,7 @@ const Foyer = () => (
     <BigPicture className="Foyer__schedule-overview" img={scheduleHeadingImg}>
       <h1 className="BigPicture__heading">Spielplan</h1>
     </BigPicture>
+    <ScheduleOverview />
 
     <BigPicture className="Foyer__standings-overview" img={standingsHeadingImg}>
       <h1 className="BigPicture__heading">Aktueller Spielstand</h1>
