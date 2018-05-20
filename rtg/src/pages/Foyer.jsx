@@ -16,8 +16,6 @@ import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.css';
 
-// TODO P1 add more BigPicture sections for introducing various available features/pages
-// on scroll down
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
