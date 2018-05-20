@@ -272,7 +272,7 @@ class BigEditableAvatar extends Component {
                   className="BigEditableAvatar__avatar-elem"
                   backgroundColor={!this.state.avatarUrl ? teal400 : null}
                   icon={!this.state.avatarUrl ? noAvatarPlaceholder : null}
-                  src={`${API_BASE_URL}/media/${this.state.avatarUrl}`}
+                  src={this.state.avatarUrl ? `${API_BASE_URL}/media/${this.state.avatarUrl}` : null}
                   size={this.avatarSize}
                 />
               </label>
