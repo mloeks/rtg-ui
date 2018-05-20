@@ -1,6 +1,33 @@
 .Foyer {
   &__welcome {
-    margin: 20px 0;
+    position: relative;
+    padding: 20px 0;
+
+    &:before {
+      position: absolute;
+      content: '';
+      background: linear-gradient(to right,
+              rgba(255, 255, 255, 0) 0%,
+              rgba(255, 255, 255, 0.6) 50%,
+              rgba(255, 255, 255, 0) 100%);
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      background: url(../theme/img/damask-pattern-400.jpg) repeat;
+      opacity: 0.85;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -2;
+    }
   }
 
   &__top-logo {
