@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import {
   differenceInMinutes,
@@ -62,16 +63,25 @@ class Post extends Component {
     this.state = {
       expanded: false,
       commentCount: props.post.no_comments || 0,
+      contentWrappedForLength: false,
       userDetailsPopoverAnchorEl: null,
       userDetailsPopoverOpen: false,
     };
 
+    this.contentRef = React.createRef();
     this.randomPostColour = randomHueHexColor(40, 90);
+
     this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.showAllContent = this.showAllContent.bind(this);
     this.showUserDetailsPopover = this.showUserDetailsPopover.bind(this);
     this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
     this.handleCommentAdded = this.handleCommentAdded.bind(this);
     this.getCommentCountIncrementedBy = this.getCommentCountIncrementedBy.bind(this);
+  }
+
+  componentDidMount() {
+    const shouldWrapLongContent = this.contentRef.current.clientHeight > this.props.wrapFromHeight;
+    this.setState({ contentWrappedForLength: shouldWrapLongContent });
   }
 
   getCommentCountIncrementedBy(inc, state = this.state) {
@@ -80,6 +90,10 @@ class Post extends Component {
 
   toggleExpanded() {
     this.setState(prevState => ({ expanded: !prevState.expanded }));
+  }
+
+  showAllContent() {
+    this.setState({ contentWrappedForLength: false });
   }
 
   showUserDetailsPopover(e) {
@@ -117,22 +131,37 @@ class Post extends Component {
           }}
         />
 
-        <CardText
-          style={{
-            backgroundColor: 'white',
-            fontSize: '16px',
-          }}
-        >
-          <pre style={{
-            margin: 0,
-            fontFamily: '"Roboto", sans-serif',
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-word',
-            wordWrap: 'break-word',
-          }}
-          >{this.props.post.content}
-          </pre>
-        </CardText>
+        {this.props.post &&
+          <CardText
+            className={`Post__content ${this.state.contentWrappedForLength ? 'Post__content--wrapped' : ''}`}
+            style={{
+              backgroundColor: 'white',
+              fontSize: '16px',
+            }}
+          >
+            <pre
+              ref={this.contentRef}
+              style={{
+                margin: 0,
+                fontFamily: '"Roboto", sans-serif',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                wordWrap: 'break-word',
+              }}
+            >{this.props.post.content}
+            </pre>
+            {this.state.contentWrappedForLength &&
+              <div className="Post__content-show-all">
+                <FlatButton
+                  primary
+                  label="Alles lesen"
+                  labelPosition="before"
+                  icon={<KeyboardArrowDown />}
+                  onClick={this.showAllContent}
+                  labelStyle={{ fontSize: '12px' }}
+                />
+              </div>}
+          </CardText>}
 
         <CardActions
           className="Post__card-actions"
@@ -220,7 +249,13 @@ class Post extends Component {
   }
 }
 
+Post.defaultProps = {
+  // keep this in sync with the CSS max-height prop in Post.scss!
+  wrapFromHeight: 300,
+};
+
 Post.propTypes = {
+  wrapFromHeight: PropTypes.number,
   post: PropTypes.shape().isRequired,
 };
 
