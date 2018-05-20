@@ -61,36 +61,10 @@ class Schedule extends Component {
   }
 
   componentDidMount() {
-    // TODO P2 avoid jumping content when slowly scrolling below threshold
-    // TODO P3 clean up and only do this after data has been loaded? otherwise it does not seem
-    // to work properly when top is no 0 on page load.
-    const toolbar = document.getElementById('schedule-toolbar');
-    toolbar.setAttribute('data-sticky-initial', toolbar.getBoundingClientRect().top);
-
-    document.addEventListener('scroll', () => {
-      const top = document.documentElement.scrollTop || document.body.scrollTop;
-      const bottom = document.documentElement.scrollHeight || document.body.scrollHeight;
-
-      const stickyInitial = parseInt(toolbar.getAttribute('data-sticky-initial'), 10);
-      const stickyEnter = parseInt(toolbar.getAttribute('data-sticky-enter'), 10) || stickyInitial;
-      const stickyExit = parseInt(toolbar.getAttribute('data-sticky-exit'), 10) || bottom;
-
-      if (top >= stickyEnter && top <= stickyExit) {
-        toolbar.classList.add('sticky');
-      } else {
-        toolbar.classList.remove('sticky');
-      }
-    });
-
     this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds');
     this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups');
     this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
     this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
-  }
-
-  componentWillUnmount() {
-    // TODO P2 function must be provided.
-    // document.removeEventListener('scroll');
   }
 
   async fetchData(url, targetStateField) {
@@ -136,8 +110,6 @@ class Schedule extends Component {
         <section
           id="schedule-toolbar"
           className="SchedulePage__toolbar"
-          data-sticky-enter={this.props.stickyToolbarEnter}
-          data-sticky-exit={this.props.stickyToolbarExit}
           style={{
             color: this.props.muiTheme.palette.canvasColor,
             backgroundColor: this.props.muiTheme.palette.scheduleToolbarColor,
@@ -215,8 +187,6 @@ class Schedule extends Component {
 Schedule.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   muiTheme: PropTypes.object.isRequired,
-  stickyToolbarEnter: PropTypes.string,
-  stickyToolbarExit: PropTypes.string,
 };
 
 export default muiThemeable()(Schedule);
