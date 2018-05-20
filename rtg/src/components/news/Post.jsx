@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
 import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
 import {
@@ -222,9 +221,7 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
   post: PropTypes.shape().isRequired,
 };
 
-export default muiThemeable()(Post);
+export default Post;
