@@ -123,7 +123,8 @@ class ForgotPasswordDialog extends Component {
         {this.state.requestInProgress && <CircularProgress />}
         {this.state.passwordReminderSuccessful &&
         <p style={{ color: this.props.muiTheme.palette.successColor, textAlign: 'center' }}>
-          Herzlichen Dank, bitte überprüfe nun Deine E-Mails, um Dein Passwort zurückzusetzen.
+          Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
+          Passwort zurückzusetzen.
         </p>}
       </Dialog>
     );
