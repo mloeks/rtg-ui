@@ -9,7 +9,7 @@ import {
   distanceInWordsStrict,
   format,
   isToday,
-  isYesterday
+  isYesterday,
 } from 'date-fns';
 import de from 'date-fns/locale/de';
 import UserAvatar from '../UserAvatar';
