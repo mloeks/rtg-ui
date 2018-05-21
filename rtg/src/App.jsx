@@ -29,7 +29,7 @@ import './App.css';
 // TODO P3 Implement bottom navigation for mobile breakpoints
 const App = () => {
   const isDemo = window.location.href.match(/.*demo.*/i);
-  const isLocal = window.location.href.match(/.*localhost.*/i);
+  const isLocal = window.location.href.match(/.*(localhost|192.168.).*/i);
 
   return (
     <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
