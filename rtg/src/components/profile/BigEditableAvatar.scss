@@ -8,6 +8,13 @@
     max-width: 500px;
   }
 
+  &__rotation-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 80px;
+    margin: 10px auto 0;
+  }
+
   &__slider-wrapper {
     display: flex;
     align-items: center;

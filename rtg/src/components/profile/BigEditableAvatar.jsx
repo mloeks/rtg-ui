@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { Avatar, CircularProgress, FlatButton, Slider } from 'material-ui';
 import { teal400 } from 'material-ui/styles/colors';
 import Person from 'material-ui/svg-icons/social/person';
+import ImageRotateLeft from 'material-ui/svg-icons/image/rotate-left';
+import ImageRotateRight from 'material-ui/svg-icons/image/rotate-right';
 import AvatarEditor from 'react-avatar-editor';
 import Notification, { NotificationType } from '../Notification';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
+import { purple } from '../../theme/RtgTheme';
 
 import './BigEditableAvatar.css';
 
@@ -21,6 +24,10 @@ const EditingActions = props => (
     onSubmit={(e) => { e.preventDefault(); props.onSave(); }}
     noValidate
   >
+    <div className="BigEditableAvatar__rotation-wrapper">
+      <ImageRotateRight color={purple} onClick={props.onRotateRight} />
+      <ImageRotateLeft color={purple} onClick={props.onRotateLeft} />
+    </div>
     <div className="BigEditableAvatar__slider-wrapper">
       <FlatButton
         primary
@@ -66,6 +73,8 @@ EditingActions.propTypes = {
   onZoomIn: PropTypes.func.isRequired,
   onZoomOut: PropTypes.func.isRequired,
   onZoomChange: PropTypes.func.isRequired,
+  onRotateLeft: PropTypes.func.isRequired,
+  onRotateRight: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
@@ -76,7 +85,6 @@ EditingActions.propTypes = {
 // works on firefox. How to disable it in Chrome? Open issue in github?
 
 // TODO P2 investigate about console error on editing save and cancel
-// TODO P3 offer rotate button(s)
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -93,6 +101,7 @@ class BigEditableAvatar extends Component {
       cropError: '',
 
       avatarEditScale: 1.2,
+      avatarRotation: 0,
 
       uploadInProgress: false,
       uploadError: '',
@@ -116,6 +125,7 @@ class BigEditableAvatar extends Component {
     this.setEditorRef = this.setEditorRef.bind(this);
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
     this.handleAvatarZoom = this.handleAvatarZoom.bind(this);
+    this.handleAvatarRotate = this.handleAvatarRotate.bind(this);
     this.handleEditSave = this.handleEditSave.bind(this);
   }
 
@@ -169,6 +179,10 @@ class BigEditableAvatar extends Component {
       if (newVal >= MAX_AVATAR_ZOOM) { newVal = MAX_AVATAR_ZOOM; }
       return { avatarEditScale: newVal };
     });
+  }
+
+  handleAvatarRotate(increment) {
+    this.setState(prevState => ({ avatarRotation: (prevState.avatarRotation += increment) }));
   }
 
   handleEditSave() {
@@ -253,7 +267,7 @@ class BigEditableAvatar extends Component {
               border={0}
               borderRadius={this.avatarSize / 2}
               scale={this.state.avatarEditScale}
-              rotate={0}
+              rotate={this.state.avatarRotation}
               style={{ borderRadius: this.avatarSize / 2 }}
             />}
 
@@ -285,6 +299,8 @@ class BigEditableAvatar extends Component {
             onZoomIn={() => this.handleAvatarZoom(1)}
             onZoomOut={() => this.handleAvatarZoom(-1)}
             onZoomChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
+            onRotateLeft={() => this.handleAvatarRotate(-90)}
+            onRotateRight={() => this.handleAvatarRotate(90)}
             onSave={this.handleEditSave}
             onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
             style={{ maxWidth: avatarPlusBorderSize, margin: '0 auto' }}
