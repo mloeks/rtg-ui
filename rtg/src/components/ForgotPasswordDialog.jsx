@@ -88,7 +88,7 @@ class ForgotPasswordDialog extends Component {
 
     const titleDiv = (
       <div style={{ fontSize: '16px', textAlign: 'center', marginBottom: 0, paddingBottom: 0 }}>
-        <h2 style={{ margin: 0 }}>Passwort vergessen</h2>
+        <h3 style={{ margin: 0 }}>Passwort vergessen</h3>
         <p style={{ marginBottom: '0', lineHeight: 1.4 }}>Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.</p>
 
         {this.state.formHasErrors &&
@@ -100,16 +100,14 @@ class ForgotPasswordDialog extends Component {
         className="ForgotPasswordDialog"
         actions={actions}
         autoScrollBodyContent
-        autoDetectWindowHeight={false}
         modal
         open={this.props.open}
-        title={titleDiv}
         repositionOnUpdate={false}
+        title={titleDiv}
         style={{ textAlign: 'left', paddingTop: 0 }}
         contentClassName="ForgotPasswordDialog__content"
-        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 30px)' }}
+        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 0)' }}
       >
-
         {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
           <TextField
             errorText={this.state.fieldErrors.email || false}
@@ -117,7 +115,6 @@ class ForgotPasswordDialog extends Component {
             fullWidth
             value={this.state.email}
             onChange={this.updateEmail}
-            inputStyle={{ marginTop: 0 }}
           />}
 
         {this.state.requestInProgress && <CircularProgress />}

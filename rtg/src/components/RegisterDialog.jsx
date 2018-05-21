@@ -119,7 +119,7 @@ class RegisterDialog extends Component {
           </div>}
         style={{ textAlign: 'left', paddingTop: 0 }}
         titleStyle={{ padding: '12px' }}
-        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 30px)' }}
+        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 0)' }}
       >
 
         <TextField
