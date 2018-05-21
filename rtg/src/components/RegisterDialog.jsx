@@ -106,6 +106,7 @@ class RegisterDialog extends Component {
         autoScrollBodyContent
         modal
         open={this.props.open}
+        repositionOnUpdate={false}
         title={
           <div style={{ textAlign: 'center' }}>
             <h3 style={{ margin: '10px auto' }}>Werde Teil der RTG</h3>
@@ -116,9 +117,9 @@ class RegisterDialog extends Component {
                 subtitle="Bitte versuche es erneut."
               />}
           </div>}
-        style={{ textAlign: 'left' }}
+        style={{ textAlign: 'left', paddingTop: 0 }}
         titleStyle={{ padding: '12px' }}
-        contentStyle={{ width: '95%' }}
+        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 30px)' }}
       >
 
         <TextField

@@ -100,11 +100,14 @@ class ForgotPasswordDialog extends Component {
         className="ForgotPasswordDialog"
         actions={actions}
         autoScrollBodyContent
+        autoDetectWindowHeight={false}
         modal
         open={this.props.open}
         title={titleDiv}
-        style={{ textAlign: 'left' }}
-        contentStyle={{ width: '95%' }}
+        repositionOnUpdate={false}
+        style={{ textAlign: 'left', paddingTop: 0 }}
+        contentClassName="ForgotPasswordDialog__content"
+        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 30px)' }}
       >
 
         {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
@@ -114,6 +117,7 @@ class ForgotPasswordDialog extends Component {
             fullWidth
             value={this.state.email}
             onChange={this.updateEmail}
+            inputStyle={{ marginTop: 0 }}
           />}
 
         {this.state.requestInProgress && <CircularProgress />}
