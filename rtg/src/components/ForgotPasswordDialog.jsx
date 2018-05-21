@@ -45,9 +45,7 @@ class ForgotPasswordDialog extends Component {
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-
+  handleSubmit() {
     this.setState({ requestInProgress: true });
     AuthService.requestPasswordReset(this.state.email).then(() => {
       this.setState({
@@ -81,10 +79,10 @@ class ForgotPasswordDialog extends Component {
       actions.push(<FlatButton
         label="Abschicken"
         primary
-        type="submit"
         disabled={
           !this.state.email || this.state.email.length === 0 || this.state.requestInProgress
         }
+        onClick={this.handleSubmit}
       />);
     }
 
@@ -110,15 +108,13 @@ class ForgotPasswordDialog extends Component {
       >
 
         {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
-        <form onSubmit={this.handleSubmit} noValidate>
           <TextField
             errorText={this.state.fieldErrors.email || false}
             floatingLabelText="E-Mail Adresse"
             fullWidth
             value={this.state.email}
             onChange={this.updateEmail}
-          />
-        </form>}
+          />}
 
         {this.state.requestInProgress && <CircularProgress />}
         {this.state.passwordReminderSuccessful &&
