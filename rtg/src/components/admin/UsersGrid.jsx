@@ -39,7 +39,17 @@ class UsersGrid extends Component {
 
   render() {
     return (
-      <section className="UsersGrid" style={{ display: 'flex', flexWrap: 'wrap', padding: '10px' }}>
+      <section
+        className="UsersGrid"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          margin: '20px auto',
+          padding: '10px',
+          maxWidth: 1024,
+        }}
+      >
         {this.state.users.map(user => (
           <UserCard
             key={`user-card-${user.pk}`}
