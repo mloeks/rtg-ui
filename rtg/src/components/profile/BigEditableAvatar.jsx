@@ -11,7 +11,7 @@ import FetchHelper from '../../service/FetchHelper';
 import './BigEditableAvatar.css';
 
 const MIN_AVATAR_ZOOM = 1;
-const MAX_AVATAR_ZOOM = 3;
+const MAX_AVATAR_ZOOM = 5;
 const AVATAR_ZOOM_INCREMENT = 0.2;
 
 const EditingActions = props => (
