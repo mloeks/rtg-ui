@@ -16,7 +16,7 @@ import Schedule from './pages/Schedule';
 import Standings from './pages/Standings';
 import Profile from './pages/Profile';
 
-import Admin from './pages/Admin';
+import AdminUsers from './pages/AdminUsers';
 import PermissionDenied from './pages/403';
 import PasswordReset from './pages/PasswordReset';
 
@@ -58,7 +58,7 @@ const App = () => {
           <AuthRoute exact path="/standings" component={Standings} />
           <AuthRoute exact path="/profile" component={Profile} />
 
-          <AdminRoute exact path="/admin" component={Admin} />
+          <AdminRoute exact path="/admin/users" component={AdminUsers} />
         </Switch>
       </div>
     </MuiThemeProvider>

@@ -81,8 +81,8 @@ const DrawerMenu = (props) => {
       <Divider />
 
       {AuthService.isAdmin() &&
-        <Link to="/admin">
-          <MenuItem primaryText="Administration" leftIcon={<ActionSettings />} />
+        <Link to="/admin/users">
+          <MenuItem primaryText="Benutzerverwaltung" leftIcon={<ActionSettings />} />
         </Link>}
 
       <MenuItem primaryText="Ausloggen" leftIcon={<ActionExitToApp />} onClick={props.onLogout} />
