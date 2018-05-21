@@ -303,7 +303,7 @@ class BigEditableAvatar extends Component {
             onRotateRight={() => this.handleAvatarRotate(90)}
             onSave={this.handleEditSave}
             onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
-            style={{ maxWidth: avatarPlusBorderSize, margin: '0 auto' }}
+            style={{ maxWidth: 250, margin: '0 auto' }}
           />}
 
         <div className="BigEditableAvatar__feedback">
