@@ -12,6 +12,9 @@ class UsersGrid extends Component {
       loading: true,
       loadingError: false,
     };
+
+    this.handleHasPaidUpdated = this.handleHasPaidUpdated.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -28,13 +31,21 @@ class UsersGrid extends Component {
   }
 
   handleHasPaidUpdated(userId, hasPaid) {
-    // TODO
-    console.log(`User ${userId} has paid = ${hasPaid}`);
+    this.setState((prevState) => {
+      const updatedUsers = prevState.users.slice(0);
+      const updatedUserIndex = updatedUsers.findIndex(u => u.pk === userId);
+      updatedUsers[updatedUserIndex].has_paid = hasPaid;
+      return { users: updatedUsers };
+    });
   }
 
   handleDelete(userId) {
-    // TODO
-    console.log(`Delete user ${userId}`);
+    this.setState((prevState) => {
+      const updatedUsers = prevState.users.slice(0);
+      const updatedUserIndex = updatedUsers.findIndex(u => u.pk === userId);
+      updatedUsers.splice(updatedUserIndex, 1);
+      return { users: updatedUsers };
+    });
   }
 
   render() {
