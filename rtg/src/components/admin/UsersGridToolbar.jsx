@@ -7,8 +7,9 @@ import ActionFace from 'material-ui/svg-icons/action/face';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import { teal200 } from 'material-ui/styles/colors';
 
+// TODO P2 fine-tune styling, add empty icon to search field
 const UsersGridToolbar = props => (
-  <Toolbar style={{ backgroundColor: teal200 }}>
+  <Toolbar style={{ backgroundColor: teal200, height: '60px' }}>
     <ToolbarGroup firstChild>
       <IconMenu
         iconButtonElement={
@@ -37,6 +38,7 @@ const UsersGridToolbar = props => (
         floatingLabelText="User suchen"
         value={props.searchTerm}
         onChange={(e, v) => props.onSearchTermUpdated(v)}
+        style={{ margin: '-15px 0 0 10px' }}
       />
     </ToolbarGroup>
   </Toolbar>
