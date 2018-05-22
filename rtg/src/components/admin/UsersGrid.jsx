@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import AuthService, { API_BASE_URL } from "../../service/AuthService";
-import FetchHelper from "../../service/FetchHelper";
-import UserCard from "./UserCard";
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import FetchHelper from '../../service/FetchHelper';
+import UserCard from './UserCard';
+import Notification, { NotificationType } from '../Notification';
+import { CircularProgress } from 'material-ui';
+import UsersGridToolbar from './UsersGridToolbar';
+import { grey } from '../../theme/RtgTheme';
 
 class UsersGrid extends Component {
   constructor(props) {
@@ -9,12 +13,17 @@ class UsersGrid extends Component {
     this.state = {
       users: [],
 
+      searchTerm: '',
+      filterActive: true,
+      filterHasNotPaid: false,
+
       loading: true,
       loadingError: false,
     };
 
     this.handleHasPaidUpdated = this.handleHasPaidUpdated.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleSearchTermUpdated = this.handleSearchTermUpdated.bind(this);
   }
 
   componentDidMount() {
@@ -48,26 +57,70 @@ class UsersGrid extends Component {
     });
   }
 
+  handleSearchTermUpdated(searchTerm) {
+    this.setState({ searchTerm });
+  }
+
   render() {
+    let filteredUsers = this.state.users;
+    if (this.state.filterActive) {
+      filteredUsers = filteredUsers.filter(user => user.last_login !== null);
+    }
+    if (this.state.filterHasNotPaid) {
+      filteredUsers = filteredUsers.filter(user => !user.has_paid);
+    }
+    if (this.state.searchTerm) {
+      filteredUsers = filteredUsers.filter(user => (
+        `${user.username} ${user.first_name} ${user.last_name}`.toLowerCase()
+          .indexOf(this.state.searchTerm.toLowerCase()) !== -1));
+    }
+
     return (
-      <section
-        className="UsersGrid"
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          margin: '20px auto',
-          padding: '10px',
-          maxWidth: 1024,
-        }}
-      >
-        {this.state.users.map(user => (
-          <UserCard
-            key={`user-card-${user.pk}`}
-            onHasPaidUpdated={this.handleHasPaidUpdated}
-            onDelete={this.handleDelete}
-            {...user}
-          />))}
+      <section style={{ margin: '20px auto', maxWidth: 1024 }}>
+        <UsersGridToolbar
+          searchTerm={this.state.searchTerm}
+          filterActive={this.state.filterActive}
+          filterHasNotPaid={this.state.filterHasNotPaid}
+
+          onFilterActiveToggled={() =>
+            this.setState((prevState) => ({ filterActive: !prevState.filterActive }))}
+          onFilterHasNotPaidToggled={() =>
+            this.setState((prevState) => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
+          onSearchTermUpdated={this.handleSearchTermUpdated}
+        />
+
+        {this.state.loading && <CircularProgress />}
+        {this.state.loadingError &&
+        <Notification
+          type={NotificationType.ERROR}
+          title="Fehler beim Laden"
+          subtitle="Bitte versuche es erneut."
+          style={{ margin: '20px auto', maxWidth: '640px' }}
+        />}
+
+        {(!this.state.loading && !this.state.loadingError) &&
+          <div style={{ margin: '20px 0', fontSize: '14px', color: grey }}>
+            {filteredUsers.length === 0 ? 'Keine' : filteredUsers.length} User gefunden.
+          </div>}
+
+        <div
+          className="UsersGrid__grid"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            margin: '20px auto',
+            padding: '10px',
+          }}
+        >
+          {filteredUsers.map(user => (
+            <UserCard
+              key={`user-card-${user.pk}`}
+              onHasPaidUpdated={this.handleHasPaidUpdated}
+              onDelete={this.handleDelete}
+              {...user}
+            />))}
+        </div>
       </section>
     );
   }
