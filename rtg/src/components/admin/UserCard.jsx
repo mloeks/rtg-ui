@@ -16,7 +16,7 @@ import ActionEuroSymbol from 'material-ui/svg-icons/action/euro-symbol';
 import AlertWarning from 'material-ui/svg-icons/alert/warning';
 import Person from 'material-ui/svg-icons/social/person';
 import { teal400 } from 'material-ui/styles/colors';
-import { API_BASE_URL } from '../../service/AuthService';
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { darkGold, darkGrey, error, gold, grey, lightGrey } from '../../theme/RtgTheme';
 import { lightenDarkenColor } from '../../service/ColorHelper';
 
@@ -63,7 +63,25 @@ class UserCard extends Component {
   }
 
   toggleHasPaid() {
-    this.props.onHasPaidUpdated(this.props.pk, !this.props.has_paid);
+    this.setState({ savingInProgress: true, savingIssues: false }, () => {
+      const newHasPaid = !this.props.has_paid;
+
+      fetch(`${API_BASE_URL}/rtg/users_admin/${this.props.pk}/`, {
+        method: 'PATCH',
+        body: JSON.stringify({ has_paid: newHasPaid }),
+        headers: {
+          Authorization: `Token ${AuthService.getToken()}`,
+          'content-type': 'application/json',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          this.setState({ savingInProgress: false });
+          this.props.onHasPaidUpdated(this.props.pk, newHasPaid);
+        } else {
+          this.setState({ savingInProgress: false, savingIssues: true });
+        }
+      }).catch(() => this.setState({ savingInProgress: false, savingIssues: true }));
+    });
   }
 
   handleDeleteRequest() {
@@ -75,8 +93,23 @@ class UserCard extends Component {
   }
 
   handleDelete() {
-    this.setState({ deleteConfirmationModalOpen: false });
-    this.props.onDelete(this.props.pk);
+    this.setState({
+      savingInProgress: true,
+      savingIssues: false,
+      deleteConfirmationModalOpen: false,
+    }, () => {
+      fetch(`${API_BASE_URL}/rtg/users/${this.props.pk}/`, {
+        method: 'DELETE',
+        headers: { Authorization: `Token ${AuthService.getToken()}` },
+      }).then((response) => {
+        if (response.ok) {
+          this.setState({ savingInProgress: false });
+          this.props.onDelete(this.props.pk);
+        } else {
+          this.setState({ savingInProgress: false, savingIssues: true });
+        }
+      }).catch(() => this.setState({ savingInProgress: false, savingIssues: true }));
+    });
   }
 
   render() {
