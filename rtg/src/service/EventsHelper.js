@@ -54,6 +54,7 @@ export class ThrottledEventListener {
 export class ThrottledScrollPositionListener {
   constructor() {
     this.callbacks = [];
+    this.secondToLastKnownScrollPosition = 0;
     this.lastKnownScrollPosition = 0;
     this.ticking = false;
 
@@ -63,12 +64,18 @@ export class ThrottledScrollPositionListener {
   }
 
   _runCallbacks() {
-    this.callbacks.forEach((callback) => { callback(this.lastKnownScrollPosition); });
+    this.callbacks.forEach((callback) => {
+      callback(
+        this.lastKnownScrollPosition,
+        this.lastKnownScrollPosition - this.secondToLastKnownScrollPosition,
+      );
+    });
     this.ticking = false;
   }
 
   _listener() {
     // Note that IE does not support scrollY
+    this.secondToLastKnownScrollPosition = this.lastKnownScrollPosition;
     this.lastKnownScrollPosition =
       typeof window.scrollY === 'undefined' ? window.pageYOffset : window.scrollY;
 
