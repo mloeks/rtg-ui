@@ -26,11 +26,13 @@
   }
 
   &__author {
-    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   &__content {
-    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   &__actions {

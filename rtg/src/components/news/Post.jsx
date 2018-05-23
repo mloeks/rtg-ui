@@ -127,6 +127,7 @@ class Post extends Component {
             fontSize: '32px',
             fontFamily: '"Lobster Two", sans-serif',
             wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         />
 
@@ -145,7 +146,7 @@ class Post extends Component {
                 fontFamily: '"Roboto", sans-serif',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
               }}
             >{this.props.post.content}
             </pre>

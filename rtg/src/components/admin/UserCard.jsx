@@ -194,6 +194,7 @@ class UserCard extends Component {
               fontSize: '14px',
               fontWeight: 400,
               wordBreak: 'break-word',
+              overflowWrap: 'break-word',
             }}
             ><span>{this.props.email}</span><br />
               {this.props.email2 && <span>{this.props.email2}</span>}

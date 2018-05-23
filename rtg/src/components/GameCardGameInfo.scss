@@ -85,6 +85,7 @@
 
   &__city, &__userBet, &__points {
     text-align: center;
-    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }
