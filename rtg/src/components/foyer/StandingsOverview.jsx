@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FlatButton } from 'material-ui';
 import StandingsTable from '../standings/StandingsTable';
 
+// TODO P2 show ranks around current user instead of top of table
 // TODO P3 lazy load standings when scrolled into view
 const StandingsOverview = () => (
   <section style={{ margin: '20px auto', maxWidth: 640 }}>

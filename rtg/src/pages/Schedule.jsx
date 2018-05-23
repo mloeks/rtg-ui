@@ -16,6 +16,7 @@ import Notification, { NotificationType } from '../components/Notification';
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
+// TODO P2 add possibility to add games for admins
 // TODO P2 switch to current game/round automatically
 class Schedule extends Component {
   static createGameCardsWithDateSubheadings(games, bets) {

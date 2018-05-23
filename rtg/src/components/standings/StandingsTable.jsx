@@ -32,7 +32,7 @@ export const pointsColumnStyle = {
   fontWeight: 'bold',
 };
 
-// TODO P2 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
+// TODO P3 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   static identicalRank(row, lastRow) {
     return row && lastRow &&

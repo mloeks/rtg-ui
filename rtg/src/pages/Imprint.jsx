@@ -117,7 +117,6 @@ const Imprint = () => (
 
       <h2>Bildquellen</h2>
       <p>
-        {/* TODO P2 korrekte Bildquellen angeben */}
         Alle Bildmaterialien sind Public Domain, bezogen von&nbsp;
         <a href="http://www.pixabay.com" target="_blank" rel="noopener noreferrer">Pixabay</a> &&nbsp;
         <a href="http://www.unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
