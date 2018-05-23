@@ -5,15 +5,27 @@ import ContentFilterList from 'material-ui/svg-icons/content/filter-list';
 import ActionEuroSymbol from 'material-ui/svg-icons/action/euro-symbol';
 import ActionFace from 'material-ui/svg-icons/action/face';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import ContentBackspace from 'material-ui/svg-icons/content/backspace';
 import { teal200 } from 'material-ui/styles/colors';
+import { darkGrey, grey } from '../../theme/RtgTheme';
 
-// TODO P2 fine-tune styling, add empty icon to search field
 const UsersGridToolbar = props => (
-  <Toolbar style={{ backgroundColor: teal200, height: '60px' }}>
+  <Toolbar
+    style={{
+      position: 'sticky',
+      top: 0,
+      backgroundColor: teal200,
+      height: '60px',
+      boxShadow: '0 3px 5px rgba(57, 63, 72, 0.3)',
+      zIndex: 100,
+    }}
+  >
     <ToolbarGroup firstChild>
       <IconMenu
         iconButtonElement={
-          <IconButton touch><ContentFilterList /></IconButton>
+          <IconButton>
+            <ContentFilterList color={grey} hoverColor={darkGrey} />
+          </IconButton>
         }
       >
         <MenuItem
@@ -24,7 +36,7 @@ const UsersGridToolbar = props => (
           style={{ textAlign: 'left' }}
         />
         <MenuItem
-          primaryText="Nur fehlender Tippeinsatz"
+          primaryText="Tippeinsatz unbezahlt"
           rightIcon={<ActionEuroSymbol />}
           checked={props.filterHasNotPaid}
           onClick={props.onFilterHasNotPaidToggled}
@@ -32,14 +44,30 @@ const UsersGridToolbar = props => (
         />
       </IconMenu>
     </ToolbarGroup>
-    <ToolbarGroup>
-      <ActionSearch />
+    <ToolbarGroup style={{ position: 'relative' }}>
+      <ActionSearch style={{
+        position: 'absolute',
+        left: 0,
+        bottom: '20px',
+        width: 20,
+        height: 20,
+        color: grey,
+      }}
+      />
       <TextField
-        floatingLabelText="User suchen"
+        hintText="User suchen"
         value={props.searchTerm}
         onChange={(e, v) => props.onSearchTermUpdated(v)}
-        style={{ margin: '-15px 0 0 10px' }}
+        hintStyle={{ padding: '0 25px' }}
+        inputStyle={{ padding: '0 25px' }}
       />
+      <IconButton
+        iconStyle={{ width: 20, height: 20 }}
+        style={{ position: 'absolute', right: 0, bottom: '5px' }}
+        onClick={() => props.onSearchTermUpdated('')}
+      >
+        <ContentBackspace color={grey} hoverColor={darkGrey} />
+      </IconButton>
     </ToolbarGroup>
   </Toolbar>
 );
