@@ -6,8 +6,9 @@ import ActionEuroSymbol from 'material-ui/svg-icons/action/euro-symbol';
 import ActionFace from 'material-ui/svg-icons/action/face';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
-import { teal200 } from 'material-ui/styles/colors';
-import { darkGrey, grey } from '../../theme/RtgTheme';
+import { teal200, teal400 } from 'material-ui/styles/colors';
+import { darkGrey, grey, lightGrey } from '../../theme/RtgTheme';
+import { lightenDarkenColor } from "../../service/ColorHelper";
 
 const UsersGridToolbar = props => (
   <Toolbar
@@ -22,6 +23,8 @@ const UsersGridToolbar = props => (
   >
     <ToolbarGroup firstChild>
       <IconMenu
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        clickCloseDelay={0}
         iconButtonElement={
           <IconButton>
             <ContentFilterList color={grey} hoverColor={darkGrey} />
@@ -30,15 +33,17 @@ const UsersGridToolbar = props => (
       >
         <MenuItem
           primaryText="Nur aktive User"
-          rightIcon={<ActionFace />}
+          rightIcon={<ActionFace color={teal400} />}
           checked={props.filterActive}
+          insetChildren
           onClick={props.onFilterActiveToggled}
           style={{ textAlign: 'left' }}
         />
         <MenuItem
           primaryText="Tippeinsatz unbezahlt"
-          rightIcon={<ActionEuroSymbol />}
+          rightIcon={<ActionEuroSymbol color={lightenDarkenColor(lightGrey, 40)} />}
           checked={props.filterHasNotPaid}
+          insetChildren
           onClick={props.onFilterHasNotPaidToggled}
           style={{ textAlign: 'left' }}
         />
@@ -63,7 +68,7 @@ const UsersGridToolbar = props => (
       />
       <IconButton
         iconStyle={{ width: 20, height: 20 }}
-        style={{ position: 'absolute', right: 0, bottom: '5px' }}
+        style={{ position: 'absolute', right: 0, bottom: '6px' }}
         onClick={() => props.onSearchTermUpdated('')}
       >
         <ContentBackspace color={grey} hoverColor={darkGrey} />
