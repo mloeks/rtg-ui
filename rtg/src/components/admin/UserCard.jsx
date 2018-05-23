@@ -35,8 +35,8 @@ const DeleteConfirmationModal = (props) => {
       open={props.open}
       title="Löschen bestätigen"
     >
-      &quot;{props.username}&quot; wirklich endgültig löschen?<br />
-      Diese Aktion kann nicht rückgängig gemacht werden!
+      &quot;{props.username}&quot; endgültig löschen?<br />
+      Dies kann nicht rückgängig gemacht werden!
     </Dialog>
   );
 };
@@ -48,6 +48,7 @@ DeleteConfirmationModal.propTypes = {
   onConfirm: PropTypes.func.isRequired,
 };
 
+// TODO P3 add possibility to change username inline
 class UserCard extends Component {
   constructor(props) {
     super(props);
