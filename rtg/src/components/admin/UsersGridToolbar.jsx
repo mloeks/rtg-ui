@@ -64,7 +64,7 @@ const UsersGridToolbar = props => (
         value={props.searchTerm}
         onChange={(e, v) => props.onSearchTermUpdated(v)}
         hintStyle={{ padding: '0 25px' }}
-        inputStyle={{ padding: '0 25px' }}
+        inputStyle={{ padding: '0 25px', width: 'auto' }}
       />
       <IconButton
         iconStyle={{ width: 20, height: 20 }}
