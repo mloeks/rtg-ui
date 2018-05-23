@@ -109,8 +109,8 @@ class UsersGrid extends Component {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            margin: '20px auto',
-            padding: '10px',
+            margin: '0 auto',
+            padding: '0 10px',
           }}
         >
           {filteredUsers.map(user => (

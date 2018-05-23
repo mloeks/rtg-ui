@@ -20,7 +20,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { darkGold, darkGrey, error, gold, grey, lightGrey } from '../../theme/RtgTheme';
 import { lightenDarkenColor } from '../../service/ColorHelper';
 
-const CARD_SIZE = 180;
+const CARD_SIZE = 140;
 
 const DeleteConfirmationModal = (props) => {
   const actions = [
@@ -154,7 +154,7 @@ class UserCard extends Component {
           style={{
             width: CARD_SIZE,
             textAlign: 'left',
-            margin: '5px',
+            margin: '0 5px 10px',
           }}
           containerStyle={{ display: 'flex', flexDirection: 'column', height: '100%' }}
         >
@@ -167,21 +167,21 @@ class UserCard extends Component {
                   color: 'white',
                   textShadow: 'black 1px 1px 4px',
                   fontFamily: '"Lobster Two", sans-serif',
-                  fontSize: '20px',
-                  lineHeight: '24px',
+                  fontSize: '18px',
+                  lineHeight: '18px',
                 }}
               />
             }
-            style={{ height: 0.7 * CARD_SIZE, overflow: 'hidden', opacity: isInactive ? 0.3 : 1 }}
-            mediaStyle={{ height: '100%', marginTop: this.props.avatar ? '-15%' : '0' }}
-            overlayContentStyle={{ background: 'rgba(0, 0, 0, 0.35)' }}
+            style={{ height: 0.8 * CARD_SIZE, overflow: 'hidden', opacity: isInactive ? 0.3 : 1 }}
+            mediaStyle={{ height: '100%', marginTop: this.props.avatar ? '-10%' : '0' }}
+            overlayContentStyle={{ paddingTop: 0, background: 'rgba(0, 0, 0, 0.35)' }}
           >
             {this.props.avatar && <img src={`${API_BASE_URL}/media/${this.props.avatar}`} alt="User avatar" />}
             {!this.props.avatar && noAvatarPlaceholder}
           </CardMedia>
           <CardText
             style={{
-              fontSize: '16px',
+              fontSize: '14px',
               flexGrow: 1,
               padding: '10px',
               opacity: isInactive ? 0.3 : 1,
@@ -192,7 +192,7 @@ class UserCard extends Component {
             </span><br />
             <div style={{
               color: grey,
-              fontSize: '14px',
+              fontSize: '12px',
               fontWeight: 400,
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
