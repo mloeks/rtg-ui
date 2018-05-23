@@ -80,6 +80,7 @@ class AddComment extends Component {
             ref={(input) => { this.textInput = input; }}
             name="content"
             floatingLabelText={this.props.label}
+            multiLine
             value={this.state.content}
             errorText={this.state.contentError}
             style={{ textAlign: 'left', flexGrow: 1 }}

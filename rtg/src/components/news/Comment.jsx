@@ -72,7 +72,7 @@ class Comment extends Component {
               </span>
               <span>{getFormattedPostDate(this.props.comment.date_created)}</span>
             </div>
-            <div className="Comment__content">{this.props.comment.content}</div>
+            <pre className="Comment__content">{this.props.comment.content}</pre>
           </div>
         </div>
 
