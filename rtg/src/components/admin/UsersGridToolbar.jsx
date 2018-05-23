@@ -2,13 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, IconMenu, MenuItem, TextField, Toolbar, ToolbarGroup } from 'material-ui';
 import ContentFilterList from 'material-ui/svg-icons/content/filter-list';
-import ActionEuroSymbol from 'material-ui/svg-icons/action/euro-symbol';
-import ActionFace from 'material-ui/svg-icons/action/face';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
-import { teal200, teal400 } from 'material-ui/styles/colors';
-import { darkGrey, grey, lightGrey } from '../../theme/RtgTheme';
-import { lightenDarkenColor } from "../../service/ColorHelper";
+import { teal200 } from 'material-ui/styles/colors';
+import { darkGrey, grey } from '../../theme/RtgTheme';
 
 const UsersGridToolbar = props => (
   <Toolbar
@@ -33,7 +30,6 @@ const UsersGridToolbar = props => (
       >
         <MenuItem
           primaryText="Nur aktive User"
-          rightIcon={<ActionFace color={teal400} />}
           checked={props.filterActive}
           insetChildren
           onClick={props.onFilterActiveToggled}
@@ -41,7 +37,6 @@ const UsersGridToolbar = props => (
         />
         <MenuItem
           primaryText="Tippeinsatz unbezahlt"
-          rightIcon={<ActionEuroSymbol color={lightenDarkenColor(lightGrey, 40)} />}
           checked={props.filterHasNotPaid}
           insetChildren
           onClick={props.onFilterHasNotPaidToggled}
