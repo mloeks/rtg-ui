@@ -16,10 +16,12 @@ const HEADER_HEIGHT = 64;
 class Header extends Component {
   constructor(props) {
     super(props);
+    const initialYPos = scrollY();
+
     this.state = {
       menuOpen: false,
-      scrollingUp: true, // initial down scroll should detect a "scrolling down" change
-      headerTop: 0,
+      scrollingUp: initialYPos === 0, // initial down scroll should detect a "scrolling down" change
+      headerTop: initialYPos === 0 ? 0 : -HEADER_HEIGHT,
     };
 
     this.headerRef = React.createRef();
@@ -31,7 +33,7 @@ class Header extends Component {
 
   componentDidMount() {
     this.scrollHandler = new ThrottledScrollPositionListener();
-    this.scrollHandler.addCallback(debounce(this.onScroll, 100));
+    this.scrollHandler.addCallback(debounce(this.onScroll, 150));
   }
 
   componentWillUnmount() {
@@ -40,18 +42,17 @@ class Header extends Component {
     }
   }
 
-  // TODO P1 upscroll on top of the page does not make the header re-appear
-  // TODO P1 does this work with page loads where scrollY > 0? (e.g. browser back)
+  // TODO P1 does not work correctly yet with page reloads where scrollY > 0
   onScroll(position, increment) {
     this.setState((prevState) => {
-      if (scrollY() < 2 * HEADER_HEIGHT) {
-        return null;
-      }
-      if (prevState.scrollingUp && increment > 0) {
-        return { scrollingUp: false, headerTop: -HEADER_HEIGHT };
-      }
       if (!prevState.scrollingUp && increment < 0) {
         return { scrollingUp: true, headerTop: 0 };
+      }
+      if (prevState.scrollingUp && increment > 0) {
+        if (scrollY() < HEADER_HEIGHT) {
+          return null;
+        }
+        return { scrollingUp: false, headerTop: -HEADER_HEIGHT };
       }
       return null;
     });
