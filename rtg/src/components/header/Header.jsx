@@ -16,16 +16,11 @@ const HEADER_HEIGHT = 64;
 class Header extends Component {
   constructor(props) {
     super(props);
-    const initialYPos = scrollY();
-
-    this.state = {
-      menuOpen: false,
-      scrollingUp: initialYPos === 0, // initial down scroll should detect a "scrolling down" change
-      headerTop: initialYPos === 0 ? 0 : -HEADER_HEIGHT,
-    };
+    this.state = { menuOpen: false };
 
     this.headerRef = React.createRef();
     this.scrollHandler = null;
+    this.lastKnownYPos = scrollY();
 
     this.onScroll = this.onScroll.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
@@ -33,7 +28,7 @@ class Header extends Component {
 
   componentDidMount() {
     this.scrollHandler = new ThrottledScrollPositionListener();
-    this.scrollHandler.addCallback(debounce(this.onScroll, 150));
+    this.scrollHandler.addCallback(debounce(this.onScroll, 100));
   }
 
   componentWillUnmount() {
@@ -42,20 +37,25 @@ class Header extends Component {
     }
   }
 
-  // TODO P1 does not work correctly yet with page reloads where scrollY > 0
-  onScroll(position, increment) {
-    this.setState((prevState) => {
-      if (!prevState.scrollingUp && increment < 0) {
-        return { scrollingUp: true, headerTop: 0 };
-      }
-      if (prevState.scrollingUp && increment > 0) {
-        if (scrollY() < HEADER_HEIGHT) {
-          return null;
-        }
-        return { scrollingUp: false, headerTop: -HEADER_HEIGHT };
-      }
-      return null;
-    });
+  // Adopted from https://medium.com/@mariusc23/hide-header-on-scroll-down-show-on-scroll-up-67bbaae9a78c
+  // solved without state updates in order to be more performant and avoid render the entire
+  // children tree.
+  onScroll(position) {
+    const delta = position - this.lastKnownYPos;
+    const headerEl = this.headerRef.current;
+
+    if (delta > 0 && position > HEADER_HEIGHT) {
+      // If current position > last position AND scrolled past navbar...
+      // Scroll Down
+      headerEl.classList.remove('nav-down');
+      headerEl.classList.add('nav-up');
+    } else if (position + window.innerHeight < document.body.scrollHeight) {
+      // If did not scroll past the document (possible on mac)...
+      // Scroll Up
+      headerEl.classList.remove('nav-up');
+      headerEl.classList.add('nav-down');
+    }
+    this.lastKnownYPos = position;
   }
 
   handleMenuToggle() {
@@ -84,11 +84,7 @@ class Header extends Component {
           return (
             <Fragment>
               <div className="Header__fixed-placeholder" style={{ height: HEADER_HEIGHT }} />
-              <header
-                ref={this.headerRef}
-                className="Header"
-                style={{ top: this.state.headerTop }}
-              >
+              <header ref={this.headerRef} className="Header">
                 {createAppBarVariant(userContext, loggedIn, 'RTG', 'Header__AppBar--mobile')}
                 {createAppBarVariant(userContext, loggedIn, 'Royale Tippgemeinschaft', 'Header__AppBar--desktop')}
                 {loggedIn && <DrawerMenu
