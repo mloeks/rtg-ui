@@ -5,8 +5,6 @@ import UsersGrid from '../components/admin/UsersGrid';
 
 import headingImg from '../theme/img/headings/zarenfamilie.jpg';
 
-// TODO P2 add some possibilities for Admins
-// e.g. user has paid, remove user, enter game result, add new game...
 const AdminUsers = () => (
   <Page className="AdminUsersPage">
     <BigPicture img={headingImg}>

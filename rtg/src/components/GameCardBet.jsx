@@ -109,7 +109,7 @@ class GameCardBet extends Component {
       });
   }
 
-  // TODO P2 refactor!
+  // TODO P3 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
     if (!this.state.isSaving) {

@@ -152,7 +152,7 @@ class GameBetsTab extends Component {
     });
   }
 
-  // TODO P2 refactor this method
+  // TODO P3 refactor this method
   handleBetSaveDone(gameId, newBet, saveType, responseDetail, betsStatusContext) {
     const updatedGameWithSaveDetails = {
       ...this.gamesWithSaveType.get(gameId), newBet, saveType, responseDetail,
