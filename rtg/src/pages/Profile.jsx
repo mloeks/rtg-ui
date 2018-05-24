@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import ProfileForm from '../components/profile/ProfileForm';
@@ -8,10 +8,10 @@ import FetchHelper from '../service/FetchHelper';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import RtgSeparator from '../components/RtgSeparator';
 import ChangePasswordForm from '../components/profile/ChangePasswordForm';
+import DeleteAccountButton from '../components/profile/DeleteAccountButton';
 
 import headingImg from '../theme/img/headings/bed.jpg';
 
-// TODO P2 offer possibility to delete account
 // TODO P3 offer possibility to delete avatar
 class Profile extends Component {
   static userMapper(userJson) {
@@ -73,30 +73,35 @@ class Profile extends Component {
           {this.state.user &&
             <UserDetailsContext.Consumer>
               {userContext => (
-                <BigEditableAvatar
-                  userId={this.state.userId}
-                  username={this.state.user.username || ''}
-                  avatarUrl={this.state.user.avatar || ''}
+                <Fragment>
+                  <BigEditableAvatar
+                    userId={this.state.userId}
+                    username={this.state.user.username || ''}
+                    avatarUrl={this.state.user.avatar || ''}
 
-                  loading={this.state.loading}
-                  loadingError={this.state.loadingError}
+                    loading={this.state.loading}
+                    loadingError={this.state.loadingError}
 
-                  onAvatarChanged={avatar => Profile.handleAvatarChanged(avatar, userContext)}
-                />
+                    onAvatarChanged={avatar => Profile.handleAvatarChanged(avatar, userContext)}
+                  />
+
+                  <ProfileForm
+                    userId={this.state.userId}
+                    user={this.state.user}
+                    loading={this.state.loading}
+                    loadingError={this.state.loadingError}
+                    onUserUpdate={Profile.handleUserUpdate}
+                  />
+
+                  <RtgSeparator style={{ maxWidth: '500px' }} />
+                  <ChangePasswordForm />
+
+                  <RtgSeparator style={{ maxWidth: '500px' }} />
+                  <DeleteAccountButton userId={this.state.userId} onDelete={userContext.doLogout} />
+                </Fragment>
               )}
-            </UserDetailsContext.Consumer>}
-
-          <ProfileForm
-            userId={this.state.userId}
-            user={this.state.user}
-            loading={this.state.loading}
-            loadingError={this.state.loadingError}
-            onUserUpdate={Profile.handleUserUpdate}
-          />
-
-          <RtgSeparator style={{ maxWidth: '500px' }} />
-
-          <ChangePasswordForm />
+            </UserDetailsContext.Consumer>
+          }
         </section>
       </Page>
     );

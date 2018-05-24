@@ -54,7 +54,8 @@ class UserDetailsProvider extends Component {
   }
 
   handleLogout(reason) {
-    // TODO P3 set URL parameter if reason is set and render info message on login page
+    // TODO P2 set URL parameter if reason is set and render info message on login page
+    // especially important as confirmation on account deletion!
     AuthService.logout().then(() => this.props.history.push('/'));
   }
 
