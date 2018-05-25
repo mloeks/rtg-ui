@@ -12,6 +12,8 @@ import './Header.css';
 
 const HEADER_HEIGHT = 64;
 
+// TODO P1 header covers sticky sub-headers on the page (e.g. schedule filter, admin toolbar)
+// TODO P2 sticky on scroll header is still reacting a bit too slow
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
   constructor(props) {
