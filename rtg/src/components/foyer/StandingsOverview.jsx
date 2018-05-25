@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import { FlatButton } from 'material-ui';
 import StandingsTable from '../standings/StandingsTable';
 
-// TODO P2 show ranks around current user instead of top of table
 // TODO P3 lazy load standings when scrolled into view
 const StandingsOverview = () => (
   <section style={{ margin: '20px auto', maxWidth: 640 }}>
-    <p>Das sind unsere aktuellen Top-Tipper:</p>
-    <StandingsTable showOnlyTopPart={250} showTableHeader={false} showStatsColumns={false} />
+    <StandingsTable showOnlyUserExcerpt showTableHeader={false} showStatsColumns={false} />
 
     <Link to="/standings">
       <FlatButton
         primary
-        label="Zum ausführlichen Spielstand"
+        label="Zum vollständigen Spielstand"
         style={{ margin: '10px 0' }}
       />
     </Link>

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { TableRow, TableRowColumn } from 'material-ui';
-import AuthService from '../../service/AuthService';
 import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
@@ -32,7 +31,7 @@ class StandingsTableRow extends Component {
       <Fragment>
         <TableRow
           style={{ height: rowHeight }}
-          className={`StandingsTableRow ${this.props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
+          className={`StandingsTableRow ${this.props.self ? 'StandingsTableRow--self' : null}`}
         >
           <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
           <TableRowColumn style={{ height: rowHeight, padding: 0 }}>
@@ -105,6 +104,7 @@ class StandingsTableRow extends Component {
 }
 
 StandingsTableRow.defaultProps = {
+  self: false,
   rank: '',
   userAvatar: null,
   showStatsColumns: true,
@@ -123,6 +123,7 @@ StandingsTableRow.propTypes = {
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
 
+  self: PropTypes.bool,
   rowHeight: PropTypes.number.isRequired,
   showStatsColumns: PropTypes.bool,
 };

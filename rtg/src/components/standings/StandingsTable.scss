@@ -15,20 +15,29 @@
     }
   }
 
-  &--part {
+  &--excerpt {
     position: relative;
     overflow: hidden;
+  }
 
-    &:after {
-      position: absolute;
-      content: '';
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 25%;
+  &--excerpt-top-fade:before,
+  &--excerpt-bottom-fade:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    width: 100%;
+    height: 25%;
+  }
 
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 1) 100%);
-    }
+  &--excerpt-top-fade:before {
+    top: 0;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 1) 100%);
+    z-index: 1;
+  }
+
+  &--excerpt-bottom-fade:after {
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 1) 100%);
   }
 
   @media only screen and (min-width : 850px) {

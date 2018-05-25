@@ -107,13 +107,40 @@ class StandingsTable extends Component {
     )).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
+  getExcerptUserScrollTopStyle(totalUsers, userRank) {
+    if (userRank === 0) {
+      return { top: 0 };
+    }
+    if (userRank === totalUsers - 1) {
+      return { bottom: 0 };
+    }
+
+    return { top: -0.5 * (userRank * this.props.rowHeight) };
+  }
+
   render() {
     let lastRow = null;
+    const totalUsers = this.state.rows.length;
+    const userRank = this.state.rows.findIndex(r => r.userId === AuthService.getUserId());
+    const excerptHeight = this.props.userExcerptRows * this.props.rowHeight;
+    const wrapperStyle = this.props.showOnlyUserExcerpt ?
+      { position: 'absolute', ...this.getExcerptUserScrollTopStyle(totalUsers, userRank) } : {};
+
+    const standingsTableClassList = ['StandingsTable'];
+    if (this.props.showOnlyUserExcerpt) {
+      standingsTableClassList.push('StandingsTable--excerpt');
+      if (userRank !== 0) {
+        standingsTableClassList.push('StandingsTable--excerpt-top-fade');
+      }
+      if (userRank !== totalUsers - 1) {
+        standingsTableClassList.push('StandingsTable--excerpt-bottom-fade');
+      }
+    }
 
     return (
       <div
-        className={`StandingsTable ${this.props.showOnlyTopPart > 0 ? 'StandingsTable--part' : ''}`}
-        style={this.props.showOnlyTopPart > 0 ? { height: this.props.showOnlyTopPart } : {}}
+        className={standingsTableClassList.join(' ')}
+        style={this.props.showOnlyUserExcerpt ? { height: excerptHeight } : {}}
       >
         {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
         {this.state.loadingError &&
@@ -125,7 +152,11 @@ class StandingsTable extends Component {
           />}
 
         {(!this.state.loading && !this.state.loadingError) &&
-          <Table className="StandingsTable__table" selectable={false}>
+          <Table
+            className="StandingsTable__table"
+            selectable={false}
+            wrapperStyle={wrapperStyle}
+          >
             {this.props.showTableHeader &&
               <TableHeader
                 displaySelectAll={false}
@@ -175,6 +206,7 @@ class StandingsTable extends Component {
                     key={row.userId}
                     rank={displayRank}
                     rowHeight={this.props.rowHeight}
+                    self={AuthService.getUserId() === row.userId}
                     showStatsColumns={this.props.showStatsColumns}
                     {...row}
                   />);
@@ -188,16 +220,18 @@ class StandingsTable extends Component {
 
 StandingsTable.defaultProps = {
   rowHeight: 65,
-  showOnlyTopPart: -1,
+  showOnlyUserExcerpt: false,
   showStatsColumns: true,
   showTableHeader: true,
+  userExcerptRows: 5,
 };
 
 StandingsTable.propTypes = {
   rowHeight: PropTypes.number,
-  showOnlyTopPart: PropTypes.number,
+  showOnlyUserExcerpt: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,
+  userExcerptRows: PropTypes.number,
 };
 
 export default StandingsTable;
