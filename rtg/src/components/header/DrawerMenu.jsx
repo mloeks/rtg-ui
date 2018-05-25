@@ -15,7 +15,6 @@ import { error, white } from '../../theme/RtgTheme';
 import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.css';
 
-// TODO P2 increase menu width on wider breakpoints
 const DrawerMenu = (props) => {
   const openBetsBadge = (title, count) => {
     if (count > 0) {
@@ -41,6 +40,7 @@ const DrawerMenu = (props) => {
       docked={false}
       open={props.open}
       swipeAreaWidth={75}
+      width={window.matchMedia('(min-width: 480px)').matches ? 400 : '80%'}
       onRequestChange={props.onRequestChange}
     >
       <Link to="/profile">
