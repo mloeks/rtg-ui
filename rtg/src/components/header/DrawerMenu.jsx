@@ -40,6 +40,7 @@ const DrawerMenu = (props) => {
       className="DrawerMenu"
       docked={false}
       open={props.open}
+      swipeAreaWidth={75}
       onRequestChange={props.onRequestChange}
     >
       <Link to="/profile">
