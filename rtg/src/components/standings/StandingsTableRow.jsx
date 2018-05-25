@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { TableRow, TableRowColumn } from 'material-ui';
 import AuthService from '../../service/AuthService';
-import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle, ROW_HEIGHT } from './StandingsTable';
+import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
 import { isEnter } from '../../service/KeyHelper';
@@ -27,14 +27,15 @@ class StandingsTableRow extends Component {
   }
 
   render() {
+    const rowHeight = this.props.rowHeight;
     return (
       <Fragment>
         <TableRow
-          style={{ height: ROW_HEIGHT }}
+          style={{ height: rowHeight }}
           className={`StandingsTableRow ${this.props.userId === AuthService.getUserId() ? 'StandingsTableRow--self' : null}`}
         >
           <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
-          <TableRowColumn style={{ height: ROW_HEIGHT }}>
+          <TableRowColumn style={{ height: rowHeight, padding: 0 }}>
             <div
               role="button"
               className="TableRowColumn__user-wrapper"
@@ -59,11 +60,15 @@ class StandingsTableRow extends Component {
 
               <UserAvatar
                 img={this.props.userAvatar}
-                size={0.65 * ROW_HEIGHT}
+                size={0.65 * rowHeight}
                 username={this.props.username}
-                style={{ marginRight: '10px', minWidth: 0.65 * ROW_HEIGHT }}
+                style={{ marginRight: '10px', minWidth: 0.65 * rowHeight }}
               />
-              <span className="TableRowColumn__username">{this.props.username}</span>
+              <span
+                className={`TableRowColumn__${rowHeight < 55 ? 'username' : 'username--multi-line'}`}
+                style={{ maxHeight: 0.65 * rowHeight }}
+              >{this.props.username}
+              </span>
             </div>
           </TableRowColumn>
 
@@ -118,6 +123,7 @@ StandingsTableRow.propTypes = {
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
 
+  rowHeight: PropTypes.number.isRequired,
   showStatsColumns: PropTypes.bool,
 };
 

@@ -9,8 +9,6 @@ import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.css';
 
-export const ROW_HEIGHT = 65;
-
 export const rankColumnStyle = {
   width: '23px',
   textAlign: 'center',
@@ -176,6 +174,7 @@ class StandingsTable extends Component {
                   return (<StandingsTableRow
                     key={row.userId}
                     rank={displayRank}
+                    rowHeight={this.props.rowHeight}
                     showStatsColumns={this.props.showStatsColumns}
                     {...row}
                   />);
@@ -188,12 +187,14 @@ class StandingsTable extends Component {
 }
 
 StandingsTable.defaultProps = {
+  rowHeight: 65,
   showOnlyTopPart: -1,
   showStatsColumns: true,
   showTableHeader: true,
 };
 
 StandingsTable.propTypes = {
+  rowHeight: PropTypes.number,
   showOnlyTopPart: PropTypes.number,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,
