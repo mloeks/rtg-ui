@@ -7,7 +7,6 @@ import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
 import { lightGrey } from '../theme/RtgTheme';
 
-// TODO P2 confirm on enter
 // TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
   static getInitialState() {
@@ -39,6 +38,7 @@ class RegisterDialog extends Component {
 
     this.state = RegisterDialog.getInitialState();
 
+    this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
     this.updateFormField = this.updateFormField.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
@@ -52,7 +52,19 @@ class RegisterDialog extends Component {
   componentWillReceiveProps(nextProps) {
     // reset my state on open
     if (nextProps.open === true) {
+      window.addEventListener('keyup', this.handleKeyUpEvent, false);
       this.setState(RegisterDialog.getInitialState);
+    }
+    if (!nextProps.open) {
+      window.removeEventListener('keyup', this.handleKeyUpEvent);
+    }
+  }
+
+  handleKeyUpEvent(e) {
+    if (e.keyCode === 13) {
+      if (this.state.hasChanges) {
+        this.handleSubmit();
+      }
     }
   }
 
@@ -80,6 +92,7 @@ class RegisterDialog extends Component {
           fieldErrors: errors.fieldErrors || {},
           formHasErrors: errors.nonFieldError,
           formError: errors.nonFieldError,
+          hasChanges: false,
         });
       });
   }
