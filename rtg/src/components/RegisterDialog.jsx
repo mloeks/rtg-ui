@@ -54,8 +54,7 @@ class RegisterDialog extends Component {
     if (nextProps.open === true) {
       window.addEventListener('keyup', this.handleKeyUpEvent, false);
       this.setState(RegisterDialog.getInitialState);
-    }
-    if (!nextProps.open) {
+    } else {
       window.removeEventListener('keyup', this.handleKeyUpEvent);
     }
   }
