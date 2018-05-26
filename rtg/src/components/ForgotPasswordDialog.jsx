@@ -25,6 +25,7 @@ class ForgotPasswordDialog extends Component {
 
     this.state = ForgotPasswordDialog.getInitialState();
 
+    this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -32,7 +33,18 @@ class ForgotPasswordDialog extends Component {
   componentWillReceiveProps(nextProps) {
     // reset my state on open
     if (nextProps.open === true) {
+      window.addEventListener('keyup', this.handleKeyUpEvent, false);
       this.setState(ForgotPasswordDialog.getInitialState);
+    } else {
+      window.removeEventListener('keyup', this.handleKeyUpEvent);
+    }
+  }
+
+  handleKeyUpEvent(e) {
+    if (e.keyCode === 13) {
+      if (this.state.email) {
+        this.handleSubmit();
+      }
     }
   }
 
