@@ -58,7 +58,9 @@ class GameBetsTab extends Component {
   }
 
   componentDidMount() {
-    this.updateData();
+    if (this.props.active) {
+      this.updateData();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
