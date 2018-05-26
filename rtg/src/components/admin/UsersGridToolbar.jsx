@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, IconMenu, MenuItem, TextField, Toolbar, ToolbarGroup } from 'material-ui';
+import { Divider, IconButton, IconMenu, MenuItem, TextField, Toolbar, ToolbarGroup } from 'material-ui';
 import ContentFilterList from 'material-ui/svg-icons/content/filter-list';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
@@ -35,6 +35,14 @@ const UsersGridToolbar = props => (
           onClick={props.onFilterActiveToggled}
           style={{ textAlign: 'left' }}
         />
+        <MenuItem
+          primaryText="Nur inaktive User"
+          checked={props.filterInactive}
+          insetChildren
+          onClick={props.onFilterInactiveToggled}
+          style={{ textAlign: 'left' }}
+        />
+        <Divider />
         <MenuItem
           primaryText="Tippeinsatz unbezahlt"
           checked={props.filterHasNotPaid}
@@ -74,16 +82,19 @@ const UsersGridToolbar = props => (
 
 UsersGridToolbar.defaultProps = {
   filterActive: false,
+  filterInactive: false,
   filterHasNotPaid: false,
   searchTerm: '',
 };
 
 UsersGridToolbar.propTypes = {
   filterActive: PropTypes.bool,
+  filterInactive: PropTypes.bool,
   filterHasNotPaid: PropTypes.bool,
   searchTerm: PropTypes.string,
 
   onFilterActiveToggled: PropTypes.func.isRequired,
+  onFilterInactiveToggled: PropTypes.func.isRequired,
   onFilterHasNotPaidToggled: PropTypes.func.isRequired,
   onSearchTermUpdated: PropTypes.func.isRequired,
 };

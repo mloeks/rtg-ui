@@ -15,6 +15,7 @@ class UsersGrid extends Component {
 
       searchTerm: '',
       filterActive: true,
+      filterInactive: false,
       filterHasNotPaid: false,
 
       loading: true,
@@ -66,6 +67,9 @@ class UsersGrid extends Component {
     if (this.state.filterActive) {
       filteredUsers = filteredUsers.filter(user => user.last_login !== null);
     }
+    if (this.state.filterInactive) {
+      filteredUsers = filteredUsers.filter(user => user.last_login === null);
+    }
     if (this.state.filterHasNotPaid) {
       filteredUsers = filteredUsers.filter(user => !user.has_paid);
     }
@@ -80,12 +84,15 @@ class UsersGrid extends Component {
         <UsersGridToolbar
           searchTerm={this.state.searchTerm}
           filterActive={this.state.filterActive}
+          filterInactive={this.state.filterInactive}
           filterHasNotPaid={this.state.filterHasNotPaid}
 
           onFilterActiveToggled={() =>
-            this.setState((prevState) => ({ filterActive: !prevState.filterActive }))}
+            this.setState(prevState => ({ filterActive: !prevState.filterActive }))}
+          onFilterInactiveToggled={() =>
+            this.setState(prevState => ({ filterInactive: !prevState.filterInactive }))}
           onFilterHasNotPaidToggled={() =>
-            this.setState((prevState) => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
+            this.setState(prevState => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
           onSearchTermUpdated={this.handleSearchTermUpdated}
         />
 
