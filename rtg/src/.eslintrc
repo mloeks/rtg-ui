@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "globals": {
     "window": true,
-    "document": true
+    "document": true,
+    "fetch": true,
   },
   "rules": {
     "jsx-a11y/anchor-is-valid": [ "error", {
