@@ -8,7 +8,7 @@ import Notification, { NotificationType } from '../Notification';
 import './ContactForm.css';
 
 // TODO P2 include reCAPTCHA
-// TODO P2 Handle CSRF by reading the token from the Cookie of the first GET
+// TODO P3 Handle CSRF by reading the token from the Cookie of the first GET
 // response to the backend and sending it with AJAX requests
 class ContactForm extends Component {
   static getInitialState() {
