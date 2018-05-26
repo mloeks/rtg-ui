@@ -2,12 +2,12 @@
 
 .CountryFlag {
   position: relative;
-  width: 95px;
   margin: 0 -25px;
   z-index: $zGameCardFlags;
 
   &__flag {
-    width: 100%;
+    width: 90px;
+    height: 90px;
   }
 
   &__name {
@@ -16,7 +16,6 @@
     margin-top: 5px;
     text-align: center;
     text-transform: uppercase;
-    overflow: hidden;
 
     font-size: 14px;
 
