@@ -16,7 +16,8 @@ const AddPostFormDisplay = (props) => {
   };
 
   const onMailChoiceChanged = (event, value) => {
-    const mailChoices = ['sendMailToSubscribers', 'sendMailToActive', 'sendMailToAll'];
+    const mailChoices =
+      ['sendMailToSubscribers', 'sendMailToActive', 'sendMailToInactive', 'sendMailToAll'];
     const updatedMailRelatedFields = {};
     for (let i = 0; i < mailChoices.length; i += 1) {
       updatedMailRelatedFields[mailChoices[i]] = value === mailChoices[i];
@@ -74,7 +75,12 @@ const AddPostFormDisplay = (props) => {
           />
           <RadioButton
             disabled={!props.sendMail}
-            label="... an alle bekannten User"
+            label="... nur an alle inaktiven User"
+            value="sendMailToInactive"
+          />
+          <RadioButton
+            disabled={!props.sendMail}
+            label="... an alle bekannten User (aktiv & inaktiv)"
             value="sendMailToAll"
           />
         </RadioButtonGroup>

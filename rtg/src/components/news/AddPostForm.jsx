@@ -4,7 +4,6 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 
-// TODO P2 add another email choice: only known but inactive users
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
@@ -34,6 +33,7 @@ class AddPostForm extends Component {
       sendMail: true,
       sendMailToSubscribers: true,
       sendMailToActive: false,
+      sendMailToInactive: false,
       sendMailToAll: false,
 
       savingInProgress: false,
@@ -89,6 +89,7 @@ class AddPostForm extends Component {
       news_appear: this.state.appearInNews,
       as_mail: this.state.sendMail,
       force_active_users: this.state.sendMailToActive,
+      force_inactive_users: this.state.sendMailToInactive,
       force_all_users: this.state.sendMailToAll,
     };
     this.postPost(newPost);
@@ -103,6 +104,7 @@ class AddPostForm extends Component {
       sendMail={this.state.sendMail}
       sendMailToSubscribers={this.state.sendMailToSubscribers}
       sendMailToActive={this.state.sendMailToActive}
+      sendMailToInactive={this.state.sendMailToInactive}
       sendMailToAll={this.state.sendMailToAll}
 
       nonFieldError={this.state.nonFieldError}
