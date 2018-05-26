@@ -5,7 +5,6 @@ import StandingsTable from '../components/standings/StandingsTable';
 
 import headingImg from '../theme/img/headings/mountain_pitch.jpg';
 
-// TODO P2 allow to break usernames in two rows
 const Standings = () => (
   <Page className="StandingsPage">
     <BigPicture className="StandingsPage__heading" img={headingImg}>
