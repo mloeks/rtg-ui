@@ -46,10 +46,10 @@ class Schedule extends Component {
   componentDidMount() {
     this.stickybitsInstance = stickybits('.SchedulePage__toolbar');
 
-    this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds');
-    this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups');
-    this.fetchData(`${API_BASE_URL}/rtg/games/`, 'games');
-    this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
+    this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
+    this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
+    this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true);
+    this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
   }
 
   componentDidUpdate() {
@@ -64,7 +64,7 @@ class Schedule extends Component {
     }
   }
 
-  async fetchData(url, targetStateField) {
+  async fetchData(url, targetStateField, isPaginated) {
     this.setState({ loading: true, loadingError: '' });
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -72,7 +72,7 @@ class Schedule extends Component {
       .then((response) => {
         this.setState(() => (
           response.ok
-            ? { loading: false, [targetStateField]: response.json }
+            ? { loading: false, [targetStateField]: isPaginated ? response.json.results : response.json }
             : { loading: false, loadingError: true }
         ));
       }).catch(() => this.setState({ loading: false, loadingError: true }));

@@ -72,22 +72,22 @@ class GameBetsTab extends Component {
   }
 
   async updateData() {
-    await this.fetchData(`${API_BASE_URL}/rtg/games/?bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets');
-    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
+    await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999&bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets', true);
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
 
     this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
 
     this.setState({ loading: false });
   }
 
-  async fetchData(url, targetStateField) {
+  async fetchData(url, targetStateField, isPaginated) {
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
         this.setState(() => (
           response.ok ?
-            { [targetStateField]: response.json } :
+            { [targetStateField]: isPaginated ? response.json.results : response.json } :
             { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
