@@ -85,7 +85,7 @@ class Bets extends Component {
 
   handleTabActive(tab) {
     if (!this.state.betsHaveChanges || window.confirm(unsavedChangesConfirmText)) {
-      this.setState({ activeTab: tab.props.value });
+      this.setState({ activeTab: tab.props.value, betsHaveChanges: false });
     }
   }
 
