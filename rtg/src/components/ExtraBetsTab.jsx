@@ -46,7 +46,6 @@ export default class ExtraBetsTab extends Component {
   }
 
   async updateData() {
-    console.log('fetching extra bets');
     await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
     await this.fetchData(`${API_BASE_URL}/rtg/extras/`, 'extras');
     await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets');
