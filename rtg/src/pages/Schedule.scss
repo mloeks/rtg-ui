@@ -50,3 +50,9 @@
     padding: 100px;
   }
 }
+
+.GameCard__click-wrapper {
+  &:hover {
+    cursor: pointer;
+  }
+}

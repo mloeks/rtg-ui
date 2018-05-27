@@ -17,12 +17,6 @@
 
   background-color: #e3e3e3;
 
-  &--clickable {
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
   .hometeam, .awayteam {
     display: none;
     text-transform: uppercase;

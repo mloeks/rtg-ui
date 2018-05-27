@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stickybits from 'stickybits';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CircularProgress, Divider, DropDownMenu, MenuItem } from 'material-ui';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -12,36 +11,17 @@ import RtgSeparator from '../components/RtgSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
+import GameCardGameInfo from '../components/GameCardGameInfo';
+import { isEnter } from '../service/KeyHelper';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
+import { darkGrey, white } from "../theme/RtgTheme";
+import { withRouter } from "react-router-dom";
 
 // TODO P2 add possibility to add games for admins
 // TODO P2 switch to current game/round automatically
 class Schedule extends Component {
-  static createGameCardsWithDateSubheadings(games, bets) {
-    const gameCardsWithDateSubheadings = [];
-    let lastGameDay = null;
-    games.forEach((game) => {
-      if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
-        gameCardsWithDateSubheadings
-          .push(<RtgSeparator
-            key={game.kickoff}
-            content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
-          />);
-        lastGameDay = game.kickoff;
-      }
-      gameCardsWithDateSubheadings.push(
-        <GameCard
-          key={game.id}
-          userBet={bets.find(bet => bet.bettable === game.id) || {}}
-          {...game}
-        />,
-      );
-    });
-    return gameCardsWithDateSubheadings;
-  }
-
   constructor(props) {
     super(props);
 
@@ -113,6 +93,44 @@ class Schedule extends Component {
     return game.round_details.abbreviation === this.state.selectedRoundIndex;
   }
 
+  createGameCardsWithDateSubheadings(games, bets) {
+    const gameCardsWithDateSubheadings = [];
+    let lastGameDay = null;
+    games.forEach((game) => {
+      if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
+        gameCardsWithDateSubheadings
+          .push(<RtgSeparator
+            key={game.kickoff}
+            content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
+          />);
+        lastGameDay = game.kickoff;
+      }
+      const userBet = bets.find(bet => bet.bettable === game.id) || {};
+      gameCardsWithDateSubheadings.push(
+        <div
+          key={game.id}
+          role="button"
+          className="GameCard__click-wrapper"
+          tabIndex={0}
+          onClick={() => this.props.history.push('/bets')}
+          onKeyPress={e => (isEnter(e) && this.props.history.push('/bets'))}
+        >
+          <GameCard userBet={userBet} {...game}>
+            <GameCardGameInfo
+              city={game.city}
+              kickoff={parse(game.kickoff)}
+              result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
+              resultBetType={userBet.result_bet_type}
+              points={userBet.points}
+              userBet={userBet.result_bet}
+            />
+          </GameCard>
+        </div>,
+      );
+    });
+    return gameCardsWithDateSubheadings;
+  }
+
   render() {
     if (this.stickybitsInstance) {
       this.stickybitsInstance.update();
@@ -120,7 +138,7 @@ class Schedule extends Component {
 
     const gamesToDisplay = this.state.games.filter(this.gamesFilter);
     const gameContainerItems =
-      Schedule.createGameCardsWithDateSubheadings(gamesToDisplay, this.state.bets);
+      this.createGameCardsWithDateSubheadings(gamesToDisplay, this.state.bets);
 
     return (
       <Page className="SchedulePage">
@@ -132,10 +150,7 @@ class Schedule extends Component {
           <section
             id="schedule-toolbar"
             className="SchedulePage__toolbar"
-            style={{
-              color: this.props.muiTheme.palette.canvasColor,
-              backgroundColor: this.props.muiTheme.palette.scheduleToolbarColor,
-            }}
+            style={{ color: white, backgroundColor: darkGrey }}
           >
             <div className="SchedulePage__toolbar-title">Spiele wählen</div>
             <DropDownMenu
@@ -143,7 +158,7 @@ class Schedule extends Component {
               anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedRoundIndex}
               onChange={this.handleSelectedRoundChange}
-              labelStyle={{ color: this.props.muiTheme.palette.canvasColor }}
+              labelStyle={{ color: white }}
             >
               {this.state.rounds.map(round => (
                 <MenuItem
@@ -162,7 +177,7 @@ class Schedule extends Component {
               anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedGroupFilter}
               onChange={this.handleGroupFilterChanged}
-              labelStyle={{ color: this.props.muiTheme.palette.canvasColor }}
+              labelStyle={{ color: white }}
             >
               <MenuItem
                 checked={this.state.selectedGroupFilter === 'all'}
@@ -210,7 +225,7 @@ class Schedule extends Component {
 
 Schedule.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default muiThemeable()(Schedule);
+export default withRouter(Schedule);
