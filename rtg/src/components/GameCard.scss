@@ -1,3 +1,5 @@
+@import '../sass/mixins/skeleton';
+
 .GameCard {
   box-sizing: border-box;
 
@@ -16,6 +18,10 @@
   border-right: 20px solid white;
 
   background-color: #e3e3e3;
+
+  &--skeleton {
+    @include skeleton('game-skeleton');
+  }
 
   .hometeam, .awayteam {
     display: none;

@@ -13,7 +13,7 @@
   height: $wrapped-el-height + 2 * $added-height;
 
   background: $color;
-  box-shadow: -6px 3px 19px -7px rgba(0, 0, 0, 1);
+  box-shadow: -6px 3px 19px -7px rgba(0, 0, 0, 0.75);
   width: $width;
   min-width: $width;
 

@@ -1,13 +1,16 @@
-@import '../sass/_z-indexes.scss';
+@import '../sass/z-indexes';
+
+$size: 90px;
 
 .CountryFlag {
   position: relative;
   margin: 0 -25px;
   z-index: $zGameCardFlags;
 
-  &__flag {
-    width: 90px;
-    height: 90px;
+  &__flag,
+  &--skeleton {
+    width: $size;
+    height: $size;
   }
 
   &__name {
@@ -22,5 +25,10 @@
     @media only screen and (min-width : 680px) {
       display: none;
     }
+  }
+
+  &--skeleton {
+    border-radius: 50%;
+    background-color: #e3e3e3;
   }
 }
