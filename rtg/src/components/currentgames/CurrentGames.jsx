@@ -179,6 +179,9 @@ class CurrentGames extends Component {
   }
 
   render() {
+    // TODO P2 animate scrolling by rendering more game DOM elements than displayed
+    // position to the correct offset with relative left
+    // on scroll, animate scroll first (disable scrolling during animation) and then update state
     const gamesToDisplayWindow = CurrentGames
       .range(this.state.currentOffset, this.state.currentOffset + this.state.gamesToDisplay);
 
@@ -217,7 +220,6 @@ class CurrentGames extends Component {
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowRight />
             </IconButton>}
-
 
           {gamesToDisplayWindow.map((offset) => {
             const game = this.state.games[offset];
