@@ -18,6 +18,8 @@ import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.css';
 
+// TODO P2 make images a bit smaller (800 px wide + guetzli)
+// & lazy load them when they are about to come in view
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
