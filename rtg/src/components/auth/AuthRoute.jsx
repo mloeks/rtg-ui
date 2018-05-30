@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
+// TODO P1 inifinite loop when restarting the backend?
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
