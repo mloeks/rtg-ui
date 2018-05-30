@@ -150,6 +150,9 @@ class CurrentGames extends Component {
 
   horizontalMove(x) {
     if (this.currentGamesRef && this.currentGamesRef.current) {
+      const currentGamesClasses = this.currentGamesRef.current.classList;
+      if (x === 0) { currentGamesClasses.remove('moving'); }
+      else { currentGamesClasses.add('moving'); }
       this.currentGamesRef.current.style.transform = `translateX(${x}px)`;
     }
   }
