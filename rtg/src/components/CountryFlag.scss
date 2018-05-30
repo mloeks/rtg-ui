@@ -1,3 +1,4 @@
+@import '../sass/mixins/skeleton';
 @import '../sass/z-indexes';
 
 $size: 90px;
@@ -29,6 +30,7 @@ $size: 90px;
   }
 
   &--skeleton {
+    @include skeleton('flag-skeleton', $shine-width: 70%, $shine-overflow: 200%);
     border-radius: 50%;
     background-color: #e3e3e3;
   }
