@@ -2,16 +2,12 @@
 
 .GameCard {
   margin: 0 auto;
-  padding: 16px 0 70px;
+  padding: 16px 0 40px;
 
   &.auto-hide {
     .hometeam, .awayteam {
       display: none;
-    }
-
-    @media only screen and (min-width: 680px) {
-      padding: 16px 0 30px;
-      .hometeam, .awayteam {
+      @media only screen and (min-width: 680px) {
         display: flex;
       }
     }

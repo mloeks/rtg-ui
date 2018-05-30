@@ -10,7 +10,10 @@ const GameCard = (props) => {
   const mapDisplayTeamNameForCountryFlag = props.displayTeamNames === 'auto' ? 'auto' : 'always';
 
   return (
-    <section className={`GameCard ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
+    <section
+      className={`GameCard ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}
+      style={props.style}
+    >
       <div className="GameCard__inner">
         <CountryFlag
           country={props.hometeam_name}
@@ -41,6 +44,7 @@ const GameCard = (props) => {
 GameCard.defaultProps = {
   children: null,
   displayTeamNames: 'auto',
+  style: {},
 };
 
 GameCard.propTypes = {
@@ -49,6 +53,8 @@ GameCard.propTypes = {
   hometeam_abbreviation: PropTypes.string.isRequired,
   awayteam_name: PropTypes.string.isRequired,
   awayteam_abbreviation: PropTypes.string.isRequired,
+
+  style: PropTypes.object,
 
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

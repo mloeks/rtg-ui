@@ -5,16 +5,23 @@ import './CountryFlag.css';
 import countryFlags from '../theme/CountryFlagImporter';
 
 // TODO P2 edit ugly scandinavian flags
-const CountryFlag = ({ country, countryCode, displayTeamName }) => (
-  <div className="CountryFlag">
-    <img
-      src={countryFlags[countryCode.toUpperCase()]}
-      alt={countryCode.toUpperCase()}
-      className="CountryFlag__flag"
-    />
-    <div className={`CountryFlag__name ${displayTeamName === 'auto' ? 'auto-hide' : ''}`}>{country}</div>
-  </div>
-);
+const CountryFlag = ({ country, countryCode, displayTeamName }) => {
+  // hack for the only team name which is as long that it breaks in two lines
+  // which we don't want here in order to keep the height of the GameCards low
+  const sanitizedCountry = country === 'Saudi-Arabien' ? 'S.-Arabien' : country;
+  return (
+    <div className="CountryFlag">
+      <img
+        src={countryFlags[countryCode.toUpperCase()]}
+        alt={countryCode.toUpperCase()}
+        className="CountryFlag__flag"
+      />
+      <div className={`CountryFlag__name ${displayTeamName === 'auto' ? 'auto-hide' : ''}`}>
+        {sanitizedCountry}
+        </div>
+    </div>
+  );
+};
 
 CountryFlag.defaultProps = {
   displayTeamName: 'auto',
