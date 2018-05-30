@@ -11,21 +11,17 @@ import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
 
+// TODO P2 add "today" button if one scrolls around all games ;-)
 class CurrentGames extends Component {
   static range(start, end) {
     return Array.from({ length: (end - start) }, (v, k) => k + start);
   }
 
-  static getInitialOffsetBasedOnDate(kickoffs) {
-    // TODO calculate initial offset based on current date
-    return 12;
-  }
-
-  static gamesExcerptResponseToState(prevState, games) {
+  static gamesExcerptResponseToState(prevState, games, fromOffset) {
     const updatedGames = prevState.games.slice(0);
     games.forEach((game, ix) => {
-      if (!updatedGames[prevState.currentOffset + ix]) {
-        updatedGames[prevState.currentOffset + ix] = game;
+      if (updatedGames[fromOffset + ix] === null) {
+        updatedGames[fromOffset + ix] = game;
       }
     });
     return { games: updatedGames };
@@ -77,7 +73,11 @@ class CurrentGames extends Component {
   }
 
   onBreakpointChange() {
-    this.setState({ gamesToDisplay: CurrentGames.getGamesToDisplay() }, () =>
+    this.setState((prevState) => {
+      const gamesToDisplay = CurrentGames.getGamesToDisplay();
+      const newOffset = Math.min(prevState.games.length - gamesToDisplay, prevState.currentOffset);
+      return { gamesToDisplay, currentOffset: newOffset };
+    }, () =>
       this.fetchMoreGamesIfRequired());
   }
 
@@ -98,9 +98,10 @@ class CurrentGames extends Component {
     }).then(FetchHelper.parseJson).then((response) => {
       if (response.ok) {
         const kickoffs = response.json;
-        const initialOffset = CurrentGames.getInitialOffsetBasedOnDate(kickoffs);
+        const initialOffset = this.getInitialOffsetBasedOnDate(kickoffs);
         this.setState(() => ({
-          games: Array(kickoffs.length),
+          // TODO P1 check if fill is polyfilled on IE
+          games: Array(kickoffs.length).fill(null),
           currentOffset: initialOffset,
         }), () => this.fetchMoreGamesIfRequired());
       } else {
@@ -119,7 +120,13 @@ class CurrentGames extends Component {
 
     const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
     this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
-      CurrentGames.gamesExcerptResponseToState(prevState, games));
+      CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
+  }
+
+  getInitialOffsetBasedOnDate(kickoffs) {
+    // TODO calculate initial offset based on current date
+    const offsetBasedOnDate = 23;
+    return Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay);
   }
 
   canScrollForward() {
