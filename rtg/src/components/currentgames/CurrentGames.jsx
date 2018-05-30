@@ -3,6 +3,7 @@ import { IconButton } from 'material-ui';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { viewportW } from 'verge';
+import { differenceInMinutes } from 'date-fns';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import CurrentGameCard from './CurrentGameCard';
@@ -12,7 +13,7 @@ import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
 
-// TODO P2 add "today" button if one scrolls around all games ;-)
+// TODO P3 add "today" button if one scrolls around all games ;-)
 class CurrentGames extends Component {
   static range(start, end) {
     return Array.from({ length: (end - start) }, (v, k) => k + start);
@@ -83,9 +84,33 @@ class CurrentGames extends Component {
   }
 
   getInitialOffsetBasedOnDate(kickoffs) {
-    // TODO calculate initial offset based on current date
-    const offsetBasedOnDate = 23;
-    return Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay);
+    let offsetBasedOnDate = 0;
+    let closestKickoffAbsDifference = Number.MAX_SAFE_INTEGER;
+    const now = new Date();
+    for (let i = 0; i < kickoffs.length; i += 1) {
+      const distance = differenceInMinutes(new Date(kickoffs[i]), now);
+
+      if (distance < 0 && distance > -90) {
+        // We found a currently running game. use this and stop immediately. This is important in
+        // order to prefer running games over follow-up games which kickoff might be closer.
+        offsetBasedOnDate = i;
+        break;
+      }
+      if (Math.abs(distance) >= closestKickoffAbsDifference) {
+        // since the kickoffs are ordered chronologically,
+        // we can immediately stop if the absolute difference gets larger.
+        break;
+      }
+      closestKickoffAbsDifference = Math.abs(distance);
+      offsetBasedOnDate = i;
+    }
+
+    if (this.state.gamesToDisplay > 2) {
+      // on wider screens, show the current game in the middle,
+      // so the previous game is still shown on the left
+      offsetBasedOnDate -= 1;
+    }
+    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
