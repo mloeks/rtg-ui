@@ -81,6 +81,12 @@ class CurrentGames extends Component {
       this.fetchMoreGamesIfRequired());
   }
 
+  getInitialOffsetBasedOnDate(kickoffs) {
+    // TODO calculate initial offset based on current date
+    const offsetBasedOnDate = 23;
+    return Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay);
+  }
+
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -121,12 +127,6 @@ class CurrentGames extends Component {
     const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
     this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
       CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
-  }
-
-  getInitialOffsetBasedOnDate(kickoffs) {
-    // TODO calculate initial offset based on current date
-    const offsetBasedOnDate = 23;
-    return Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay);
   }
 
   canScrollForward() {
