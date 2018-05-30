@@ -117,16 +117,32 @@ class CurrentGames extends Component {
   }
 
   fetchMoreGamesIfRequired() {
-    // TODO find out if more games need to be loaded based on window + gamesAround and trigger the request
+    // TODO only load more when close to the border of the loaded window
     console.log(this.state.games);
     console.log(this.state.currentOffset);
-    const offset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
-    const limit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
-    console.log(`should load offset=${offset}, limit=${limit}`);
+    const desiredOffset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
+    const desiredLimit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
+    console.log(`should load offset=${desiredOffset}, limit=${desiredLimit}`);
 
-    const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
-    this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
-      CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
+    let minUnknownGame = -1;
+    let maxUnknownGame = -1;
+    for (let i = desiredOffset; i < (desiredOffset + desiredLimit); i += 1) {
+      if (this.state.games[i] === null) {
+        if (minUnknownGame === -1) { minUnknownGame = i; }
+        maxUnknownGame = i;
+      }
+    }
+
+    if (minUnknownGame !== -1) {
+      const offset = minUnknownGame;
+      const limit = (maxUnknownGame - minUnknownGame) + 1;
+      console.log(`actually loading offset=${offset}, limit=${limit}`);
+      const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
+      this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
+        CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
+    } else {
+      console.log('nothing to reload!');
+    }
   }
 
   canScrollForward() {
