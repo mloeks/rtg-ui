@@ -8,19 +8,18 @@
 
   width: 100%;
   max-width: 1600px;
-  margin: 10px auto;
+  margin: 20px auto 50px;
   padding: 0 10px;
 
   box-sizing: border-box;
 
   &__scroll-button {
-    bottom: 10px;
+    top: 2px;
     z-index: $zCurrentGamesScrollButton;
 
     @media only screen and (min-width : 375px) {
+      top: 43%;
       margin: 0 20px;
-      $scrollButtonSize: 50px; // sync with CurrentGames.jsx
-      top: calc(25px + (0.5 * 60px) - 0.5 * #{$scrollButtonSize}); // sync with GameCard top-margin & height
     }
   }
 

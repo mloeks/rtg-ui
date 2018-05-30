@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { parse } from 'date-fns';
+import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
+import de from 'date-fns/locale/de';
 import GameCard from '../GameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
 import NullGameCard from '../NullGameCard';
 
 import './CurrentGameCard.css';
+import RtgSeparator from "../RtgSeparator";
 
 class CurrentGameCard extends Component {
+  static getFormattedKickoffDate(kickoff) {
+    if (isYesterday(kickoff)) { return "Gestern"; }
+    if (isToday(kickoff)) { return 'Heute'; }
+    if (isTomorrow(kickoff)) { return 'Morgen'; }
+
+    return format(kickoff, 'dd. D. MMMM', { locale: de });
+  };
+
   constructor(props) {
     super(props);
   }
@@ -15,6 +25,9 @@ class CurrentGameCard extends Component {
   render() {
     return (
       <div className="CurrentGameCard">
+        <RtgSeparator content={this.props.game ?
+          CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff) : '...'} />
+
         {this.props.game ? (
           <GameCard displayTeamNames="small" {...this.props.game}>
             <GameCardGameInfo

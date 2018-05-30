@@ -150,6 +150,7 @@ class CurrentGames extends Component {
       padding: 0,
       width: SCROLL_BUTTON_SIZE,
       height: SCROLL_BUTTON_SIZE,
+      backgroundColor: 'white',
     };
     const scrollButtonIconStyle = {
       width: 0.9 * SCROLL_BUTTON_SIZE,
