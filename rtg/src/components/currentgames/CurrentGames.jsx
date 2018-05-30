@@ -9,7 +9,7 @@ import CurrentGameCard from './CurrentGameCard';
 
 import './CurrentGames.css';
 
-const SCROLL_BUTTON_SIZE = 40;
+const SCROLL_BUTTON_SIZE = 50;
 
 class CurrentGames extends Component {
   static range(start, end) {
@@ -33,7 +33,7 @@ class CurrentGames extends Component {
 
   static getGamesToDisplay() {
     const vw = viewportW();
-    if (vw < 640) { return 1; }
+    if (vw < 768) { return 1; }
     if (vw < 1280) { return 2; }
     return 3;
   }
@@ -52,7 +52,7 @@ class CurrentGames extends Component {
     };
 
     this.mediaQueryList = [
-      window.matchMedia('(max-width: 640px)'),
+      window.matchMedia('(max-width: 768px)'),
       window.matchMedia('(max-width: 1280px)'),
     ];
     this.loadGamesAroundView = 3;
@@ -147,7 +147,6 @@ class CurrentGames extends Component {
 
     const scrollButtonStyle = {
       position: 'absolute',
-      top: `calc(50% - 0.5 * ${SCROLL_BUTTON_SIZE}px)`,
       padding: 0,
       width: SCROLL_BUTTON_SIZE,
       height: SCROLL_BUTTON_SIZE,
@@ -159,21 +158,23 @@ class CurrentGames extends Component {
 
     return (
       this.state.games ? (
-        <section className="CurrentGames" style={{ padding: `0 ${SCROLL_BUTTON_SIZE}px` }}>
+        <section className="CurrentGames">
           {this.canScrollBackward() &&
             <IconButton
-              onClick={this.scrollBackward}
+              className="CurrentGames__scroll-button"
               tooltip="Zurück"
               tooltipPosition="top-center"
+              onClick={this.scrollBackward}
               style={{ left: 0, ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowLeft />
             </IconButton>}
           {this.canScrollForward() &&
             <IconButton
-              onClick={this.scrollForward}
+              className="CurrentGames__scroll-button"
               tooltip="Vor"
               tooltipPosition="top-center"
+              onClick={this.scrollForward}
               style={{ right: 0, ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowRight />

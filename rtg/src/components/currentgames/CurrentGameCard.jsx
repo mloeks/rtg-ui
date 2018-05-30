@@ -5,6 +5,8 @@ import GameCard from '../GameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
 import NullGameCard from '../NullGameCard';
 
+import './CurrentGameCard.css';
+
 class CurrentGameCard extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +14,9 @@ class CurrentGameCard extends Component {
 
   render() {
     return (
-      <div style={{ width: '100%', padding: '0 5px', boxSizing: 'border-box' }}>
+      <div className="CurrentGameCard">
         {this.props.game ? (
-          <GameCard {...this.props.game}>
+          <GameCard displayTeamNames="small" {...this.props.game}>
             <GameCardGameInfo
               city={this.props.game.city}
               kickoff={parse(this.props.game.kickoff)}

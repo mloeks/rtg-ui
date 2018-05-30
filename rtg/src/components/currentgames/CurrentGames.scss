@@ -1,3 +1,5 @@
+@import '../../sass/z-indexes';
+
 .CurrentGames {
   position: relative;
   display: flex;
@@ -5,6 +7,28 @@
   justify-content: space-between;
 
   width: 100%;
+  max-width: 1600px;
+  margin: 10px auto;
+  padding: 0 10px;
 
   box-sizing: border-box;
+
+  &__scroll-button {
+    bottom: 10px;
+    z-index: $zCurrentGamesScrollButton;
+
+    @media only screen and (min-width : 375px) {
+      margin: 0 20px;
+      $scrollButtonSize: 50px; // sync with CurrentGames.jsx
+      top: calc(25px + (0.5 * 60px) - 0.5 * #{$scrollButtonSize}); // sync with GameCard top-margin & height
+    }
+  }
+
+  @media only screen and (min-width : 375px) {
+    padding: 0 40px;
+  }
+
+  @media only screen and (min-width : 768px) {
+    padding: 0 20px;
+  }
 }
