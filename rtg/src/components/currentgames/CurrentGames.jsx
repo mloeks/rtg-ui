@@ -8,11 +8,11 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
+import { debounce } from '../../service/EventsHelper';
 
 import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
-const TOUCH_MOVE_THRESHOLD_SCROLL = 75;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
 class CurrentGames extends Component {
@@ -63,7 +63,10 @@ class CurrentGames extends Component {
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchCancel = this.onTouchCancel.bind(this);
+    this.horizontalMove = this.horizontalMove.bind(this);
+    this.updateTouchMoveToScrollThreshold = this.updateTouchMoveToScrollThreshold.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
     this.mayScrollForward = this.mayScrollForward.bind(this);
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
@@ -75,6 +78,7 @@ class CurrentGames extends Component {
     this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false, (prevState, response) => ({ bets: response }));
     this.fetchKickoffs();
     this.registerEvents();
+    this.updateTouchMoveToScrollThreshold();
   }
 
   componentWillUnmount() {
@@ -88,6 +92,7 @@ class CurrentGames extends Component {
     if (this.touchEventsOwner) {
       this.touchEventsOwner.addEventListener('touchstart', this.onTouchStart, false);
       this.touchEventsOwner.addEventListener('touchend', this.onTouchEnd, false);
+      this.touchEventsOwner.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
       this.touchEventsOwner.addEventListener('touchcancel', this.onTouchCancel, false);
     }
   }
@@ -98,6 +103,7 @@ class CurrentGames extends Component {
     if (this.touchEventsOwner) {
       this.touchEventsOwner.removeEventListener('touchstart', this.onTouchStart);
       this.touchEventsOwner.removeEventListener('touchend', this.onTouchEnd);
+      this.touchEventsOwner.removeEventListener('touchmove', this.onTouchMove);
       this.touchEventsOwner.removeEventListener('touchcancel', this.onTouchCancel);
     }
   }
@@ -107,8 +113,10 @@ class CurrentGames extends Component {
       const gamesToDisplay = CurrentGames.getGamesToDisplay();
       const newOffset = Math.min(prevState.games.length - gamesToDisplay, prevState.currentOffset);
       return { gamesToDisplay, currentOffset: newOffset };
-    }, () =>
-      this.fetchMoreGamesIfRequired());
+    }, () => {
+      this.updateTouchMoveToScrollThreshold();
+      this.fetchMoreGamesIfRequired();
+    });
   }
 
   onTouchStart(e) {
@@ -116,20 +124,38 @@ class CurrentGames extends Component {
   }
 
   onTouchEnd(e) {
+    this.horizontalMove(0);
     if (e.changedTouches && this.touchStartXPos) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
-      if (movedX > TOUCH_MOVE_THRESHOLD_SCROLL) {
+      if (movedX > this.touchMoveToScrollThreshold) {
         this.scrollBackward();
-      } else if (movedX < -TOUCH_MOVE_THRESHOLD_SCROLL) {
+      } else if (movedX < -this.touchMoveToScrollThreshold) {
         this.scrollForward();
       }
-    } else {
-      this.touchStartXPos = null;
+    }
+    this.touchStartXPos = null;
+  }
+
+  onTouchMove(e) {
+    if (e.changedTouches && this.touchStartXPos) {
+      const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
+      this.horizontalMove(movedX);
     }
   }
 
   onTouchCancel() {
+    this.horizontalMove(0);
     this.touchStartXPos = null;
+  }
+
+  horizontalMove(x) {
+    if (this.currentGamesRef && this.currentGamesRef.current) {
+      this.currentGamesRef.current.style.transform = `translateX(${x}px)`;
+    }
+  }
+
+  updateTouchMoveToScrollThreshold() {
+    this.touchMoveToScrollThreshold = 0.5 * (viewportW() / this.state.gamesToDisplay);
   }
 
   getInitialOffsetBasedOnDate(kickoffs) {
@@ -264,7 +290,6 @@ class CurrentGames extends Component {
       padding: 0,
       width: SCROLL_BUTTON_SIZE,
       height: SCROLL_BUTTON_SIZE,
-      backgroundColor: 'white',
     };
     const scrollButtonIconStyle = {
       width: 0.9 * SCROLL_BUTTON_SIZE,
@@ -273,7 +298,7 @@ class CurrentGames extends Component {
 
     return (
       this.state.games && (
-        <section className="CurrentGames" ref={this.currentGamesRef}>
+        <section className="CurrentGames">
           {this.mayScrollBackward() &&
             <IconButton
               className="CurrentGames__scroll-button"
@@ -295,15 +320,18 @@ class CurrentGames extends Component {
             ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
             </IconButton>}
 
-          {gamesToDisplayWindow.map((offset) => {
-            const game = this.state.games[offset];
-            return (
-              <CurrentGameCard
-                key={`current-game-offset-${offset}`}
-                game={this.state.games[offset]}
-                userBet={game ? this.state.bets.find(bet => bet.bettable === game.id) || {} : null}
-              />);
-          })}
+          <div className="CurrentGames__game-card-container" ref={this.currentGamesRef}>
+            {gamesToDisplayWindow.map((offset) => {
+              const game = this.state.games[offset];
+              return (
+                <CurrentGameCard
+                  key={`current-game-offset-${offset}`}
+                  game={this.state.games[offset]}
+                  userBet={game ?
+                    this.state.bets.find(bet => bet.bettable === game.id) || {} : null}
+                />);
+            })}
+          </div>
         </section>));
   }
 }

@@ -2,9 +2,6 @@
 
 .CurrentGames {
   position: relative;
-  display: flex;
-  align-content: center;
-  justify-content: space-between;
 
   width: 100%;
   min-width: 320px;
@@ -14,9 +11,17 @@
 
   box-sizing: border-box;
 
+  &__game-card-container {
+    position: relative;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
   &__scroll-button {
-    top: 2px;
-    z-index: $zCurrentGamesScrollButton;
+    top: -20px;
 
     @media only screen and (min-width : 375px) {
       top: 43%;
