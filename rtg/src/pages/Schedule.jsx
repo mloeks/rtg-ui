@@ -102,7 +102,7 @@ class Schedule extends Component {
           .push(<RtgSeparator
             key={game.kickoff}
             content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
-            style={{ margin: '15px 0' }}
+            style={{ margin: '15px auto' }}
           />);
         lastGameDay = game.kickoff;
       }
