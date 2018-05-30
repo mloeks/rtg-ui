@@ -21,11 +21,11 @@ class CurrentGames extends Component {
     return 12;
   }
 
-  static gamesExcerptResponseToState(prevState, games, offset) {
+  static gamesExcerptResponseToState(prevState, games) {
     const updatedGames = prevState.games.slice(0);
     games.forEach((game, ix) => {
-      if (!updatedGames[offset + ix]) {
-        updatedGames[offset + ix] = game;
+      if (!updatedGames[prevState.currentOffset + ix]) {
+        updatedGames[prevState.currentOffset + ix] = game;
       }
     });
     return { games: updatedGames };
@@ -77,7 +77,8 @@ class CurrentGames extends Component {
   }
 
   onBreakpointChange() {
-    this.setState({ gamesToDisplay: CurrentGames.getGamesToDisplay() });
+    this.setState({ gamesToDisplay: CurrentGames.getGamesToDisplay() }, () =>
+      this.fetchMoreGamesIfRequired());
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
@@ -91,12 +92,6 @@ class CurrentGames extends Component {
     }).catch(() => this.setState({ loadingError: true }));
   }
 
-  fetchGames(offset) {
-    const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${this.state.gamesToDisplay}`;
-    this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
-      CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
-  }
-
   fetchKickoffs() {
     fetch(`${API_BASE_URL}/rtg/game-kickoffs/`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -107,7 +102,7 @@ class CurrentGames extends Component {
         this.setState(() => ({
           games: Array(kickoffs.length),
           currentOffset: initialOffset,
-        }), () => { this.fetchGames(initialOffset); });
+        }), () => this.fetchMoreGamesIfRequired());
       } else {
         this.setState(() => ({ loadingError: true }));
       }
@@ -118,6 +113,13 @@ class CurrentGames extends Component {
     // TODO find out if more games need to be loaded based on window + gamesAround and trigger the request
     console.log(this.state.games);
     console.log(this.state.currentOffset);
+    const offset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
+    const limit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
+    console.log(`should load offset=${offset}, limit=${limit}`);
+
+    const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
+    this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
+      CurrentGames.gamesExcerptResponseToState(prevState, games));
   }
 
   canScrollForward() {
