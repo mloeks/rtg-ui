@@ -188,7 +188,8 @@ class CurrentGames extends Component {
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
+    return 12;
+    // return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
@@ -283,10 +284,13 @@ class CurrentGames extends Component {
 
   render() {
     // TODO P2 animate scrolling by rendering more game DOM elements than displayed
-    // position to the correct offset with relative left
+    // Anschluss: position absolute und transformX mit overflow: hidden sollte gehen, ist
+    // scheinbar ein Chrome Bug! weiter recherchieren, geht in Firefox.
     // on scroll, animate scroll first (disable scrolling during animation) and then update state
-    const gamesToDisplayWindow = CurrentGames
-      .range(this.state.currentOffset, this.state.currentOffset + this.state.gamesToDisplay);
+    const gamesToDisplayWindow = CurrentGames.range(
+      Math.max(0, this.state.currentOffset - this.state.gamesToDisplay),
+      Math.min(this.state.games.length, this.state.currentOffset + (2 * this.state.gamesToDisplay)),
+    );
 
     const scrollButtonStyle = {
       position: 'absolute',
