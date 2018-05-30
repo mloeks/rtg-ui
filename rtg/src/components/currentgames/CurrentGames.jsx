@@ -181,7 +181,6 @@ class CurrentGames extends Component {
         const kickoffs = response.json;
         const initialOffset = this.getInitialOffsetBasedOnDate(kickoffs);
         this.setState(() => ({
-          // TODO P1 check if fill is polyfilled on IE
           games: Array(kickoffs.length).fill(null),
           currentOffset: initialOffset,
         }), () => this.fetchMoreGamesIfRequired());
