@@ -102,6 +102,7 @@ class Schedule extends Component {
           .push(<RtgSeparator
             key={game.kickoff}
             content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
+            style={{ margin: '15px 0' }}
           />);
         lastGameDay = game.kickoff;
       }
@@ -115,7 +116,7 @@ class Schedule extends Component {
           onClick={() => this.props.history.push('/bets')}
           onKeyPress={e => (isEnter(e) && this.props.history.push('/bets'))}
         >
-          <GameCard userBet={userBet} {...game}>
+          <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
             <GameCardGameInfo
               city={game.city}
               kickoff={parse(game.kickoff)}

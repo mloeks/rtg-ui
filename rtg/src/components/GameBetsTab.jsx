@@ -107,7 +107,7 @@ class GameBetsTab extends Component {
         lastDeadlineText = deadlineText;
       }
       const gameCardWithBet = (
-        <GameCard key={game.id} {...game} >
+        <GameCard key={game.id} style={{ marginBottom: 25 }} {...game} >
           <GameCardBet
             gameId={game.id}
             hadSaveIssues={this.state.gamesWithSavingIssues
