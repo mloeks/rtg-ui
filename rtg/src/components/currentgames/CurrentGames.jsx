@@ -51,7 +51,7 @@ class CurrentGames extends Component {
       window.matchMedia('(max-width: 768px)'),
       window.matchMedia('(max-width: 1280px)'),
     ];
-    this.loadGamesAroundView = 3;
+    this.loadGamesAroundView = 4;
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
@@ -117,13 +117,27 @@ class CurrentGames extends Component {
   }
 
   fetchMoreGamesIfRequired() {
-    // TODO only load more when close to the border of the loaded window
-    console.log(this.state.games);
-    console.log(this.state.currentOffset);
-    const desiredOffset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
-    const desiredLimit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
-    console.log(`should load offset=${desiredOffset}, limit=${desiredLimit}`);
+    // check if we can scroll once more with loaded ames available
+    const couldScrollBackwardOnceMore = this.state.games[
+      Math.max(0, this.state.currentOffset - this.state.gamesToDisplay)] !== null;
+    const couldScrollForwardOnceMore = this.state.games[Math.min(
+      this.state.games.length - 1,
+      this.state.currentOffset + ((2 * this.state.gamesToDisplay) - 1),
+    )] !== null;
 
+    // calculate required window of games to be available
+    // increase it, if there would be unavailable games on next scroll
+    let desiredOffset = this.state.currentOffset;
+    let desiredLimit = this.state.gamesToDisplay;
+    if (!couldScrollBackwardOnceMore || !couldScrollForwardOnceMore) {
+      desiredOffset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
+      desiredLimit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
+    }
+
+    // check available games for desired window
+    // note: this is probably unnecessarily through, but we'd like to make
+    // sure there are no "gaps" in the games list, e.g. when jumps in the table
+    // will happen
     let minUnknownGame = -1;
     let maxUnknownGame = -1;
     for (let i = desiredOffset; i < (desiredOffset + desiredLimit); i += 1) {
@@ -133,15 +147,13 @@ class CurrentGames extends Component {
       }
     }
 
+    // only re-fetch, if there are unloaded games in the desired offset/limit
     if (minUnknownGame !== -1) {
       const offset = minUnknownGame;
       const limit = (maxUnknownGame - minUnknownGame) + 1;
-      console.log(`actually loading offset=${offset}, limit=${limit}`);
       const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
       this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
         CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
-    } else {
-      console.log('nothing to reload!');
     }
   }
 
