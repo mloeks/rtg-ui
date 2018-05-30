@@ -55,8 +55,8 @@ class CurrentGames extends Component {
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
-    this.canScrollForward = this.canScrollForward.bind(this);
-    this.canScrollBackward = this.canScrollBackward.bind(this);
+    this.mayScrollForward = this.mayScrollForward.bind(this);
+    this.mayScrollBackward = this.mayScrollBackward.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
     this.scrollBackward = this.scrollBackward.bind(this);
   }
@@ -157,11 +157,11 @@ class CurrentGames extends Component {
     }
   }
 
-  canScrollForward() {
+  mayScrollForward() {
     return this.state.currentOffset + this.state.gamesToDisplay < this.state.games.length;
   }
 
-  canScrollBackward() { return this.state.currentOffset > 0; }
+  mayScrollBackward() { return this.state.currentOffset > 0; }
 
   scrollForward() {
     this.setState((prevState) => {
@@ -197,7 +197,7 @@ class CurrentGames extends Component {
     return (
       this.state.games ? (
         <section className="CurrentGames">
-          {this.canScrollBackward() &&
+          {this.mayScrollBackward() &&
             <IconButton
               className="CurrentGames__scroll-button"
               tooltip="Zurück"
@@ -207,7 +207,7 @@ class CurrentGames extends Component {
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowLeft />
             </IconButton>}
-          {this.canScrollForward() &&
+          {this.mayScrollForward() &&
             <IconButton
               className="CurrentGames__scroll-button"
               tooltip="Vor"
