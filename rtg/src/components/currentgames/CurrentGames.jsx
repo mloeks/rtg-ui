@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { parse } from 'date-fns';
 import { IconButton } from 'material-ui';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { viewportW } from 'verge';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
-import GameCard from '../GameCard';
-import GameCardGameInfo from '../GameCardGameInfo';
+import CurrentGameCard from './CurrentGameCard';
+
+import './CurrentGames.css';
+
+const SCROLL_BUTTON_SIZE = 40;
 
 class CurrentGames extends Component {
   static range(start, end) {
@@ -71,7 +73,7 @@ class CurrentGames extends Component {
   }
 
   componentWillUnmount() {
-    this.mediaQueryList.forEach(mql => mql.removeEventListener(this.onBreakpointChange));
+    this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
   }
 
   onBreakpointChange() {
@@ -142,34 +144,50 @@ class CurrentGames extends Component {
   render() {
     const gamesToDisplayWindow = CurrentGames
       .range(this.state.currentOffset, this.state.currentOffset + this.state.gamesToDisplay);
+
+    const scrollButtonStyle = {
+      position: 'absolute',
+      top: `calc(50% - 0.5 * ${SCROLL_BUTTON_SIZE}px)`,
+      padding: 0,
+      width: SCROLL_BUTTON_SIZE,
+      height: SCROLL_BUTTON_SIZE,
+    };
+    const scrollButtonIconStyle = {
+      width: 0.9 * SCROLL_BUTTON_SIZE,
+      height: 0.9 * SCROLL_BUTTON_SIZE,
+    };
+
     return (
       this.state.games ? (
-        <section className="CurrentGames">
+        <section className="CurrentGames" style={{ padding: `0 ${SCROLL_BUTTON_SIZE}px` }}>
           {this.canScrollBackward() &&
-            <IconButton onClick={this.scrollBackward}><HardwareKeyboardArrowLeft /></IconButton>}
+            <IconButton
+              onClick={this.scrollBackward}
+              tooltip="Zurück"
+              tooltipPosition="top-center"
+              style={{ left: 0, ...scrollButtonStyle }}
+              iconStyle={scrollButtonIconStyle}
+            ><HardwareKeyboardArrowLeft />
+            </IconButton>}
           {this.canScrollForward() &&
-            <IconButton onClick={this.scrollForward}><HardwareKeyboardArrowRight /></IconButton>}
+            <IconButton
+              onClick={this.scrollForward}
+              tooltip="Vor"
+              tooltipPosition="top-center"
+              style={{ right: 0, ...scrollButtonStyle }}
+              iconStyle={scrollButtonIconStyle}
+            ><HardwareKeyboardArrowRight />
+            </IconButton>}
 
 
           {gamesToDisplayWindow.map((offset) => {
             const game = this.state.games[offset];
-            if (game) {
-              const userBet = this.state.bets.find(bet => bet.bettable === game.id) || {};
-              return (
-                <GameCard key={game.id} userBet={userBet} {...game}>
-                  <GameCardGameInfo
-                    city={game.city}
-                    kickoff={parse(game.kickoff)}
-                    result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
-                    resultBetType={userBet.result_bet_type}
-                    points={userBet.points}
-                    userBet={userBet.result_bet}
-                  />
-                </GameCard>
-              );
-            }
-            // TODO style loading state
-            return <div key={`empty-game-${offset}`}>--- LEER ---</div>;
+            return (
+              <CurrentGameCard
+                key={`current-game-offset-${offset}`}
+                game={this.state.games[offset]}
+                userBet={game ? this.state.bets.find(bet => bet.bettable === game.id) || {} : null}
+              />);
           })}
         </section>) : null);
   }
