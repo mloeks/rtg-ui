@@ -5,19 +5,44 @@ import CountryFlag from './CountryFlag';
 import './GameCard.css';
 
 // TODO P2 FEATURE Prio 2 - add possibility to unfold and show calculated bet stats below the card
-const GameCard = props => (
-  <section className="GameCard">
-    <CountryFlag country={props.hometeam_name} countryCode={props.hometeam_abbreviation} />
-    <div className="hometeam">{props.hometeam_name}</div>
-    {props.children}
-    <div className="awayteam">{props.awayteam_name}</div>
-    <CountryFlag country={props.awayteam_name} countryCode={props.awayteam_abbreviation} />
-  </section>
-);
+// TODO P3 move team name from CountryFlag in here and clean up name mode foo
+const GameCard = (props) => {
+  const mapDisplayTeamNameForCountryFlag = props.displayTeamNames === 'auto' ? 'auto' : 'always';
 
-GameCard.defaultProps = { children: null };
+  return (
+    <section className="GameCard">
+      <CountryFlag
+        country={props.hometeam_name}
+        countryCode={props.hometeam_abbreviation}
+        displayTeamName={mapDisplayTeamNameForCountryFlag}
+      />
+
+      <div className={`hometeam ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
+        {props.displayTeamNames !== 'small' ? props.hometeam_name : ''}
+      </div>
+
+      {props.children}
+
+      <div className={`awayteam ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
+        {props.displayTeamNames !== 'small' ? props.awayteam_name : ''}
+      </div>
+
+      <CountryFlag
+        country={props.awayteam_name}
+        countryCode={props.awayteam_abbreviation}
+        displayTeamName={mapDisplayTeamNameForCountryFlag}
+      />
+    </section>
+  );
+};
+
+GameCard.defaultProps = {
+  children: null,
+  displayTeamNames: 'auto',
+};
 
 GameCard.propTypes = {
+  displayTeamNames: PropTypes.oneOf(['auto', 'small']),
   hometeam_name: PropTypes.string.isRequired,
   hometeam_abbreviation: PropTypes.string.isRequired,
   awayteam_name: PropTypes.string.isRequired,
