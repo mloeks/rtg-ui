@@ -10,28 +10,30 @@ const GameCard = (props) => {
   const mapDisplayTeamNameForCountryFlag = props.displayTeamNames === 'auto' ? 'auto' : 'always';
 
   return (
-    <section className="GameCard">
-      <CountryFlag
-        country={props.hometeam_name}
-        countryCode={props.hometeam_abbreviation}
-        displayTeamName={mapDisplayTeamNameForCountryFlag}
-      />
+    <section className={`GameCard ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
+      <div className="GameCard__inner">
+        <CountryFlag
+          country={props.hometeam_name}
+          countryCode={props.hometeam_abbreviation}
+          displayTeamName={mapDisplayTeamNameForCountryFlag}
+        />
 
-      <div className={`hometeam ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
-        {props.displayTeamNames !== 'small' ? props.hometeam_name : ''}
+        <div className="hometeam">
+          {props.displayTeamNames !== 'small' ? props.hometeam_name : ''}
+        </div>
+
+        {props.children}
+
+        <div className="awayteam">
+          {props.displayTeamNames !== 'small' ? props.awayteam_name : ''}
+        </div>
+
+        <CountryFlag
+          country={props.awayteam_name}
+          countryCode={props.awayteam_abbreviation}
+          displayTeamName={mapDisplayTeamNameForCountryFlag}
+        />
       </div>
-
-      {props.children}
-
-      <div className={`awayteam ${props.displayTeamNames === 'auto' ? 'auto-hide' : ''}`}>
-        {props.displayTeamNames !== 'small' ? props.awayteam_name : ''}
-      </div>
-
-      <CountryFlag
-        country={props.awayteam_name}
-        countryCode={props.awayteam_abbreviation}
-        displayTeamName={mapDisplayTeamNameForCountryFlag}
-      />
     </section>
   );
 };

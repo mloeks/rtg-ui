@@ -1,39 +1,46 @@
 @import '../sass/mixins/skeleton';
 
 .GameCard {
-  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 16px 0 70px;
 
-  position: relative;
-  margin: 25px 0 100px;
+  &.auto-hide {
+    .hometeam, .awayteam {
+      display: none;
+    }
 
-  font-family: 'Roboto', sans-serif;
+    @media only screen and (min-width: 680px) {
+      padding: 16px 0 30px;
+      .hometeam, .awayteam {
+        display: flex;
+      }
+    }
+  }
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  &__inner {
+    position: relative;
 
-  height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    box-sizing: border-box;
 
-  border-left: 20px solid white;
-  border-right: 20px solid white;
+    border-left: 20px solid white;
+    border-right: 20px solid white;
 
-  background-color: #e3e3e3;
+    font-family: 'Roboto', sans-serif;
+    background-color: #e3e3e3;
 
-  &--skeleton {
-    @include skeleton('game-skeleton');
+    &--skeleton {
+      @include skeleton('game-skeleton');
+    }
   }
 
   .hometeam, .awayteam {
     display: flex;
     text-transform: uppercase;
     font-size: 20px;
-
-    &.auto-hide {
-      display: none;
-      @media only screen and (min-width : 680px) {
-        display: flex;
-      }
-    }
 
     @media only screen and (min-width : 680px) {
       align-items: center;
@@ -53,6 +60,5 @@
 
   @media only screen and (min-width : 680px) {
     max-width: 850px;
-    margin: 25px auto 75px;
   }
 }
