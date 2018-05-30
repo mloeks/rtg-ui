@@ -6,6 +6,7 @@ import { viewportW } from 'verge';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import CurrentGameCard from './CurrentGameCard';
+import { lightGrey, purple } from '../../theme/RtgTheme';
 
 import './CurrentGames.css';
 
@@ -208,7 +209,7 @@ class CurrentGames extends Component {
               onClick={this.scrollBackward}
               style={{ left: 0, ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
-            ><HardwareKeyboardArrowLeft />
+            ><HardwareKeyboardArrowLeft color={lightGrey} hoverColor={purple} />
             </IconButton>}
           {this.mayScrollForward() &&
             <IconButton
@@ -218,7 +219,7 @@ class CurrentGames extends Component {
               onClick={this.scrollForward}
               style={{ right: 0, ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
-            ><HardwareKeyboardArrowRight />
+            ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
             </IconButton>}
 
           {gamesToDisplayWindow.map((offset) => {
