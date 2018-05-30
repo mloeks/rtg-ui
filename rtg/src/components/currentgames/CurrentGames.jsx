@@ -3,7 +3,7 @@ import { IconButton } from 'material-ui';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { viewportW } from 'verge';
-import { differenceInMinutes } from 'date-fns';
+import { differenceInMinutes, parse } from 'date-fns';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import CurrentGameCard from './CurrentGameCard';
@@ -12,6 +12,7 @@ import { lightGrey, purple } from '../../theme/RtgTheme';
 import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
+const TOUCH_MOVE_THRESHOLD_SCROLL = 75;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
 class CurrentGames extends Component {
@@ -54,8 +55,15 @@ class CurrentGames extends Component {
       window.matchMedia('(max-width: 1280px)'),
     ];
     this.loadGamesAroundView = 4;
+    this.touchStartXPos = -1;
+
+    this.touchEventsOwner = null;
+    this.currentGamesRef = React.createRef();
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.onTouchCancel = this.onTouchCancel.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
     this.mayScrollForward = this.mayScrollForward.bind(this);
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
@@ -66,12 +74,32 @@ class CurrentGames extends Component {
   componentDidMount() {
     this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false, (prevState, response) => ({ bets: response }));
     this.fetchKickoffs();
-
-    this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
+    this.registerEvents();
   }
 
   componentWillUnmount() {
+    this.unregisterEvents();
+  }
+
+  registerEvents() {
+    this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
+
+    this.touchEventsOwner = this.currentGamesRef.current;
+    if (this.touchEventsOwner) {
+      this.touchEventsOwner.addEventListener('touchstart', this.onTouchStart, false);
+      this.touchEventsOwner.addEventListener('touchend', this.onTouchEnd, false);
+      this.touchEventsOwner.addEventListener('touchcancel', this.onTouchCancel, false);
+    }
+  }
+
+  unregisterEvents() {
     this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
+
+    if (this.touchEventsOwner) {
+      this.touchEventsOwner.removeEventListener('touchstart', this.onTouchStart);
+      this.touchEventsOwner.removeEventListener('touchend', this.onTouchEnd);
+      this.touchEventsOwner.removeEventListener('touchcancel', this.onTouchCancel);
+    }
   }
 
   onBreakpointChange() {
@@ -83,12 +111,33 @@ class CurrentGames extends Component {
       this.fetchMoreGamesIfRequired());
   }
 
+  onTouchStart(e) {
+    this.touchStartXPos = e.changedTouches ? e.changedTouches[0].pageX : null;
+  }
+
+  onTouchEnd(e) {
+    if (e.changedTouches && this.touchStartXPos) {
+      const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
+      if (movedX > TOUCH_MOVE_THRESHOLD_SCROLL) {
+        this.scrollBackward();
+      } else if (movedX < -TOUCH_MOVE_THRESHOLD_SCROLL) {
+        this.scrollForward();
+      }
+    } else {
+      this.touchStartXPos = null;
+    }
+  }
+
+  onTouchCancel() {
+    this.touchStartXPos = null;
+  }
+
   getInitialOffsetBasedOnDate(kickoffs) {
     let offsetBasedOnDate = 0;
     let closestKickoffAbsDifference = Number.MAX_SAFE_INTEGER;
     const now = new Date();
     for (let i = 0; i < kickoffs.length; i += 1) {
-      const distance = differenceInMinutes(new Date(kickoffs[i]), now);
+      const distance = differenceInMinutes(parse(kickoffs[i]), now);
 
       if (distance < 0 && distance > -90) {
         // We found a currently running game. use this and stop immediately. This is important in
@@ -224,8 +273,8 @@ class CurrentGames extends Component {
     };
 
     return (
-      this.state.games ? (
-        <section className="CurrentGames">
+      this.state.games && (
+        <section className="CurrentGames" ref={this.currentGamesRef}>
           {this.mayScrollBackward() &&
             <IconButton
               className="CurrentGames__scroll-button"
@@ -256,7 +305,7 @@ class CurrentGames extends Component {
                 userBet={game ? this.state.bets.find(bet => bet.bettable === game.id) || {} : null}
               />);
           })}
-        </section>) : null);
+        </section>));
   }
 }
 
