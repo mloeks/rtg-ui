@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
+import { FlatButton } from 'material-ui';
+import ImageEdit from 'material-ui/svg-icons/image/edit';
+import ContentSave from 'material-ui/svg-icons/content/save';
+import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
-import GameCardGameInfo from '../GameCardGameInfo';
 import NullGameCard from '../NullGameCard';
+import GameCardGameInfo from '../GameCardGameInfo';
+import GameCardBet from '../GameCardBet';
 
 import './CurrentGameCard.css';
-import RtgSeparator from "../RtgSeparator";
 
+// TODO P2 Also display round and group info somewhere here
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {
     if (isYesterday(kickoff)) { return "Gestern"; }
@@ -20,6 +25,31 @@ class CurrentGameCard extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      betSaveFailed: false,
+      editingBet: false,
+      shouldSaveBet: false,
+    };
+
+    this.handleBetEdit = this.handleBetEdit.bind(this);
+    this.handleBetSave = this.handleBetSave.bind(this);
+    this.handleBetSaveDone = this.handleBetSaveDone.bind(this);
+  }
+
+  handleBetEdit() {
+    this.setState({ betSaveFailed: false, editingBet: true });
+  }
+
+  handleBetSave() {
+    this.setState({ shouldSaveBet: true });
+  }
+
+  handleBetSaveDone(id, bet, type, detail) {
+    // TODO P2 check saving/error type for errors and only call onBetSaveDone on parent if it was successful
+    // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
+    // up into the header or page (or another similar producer has to be used for this page)...
+    this.setState({ editingBet: false, shouldSaveBet: false });
+    this.props.onBetEditDone(id, bet, type, detail);
   }
 
   render() {
@@ -30,16 +60,46 @@ class CurrentGameCard extends Component {
 
         {this.props.game ? (
           <GameCard displayTeamNames="small" {...this.props.game}>
-            <GameCardGameInfo
-              city={this.props.game.city}
-              kickoff={parse(this.props.game.kickoff)}
-              result={this.props.game.homegoals !== -1 && this.props.game.awaygoals !== -1 ? `${this.props.game.homegoals} : ${this.props.game.awaygoals}` : null}
-              resultBetType={this.props.userBet ? this.props.userBet.result_bet_type : null}
-              points={this.props.userBet ? this.props.userBet.points : null}
-              userBet={this.props.userBet ? this.props.userBet.result_bet : null}
-            />
+            {this.state.editingBet ? (
+              <GameCardBet
+                gameId={this.props.game.id}
+                hadSaveIssues={this.state.editingBet && this.state.betSaveFailed}
+                shouldSave={this.state.shouldSaveBet}
+                userBet={this.props.userBet}
+                onSaveDone={this.handleBetSaveDone}
+              />
+            ) : (
+              <GameCardGameInfo
+                city={this.props.game.city}
+                kickoff={parse(this.props.game.kickoff)}
+                result={this.props.game.homegoals !== -1 && this.props.game.awaygoals !== -1 ? `${this.props.game.homegoals} : ${this.props.game.awaygoals}` : null}
+                resultBetType={this.props.userBet ? this.props.userBet.result_bet_type : null}
+                points={this.props.userBet ? this.props.userBet.points : null}
+                userBet={this.props.userBet ? this.props.userBet.result_bet : null}
+              />
+            )}
           </GameCard>
         ) : <NullGameCard />}
+
+        {this.props.game && this.props.game.bets_open && (
+          <div className="CurrentGameCard__actions">
+            {this.state.editingBet ? (
+              <FlatButton
+                label="Speichern"
+                primary
+                icon={<ContentSave />}
+                onClick={this.handleBetSave}
+              />
+              ) : (
+                <FlatButton
+                  label="Tipp ändern"
+                  primary
+                  icon={<ImageEdit />}
+                  onClick={this.handleBetEdit}
+                />
+              )}
+          </div>
+        )}
       </div>
     );
   }
@@ -48,11 +108,14 @@ class CurrentGameCard extends Component {
 CurrentGameCard.defaultProps = {
   game: null,
   userBet: null,
+  onBetEditStart: () => {},
 };
 
 CurrentGameCard.propTypes = {
   game: PropTypes.shape(),
   userBet: PropTypes.shape(),
+  onBetEditStart: PropTypes.func,
+  onBetEditDone: PropTypes.func.isRequired,
 };
 
 export default CurrentGameCard;

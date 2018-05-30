@@ -15,6 +15,7 @@ import './CurrentGames.css';
 const SCROLL_BUTTON_SIZE = 50;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
+// TODO P3 refactor this component!
 class CurrentGames extends Component {
   static range(start, end) {
     return Array.from({ length: (end - start) }, (v, k) => k + start);
@@ -72,6 +73,8 @@ class CurrentGames extends Component {
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
     this.scrollBackward = this.scrollBackward.bind(this);
+    this.handleBetEditStart = this.handleBetEditStart.bind(this);
+    this.handleBetEditDone = this.handleBetEditDone.bind(this);
   }
 
   componentDidMount() {
@@ -281,6 +284,19 @@ class CurrentGames extends Component {
     }, this.fetchMoreGamesIfRequired);
   }
 
+  handleBetEditStart() {
+    // TODO P2 only unregister touch events, separate them from media query list events
+    // TODO P2 also disable scrolling
+    // TODO P2 does not work yet?
+    this.unregisterEvents();
+  }
+
+  handleBetEditDone(betId, updatedBet, savingReturnType, detail) {
+    // TODO P2 update state.bets correctly
+    console.log('TODO update bet in CurrentGames state');
+    this.registerEvents();
+  }
+
   render() {
     // TODO P2 animate scrolling by rendering more game DOM elements than displayed
     // position to the correct offset with relative left
@@ -326,12 +342,15 @@ class CurrentGames extends Component {
           <div className="CurrentGames__game-card-container" ref={this.currentGamesRef}>
             {gamesToDisplayWindow.map((offset) => {
               const game = this.state.games[offset];
+              const userBet = game ?
+                this.state.bets.find(bet => bet.bettable === game.id) || {} : null;
               return (
                 <CurrentGameCard
                   key={`current-game-offset-${offset}`}
                   game={this.state.games[offset]}
-                  userBet={game ?
-                    this.state.bets.find(bet => bet.bettable === game.id) || {} : null}
+                  userBet={userBet}
+                  onBetEditStart={this.handleBetEditStart}
+                  onBetEditDone={this.handleBetEditDone}
                 />);
             })}
           </div>
