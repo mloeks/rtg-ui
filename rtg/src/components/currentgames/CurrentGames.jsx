@@ -303,6 +303,8 @@ class CurrentGames extends Component {
     // Anschluss: position absolute und transformX mit overflow: hidden sollte gehen, ist
     // scheinbar ein Chrome Bug! weiter recherchieren, geht in Firefox.
     // on scroll, animate scroll first (disable scrolling during animation) and then update state
+    // TODO P3 this might not need to be re-evaluated on each re-render,
+    // only after scroll and breakpoint change should be enough
     const gamesToDisplayWindow = CurrentGames.range(
       Math.max(0, this.state.currentOffset - this.state.gamesToDisplay),
       Math.min(this.state.games.length, this.state.currentOffset + (2 * this.state.gamesToDisplay)),
@@ -318,6 +320,10 @@ class CurrentGames extends Component {
       width: 0.9 * SCROLL_BUTTON_SIZE,
       height: 0.9 * SCROLL_BUTTON_SIZE,
     };
+    const containerStyle = {
+      width: '300%',
+      left: '-100%',
+    };
 
     return (
       this.state.games && (
@@ -328,7 +334,7 @@ class CurrentGames extends Component {
               tooltip="Zurück"
               tooltipPosition="top-center"
               onClick={this.scrollBackward}
-              style={{ left: 0, ...scrollButtonStyle }}
+              style={{ left: 0, marginLeft: '-5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowLeft color={lightGrey} hoverColor={purple} />
             </IconButton>}
@@ -338,12 +344,16 @@ class CurrentGames extends Component {
               tooltip="Vor"
               tooltipPosition="top-center"
               onClick={this.scrollForward}
-              style={{ right: 0, ...scrollButtonStyle }}
+              style={{ right: 0, marginRight: '-5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
             </IconButton>}
 
-          <div className="CurrentGames__game-card-container" ref={this.currentGamesRef}>
+          <div
+            className="CurrentGames__game-card-container"
+            ref={this.currentGamesRef}
+            style={containerStyle}
+          >
             {gamesToDisplayWindow.map((offset) => {
               const game = this.state.games[offset];
               const userBet = game ?
