@@ -39,6 +39,24 @@ class CurrentGames extends Component {
     return 3;
   }
 
+  static getGamesToDisplayWindowState(offset, totalGames, gamesToDisplay) {
+    const firstDomElOffset = Math.max(0, offset - gamesToDisplay);
+    const lastDomElOffset = Math.min(totalGames, offset + (2 * gamesToDisplay));
+    const range = CurrentGames.range(firstDomElOffset, lastDomElOffset);
+
+    const containerWidthDecimal = range.length / gamesToDisplay;
+    const containerOffsetDecimal = containerWidthDecimal *
+      ((offset - firstDomElOffset) / range.length);
+
+    return {
+      range,
+      containerStyle: {
+        width: `${100.0 * containerWidthDecimal}%`,
+        left: `${-100.0 * containerOffsetDecimal}%`,
+      },
+    };
+  }
+
   constructor(props) {
     super(props);
 
@@ -50,6 +68,16 @@ class CurrentGames extends Component {
 
       currentOffset: 0,
       gamesToDisplay: CurrentGames.getGamesToDisplay(),
+
+      // the DOM contains more current games than visible in the viewport,
+      // in order to offer a nice animated scrolling (especially on touch devices)
+      // This state field contains the offsets currently in the DOM
+      // and the dynamic styling of the container div (required for animating properly
+      // on scroll and touchmove)
+      gamesToDisplayWindow: {
+        range: [],
+        containerStyle: {},
+      },
     };
 
     this.mediaQueryList = [
@@ -116,7 +144,12 @@ class CurrentGames extends Component {
     this.setState((prevState) => {
       const gamesToDisplay = CurrentGames.getGamesToDisplay();
       const newOffset = Math.min(prevState.games.length - gamesToDisplay, prevState.currentOffset);
-      return { gamesToDisplay, currentOffset: newOffset };
+      return {
+        gamesToDisplay,
+        currentOffset: newOffset,
+        gamesToDisplayWindow:
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, gamesToDisplay),
+      };
     }, () => {
       this.updateTouchMoveToScrollThreshold();
       this.fetchMoreGamesIfRequired();
@@ -192,7 +225,7 @@ class CurrentGames extends Component {
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
+    return Math.max(12, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
@@ -213,9 +246,11 @@ class CurrentGames extends Component {
       if (response.ok) {
         const kickoffs = response.json;
         const initialOffset = this.getInitialOffsetBasedOnDate(kickoffs);
-        this.setState(() => ({
+        this.setState(prevState => ({
           games: Array(kickoffs.length).fill(null),
           currentOffset: initialOffset,
+          gamesToDisplayWindow:
+            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffs.length, prevState.gamesToDisplay),
         }), () => this.fetchMoreGamesIfRequired());
       } else {
         this.setState(() => ({ loadingError: true }));
@@ -271,17 +306,34 @@ class CurrentGames extends Component {
   mayScrollBackward() { return this.state.currentOffset > 0; }
 
   scrollForward() {
+    // TODO P2 on scroll, animate scroll first (disable scrolling during animation) and then update state
+    // if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    //   this.currentGamesContainerRef.current.style.left = '-200%';
+    // }
     this.setState((prevState) => {
       const nextOffset = prevState.currentOffset + prevState.gamesToDisplay;
       const maxOffset = prevState.games.length - prevState.gamesToDisplay;
-      return { currentOffset: Math.min(nextOffset, maxOffset) };
+      const newOffset = Math.min(nextOffset, maxOffset);
+      return {
+        currentOffset: newOffset,
+        gamesToDisplayWindow:
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, prevState.gamesToDisplay),
+      };
     }, this.fetchMoreGamesIfRequired);
   }
 
   scrollBackward() {
+    // if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    //   this.currentGamesContainerRef.current.style.left = 0;
+    // }
     this.setState((prevState) => {
       const nextOffset = prevState.currentOffset - prevState.gamesToDisplay;
-      return { currentOffset: Math.max(nextOffset, 0) };
+      const newOffset = Math.max(nextOffset, 0);
+      return {
+        currentOffset: newOffset,
+        gamesToDisplayWindow:
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, prevState.gamesToDisplay),
+      };
     }, this.fetchMoreGamesIfRequired);
   }
 
@@ -299,14 +351,6 @@ class CurrentGames extends Component {
   }
 
   render() {
-    // TODO P2 on scroll, animate scroll first (disable scrolling during animation) and then update state
-    // TODO P3 this might not need to be re-evaluated on each re-render,
-    // only after scroll and breakpoint change should be enough
-    const firstDomElOffset = Math.max(0, this.state.currentOffset - this.state.gamesToDisplay);
-    const lastDomElOffset =
-      Math.min(this.state.games.length, this.state.currentOffset + (2 * this.state.gamesToDisplay));
-    const gamesToDisplayWindow = CurrentGames.range(firstDomElOffset, lastDomElOffset);
-
     const scrollButtonStyle = {
       position: 'absolute',
       padding: 0,
@@ -316,14 +360,6 @@ class CurrentGames extends Component {
     const scrollButtonIconStyle = {
       width: 0.9 * SCROLL_BUTTON_SIZE,
       height: 0.9 * SCROLL_BUTTON_SIZE,
-    };
-
-    const containerWidthDecimal = gamesToDisplayWindow.length / this.state.gamesToDisplay;
-    const containerOffsetDecimal = containerWidthDecimal *
-      ((this.state.currentOffset - firstDomElOffset) / gamesToDisplayWindow.length);
-    const containerStyle = {
-      width: `${100.0 * containerWidthDecimal}%`,
-      left: `${-100.0 * containerOffsetDecimal}%`,
     };
 
     return (
@@ -353,9 +389,9 @@ class CurrentGames extends Component {
           <div
             className="CurrentGames__game-card-container"
             ref={this.currentGamesContainerRef}
-            style={containerStyle}
+            style={this.state.gamesToDisplayWindow.containerStyle}
           >
-            {gamesToDisplayWindow.map((offset) => {
+            {this.state.gamesToDisplayWindow.range.map((offset) => {
               const game = this.state.games[offset];
               const userBet = game ?
                 this.state.bets.find(bet => bet.bettable === game.id) || {} : null;
