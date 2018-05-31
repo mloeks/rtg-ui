@@ -383,6 +383,11 @@ class CurrentGames extends Component {
         }
       } else {
         // TODO P2 where to get the proper full bet from? we need the entire response
+        // either only store result strings in this components state (also smaller, only thing
+        // needed for display) and have the bet card fetch the bet on edit
+        // OR refactor BetGameCard to return the entire object, which is, however,
+        // not trivial in case of errors and requires changing the entire (stable) behaviour
+        // on the bets page.
         updatedBets.push(newBet);
       }
       return { bets: updatedBets, editingBet: false };
