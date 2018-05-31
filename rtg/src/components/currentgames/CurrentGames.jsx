@@ -15,7 +15,8 @@ import './CurrentGames.css';
 const SCROLL_BUTTON_SIZE = 50;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
-// TODO P3 refactor this component!
+// TODO P3 refactor this component, e.g. move game container into its own component with
+// all event handling etc. attached
 class CurrentGames extends Component {
   static range(start, end) {
     return Array.from({ length: (end - start) }, (v, k) => k + start);
@@ -55,11 +56,11 @@ class CurrentGames extends Component {
       window.matchMedia('(max-width: 768px)'),
       window.matchMedia('(max-width: 1280px)'),
     ];
-    this.loadGamesAroundView = 4;
+    this.preLoadGamesAroundView = 4;
     this.touchStartXPos = -1;
 
-    this.touchEventsOwner = null;
-    this.currentGamesRef = React.createRef();
+    this.touchEventsEl = null;
+    this.currentGamesContainerRef = React.createRef();
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
@@ -91,23 +92,23 @@ class CurrentGames extends Component {
   registerEvents() {
     this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
 
-    this.touchEventsOwner = this.currentGamesRef.current;
-    if (this.touchEventsOwner) {
-      this.touchEventsOwner.addEventListener('touchstart', this.onTouchStart, false);
-      this.touchEventsOwner.addEventListener('touchend', this.onTouchEnd, false);
-      this.touchEventsOwner.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
-      this.touchEventsOwner.addEventListener('touchcancel', this.onTouchCancel, false);
+    this.touchEventsEl = this.currentGamesContainerRef.current;
+    if (this.touchEventsEl) {
+      this.touchEventsEl.addEventListener('touchstart', this.onTouchStart, false);
+      this.touchEventsEl.addEventListener('touchend', this.onTouchEnd, false);
+      this.touchEventsEl.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
+      this.touchEventsEl.addEventListener('touchcancel', this.onTouchCancel, false);
     }
   }
 
   unregisterEvents() {
     this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
 
-    if (this.touchEventsOwner) {
-      this.touchEventsOwner.removeEventListener('touchstart', this.onTouchStart);
-      this.touchEventsOwner.removeEventListener('touchend', this.onTouchEnd);
-      this.touchEventsOwner.removeEventListener('touchmove', this.onTouchMove);
-      this.touchEventsOwner.removeEventListener('touchcancel', this.onTouchCancel);
+    if (this.touchEventsEl) {
+      this.touchEventsEl.removeEventListener('touchstart', this.onTouchStart);
+      this.touchEventsEl.removeEventListener('touchend', this.onTouchEnd);
+      this.touchEventsEl.removeEventListener('touchmove', this.onTouchMove);
+      this.touchEventsEl.removeEventListener('touchcancel', this.onTouchCancel);
     }
   }
 
@@ -152,11 +153,11 @@ class CurrentGames extends Component {
   }
 
   horizontalMove(x) {
-    if (this.currentGamesRef && this.currentGamesRef.current) {
-      const currentGamesClasses = this.currentGamesRef.current.classList;
+    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+      const currentGamesClasses = this.currentGamesContainerRef.current.classList;
       if (x === 0) { currentGamesClasses.remove('moving'); }
       else { currentGamesClasses.add('moving'); }
-      this.currentGamesRef.current.style.transform = `translateX(${x}px)`;
+      this.currentGamesContainerRef.current.style.transform = `translateX(${x}px)`;
     }
   }
 
@@ -236,8 +237,8 @@ class CurrentGames extends Component {
     let desiredOffset = this.state.currentOffset;
     let desiredLimit = this.state.gamesToDisplay;
     if (!couldScrollBackwardOnceMore || !couldScrollForwardOnceMore) {
-      desiredOffset = Math.max(0, this.state.currentOffset - this.loadGamesAroundView);
-      desiredLimit = this.state.gamesToDisplay + (2 * this.loadGamesAroundView);
+      desiredOffset = Math.max(0, this.state.currentOffset - this.preLoadGamesAroundView);
+      desiredLimit = this.state.gamesToDisplay + (2 * this.preLoadGamesAroundView);
     }
 
     // check available games for desired window
@@ -351,7 +352,7 @@ class CurrentGames extends Component {
 
           <div
             className="CurrentGames__game-card-container"
-            ref={this.currentGamesRef}
+            ref={this.currentGamesContainerRef}
             style={containerStyle}
           >
             {gamesToDisplayWindow.map((offset) => {
