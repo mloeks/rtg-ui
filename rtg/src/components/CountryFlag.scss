@@ -7,6 +7,7 @@ $size: 90px;
   position: relative;
   margin: 0 -25px;
   z-index: $zGameCardFlags;
+  user-select: none;
 
   &__flag,
   &--skeleton {
