@@ -77,6 +77,7 @@ class Header extends Component {
         onLeftIconButtonClick={this.handleMenuToggle}
         onTitleClick={() => { this.props.history.push('/'); }}
         style={{ height: HEADER_HEIGHT }}
+        titleStyle={{ textAlign: loggedIn ? 'left' : 'center', flexGrow: 1 }}
       />
     );
 
