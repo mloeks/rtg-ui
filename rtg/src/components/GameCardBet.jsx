@@ -52,7 +52,7 @@ class GameCardBet extends Component {
   }
 
   static updateBetsHaveChanges(context) {
-    if (!context.betsHaveChanges) {
+    if (context && !context.betsHaveChanges) {
       context.updateBetsHaveChanges(true);
     }
   }
