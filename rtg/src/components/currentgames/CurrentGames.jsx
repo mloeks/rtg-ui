@@ -39,7 +39,8 @@ class CurrentGames extends Component {
     return 3;
   }
 
-  static getGamesToDisplayWindowState(offset, totalGames, gamesToDisplay) {
+  static getGamesToDisplayWindowState(offset, totalGames) {
+    const gamesToDisplay = CurrentGames.getGamesToDisplay();
     const firstDomElOffset = Math.max(0, offset - gamesToDisplay);
     const lastDomElOffset = Math.min(totalGames, offset + (2 * gamesToDisplay));
     const range = CurrentGames.range(firstDomElOffset, lastDomElOffset);
@@ -148,7 +149,7 @@ class CurrentGames extends Component {
         gamesToDisplay,
         currentOffset: newOffset,
         gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, gamesToDisplay),
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
       };
     }, () => {
       this.updateTouchMoveToScrollThreshold();
@@ -250,7 +251,7 @@ class CurrentGames extends Component {
           games: Array(kickoffs.length).fill(null),
           currentOffset: initialOffset,
           gamesToDisplayWindow:
-            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffs.length, prevState.gamesToDisplay),
+            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffs.length),
         }), () => this.fetchMoreGamesIfRequired());
       } else {
         this.setState(() => ({ loadingError: true }));
@@ -317,7 +318,7 @@ class CurrentGames extends Component {
       return {
         currentOffset: newOffset,
         gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, prevState.gamesToDisplay),
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
       };
     }, this.fetchMoreGamesIfRequired);
   }
@@ -332,7 +333,7 @@ class CurrentGames extends Component {
       return {
         currentOffset: newOffset,
         gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length, prevState.gamesToDisplay),
+          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
       };
     }, this.fetchMoreGamesIfRequired);
   }
