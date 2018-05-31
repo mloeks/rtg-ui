@@ -9,6 +9,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
 import { debounce } from '../../service/EventsHelper';
+import Notification, { NotificationType } from '../Notification';
 
 import './CurrentGames.css';
 
@@ -384,6 +385,16 @@ class CurrentGames extends Component {
       width: 0.9 * SCROLL_BUTTON_SIZE,
       height: 0.9 * SCROLL_BUTTON_SIZE,
     };
+
+    if (this.state.loadingError) {
+      return (
+        <Notification
+          type={NotificationType.ERROR}
+          title="Fehler beim Laden der aktuellen Spiele"
+          subtitle="Bitte versuche es erneut."
+          style={{ margin: '30px auto', maxWidth: 400 }}
+        />);
+    }
 
     return (
       this.state.games && (
