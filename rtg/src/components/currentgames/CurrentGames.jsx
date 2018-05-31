@@ -191,8 +191,7 @@ class CurrentGames extends Component {
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return 12;
-    // return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
+    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
@@ -299,16 +298,13 @@ class CurrentGames extends Component {
   }
 
   render() {
-    // TODO P2 animate scrolling by rendering more game DOM elements than displayed
-    // Anschluss: position absolute und transformX mit overflow: hidden sollte gehen, ist
-    // scheinbar ein Chrome Bug! weiter recherchieren, geht in Firefox.
-    // on scroll, animate scroll first (disable scrolling during animation) and then update state
+    // TODO P2 on scroll, animate scroll first (disable scrolling during animation) and then update state
     // TODO P3 this might not need to be re-evaluated on each re-render,
     // only after scroll and breakpoint change should be enough
-    const gamesToDisplayWindow = CurrentGames.range(
-      Math.max(0, this.state.currentOffset - this.state.gamesToDisplay),
-      Math.min(this.state.games.length, this.state.currentOffset + (2 * this.state.gamesToDisplay)),
-    );
+    const firstDomElOffset = Math.max(0, this.state.currentOffset - this.state.gamesToDisplay);
+    const lastDomElOffset =
+      Math.min(this.state.games.length, this.state.currentOffset + (2 * this.state.gamesToDisplay));
+    const gamesToDisplayWindow = CurrentGames.range(firstDomElOffset, lastDomElOffset);
 
     const scrollButtonStyle = {
       position: 'absolute',
@@ -320,9 +316,13 @@ class CurrentGames extends Component {
       width: 0.9 * SCROLL_BUTTON_SIZE,
       height: 0.9 * SCROLL_BUTTON_SIZE,
     };
+
+    const containerWidthDecimal = gamesToDisplayWindow.length / this.state.gamesToDisplay;
+    const containerOffsetDecimal = containerWidthDecimal *
+      ((this.state.currentOffset - firstDomElOffset) / gamesToDisplayWindow.length);
     const containerStyle = {
-      width: '300%',
-      left: '-100%',
+      width: `${100.0 * containerWidthDecimal}%`,
+      left: `${-100.0 * containerOffsetDecimal}%`,
     };
 
     return (
