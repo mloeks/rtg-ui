@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { format, isAfter } from 'date-fns';
+import { addMinutes, format, isAfter, isBefore } from 'date-fns';
 import { Avatar } from 'material-ui';
 import Person from 'material-ui/svg-icons/social/person';
 import GameCardRibbon from './GameCardRibbon';
@@ -19,7 +19,16 @@ const StateEnum = {
 };
 
 const GameCardGameInfo = (props) => {
-  const gameHasStarted = () => isAfter(new Date(), props.kickoff);
+  const now = new Date();
+  const gameHasStarted = () => isAfter(now, props.kickoff);
+
+  const gameIsRunning = () => {
+    if (props.result) return false;
+    // return false if game has no result but has startet at least 2.5 hrs ago
+    // then it usually must be finished and something is wrong with fetching the
+    // result - or it was cancelled.
+    return isAfter(now, props.kickoff) && isBefore(now, addMinutes(props.kickoff, 150));
+  };
 
   const getStateByResultBetType = (resultBetType) => {
     if (!gameHasStarted() || !props.result) {
@@ -38,52 +47,36 @@ const GameCardGameInfo = (props) => {
     return StateEnum.NIETE;
   };
 
-  const userBetDiv = (
-    <div className="GameCardGameInfo__userBet">
-      <Person style={{ width: '14px' }} color={white} />&nbsp;{props.userBet || '-:-'}
-    </div>
-  );
-
-  let ribbonContent;
-  if (!gameHasStarted()) {
-    ribbonContent = (
-      <div className="GameCardGameInfo">
-        {userBetDiv}
-        <div className="GameCardGameInfo__kickoff">{format(props.kickoff, 'HH:mm')}</div>
-        <div className="GameCardGameInfo__city">{props.city}</div>
-      </div>
-    );
-  } else if (props.result) {
-    const pointsCircle = (
-      <Avatar
-        className="GameCardGameInfo__points"
-        backgroundColor="transparent"
-        size={25}
-      >{props.points}</Avatar>
-    );
-
-    ribbonContent = (
-      <div className="GameCardGameInfo">
-        {userBetDiv}
-        <div className="GameCardGameInfo__result">{props.result}</div>
-        {pointsCircle}
-      </div>
-    );
-  } else {
-    ribbonContent = (
-      <div className="GameCardGameInfo">
-        {userBetDiv}
-        <div className="GameCardGameInfo__game-running-crown">
-          <img src={crown} alt="Icon Krone" />
-        </div>
-        <div className="GameCardGameInfo__game-running-text">Spiel läuft...</div>
-      </div>
-    );
-  }
-
   return (
     <GameCardRibbon stateCssClass={getStateByResultBetType(props.resultBetType)}>
-      {ribbonContent}
+      <div className="GameCardGameInfo">
+        <div className="GameCardGameInfo__userBet">
+          <Person style={{ width: '14px' }} color={white} />&nbsp;{props.userBet || '-:-'}
+        </div>
+
+        {props.result &&
+          <div className="GameCardGameInfo__result">{props.result}</div>}
+        {(!props.result && !gameIsRunning()) &&
+          <div className="GameCardGameInfo__kickoff">{format(props.kickoff, 'HH:mm')}</div>}
+        {gameIsRunning() && (
+          <Fragment>
+            <div className="GameCardGameInfo__game-running-crown">
+              <img src={crown} alt="Icon Krone" />
+            </div>
+            <div className="GameCardGameInfo__game-running-text">Spiel läuft...</div>
+          </Fragment>)}
+
+        {props.result && (
+          <Avatar
+            className="GameCardGameInfo__points"
+            backgroundColor="transparent"
+            size={25}
+          >{props.points}
+          </Avatar>)}
+
+        {(!props.result && !gameIsRunning()) &&
+          <div className="GameCardGameInfo__city">{props.city}</div>}
+      </div>
     </GameCardRibbon>
   );
 };
