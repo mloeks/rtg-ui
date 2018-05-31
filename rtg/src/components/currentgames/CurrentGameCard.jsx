@@ -32,12 +32,20 @@ class CurrentGameCard extends Component {
     };
 
     this.handleBetEdit = this.handleBetEdit.bind(this);
+    this.handleBetEditCancel = this.handleBetEditCancel.bind(this);
     this.handleBetSave = this.handleBetSave.bind(this);
     this.handleBetSaveDone = this.handleBetSaveDone.bind(this);
   }
 
   handleBetEdit() {
     this.setState({ betSaveFailed: false, editingBet: true });
+    this.props.onBetEditStart();
+  }
+
+  handleBetEditCancel() {
+    this.setState({ editingBet: false }, () => {
+      this.props.onBetEditCancel();
+    })
   }
 
   handleBetSave() {
@@ -95,7 +103,7 @@ class CurrentGameCard extends Component {
                 /><br />
                 <FlatButton
                   label="Abbrechen"
-                  onClick={() => this.setState({ editingBet: false })}
+                  onClick={this.handleBetEditCancel}
                   style={{ height: '26px', lineHeight: '26px' }}
                   labelStyle={{ fontSize: '12px' }}
                 />
@@ -127,6 +135,7 @@ CurrentGameCard.propTypes = {
   game: PropTypes.shape(),
   userBet: PropTypes.shape(),
   onBetEditStart: PropTypes.func,
+  onBetEditCancel: PropTypes.func,
   onBetEditDone: PropTypes.func.isRequired,
 };
 

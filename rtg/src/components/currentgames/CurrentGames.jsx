@@ -73,8 +73,9 @@ class CurrentGames extends Component {
     this.state = {
       bets: [],
       games: [],
-
       loadingError: false,
+
+      editingBet: false,
 
       currentOffset: 0,
       gamesToDisplay: CurrentGames.getGamesToDisplay(),
@@ -115,7 +116,6 @@ class CurrentGames extends Component {
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
     this.scrollBackward = this.scrollBackward.bind(this);
-    this.handleBetEditStart = this.handleBetEditStart.bind(this);
     this.handleBetEditDone = this.handleBetEditDone.bind(this);
   }
 
@@ -325,13 +325,17 @@ class CurrentGames extends Component {
   }
 
   mayScrollForward() {
-    return this.state.currentOffset + this.state.gamesToDisplay < this.state.games.length;
+    return !this.state.editingBet &&
+      this.state.currentOffset + this.state.gamesToDisplay < this.state.games.length;
   }
 
-  mayScrollBackward() { return this.state.currentOffset > 0; }
+  mayScrollBackward() {
+    return !this.state.editingBet && this.state.currentOffset > 0;
+  }
 
   scrollForward() {
-    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    if (this.mayScrollForward() &&
+      this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
       this.setState({ scrolling: true }, () => {
         const nextOffset = this.state.currentOffset + this.state.gamesToDisplay;
         const maxOffset = this.state.games.length - this.state.gamesToDisplay;
@@ -343,11 +347,14 @@ class CurrentGames extends Component {
         this.currentGamesContainerRef.current.style.transform =
           `translateX(${100.0 * relativeTranslateForForwardScroll}%)`;
       });
+    } else {
+      this.horizontalMove(0);
     }
   }
 
   scrollBackward() {
-    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    if (this.mayScrollBackward() &&
+      this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
       this.setState({ scrolling: true }, () => {
         this.newOffsetAfterTransition =
           Math.max(this.state.currentOffset - this.state.gamesToDisplay, 0);
@@ -358,20 +365,15 @@ class CurrentGames extends Component {
         this.currentGamesContainerRef.current.style.transform =
           `translateX(${100.0 * relativeTranslateForBackwardScroll}%)`;
       });
+    } else {
+      this.horizontalMove(0);
     }
-  }
-
-  handleBetEditStart() {
-    // TODO P2 only unregister touch events, separate them from media query list events
-    // TODO P2 also disable scrolling
-    // TODO P2 does not work yet?
-    this.unregisterEvents();
   }
 
   handleBetEditDone(betId, updatedBet, savingReturnType, detail) {
     // TODO P2 update state.bets correctly
     console.log('TODO update bet in CurrentGames state');
-    this.registerEvents();
+    this.setState({ editingBet: false });
   }
 
   render() {
@@ -435,7 +437,8 @@ class CurrentGames extends Component {
                   key={`current-game-offset-${offset}`}
                   game={this.state.games[offset]}
                   userBet={userBet}
-                  onBetEditStart={this.handleBetEditStart}
+                  onBetEditStart={() => this.setState({ editingBet: true })}
+                  onBetEditCancel={() => this.setState({ editingBet: false })}
                   onBetEditDone={this.handleBetEditDone}
                 />);
             })}
