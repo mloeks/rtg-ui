@@ -39,23 +39,14 @@ class CurrentGames extends Component {
     return 3;
   }
 
-  static getGamesToDisplayWindowState(offset, totalGames) {
-    const gamesToDisplay = CurrentGames.getGamesToDisplay();
-    const firstDomElOffset = Math.max(0, offset - gamesToDisplay);
-    const lastDomElOffset = Math.min(totalGames, offset + (2 * gamesToDisplay));
-    const range = CurrentGames.range(firstDomElOffset, lastDomElOffset);
-
-    const containerWidthDecimal = range.length / gamesToDisplay;
+  // calculate the CSS 'left' property for the correct absolute positioning of the games "window"
+  static getContainerLeftValueForOffset(offset, windowRange, displayedGamesCount) {
+    const gamesToDisplay = displayedGamesCount || CurrentGames.getGamesToDisplay();
+    const containerWidthDecimal = windowRange.length / gamesToDisplay;
     const containerOffsetDecimal = containerWidthDecimal *
-      ((offset - firstDomElOffset) / range.length);
+      ((offset - windowRange[0]) / windowRange.length);
 
-    return {
-      range,
-      containerStyle: {
-        width: `${100.0 * containerWidthDecimal}%`,
-        left: `${-100.0 * containerOffsetDecimal}%`,
-      },
-    };
+    return `${-100.0 * containerOffsetDecimal}%`;
   }
 
   constructor(props) {
@@ -104,6 +95,7 @@ class CurrentGames extends Component {
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
     this.mayScrollForward = this.mayScrollForward.bind(this);
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
+    this.getGamesToDisplayWindowState = this.getGamesToDisplayWindowState.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
     this.scrollBackward = this.scrollBackward.bind(this);
     this.handleBetEditStart = this.handleBetEditStart.bind(this);
@@ -153,8 +145,7 @@ class CurrentGames extends Component {
       return {
         gamesToDisplay,
         currentOffset: newOffset,
-        gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
+        gamesToDisplayWindow: this.getGamesToDisplayWindowState(newOffset, prevState.games.length),
       };
     }, () => {
       this.updateTouchMoveToScrollThreshold();
@@ -197,7 +188,7 @@ class CurrentGames extends Component {
         scrolling: false,
         currentOffset: this.newOffsetAfterTransition,
         gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(this.newOffsetAfterTransition, prevState.games.length),
+          this.getGamesToDisplayWindowState(this.newOffsetAfterTransition, prevState.games.length),
       }), () => {
         this.fetchMoreGamesIfRequired();
         this.newOffsetAfterTransition = null;
@@ -266,11 +257,10 @@ class CurrentGames extends Component {
       if (response.ok) {
         const kickoffs = response.json;
         const initialOffset = this.getInitialOffsetBasedOnDate(kickoffs);
-        this.setState(prevState => ({
+        this.setState(() => ({
           games: Array(kickoffs.length).fill(null),
           currentOffset: initialOffset,
-          gamesToDisplayWindow:
-            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffs.length),
+          gamesToDisplayWindow: this.getGamesToDisplayWindowState(initialOffset, kickoffs.length),
         }), () => this.fetchMoreGamesIfRequired());
       } else {
         this.setState(() => ({ loadingError: true }));
@@ -325,18 +315,34 @@ class CurrentGames extends Component {
 
   mayScrollBackward() { return this.state.currentOffset > 0; }
 
+  getGamesToDisplayWindowState(offset, totalGames) {
+    const gamesToDisplay = CurrentGames.getGamesToDisplay();
+    const firstDomElOffset = Math.max(0, offset - gamesToDisplay);
+    const lastDomElOffset = Math.min(totalGames, offset + (2 * gamesToDisplay));
+    const range = CurrentGames.range(firstDomElOffset, lastDomElOffset);
+    const containerWidthDecimal = range.length / gamesToDisplay;
+
+    return {
+      range,
+      containerStyle: {
+        width: `${100.0 * containerWidthDecimal}%`,
+        left: CurrentGames.getContainerLeftValueForOffset(offset, range, gamesToDisplay),
+      },
+    };
+  }
+
   scrollForward() {
-    // TODO P2 on scroll, animate scroll first (disable scrolling during animation) and then update state
     if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
       const nextOffset = this.state.currentOffset + this.state.gamesToDisplay;
       const maxOffset = this.state.games.length - this.state.gamesToDisplay;
       this.newOffsetAfterTransition = Math.min(nextOffset, maxOffset);
 
-      // TODO P2 calculate correct left value if at the end of the table
       this.setState((prevState) => {
         const updatedGamesToDisplayWindow = Object.assign({}, prevState.gamesToDisplayWindow);
-        updatedGamesToDisplayWindow.containerStyle =
-          { ...updatedGamesToDisplayWindow.containerStyle, left: '-200%' };
+        updatedGamesToDisplayWindow.containerStyle = {
+          ...updatedGamesToDisplayWindow.containerStyle,
+          left: CurrentGames.getContainerLeftValueForOffset(this.newOffsetAfterTransition, updatedGamesToDisplayWindow.range),
+        };
         return { scrolling: true, gamesToDisplayWindow: updatedGamesToDisplayWindow };
       });
     }
@@ -349,8 +355,10 @@ class CurrentGames extends Component {
 
       this.setState((prevState) => {
         const updatedGamesToDisplayWindow = Object.assign({}, prevState.gamesToDisplayWindow);
-        updatedGamesToDisplayWindow.containerStyle =
-          { ...updatedGamesToDisplayWindow.containerStyle, left: 0 };
+        updatedGamesToDisplayWindow.containerStyle = {
+          ...updatedGamesToDisplayWindow.containerStyle,
+          left: CurrentGames.getContainerLeftValueForOffset(this.newOffsetAfterTransition, updatedGamesToDisplayWindow.range),
+        };
         return { scrolling: true, gamesToDisplayWindow: updatedGamesToDisplayWindow };
       });
     }
