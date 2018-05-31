@@ -69,6 +69,7 @@ class CurrentGames extends Component {
 
       currentOffset: 0,
       gamesToDisplay: CurrentGames.getGamesToDisplay(),
+      scrolling: false,
 
       // the DOM contains more current games than visible in the viewport,
       // in order to offer a nice animated scrolling (especially on touch devices)
@@ -86,9 +87,10 @@ class CurrentGames extends Component {
       window.matchMedia('(max-width: 1280px)'),
     ];
     this.preLoadGamesAroundView = 4;
+    this.newOffsetAfterTransition = null;
     this.touchStartXPos = -1;
 
-    this.touchEventsEl = null;
+    this.gamesContainer = null;
     this.currentGamesContainerRef = React.createRef();
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
@@ -96,6 +98,7 @@ class CurrentGames extends Component {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchCancel = this.onTouchCancel.bind(this);
+    this.onTransitionEnd = this.onTransitionEnd.bind(this);
     this.horizontalMove = this.horizontalMove.bind(this);
     this.updateTouchMoveToScrollThreshold = this.updateTouchMoveToScrollThreshold.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
@@ -121,23 +124,25 @@ class CurrentGames extends Component {
   registerEvents() {
     this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
 
-    this.touchEventsEl = this.currentGamesContainerRef.current;
-    if (this.touchEventsEl) {
-      this.touchEventsEl.addEventListener('touchstart', this.onTouchStart, false);
-      this.touchEventsEl.addEventListener('touchend', this.onTouchEnd, false);
-      this.touchEventsEl.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
-      this.touchEventsEl.addEventListener('touchcancel', this.onTouchCancel, false);
+    this.gamesContainer = this.currentGamesContainerRef.current;
+    if (this.gamesContainer) {
+      this.gamesContainer.addEventListener('touchstart', this.onTouchStart, false);
+      this.gamesContainer.addEventListener('touchend', this.onTouchEnd, false);
+      this.gamesContainer.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
+      this.gamesContainer.addEventListener('touchcancel', this.onTouchCancel, false);
+      this.gamesContainer.addEventListener('transitionend', this.onTransitionEnd, false);
     }
   }
 
   unregisterEvents() {
     this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
 
-    if (this.touchEventsEl) {
-      this.touchEventsEl.removeEventListener('touchstart', this.onTouchStart);
-      this.touchEventsEl.removeEventListener('touchend', this.onTouchEnd);
-      this.touchEventsEl.removeEventListener('touchmove', this.onTouchMove);
-      this.touchEventsEl.removeEventListener('touchcancel', this.onTouchCancel);
+    if (this.gamesContainer) {
+      this.gamesContainer.removeEventListener('touchstart', this.onTouchStart);
+      this.gamesContainer.removeEventListener('touchend', this.onTouchEnd);
+      this.gamesContainer.removeEventListener('touchmove', this.onTouchMove);
+      this.gamesContainer.removeEventListener('touchcancel', this.onTouchCancel);
+      this.gamesContainer.removeEventListener('transitionend', this.onTransitionEnd);
     }
   }
 
@@ -186,6 +191,20 @@ class CurrentGames extends Component {
     this.touchStartXPos = null;
   }
 
+  onTransitionEnd() {
+    if (this.newOffsetAfterTransition !== null && this.state.scrolling) {
+      this.setState(prevState => ({
+        scrolling: false,
+        currentOffset: this.newOffsetAfterTransition,
+        gamesToDisplayWindow:
+          CurrentGames.getGamesToDisplayWindowState(this.newOffsetAfterTransition, prevState.games.length),
+      }), () => {
+        this.fetchMoreGamesIfRequired();
+        this.newOffsetAfterTransition = null;
+      });
+    }
+  }
+
   horizontalMove(x) {
     if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
       const currentGamesClasses = this.currentGamesContainerRef.current.classList;
@@ -226,7 +245,7 @@ class CurrentGames extends Component {
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return Math.max(12, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
+    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
@@ -308,34 +327,33 @@ class CurrentGames extends Component {
 
   scrollForward() {
     // TODO P2 on scroll, animate scroll first (disable scrolling during animation) and then update state
-    // if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
-    //   this.currentGamesContainerRef.current.style.left = '-200%';
-    // }
-    this.setState((prevState) => {
-      const nextOffset = prevState.currentOffset + prevState.gamesToDisplay;
-      const maxOffset = prevState.games.length - prevState.gamesToDisplay;
-      const newOffset = Math.min(nextOffset, maxOffset);
-      return {
-        currentOffset: newOffset,
-        gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
-      };
-    }, this.fetchMoreGamesIfRequired);
+    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+      const nextOffset = this.state.currentOffset + this.state.gamesToDisplay;
+      const maxOffset = this.state.games.length - this.state.gamesToDisplay;
+      this.newOffsetAfterTransition = Math.min(nextOffset, maxOffset);
+
+      // TODO P2 calculate correct left value if at the end of the table
+      this.setState((prevState) => {
+        const updatedGamesToDisplayWindow = Object.assign({}, prevState.gamesToDisplayWindow);
+        updatedGamesToDisplayWindow.containerStyle =
+          { ...updatedGamesToDisplayWindow.containerStyle, left: '-200%' };
+        return { scrolling: true, gamesToDisplayWindow: updatedGamesToDisplayWindow };
+      });
+    }
   }
 
   scrollBackward() {
-    // if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
-    //   this.currentGamesContainerRef.current.style.left = 0;
-    // }
-    this.setState((prevState) => {
-      const nextOffset = prevState.currentOffset - prevState.gamesToDisplay;
-      const newOffset = Math.max(nextOffset, 0);
-      return {
-        currentOffset: newOffset,
-        gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
-      };
-    }, this.fetchMoreGamesIfRequired);
+    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+      const nextOffset = this.state.currentOffset - this.state.gamesToDisplay;
+      this.newOffsetAfterTransition = Math.max(nextOffset, 0);
+
+      this.setState((prevState) => {
+        const updatedGamesToDisplayWindow = Object.assign({}, prevState.gamesToDisplayWindow);
+        updatedGamesToDisplayWindow.containerStyle =
+          { ...updatedGamesToDisplayWindow.containerStyle, left: 0 };
+        return { scrolling: true, gamesToDisplayWindow: updatedGamesToDisplayWindow };
+      });
+    }
   }
 
   handleBetEditStart() {
@@ -369,8 +387,7 @@ class CurrentGames extends Component {
           {this.mayScrollBackward() &&
             <IconButton
               className="CurrentGames__scroll-button"
-              tooltip="Zurück"
-              tooltipPosition="top-center"
+              disabled={this.state.scrolling}
               onClick={this.scrollBackward}
               style={{ left: 0, marginLeft: '-5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
@@ -379,8 +396,7 @@ class CurrentGames extends Component {
           {this.mayScrollForward() &&
             <IconButton
               className="CurrentGames__scroll-button"
-              tooltip="Vor"
-              tooltipPosition="top-center"
+              disabled={this.state.scrolling}
               onClick={this.scrollForward}
               style={{ right: 0, marginRight: '-5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
@@ -388,7 +404,7 @@ class CurrentGames extends Component {
             </IconButton>}
 
           <div
-            className="CurrentGames__game-card-container"
+            className={`CurrentGames__game-card-container ${this.state.scrolling ? 'scrolling' : ''}`}
             ref={this.currentGamesContainerRef}
             style={this.state.gamesToDisplayWindow.containerStyle}
           >
