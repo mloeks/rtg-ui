@@ -11,7 +11,7 @@ import Notification, { NotificationType } from '../components/Notification';
 import CurrentGames from '../components/currentgames/CurrentGames';
 
 import logo from '../theme/img/logo_100px.png';
-import currentGamesHeadingImg from '../theme/img/headings/dusty_ball.jpg';
+import currentGamesHeadingImg from '../theme/img/headings/queen-haessler.jpg';
 import newsHeadingImg from '../theme/img/headings/courtyard_2.jpg';
 import betsHeadingImg from '../theme/img/headings/royals_stadium.jpg';
 import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
@@ -43,7 +43,7 @@ const Foyer = () => (
       </UserDetailsContext.Consumer>
     </section>
 
-    <BigPicture className="Foyer__current-games" img={currentGamesHeadingImg} positionY={60}>
+    <BigPicture className="Foyer__current-games" img={currentGamesHeadingImg} positionY={25}>
       <h1 className="BigPicture__heading">Aktuelle Spiele</h1>
     </BigPicture>
     <CurrentGames />
