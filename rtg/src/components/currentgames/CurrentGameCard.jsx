@@ -56,6 +56,7 @@ class CurrentGameCard extends Component {
   handleBetSaveDone(gameId, resultBetString, type) {
     // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
     // up into the header or page (or another similar producer has to be used for this page)...
+    // idea: make a HOC out of the provide in Bets.jsx? "withBetsStatus"
     // TODO P1 test in IE, 'includes' might need another polyfill
     if (Object.keys(SavingErrorType).includes(type)) {
       // TODO display and communicate errors
@@ -112,27 +113,21 @@ class CurrentGameCard extends Component {
                 <FlatButton
                   label="Speichern"
                   primary
-                  icon={<ContentSave style={{ width: 18, height: 18 }} />}
+                  icon={<ContentSave style={{ width: 20, height: 20 }} />}
                   disabled={this.state.shouldSaveBet}
                   onClick={this.handleBetSave}
-                  style={{ height: '26px', lineHeight: '26px' }}
-                  labelStyle={{ fontSize: '12px' }}
                 /><br />
                 <FlatButton
                   label="Abbrechen"
                   onClick={this.handleBetEditCancel}
-                  style={{ height: '26px', lineHeight: '26px' }}
-                  labelStyle={{ fontSize: '12px' }}
                 />
               </Fragment>
               ) : (
                 <FlatButton
                   label="Tipp ändern"
                   primary
-                  icon={<ImageEdit style={{ width: 18, height: 18 }} />}
+                  icon={<ImageEdit style={{ width: 20, height: 20 }} />}
                   onClick={this.handleBetEdit}
-                  style={{ height: '26px', lineHeight: '26px' }}
-                  labelStyle={{ fontSize: '12px' }}
                 />
               )}
           </div>
