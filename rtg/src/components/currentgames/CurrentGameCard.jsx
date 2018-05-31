@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
-import { FlatButton } from 'material-ui';
+import { Dialog, FlatButton } from 'material-ui';
 import ImageEdit from 'material-ui/svg-icons/image/edit';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import RtgSeparator from '../RtgSeparator';
@@ -27,7 +27,7 @@ class CurrentGameCard extends Component {
     super(props);
     this.state = {
       betSaveFailed: false,
-      betSaveFailedReason: null,
+      betSaveFailedType: null,
       editingBet: false,
       shouldSaveBet: false,
     };
@@ -36,6 +36,7 @@ class CurrentGameCard extends Component {
     this.handleBetEditCancel = this.handleBetEditCancel.bind(this);
     this.handleBetSave = this.handleBetSave.bind(this);
     this.handleBetSaveDone = this.handleBetSaveDone.bind(this);
+    this.handleBetSaveErrorInfoDialogClosed = this.handleBetSaveErrorInfoDialogClosed.bind(this);
   }
 
   handleBetEdit() {
@@ -57,9 +58,8 @@ class CurrentGameCard extends Component {
     // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
     // up into the header or page (or another similar producer has to be used for this page)...
     // idea: make a HOC out of the provide in Bets.jsx? "withBetsStatus"
-    // TODO P1 test in IE, 'includes' might need another polyfill
-    if (Object.keys(SavingErrorType).includes(type)) {
-      // TODO display and communicate errors
+    // TODO P1 test in IE, 'values' and 'includes' might need another polyfill
+    if (Object.values(SavingErrorType).includes(type)) {
       this.setState({ betSaveFailed: true, betSaveFailedType: type, shouldSaveBet: false });
       return;
     }
@@ -75,6 +75,22 @@ class CurrentGameCard extends Component {
     const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
     const newBet = type !== SavingSuccessType.DELETED ? resultBetString : null;
     this.props.onBetEditDone(updatedBetId, newBet);
+  }
+
+  handleBetSaveErrorInfoDialogClosed() {
+    this.setState((prevState, prevProps) => {
+      let cancelEdit = false;
+      if (prevState.betSaveFailedType !== SavingErrorType.INCOMPLETE) {
+        prevProps.onBetEditCancel();
+        cancelEdit = true;
+      }
+      return {
+        editingBet: !cancelEdit,
+        betSaveFailed: false,
+        betSaveFailedType: null,
+        shouldSaveBet: false
+      };
+    });
   }
 
   render() {
@@ -132,6 +148,25 @@ class CurrentGameCard extends Component {
               )}
           </div>
         )}
+
+        <Dialog
+          modal={false}
+          actions={[
+            <FlatButton
+              label="Ok"
+              primary
+              onClick={this.handleBetSaveErrorInfoDialogClosed}
+            />]}
+          open={this.state.betSaveFailed}
+          onRequestClose={this.handleBetSaveErrorInfoDialogClosed}
+        >
+          {this.state.betSaveFailedType === SavingErrorType.INCOMPLETE &&
+            'Bitte gib einen vollständigen Tipp ein.'}
+          {this.state.betSaveFailedType === SavingErrorType.DEADLINE_PASSED &&
+            'Die Deadline für diesen Tipp ist abgelaufen. Eine Tippabgabe ist daher leider nicht mehr möglich.'}
+          {this.state.betSaveFailedType === SavingErrorType.FAILED &&
+            'Das Speichern des Tipps ist leider fehlgeschlagen. Bitte versuche es erneut.'}
+        </Dialog>
       </div>
     );
   }

@@ -24,6 +24,7 @@ export const SavingSuccessType = {
 
 export const SavingErrorType = {
   INCOMPLETE: 'INCOMPLETE',
+  DEADLINE_PASSED: 'DEADLINE_PASSED',
   FAILED: 'FAILED',
 };
 
@@ -166,10 +167,15 @@ class GameCardBet extends Component {
             });
           } else {
             this.setState({ isSaving: false }, () => {
-              const responseDetail = response.json.detail ||
-                (response.json.non_field_errors ? response.json.non_field_errors[0] : null);
-              this.props
-                .onSaveDone(this.props.gameId, newBet, SavingErrorType.FAILED, responseDetail);
+              const responseDetail = response.json ? response.json.detail ||
+                (response.json.non_field_errors ? response.json.non_field_errors[0] : null) : null;
+              const reasonDeadlinePassed = response.json && response.json.code &&
+                response.json.code[0] === 'DEADLINE_PASSED';
+
+              this.props.onSaveDone(
+                this.props.gameId, newBet,
+                reasonDeadlinePassed ? SavingErrorType.DEADLINE_PASSED : SavingErrorType.FAILED, responseDetail,
+              );
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
