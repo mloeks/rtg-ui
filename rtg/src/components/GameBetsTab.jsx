@@ -164,10 +164,9 @@ class GameBetsTab extends Component {
     const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
     const allBetsDone = !gamesWithSaveTypeValueArray.some(game => !game.saveType);
     if (allBetsDone) {
+      // TODO P1 also test here if we need another polyfill for IE
       const gamesWithSavingIssues = gamesWithSaveTypeValueArray
-        .filter(game => game.saveType &&
-          (game.saveType === SavingErrorType.FAILED ||
-            game.saveType === SavingErrorType.INCOMPLETE));
+        .filter(game => game.saveType && Object.values(SavingErrorType).includes(game.saveType));
       this.props.onOpenBetsUpdate(GameBetsTab
         .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray), true);
 

@@ -10,6 +10,9 @@ const SavingIssuesDialog = (props) => {
     if (saveType === SavingErrorType.INCOMPLETE) {
       return 'Der Tipp ist unvollständig.';
     }
+    if (saveType === SavingErrorType.DEADLINE_PASSED) {
+      return 'Die Deadline ist abgelaufen.';
+    }
     return detail || 'Ein Fehler ist aufgetreten.';
   };
   const gamesCount = props.games.length;
