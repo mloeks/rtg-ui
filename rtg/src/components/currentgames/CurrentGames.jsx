@@ -257,7 +257,6 @@ class CurrentGames extends Component {
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    offsetBasedOnDate = 3;
     return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
   }
 
