@@ -11,10 +11,9 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
-// TODO P2 FEATURE Prio 1 - add section "recent games" to the top
 // TODO P2 Lazy load news
 // TODO P2 Save drafts while adding a post
-// TODO P2 Allow deletion of news if admin
+// TODO P3 Allow deletion of news if admin
 class News extends Component {
   static async loadPosts() {
     return new Promise((resolve, reject) => {
