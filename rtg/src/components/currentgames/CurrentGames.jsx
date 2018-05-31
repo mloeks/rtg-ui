@@ -370,10 +370,23 @@ class CurrentGames extends Component {
     }
   }
 
-  handleBetEditDone(betId, updatedBet, savingReturnType, detail) {
-    // TODO P2 update state.bets correctly
-    console.log('TODO update bet in CurrentGames state');
-    this.setState({ editingBet: false });
+  handleBetEditDone(betId, newBet) {
+    this.setState((prevState) => {
+      const updatedBets = prevState.bets.slice(0);
+      const updatedBetIndex = updatedBets.findIndex(bet => bet.id === betId);
+      if (updatedBetIndex !== -1) {
+        if (newBet) {
+          updatedBets[updatedBetIndex].result_bet = newBet;
+        } else {
+          // remove bet from bets array
+          updatedBets.splice(updatedBetIndex, 1);
+        }
+      } else {
+        // TODO P2 where to get the proper full bet from? we need the entire response
+        updatedBets.push(newBet);
+      }
+      return { bets: updatedBets, editingBet: false };
+    });
   }
 
   render() {

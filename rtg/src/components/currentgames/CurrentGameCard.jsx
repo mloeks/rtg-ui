@@ -9,7 +9,7 @@ import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
-import GameCardBet from '../GameCardBet';
+import GameCardBet, { SavingErrorType, SavingSuccessType } from '../GameCardBet';
 
 import './CurrentGameCard.css';
 
@@ -27,6 +27,7 @@ class CurrentGameCard extends Component {
     super(props);
     this.state = {
       betSaveFailed: false,
+      betSaveFailedReason: null,
       editingBet: false,
       shouldSaveBet: false,
     };
@@ -52,12 +53,27 @@ class CurrentGameCard extends Component {
     this.setState({ shouldSaveBet: true });
   }
 
-  handleBetSaveDone(id, bet, type, detail) {
-    // TODO P2 check saving/error type for errors and only call onBetSaveDone on parent if it was successful
+  handleBetSaveDone(gameId, resultBetString, type) {
     // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
     // up into the header or page (or another similar producer has to be used for this page)...
+    // TODO P1 test in IE, 'includes' might need another polyfill
+    if (Object.keys(SavingErrorType).includes(type)) {
+      // TODO display and communicate errors
+      this.setState({ betSaveFailed: true, betSaveFailedType: type, shouldSaveBet: false });
+      return;
+    }
+
+    if (type === SavingSuccessType.ADDED) {
+      // TODO update context
+    }
+    if (type === SavingSuccessType.DELETED) {
+      // TODO update context
+    }
     this.setState({ editingBet: false, shouldSaveBet: false });
-    this.props.onBetEditDone(id, bet, type, detail);
+
+    const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
+    const newBet = type !== SavingSuccessType.DELETED ? resultBetString : null;
+    this.props.onBetEditDone(updatedBetId, newBet);
   }
 
   render() {
@@ -97,6 +113,7 @@ class CurrentGameCard extends Component {
                   label="Speichern"
                   primary
                   icon={<ContentSave style={{ width: 18, height: 18 }} />}
+                  disabled={this.state.shouldSaveBet}
                   onClick={this.handleBetSave}
                   style={{ height: '26px', lineHeight: '26px' }}
                   labelStyle={{ fontSize: '12px' }}
