@@ -13,6 +13,7 @@ import { debounce } from '../../service/EventsHelper';
 import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
+const MIN_X_OFFSET_TOUCHMOVE = 10;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
 // TODO P3 refactor this component, e.g. move game container into its own component with
@@ -174,13 +175,14 @@ class CurrentGames extends Component {
   }
 
   onTouchEnd(e) {
-    this.horizontalMove(0);
     if (e.changedTouches && this.touchStartXPos) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
       if (movedX > this.touchMoveToScrollThreshold) {
         this.scrollBackward();
       } else if (movedX < -this.touchMoveToScrollThreshold) {
         this.scrollForward();
+      } else {
+        this.horizontalMove(0);
       }
     }
     this.touchStartXPos = null;
@@ -189,7 +191,9 @@ class CurrentGames extends Component {
   onTouchMove(e) {
     if (e.changedTouches && this.touchStartXPos) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
-      this.horizontalMove(movedX);
+      if (Math.abs(movedX) > MIN_X_OFFSET_TOUCHMOVE) {
+        this.horizontalMove(movedX, false);
+      }
     }
   }
 
@@ -208,23 +212,22 @@ class CurrentGames extends Component {
       }), () => {
         this.fetchMoreGamesIfRequired();
         this.newOffsetAfterTransition = null;
-        this.scrolling = false;
-        this.currentGamesContainerRef.current.style.transform = 'translateX(0)';
+        this.horizontalMove(0, false);
       });
     }
   }
 
-  horizontalMove(x) {
+  horizontalMove(x, animate = true) {
     if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
       const currentGamesClasses = this.currentGamesContainerRef.current.classList;
-      if (x === 0) { currentGamesClasses.remove('moving'); }
-      else { currentGamesClasses.add('moving'); }
+      if (animate) { currentGamesClasses.remove('no-animate'); }
+      else { currentGamesClasses.add('no-animate'); }
       this.currentGamesContainerRef.current.style.transform = `translateX(${x}px)`;
     }
   }
 
   updateTouchMoveToScrollThreshold() {
-    this.touchMoveToScrollThreshold = 0.5 * (viewportW() / this.state.gamesToDisplay);
+    this.touchMoveToScrollThreshold = 0.4 * viewportW();
   }
 
   getInitialOffsetBasedOnDate(kickoffs) {
