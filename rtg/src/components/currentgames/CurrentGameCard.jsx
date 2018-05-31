@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -84,18 +84,30 @@ class CurrentGameCard extends Component {
         {this.props.game && this.props.game.bets_open && (
           <div className="CurrentGameCard__actions">
             {this.state.editingBet ? (
-              <FlatButton
-                label="Speichern"
-                primary
-                icon={<ContentSave />}
-                onClick={this.handleBetSave}
-              />
+              <Fragment>
+                <FlatButton
+                  label="Speichern"
+                  primary
+                  icon={<ContentSave style={{ width: 18, height: 18 }} />}
+                  onClick={this.handleBetSave}
+                  style={{ height: '26px', lineHeight: '26px' }}
+                  labelStyle={{ fontSize: '12px' }}
+                /><br />
+                <FlatButton
+                  label="Abbrechen"
+                  onClick={() => this.setState({ editingBet: false })}
+                  style={{ height: '26px', lineHeight: '26px' }}
+                  labelStyle={{ fontSize: '12px' }}
+                />
+              </Fragment>
               ) : (
                 <FlatButton
                   label="Tipp ändern"
                   primary
-                  icon={<ImageEdit />}
+                  icon={<ImageEdit style={{ width: 18, height: 18 }} />}
                   onClick={this.handleBetEdit}
+                  style={{ height: '26px', lineHeight: '26px' }}
+                  labelStyle={{ fontSize: '12px' }}
                 />
               )}
           </div>
