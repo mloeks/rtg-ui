@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
-// TODO P1 inifinite loop when restarting the backend?
+// TODO P3 sometimes I landed in an inifinite loop between / and /foyer
+// when restarting the backend? Could not reproduce...
 const AuthRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
