@@ -98,7 +98,7 @@ class News extends Component {
         {(!this.state.loading && this.state.loadingError) &&
           <Notification
             type={NotificationType.ERROR}
-            title="Fehler beim Laden"
+            title="Fehler beim Laden der Neuigkeiten"
             subtitle={this.state.loadingError}
             style={{ margin: 'auto', maxWidth: '480px' }}
           />}
