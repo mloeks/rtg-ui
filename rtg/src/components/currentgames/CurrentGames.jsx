@@ -14,6 +14,7 @@ import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
 const MIN_X_OFFSET_TOUCHMOVE = 10;
+const MIN_TOUCH_MOVE_TO_SCROLL = 100;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
 // TODO P3 refactor this component, e.g. move game container into its own component with
@@ -108,7 +109,6 @@ class CurrentGames extends Component {
     this.onTouchCancel = this.onTouchCancel.bind(this);
     this.onTransitionEnd = this.onTransitionEnd.bind(this);
     this.horizontalMove = this.horizontalMove.bind(this);
-    this.updateTouchMoveToScrollThreshold = this.updateTouchMoveToScrollThreshold.bind(this);
     this.fetchMoreGamesIfRequired = this.fetchMoreGamesIfRequired.bind(this);
     this.mayScrollForward = this.mayScrollForward.bind(this);
     this.mayScrollBackward = this.mayScrollBackward.bind(this);
@@ -122,7 +122,6 @@ class CurrentGames extends Component {
     this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false, (prevState, response) => ({ bets: response }));
     this.fetchKickoffs();
     this.registerEvents();
-    this.updateTouchMoveToScrollThreshold();
   }
 
   componentWillUnmount() {
@@ -164,10 +163,7 @@ class CurrentGames extends Component {
         gamesToDisplayWindow:
           CurrentGames.getGamesToDisplayWindowState(newOffset, prevState.games.length),
       };
-    }, () => {
-      this.updateTouchMoveToScrollThreshold();
-      this.fetchMoreGamesIfRequired();
-    });
+    }, this.fetchMoreGamesIfRequired);
   }
 
   onTouchStart(e) {
@@ -177,9 +173,9 @@ class CurrentGames extends Component {
   onTouchEnd(e) {
     if (e.changedTouches && this.touchStartXPos) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
-      if (movedX > this.touchMoveToScrollThreshold) {
+      if (movedX > MIN_TOUCH_MOVE_TO_SCROLL) {
         this.scrollBackward();
-      } else if (movedX < -this.touchMoveToScrollThreshold) {
+      } else if (movedX < -MIN_TOUCH_MOVE_TO_SCROLL) {
         this.scrollForward();
       } else {
         this.horizontalMove(0);
@@ -224,10 +220,6 @@ class CurrentGames extends Component {
       else { currentGamesClasses.add('no-animate'); }
       this.currentGamesContainerRef.current.style.transform = `translateX(${x}px)`;
     }
-  }
-
-  updateTouchMoveToScrollThreshold() {
-    this.touchMoveToScrollThreshold = 0.4 * viewportW();
   }
 
   getInitialOffsetBasedOnDate(kickoffs) {
