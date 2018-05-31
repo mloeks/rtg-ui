@@ -1,0 +1,5 @@
+// Easing functions recommended by Material Design
+// See https://material.io/design/motion/speed.html#easing
+$mdEasingStandard: cubic-bezier(0.4, 0.0, 0.2, 1);
+$mdEasingDecelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+$mdEasingAccelerate: cubic-bezier(0.4, 0.0, 1, 1);

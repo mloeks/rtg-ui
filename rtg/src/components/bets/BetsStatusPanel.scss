@@ -1,5 +1,6 @@
-@import '../../sass/colors.scss';
-@import '../../sass/z-indexes.scss';
+@import '../../sass/colors';
+@import '../../sass/utils';
+@import '../../sass/z-indexes';
 
 $height: 60px;
 
@@ -23,8 +24,8 @@ $height: 60px;
   box-shadow: rgba(0, 0, 0, 0.32) 0 5px 30px, rgba(0, 0, 0, 0.32) 0 0 15px;
 
   transition:
-          height 375ms cubic-bezier(0.4, 0.0, 0.2, 1),
-          background-color 375ms cubic-bezier(0.4, 0.0, 0.2, 1);
+          height 375ms $mdEasingStandard,
+          background-color 375ms $mdEasingStandard;
 
   z-index: $zGameBetsTabSavingProgress;
 
