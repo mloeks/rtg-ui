@@ -105,6 +105,7 @@ class Post extends Component {
   }
 
   handleCommentAdded() {
+    console.log('added');
     this.setState(prevState => (
       { expanded: true, commentCount: this.getCommentCountIncrementedBy(1, prevState) }
     ));

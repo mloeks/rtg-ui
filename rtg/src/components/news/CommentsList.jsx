@@ -39,6 +39,12 @@ class CommentsList extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.commentCount !== this.props.nextProps) {
+      this.loadComments();
+    }
+  }
+
   async loadComments() {
     this.setState({ loading: true, collapsed: false });
 
