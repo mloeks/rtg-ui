@@ -10,6 +10,7 @@ import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
 import GameCardBet, { SavingErrorType } from '../GameCardBet';
+import Notification, { NotificationType } from '../Notification';
 
 import './CurrentGameCard.css';
 
@@ -28,6 +29,7 @@ class CurrentGameCard extends Component {
       betSaveFailed: false,
       betSaveFailedType: null,
       editingBet: false,
+      editingBetSuccessful: false,
       shouldSaveBet: false,
     };
 
@@ -40,7 +42,7 @@ class CurrentGameCard extends Component {
   }
 
   handleBetEdit() {
-    this.setState({ betSaveFailed: false, editingBet: true });
+    this.setState({ betSaveFailed: false, editingBet: true, editingBetSuccessful: false });
     this.props.onBetEditStart();
   }
 
@@ -59,7 +61,7 @@ class CurrentGameCard extends Component {
   }
 
   handleBetSaveSuccess(gameId, newBet) {
-    this.setState({ editingBet: false, shouldSaveBet: false });
+    this.setState({ editingBet: false, editingBetSuccessful: true, shouldSaveBet: false });
     const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
     this.props.onBetEditDone(updatedBetId, newBet);
   }
@@ -126,7 +128,7 @@ class CurrentGameCard extends Component {
 
         {this.props.game && this.props.game.bets_open && (
           <div className="CurrentGameCard__actions">
-            {this.state.editingBet ? (
+            {this.state.editingBet && (
               <Fragment>
                 <FlatButton
                   label="Speichern"
@@ -139,15 +141,26 @@ class CurrentGameCard extends Component {
                   label="Abbrechen"
                   onClick={this.handleBetEditCancel}
                 />
-              </Fragment>
-              ) : (
-                <FlatButton
-                  label={this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
-                  primary
-                  icon={<ImageEdit style={{ width: 20, height: 20 }} />}
-                  onClick={this.handleBetEdit}
-                />
-              )}
+              </Fragment>)}
+
+            {(!this.state.editingBet && !this.state.editingBetSuccessful) && (
+              <FlatButton
+                label={this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
+                primary
+                icon={<ImageEdit style={{ width: 20, height: 20 }} />}
+                onClick={this.handleBetEdit}
+              />)}
+
+            {this.state.editingBetSuccessful && (
+              <Notification
+                type={NotificationType.SUCCESS}
+                title="Gespeichert"
+                dismissable
+                disappearAfterMs={2000}
+                containerStyle={{ margin: '0 auto', maxWidth: 185 }}
+                style={{ padding: '5px' }}
+                onClose={() => this.setState({ editingBetSuccessful: false })}
+              />)}
           </div>
         )}
 
