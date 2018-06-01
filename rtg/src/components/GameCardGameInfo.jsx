@@ -71,7 +71,7 @@ const GameCardGameInfo = (props) => {
             className="GameCardGameInfo__points"
             backgroundColor="transparent"
             size={25}
-          >{props.points}
+          >{props.points || 0}
           </Avatar>)}
 
         {(!props.result && !gameIsRunning()) &&
