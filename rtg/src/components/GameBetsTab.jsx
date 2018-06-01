@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { CircularProgress } from 'material-ui';
 import Alarm from 'material-ui/svg-icons/action/alarm';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -14,6 +13,7 @@ import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
+import NullGameCard from './NullGameCard';
 
 import './GameBetsTab.css';
 
@@ -204,7 +204,11 @@ class GameBetsTab extends Component {
         <BetsStatusContext.Consumer>
           {betsStatusContext => (
             <section className="GameBetsTab__game-bets-container">
-              {this.state.loading && <CircularProgress className="GameBetsTab__loadingSpinner" />}
+              {this.state.loading &&
+                <Fragment>
+                  <RtgSeparator content="..." />
+                  {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
+                </Fragment>}
 
               <SavingIssuesDialog
                 open={this.state.gamesWithSavingIssues.length > 0}

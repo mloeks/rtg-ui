@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
-import { CircularProgress, Divider, DropDownMenu, MenuItem } from 'material-ui';
+import { Divider, DropDownMenu, MenuItem } from 'material-ui';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
+import NullGameCard from '../components/NullGameCard';
 import RtgSeparator from '../components/RtgSeparator';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
 import { isEnter } from '../service/KeyHelper';
+import { darkGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
-import { darkGrey, white } from "../theme/RtgTheme";
-import { withRouter } from "react-router-dom";
 
 // TODO P2 add possibility to add games for admins
 // TODO P2 switch to current game/round automatically
@@ -43,13 +44,15 @@ class Schedule extends Component {
     this.gamesFilter = this.gamesFilter.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.stickybitsInstance = stickybits('.SchedulePage__toolbar');
 
-    this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
-    this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
-    this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true);
-    this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
+    await this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
+    await this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
+    await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true);
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
+
+    this.setState({ loading: false });
   }
 
   componentDidUpdate() {
@@ -65,17 +68,17 @@ class Schedule extends Component {
   }
 
   async fetchData(url, targetStateField, isPaginated) {
-    this.setState({ loading: true, loadingError: '' });
+    this.setState({ loadingError: '' });
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
         this.setState(() => (
           response.ok
-            ? { loading: false, [targetStateField]: isPaginated ? response.json.results : response.json }
-            : { loading: false, loadingError: true }
+            ? { [targetStateField]: isPaginated ? response.json.results : response.json }
+            : { loadingError: true }
         ));
-      }).catch(() => this.setState({ loading: false, loadingError: true }));
+      }).catch(() => this.setState({ loadingError: true }));
   }
 
   handleSelectedRoundChange(event, index, value) {
@@ -210,7 +213,12 @@ class Schedule extends Component {
             <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
             }
 
-            {this.state.loading && <CircularProgress />}
+            {this.state.loading &&
+              <Fragment>
+                <RtgSeparator content="..." />
+                {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
+              </Fragment>}
+
             {this.state.loadingError &&
               <Notification
                 type={NotificationType.ERROR}
