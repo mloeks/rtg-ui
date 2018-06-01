@@ -26,19 +26,22 @@ class Notification extends Component {
     super(props);
     this.state = { visible: true };
     this.disappearTimeoutHandler = null;
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
     if (this.props.disappearAfterMs) {
-      this.disappearTimeoutHandler = setTimeout(() => {
-        this.setState({ visible: false });
-        this.props.onClose();
-      }, this.props.disappearAfterMs);
+      this.disappearTimeoutHandler = setTimeout(this.handleClose, this.props.disappearAfterMs);
     }
   }
 
   componentWillUnmount() {
     clearInterval(this.disappearTimeoutHandler);
+  }
+
+  handleClose() {
+    this.setState({ visible: false });
+    this.props.onClose();
   }
 
   render() {
@@ -57,7 +60,7 @@ class Notification extends Component {
         }}
       >
         <CardHeader
-          closeIcon={<Close onClick={() => this.setState({ visible: false })} />}
+          closeIcon={<Close onClick={this.handleClose} />}
           title={this.props.title}
           showExpandableButton={this.props.dismissable}
           subtitle={this.props.subtitle}
