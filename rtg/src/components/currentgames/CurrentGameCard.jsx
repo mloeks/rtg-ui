@@ -9,7 +9,7 @@ import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
-import GameCardBet, { SavingErrorType, SavingSuccessType } from '../GameCardBet';
+import GameCardBet, { SavingErrorType } from '../GameCardBet';
 
 import './CurrentGameCard.css';
 
@@ -59,18 +59,8 @@ class CurrentGameCard extends Component {
     this.setState({ betSaveFailed: true, betSaveFailedType: type, shouldSaveBet: false });
   }
 
-  handleBetSaveSuccess(gameId, newBet, type) {
-    // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
-    // up into the header or page (or another similar producer has to be used for this page)...
-    // idea: make a HOC out of the provide in Bets.jsx? "withBetsStatus"
-    if (type === SavingSuccessType.ADDED) {
-      // TODO update context
-    }
-    if (type === SavingSuccessType.DELETED) {
-      // TODO update context
-    }
+  handleBetSaveSuccess(gameId, newBet) {
     this.setState({ editingBet: false, shouldSaveBet: false });
-
     const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
     this.props.onBetEditDone(updatedBetId, newBet);
   }

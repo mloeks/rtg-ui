@@ -7,6 +7,7 @@ import { viewportW } from 'verge';
 import { differenceInMinutes, parse } from 'date-fns';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
 import { debounce } from '../../service/EventsHelper';
@@ -383,7 +384,7 @@ class CurrentGames extends Component {
     }
   }
 
-  handleBetEditDone(betId, newBet) {
+  handleBetEditDone(betId, newBet, userContext) {
     this.setState((prevState) => {
       const updatedBets = prevState.bets.slice(0);
       const updatedBetIndex = updatedBets.findIndex(bet => bet.id === betId);
@@ -393,9 +394,11 @@ class CurrentGames extends Component {
         } else {
           // remove bet from bets array
           updatedBets.splice(updatedBetIndex, 1);
+          userContext.updateOpenBetsCount(userContext.openBetsCount + 1);
         }
       } else if (newBet) {
         updatedBets.push(newBet);
+        userContext.updateOpenBetsCount(userContext.openBetsCount - 1);
       }
       return { bets: updatedBets, editingBet: false };
     });
@@ -450,29 +453,33 @@ class CurrentGames extends Component {
             ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
             </IconButton>}
 
-          <div
-            className={`CurrentGames__game-card-container ${this.state.scrolling ? 'scrolling' : ''}`}
-            ref={this.currentGamesContainerRef}
-            style={{
-              left: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.left}%`,
-              width: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.width}%`,
-            }}
-          >
-            {this.state.gamesToDisplayWindow.range.map((offset) => {
-              const game = this.state.games[offset];
-              const userBet = game ?
-                this.state.bets.find(bet => bet.bettable === game.id) : null;
-              return (
-                <CurrentGameCard
-                  key={`current-game-offset-${offset}`}
-                  game={this.state.games[offset]}
-                  userBet={userBet}
-                  onBetEditStart={() => this.setState({ editingBet: true })}
-                  onBetEditCancel={() => this.setState({ editingBet: false })}
-                  onBetEditDone={this.handleBetEditDone}
-                />);
-            })}
-          </div>
+          <UserDetailsContext.Consumer>
+            {userContext => (
+              <div
+                className={`CurrentGames__game-card-container ${this.state.scrolling ? 'scrolling' : ''}`}
+                ref={this.currentGamesContainerRef}
+                style={{
+                  left: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.left}%`,
+                  width: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.width}%`,
+                }}
+              >
+                {this.state.gamesToDisplayWindow.range.map((offset) => {
+                  const game = this.state.games[offset];
+                  const userBet = game ?
+                    this.state.bets.find(bet => bet.bettable === game.id) : null;
+                  return (
+                    <CurrentGameCard
+                      key={`current-game-offset-${offset}`}
+                      game={this.state.games[offset]}
+                      userBet={userBet}
+                      onBetEditStart={() => this.setState({ editingBet: true })}
+                      onBetEditCancel={() => this.setState({ editingBet: false })}
+                      onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
+                    />);
+                })}
+              </div>
+            )}
+          </UserDetailsContext.Consumer>
         </section>));
   }
 }
