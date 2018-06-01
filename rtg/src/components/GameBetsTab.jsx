@@ -19,9 +19,8 @@ import { lightGrey } from '../theme/RtgTheme';
 
 import './GameBetsTab.css';
 
-// TODO P2 takes pretty long to load if there are many bets
-// TODO P2 switch deadline info between relative distance and absolute date (css only?)
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
+// TODO P3 takes pretty long to load if there are many bets
 class GameBetsTab extends Component {
   static initialState() {
     return {
@@ -99,14 +98,29 @@ class GameBetsTab extends Component {
     const gameCardsWithDeadlineSubheadings = [];
     let lastDeadlineText = null;
     games.forEach((game) => {
-      const deadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
-      if (lastDeadlineText === null || deadlineText !== lastDeadlineText) {
+      const relativeDeadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
+      const absoluteDeadlineText = format(game.deadline, 'dd. DD.MM. - HH:mm [Uhr]', { locale: de });
+      if (lastDeadlineText === null || relativeDeadlineText !== lastDeadlineText) {
         gameCardsWithDeadlineSubheadings
-          .push(<RtgSeparator
-            key={`${game.id}-${game.deadline}`}
-            content={this.createDeadlineWithIcon(game.deadline, deadlineText)}
-          />);
-        lastDeadlineText = deadlineText;
+          .push(
+            <div
+              className="GameBetsTab__deadline-headings-wrapper"
+              key={`${game.id}-${game.deadline}`}
+              style={{ height: 34 }}
+            >
+              <div className="GameBetsTab__deadline-headings">
+                <RtgSeparator
+                  content={this.createDeadlineWithIcon(game.deadline, relativeDeadlineText)}
+                  contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
+                />
+                <RtgSeparator
+                  content={this.createDeadlineWithIcon(game.deadline, absoluteDeadlineText)}
+                  contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
+                />
+              </div>
+            </div>,
+          );
+        lastDeadlineText = relativeDeadlineText;
       }
       const gameCardWithBet = (
         <GameCard key={game.id} style={{ marginBottom: 25 }} {...game} >
@@ -135,13 +149,9 @@ class GameBetsTab extends Component {
         <Alarm
           className="GameBetsTab__deadline-separator-icon"
           color={this.props.muiTheme.palette.errorColor}
-          style={{ width: '28px', height: '28px', marginRight: '5px' }}
+          style={{ width: 24, height: 24, marginRight: 5 }}
         />
-        <span
-          className="GameBetsTab__deadline-separator-text"
-          title={format(deadlineDate, 'dd. DD. MMMM - HH:mm [Uhr]', { locale: de })}
-        >{readableDeadlineText}
-        </span>
+        <span className="GameBetsTab__deadline-separator-text">{readableDeadlineText}</span>
       </div>
     );
   }

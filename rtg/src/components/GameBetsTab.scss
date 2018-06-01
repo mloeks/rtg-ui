@@ -1,3 +1,5 @@
+@import '../sass/utils';
+
 .GameBetsTab {
   &__game-bets-container {
     text-align: center;
@@ -11,6 +13,31 @@
     display: flex;
     align-items: center;
     color: red;
+  }
+
+  &__deadline-headings-wrapper {
+    position: relative;
+    overflow-y: hidden;
+
+    height: 34px;
+    margin-bottom: 10px;
+  }
+
+  &__deadline-headings {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    animation: switch 7s infinite $mdEasingDecelerate;
+
+    @keyframes switch {
+      0% { top: 0; }
+      6% { top: -34px; }
+      50% { top: -34px; }
+      56% { top: 0; }
+      100% { top: 0; }
+    }
   }
 
   &__empty-state {
