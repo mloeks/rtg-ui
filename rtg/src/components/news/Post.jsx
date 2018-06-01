@@ -89,7 +89,14 @@ class Post extends Component {
   }
 
   toggleExpanded() {
-    this.setState(prevState => ({ expanded: !prevState.expanded }));
+    this.setState(prevState => {
+      const expanded = !prevState.expanded;
+      if (expanded) {
+        // force reloading of comments when expanded
+        return { comments: [], expanded };
+      }
+      return { expanded };
+    });
   }
 
   showAllContent() {
@@ -108,6 +115,10 @@ class Post extends Component {
   handleCommentAdded(comment) {
     this.setState((prevState) => {
       const updatedComments = prevState.comments.slice(0);
+      const replyToIndex = updatedComments.findIndex(c => c.id === comment.reply_to);
+      if (replyToIndex !== -1) {
+        updatedComments[replyToIndex].no_replies += 1;
+      }
       updatedComments.push(comment);
       return {
         expanded: true,
