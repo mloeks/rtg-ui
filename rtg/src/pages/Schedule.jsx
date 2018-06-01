@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
 import { Divider, DropDownMenu, MenuItem } from 'material-ui';
+import AvNotInterested from 'material-ui/svg-icons/av/not-interested';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
 import Page from './Page';
@@ -15,7 +16,7 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
 import { isEnter } from '../service/KeyHelper';
-import { darkGrey, white } from '../theme/RtgTheme';
+import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
@@ -205,13 +206,15 @@ class Schedule extends Component {
           </section>
 
           <section className="SchedulePage__game-container">
-            {(!this.state.loading && !this.state.loadingError) &&
-              gameContainerItems.map(game => game)
-            }
-            {/* TODO P2 style empty-state nicer */}
+            {(!this.state.loading && !this.state.loadingError) && gameContainerItems}
+
             {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
-            <div className="SchedulePage__no-games-present">Keine Spiele vorhanden.</div>
-            }
+              <div className="SchedulePage__empty-state" style={{ color: lightGrey }}>
+                <AvNotInterested
+                  color={lightGrey}
+                  style={{ height: 80, width: 80, marginBottom: 10 }}
+                /><br />Keine Spiele vorhanden.
+              </div>}
 
             {this.state.loading &&
               <Fragment>
