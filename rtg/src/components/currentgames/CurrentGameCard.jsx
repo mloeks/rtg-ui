@@ -13,7 +13,6 @@ import GameCardBet, { SavingErrorType } from '../GameCardBet';
 
 import './CurrentGameCard.css';
 
-// TODO P2 Also display round and group info somewhere here
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {
     if (isYesterday(kickoff)) { return "Gestern"; }
@@ -82,10 +81,24 @@ class CurrentGameCard extends Component {
   }
 
   render() {
+    const formattedRoundInfo = (game) => {
+      if (!game) return '...';
+      const roundName = game.round_details.name;
+      const groupName = game.group ? game.group.name : null;
+      if (groupName) {
+        return `${roundName} - ${groupName}`;
+      }
+      return roundName;
+    };
     return (
       <div className="CurrentGameCard">
-        <RtgSeparator content={this.props.game ?
-          CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff) : '...'} />
+        <RtgSeparator
+          content={this.props.game ?
+            CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff) : '...'}
+          contentStyle={{ margin: 0 }}
+        />
+
+        <div className="CurrentGameCard__round-info">{formattedRoundInfo(this.props.game)}</div>
 
         {this.props.game ? (
           <GameCard displayTeamNames="small" {...this.props.game}>

@@ -1,7 +1,15 @@
+@import '../../sass/colors';
+
 .CurrentGameCard {
   width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
+
+  &__round-info {
+    margin: 2px 0 10px;
+    font-size: 12px;
+    color: $lightGrey;
+  }
 
   @media only screen and (min-width : 375px) {
     padding: 0 40px;
