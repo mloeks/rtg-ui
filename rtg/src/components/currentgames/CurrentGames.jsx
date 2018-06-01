@@ -4,13 +4,13 @@ import { IconButton } from 'material-ui';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { viewportW } from 'verge';
-import { differenceInMinutes, parse } from 'date-fns';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
 import { debounce } from '../../service/EventsHelper';
+import { getClosestGameIndex } from '../../service/GamesHelper';
 import Notification, { NotificationType } from '../Notification';
 import { unsavedChangesConfirmText } from '../../pages/Bets';
 
@@ -238,26 +238,7 @@ class CurrentGames extends Component {
   }
 
   getInitialOffsetBasedOnDate(kickoffs) {
-    let offsetBasedOnDate = 0;
-    let closestKickoffAbsDifference = Number.MAX_SAFE_INTEGER;
-    const now = new Date();
-    for (let i = 0; i < kickoffs.length; i += 1) {
-      const distance = differenceInMinutes(parse(kickoffs[i]), now);
-
-      if (distance < 0 && distance > -90) {
-        // We found a currently running game. use this and stop immediately. This is important in
-        // order to prefer running games over follow-up games which kickoff might be closer.
-        offsetBasedOnDate = i;
-        break;
-      }
-      if (Math.abs(distance) >= closestKickoffAbsDifference) {
-        // since the kickoffs are ordered chronologically,
-        // we can immediately stop if the absolute difference gets larger.
-        break;
-      }
-      closestKickoffAbsDifference = Math.abs(distance);
-      offsetBasedOnDate = i;
-    }
+    let offsetBasedOnDate = getClosestGameIndex(kickoffs);
 
     if (this.state.gamesToDisplay > 2) {
       // on wider screens, show the current game in the middle,

@@ -16,19 +16,21 @@ import AuthService, { API_BASE_URL } from '../service/AuthService';
 import Notification, { NotificationType } from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
 import { isEnter } from '../service/KeyHelper';
+import { getClosestGameIndex } from '../service/GamesHelper';
 import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
+const DEFAULT_ROUND_INDEX = 'VOR';
+
 // TODO P2 add possibility to add games for admins
-// TODO P2 switch to current game/round automatically
 class Schedule extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedRoundIndex: 'VOR',
+      selectedRoundIndex: DEFAULT_ROUND_INDEX,
       selectedGroupFilter: 'all',
       games: [],
       rounds: [],
@@ -40,6 +42,7 @@ class Schedule extends Component {
     };
     this.stickybitsInstance = null;
 
+    this.selectCurrentRound = this.selectCurrentRound.bind(this);
     this.handleSelectedRoundChange = this.handleSelectedRoundChange.bind(this);
     this.handleGroupFilterChanged = this.handleGroupFilterChanged.bind(this);
     this.gamesFilter = this.gamesFilter.bind(this);
@@ -50,7 +53,7 @@ class Schedule extends Component {
 
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
-    await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true);
+    await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true, this.selectCurrentRound);
     await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
 
     this.setState({ loading: false });
@@ -68,7 +71,7 @@ class Schedule extends Component {
     }
   }
 
-  async fetchData(url, targetStateField, isPaginated) {
+  async fetchData(url, targetStateField, isPaginated, successCallback = () => {}) {
     this.setState({ loadingError: '' });
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -78,8 +81,17 @@ class Schedule extends Component {
           response.ok
             ? { [targetStateField]: isPaginated ? response.json.results : response.json }
             : { loadingError: true }
-        ));
+        ), successCallback);
       }).catch(() => this.setState({ loadingError: true }));
+  }
+
+  selectCurrentRound() {
+    const closestGameIndex = getClosestGameIndex(this.state.games.map(g => g.kickoff));
+    this.setState({
+      selectedRoundIndex: closestGameIndex !== -1 ?
+        this.state.games[closestGameIndex].round_details.abbreviation :
+        DEFAULT_ROUND_INDEX,
+    });
   }
 
   handleSelectedRoundChange(event, index, value) {
