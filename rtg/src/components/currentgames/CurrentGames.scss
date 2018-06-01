@@ -21,10 +21,10 @@
     align-content: center;
     justify-content: space-between;
 
-    transition: transform 300ms $mdEasingDecelerate;
+    transition: transform 200ms $mdEasingDecelerate;
 
     @media only screen and (min-width : 768px) {
-      transition: transform 500ms $mdEasingDecelerate;
+      transition: transform 375ms $mdEasingDecelerate;
     }
 
     &.no-animate {
