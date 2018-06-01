@@ -12,6 +12,7 @@ export const NotificationType = {
   ERROR: 'error',
 };
 
+// TODO P3 closing by button click does not work in IE
 // TODO P3 animated show/hide
 class Notification extends Component {
   static getIconByType(type, color) {
@@ -56,7 +57,7 @@ class Notification extends Component {
         className={this.props.className}
         style={{
           backgroundColor: lightenDarkenColor(notificationColor, 150),
-          ...this.props.containerStyle
+          ...this.props.containerStyle,
         }}
       >
         <CardHeader
