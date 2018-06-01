@@ -51,7 +51,10 @@ const GameCardGameInfo = (props) => {
     <GameCardRibbon stateCssClass={getStateByResultBetType(props.resultBetType)}>
       <div className="GameCardGameInfo">
         <div className="GameCardGameInfo__userBet">
-          <Person style={{ width: '14px' }} color={white} />&nbsp;{props.userBet || '-:-'}
+          <Person
+            style={{ width: '16px', height: '16px', marginTop: '2px' }}
+            color={white}
+          />&nbsp;{props.userBet || '-:-'}
         </div>
 
         {props.result &&
