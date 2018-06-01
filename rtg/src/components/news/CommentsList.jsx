@@ -20,18 +20,10 @@ class CommentsList extends Component {
     return `${count} weitere Antworten anzeigen`;
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.comments.length > 0) {
-      return { comments: nextProps.comments };
-    }
-    return null;
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       collapsed: props.collapsed,
-      comments: props.comments,
       loading: false,
       loadingError: false,
     };
@@ -54,23 +46,19 @@ class CommentsList extends Component {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     })
       .then(FetchHelper.parseJson)
-      .then(response => (
-        this.setState({
-          loading: false,
-          ...response.ok ? { comments: response.json.results } : { loadingError: true },
-        }, () => {
-          this.props.onCommentsLoaded(this.state.comments);
-        })
-      ))
+      .then((response) => {
+        if (response.ok) {
+          this.props.onCommentsLoaded(response.json.results);
+          this.setState({ loading: false });
+        } else {
+          this.setState({ loading: false, loadingError: true });
+        }
+      })
       .catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   handleCommentAdded(comment) {
-    this.setState((prevState) => {
-      const newComments = prevState.comments.slice(0);
-      newComments.push(comment);
-      return { comments: newComments, collapsed: false };
-    }, () => {
+    this.setState({ collapsed: false }, () => {
       this.props.onReplyAdded(comment);
     });
   }
@@ -78,8 +66,8 @@ class CommentsList extends Component {
   render() {
     // TODO P3 is being re-rendered 2*comment count times when post comments are only toggled?!
     const comments = this.props.hierarchyLevel === 0 ?
-      this.state.comments.filter(c => !c.reply_to) :
-      this.state.comments.filter(c => c.reply_to === this.props.replyTo);
+      this.props.comments.filter(c => !c.reply_to) :
+      this.props.comments.filter(c => c.reply_to === this.props.replyTo);
 
     return (
       <div
@@ -120,7 +108,7 @@ class CommentsList extends Component {
               hierarchyLevel={this.props.hierarchyLevel}
               postId={this.props.postId}
               comment={comment}
-              replies={this.state.comments}
+              replies={this.props.comments}
               onReplyAdded={this.props.onReplyAdded}
             />))
         }
