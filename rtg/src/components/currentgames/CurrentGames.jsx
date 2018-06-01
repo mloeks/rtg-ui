@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Prompt } from 'react-router-dom';
 import { IconButton } from 'material-ui';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
@@ -10,6 +11,7 @@ import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
 import { debounce } from '../../service/EventsHelper';
 import Notification, { NotificationType } from '../Notification';
+import { unsavedChangesConfirmText } from '../../pages/Bets';
 
 import './CurrentGames.css';
 
@@ -104,6 +106,7 @@ class CurrentGames extends Component {
     this.gamesContainer = null;
     this.currentGamesContainerRef = React.createRef();
 
+    this.confirmNavigationWithUnsavedChanges = this.confirmNavigationWithUnsavedChanges.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
@@ -130,6 +133,7 @@ class CurrentGames extends Component {
   }
 
   registerEvents() {
+    window.addEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
     this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
 
     this.gamesContainer = this.currentGamesContainerRef.current;
@@ -143,6 +147,7 @@ class CurrentGames extends Component {
   }
 
   unregisterEvents() {
+    window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
     this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
 
     if (this.gamesContainer) {
@@ -152,6 +157,14 @@ class CurrentGames extends Component {
       this.gamesContainer.removeEventListener('touchcancel', this.onTouchCancel);
       this.gamesContainer.removeEventListener('transitionend', this.onTransitionEnd);
     }
+  }
+
+  confirmNavigationWithUnsavedChanges(e) {
+    if (this.state.editingBet) {
+      e.returnValue = unsavedChangesConfirmText;
+      return unsavedChangesConfirmText;
+    }
+    return undefined;
   }
 
   onBreakpointChange() {
@@ -413,6 +426,11 @@ class CurrentGames extends Component {
     return (
       this.state.games && (
         <section className="CurrentGames">
+          <Prompt
+            when={this.state.editingBet}
+            message={unsavedChangesConfirmText}
+          />
+
           {this.mayScrollBackward() &&
             <IconButton
               className="CurrentGames__scroll-button"
