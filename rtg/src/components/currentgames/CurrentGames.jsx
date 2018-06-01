@@ -422,7 +422,7 @@ class CurrentGames extends Component {
           type={NotificationType.ERROR}
           title="Fehler beim Laden der aktuellen Spiele"
           subtitle="Bitte versuche es erneut."
-          style={{ margin: '30px auto', maxWidth: 480 }}
+          containerStyle={{ margin: '30px auto', maxWidth: 480 }}
         />);
     }
 

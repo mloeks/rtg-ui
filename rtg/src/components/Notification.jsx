@@ -32,6 +32,7 @@ class Notification extends Component {
     if (this.props.disappearAfterMs) {
       this.disappearTimeoutHandler = setTimeout(() => {
         this.setState({ visible: false });
+        this.props.onClose();
       }, this.props.disappearAfterMs);
     }
   }
@@ -50,7 +51,10 @@ class Notification extends Component {
     return (
       <Card
         className={this.props.className}
-        style={{ ...this.props.style, backgroundColor: lightenDarkenColor(notificationColor, 150) }}
+        style={{
+          backgroundColor: lightenDarkenColor(notificationColor, 150),
+          ...this.props.containerStyle
+        }}
       >
         <CardHeader
           closeIcon={<Close onClick={() => this.setState({ visible: false })} />}
@@ -63,6 +67,7 @@ class Notification extends Component {
             display: 'flex',
             alignItems: 'center',
             lineHeight: '1.4',
+            ...this.props.style,
           }}
           textStyle={{ paddingRight: this.props.dismissable ? '23px' : '0' }}
           avatar={Notification.getIconByType(this.props.type, notificationColor)}
@@ -76,8 +81,10 @@ Notification.defaultProps = {
   disappearAfterMs: null,
   dismissable: false,
   subtitle: null,
+  onClose: () => {},
   className: null,
   style: {},
+  containerStyle: {},
 };
 
 Notification.propTypes = {
@@ -87,8 +94,11 @@ Notification.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 
+  onClose: PropTypes.func,
+
   className: PropTypes.string,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 

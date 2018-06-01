@@ -102,7 +102,7 @@ class UsersGrid extends Component {
           type={NotificationType.ERROR}
           title="Fehler beim Laden"
           subtitle="Bitte versuche es erneut."
-          style={{ margin: '20px auto', maxWidth: '640px' }}
+          containerStyle={{ margin: '20px auto', maxWidth: '640px' }}
         />}
 
         {(!this.state.loading && !this.state.loadingError) &&

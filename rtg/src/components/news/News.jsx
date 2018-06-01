@@ -99,7 +99,7 @@ class News extends Component {
             type={NotificationType.ERROR}
             title="Fehler beim Laden der Neuigkeiten"
             subtitle={this.state.loadingError}
-            style={{ margin: 'auto', maxWidth: '480px' }}
+            containerStyle={{ margin: 'auto', maxWidth: '480px' }}
           />}
 
         {(AuthService.isAdmin() && this.state.addingPost) &&

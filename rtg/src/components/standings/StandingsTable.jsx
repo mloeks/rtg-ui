@@ -159,7 +159,7 @@ class StandingsTable extends Component {
             title="Es ist ein Fehler aufgetreten"
             subtitle="Bitte versuche es später noch einmal."
             type="error"
-            style={{ margin: '25px 0' }}
+            containerStyle={{ margin: '25px 0' }}
           />}
 
         {(!this.state.loading && !this.state.loadingError) &&

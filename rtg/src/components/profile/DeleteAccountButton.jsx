@@ -99,7 +99,7 @@ class DeleteAccountButton extends Component {
             type={NotificationType.ERROR}
             title="Problem beim Löschen"
             subtitle="Account wurde nicht gelöscht! Bitte versuche es erneut."
-            style={{ margin: '20px auto', maxWidth: 500 }}
+            containerStyle={{ margin: '20px auto', maxWidth: 500 }}
           />}
       </div>
     );
