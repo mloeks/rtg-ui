@@ -26,7 +26,6 @@ export const countOpenBets = (bettables, allBets) => {
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
 // TODO P2 make tabs header also sticky
-// TODO P2 style empty state nicer
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
