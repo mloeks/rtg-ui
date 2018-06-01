@@ -2,18 +2,20 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Alarm from 'material-ui/svg-icons/action/alarm';
+import AvNotInterested from 'material-ui/svg-icons/av/not-interested';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
+import NullGameCard from './NullGameCard';
 import RtgSeparator from './RtgSeparator';
 import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
-import NullGameCard from './NullGameCard';
+import { lightGrey } from '../theme/RtgTheme';
 
 import './GameBetsTab.css';
 
@@ -220,7 +222,12 @@ class GameBetsTab extends Component {
                 this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets, betsStatusContext)}
 
               {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
-              <div className="GameBetsTab__no-games-present">Keine offenen Tipps vorhanden.</div>}
+                <div className="GameBetsTab__empty-state" style={{ color: lightGrey }}>
+                  <AvNotInterested
+                    color={lightGrey}
+                    style={{ height: 80, width: 80, marginBottom: 10 }}
+                  /><br />Keine offenen Tipps vorhanden.
+                </div>}
 
               {this.state.loadingError &&
                 <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
