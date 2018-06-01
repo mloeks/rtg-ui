@@ -20,6 +20,13 @@ class CommentsList extends Component {
     return `${count} weitere Antworten anzeigen`;
   }
 
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.comments.length > 0) {
+      return { comments: nextProps.comments };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,13 +41,7 @@ class CommentsList extends Component {
   }
 
   componentDidMount() {
-    if (this.props.hierarchyLevel === 0) {
-      this.loadComments();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.commentCount !== this.props.nextProps) {
+    if (this.props.comments.length === 0) {
       this.loadComments();
     }
   }
@@ -57,6 +58,8 @@ class CommentsList extends Component {
         this.setState({
           loading: false,
           ...response.ok ? { comments: response.json.results } : { loadingError: true },
+        }, () => {
+          this.props.onCommentsLoaded(this.state.comments);
         })
       ))
       .catch(() => this.setState({ loading: false, loadingError: true }));
@@ -68,11 +71,12 @@ class CommentsList extends Component {
       newComments.push(comment);
       return { comments: newComments, collapsed: false };
     }, () => {
-      this.props.onReplyAdded();
+      this.props.onReplyAdded(comment);
     });
   }
 
   render() {
+    // TODO P3 is being re-rendered 2*comment count times when post comments are only toggled?!
     const comments = this.props.hierarchyLevel === 0 ?
       this.state.comments.filter(c => !c.reply_to) :
       this.state.comments.filter(c => c.reply_to === this.props.replyTo);
@@ -137,6 +141,7 @@ CommentsList.defaultProps = {
   comments: [],
   replyTo: null,
   showAddComment: false,
+  onCommentsLoaded: () => {},
   onReplyAdded: () => {},
 };
 
@@ -148,6 +153,7 @@ CommentsList.propTypes = {
   postId: PropTypes.number.isRequired,
   replyTo: PropTypes.number,
   showAddComment: PropTypes.bool,
+  onCommentsLoaded: PropTypes.func,
   onReplyAdded: PropTypes.func,
 };
 

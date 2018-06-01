@@ -61,6 +61,7 @@ class Post extends Component {
     super(props);
     this.state = {
       expanded: false,
+      comments: [],
       commentCount: props.post.no_comments || 0,
       contentWrappedForLength: false,
       userDetailsPopoverAnchorEl: null,
@@ -104,11 +105,16 @@ class Post extends Component {
     this.setState({ userDetailsPopoverOpen: false });
   }
 
-  handleCommentAdded() {
-    console.log('added');
-    this.setState(prevState => (
-      { expanded: true, commentCount: this.getCommentCountIncrementedBy(1, prevState) }
-    ));
+  handleCommentAdded(comment) {
+    this.setState((prevState) => {
+      const updatedComments = prevState.comments.slice(0);
+      updatedComments.push(comment);
+      return {
+        expanded: true,
+        comments: updatedComments,
+        commentCount: this.getCommentCountIncrementedBy(1, prevState),
+      };
+    });
   }
 
   render() {
@@ -233,9 +239,10 @@ class Post extends Component {
           <CommentsList
             hierarchyLevel={0}
             postId={this.props.post.id}
+            comments={this.state.comments}
             commentCount={this.state.commentCount}
-            onReplyAdded={() =>
-              this.setState({ commentCount: this.getCommentCountIncrementedBy(1) })}
+            onReplyAdded={this.handleCommentAdded}
+            onCommentsLoaded={comments => this.setState({ comments })}
           />
           <div style={{ textAlign: 'center' }}>
             <FlatButton

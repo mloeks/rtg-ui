@@ -40,8 +40,8 @@ class Comment extends Component {
     this.setState(prevState => ({ showAddComment: !prevState.showAddComment }));
   }
 
-  handleReplyAdded() {
-    this.setState({ showAddComment: false }, this.props.onReplyAdded);
+  handleReplyAdded(comment) {
+    this.setState({ showAddComment: false }, this.props.onReplyAdded(comment));
   }
 
   render() {
