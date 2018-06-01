@@ -87,7 +87,7 @@ class GameCardBet extends Component {
       if (this.state.hasChanges) {
         this.save();
       } else {
-        this.props.onSaveDone(
+        this.props.onSaveSuccess(
           this.props.gameId,
           toResultString(this.state.homegoalsInput, this.state.awaygoalsInput),
           SavingSuccessType.UNCHANGED,
@@ -120,7 +120,7 @@ class GameCardBet extends Component {
       const emptyResult = isEmptyResult(newBet);
 
       if (!emptyResult && !isCompleteResult(newBet)) {
-        this.props.onSaveDone(this.props.gameId, newBet, SavingErrorType.INCOMPLETE);
+        this.props.onSaveFailure(this.props.gameId, newBet, SavingErrorType.INCOMPLETE);
         return;
       }
 
@@ -135,7 +135,7 @@ class GameCardBet extends Component {
       } else {
         if (emptyResult) {
           // no previously saved bet and bet is also empty --> return
-          this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.UNCHANGED);
+          this.props.onSaveSuccess(this.props.gameId, null, SavingSuccessType.UNCHANGED);
           return;
         }
         method = 'POST';
@@ -158,11 +158,11 @@ class GameCardBet extends Component {
               ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
               if (method === 'POST') {
-                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.ADDED);
+                this.props.onSaveSuccess(this.props.gameId, this.state.userBet, SavingSuccessType.ADDED);
               } else if (method === 'PUT') {
-                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.UPDATED);
+                this.props.onSaveSuccess(this.props.gameId, this.state.userBet, SavingSuccessType.UPDATED);
               } else if (method === 'DELETE') {
-                this.props.onSaveDone(this.props.gameId, newBet, SavingSuccessType.DELETED);
+                this.props.onSaveSuccess(this.props.gameId, null, SavingSuccessType.DELETED);
               }
             });
           } else {
@@ -172,14 +172,14 @@ class GameCardBet extends Component {
               const reasonDeadlinePassed = response.json && response.json.code &&
                 response.json.code[0] === 'DEADLINE_PASSED';
 
-              this.props.onSaveDone(
+              this.props.onSaveFailure(
                 this.props.gameId, newBet,
                 reasonDeadlinePassed ? SavingErrorType.DEADLINE_PASSED : SavingErrorType.FAILED, responseDetail,
               );
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
-          this.props.onSaveDone(this.props.gameId, newBet, SavingErrorType.FAILED);
+          this.props.onSaveFailure(this.props.gameId, newBet, SavingErrorType.FAILED);
         }));
     }
   }
@@ -250,7 +250,8 @@ GameCardBet.propTypes = {
   hadSaveIssues: PropTypes.bool,
   shouldSave: PropTypes.bool,
   userBet: PropTypes.shape(),
-  onSaveDone: PropTypes.func.isRequired,
+  onSaveFailure: PropTypes.func.isRequired,
+  onSaveSuccess: PropTypes.func.isRequired,
 };
 
 export default GameCardBet;

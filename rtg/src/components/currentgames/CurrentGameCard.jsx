@@ -35,7 +35,8 @@ class CurrentGameCard extends Component {
     this.handleBetEdit = this.handleBetEdit.bind(this);
     this.handleBetEditCancel = this.handleBetEditCancel.bind(this);
     this.handleBetSave = this.handleBetSave.bind(this);
-    this.handleBetSaveDone = this.handleBetSaveDone.bind(this);
+    this.handleBetSaveFailure = this.handleBetSaveFailure.bind(this);
+    this.handleBetSaveSuccess = this.handleBetSaveSuccess.bind(this);
     this.handleBetSaveErrorInfoDialogClosed = this.handleBetSaveErrorInfoDialogClosed.bind(this);
   }
 
@@ -54,16 +55,14 @@ class CurrentGameCard extends Component {
     this.setState({ shouldSaveBet: true });
   }
 
-  handleBetSaveDone(gameId, resultBetString, type) {
+  handleBetSaveFailure(gameId, attemptedBet, type) {
+    this.setState({ betSaveFailed: true, betSaveFailedType: type, shouldSaveBet: false });
+  }
+
+  handleBetSaveSuccess(gameId, newBet, type) {
     // TODO P2 consume betinfo context and update bet count if required - maybe producer needs to be hoisted
     // up into the header or page (or another similar producer has to be used for this page)...
     // idea: make a HOC out of the provide in Bets.jsx? "withBetsStatus"
-    // TODO P1 test in IE, 'values' and 'includes' might need another polyfill
-    if (Object.values(SavingErrorType).includes(type)) {
-      this.setState({ betSaveFailed: true, betSaveFailedType: type, shouldSaveBet: false });
-      return;
-    }
-
     if (type === SavingSuccessType.ADDED) {
       // TODO update context
     }
@@ -73,7 +72,6 @@ class CurrentGameCard extends Component {
     this.setState({ editingBet: false, shouldSaveBet: false });
 
     const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
-    const newBet = type !== SavingSuccessType.DELETED ? resultBetString : null;
     this.props.onBetEditDone(updatedBetId, newBet);
   }
 
@@ -107,7 +105,8 @@ class CurrentGameCard extends Component {
                 hadSaveIssues={this.state.editingBet && this.state.betSaveFailed}
                 shouldSave={this.state.shouldSaveBet}
                 userBet={this.props.userBet}
-                onSaveDone={this.handleBetSaveDone}
+                onSaveFailure={this.handleBetSaveFailure}
+                onSaveSuccess={this.handleBetSaveSuccess}
               />
             ) : (
               <GameCardGameInfo
@@ -140,7 +139,7 @@ class CurrentGameCard extends Component {
               </Fragment>
               ) : (
                 <FlatButton
-                  label="Tipp ändern"
+                  label={this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
                   primary
                   icon={<ImageEdit style={{ width: 20, height: 20 }} />}
                   onClick={this.handleBetEdit}

@@ -37,7 +37,7 @@ class GameBetsTab extends Component {
 
   static getOpenBetsChangeFromSaveTypes(gamesWithSaveTypes) {
     let incrementalOpenBetsChange = 0;
-    gamesWithSaveTypes.forEach(game => {
+    gamesWithSaveTypes.forEach((game) => {
       if (game.saveType === SavingSuccessType.ADDED) {
         incrementalOpenBetsChange -= 1;
       } else if (game.saveType === SavingSuccessType.DELETED) {
@@ -114,8 +114,10 @@ class GameBetsTab extends Component {
               .some(failedGame => game.id === failedGame.id)}
             shouldSave={this.state.shouldSave}
             userBet={this.state.bets.find(bet => bet.bettable === game.id) || {}}
-            onSaveDone={(id, bet, type, detail) =>
-              this.handleBetSaveDone(id, bet, type, detail, betsStatusContext)}
+            onSaveFailure={(id, attemptedBet, type, detail) =>
+              this.handleBetSaveDone(id, attemptedBet, type, detail, betsStatusContext)}
+            onSaveSuccess={(id, savedBet, type, detail) => this.handleBetSaveDone(
+              id, savedBet ? savedBet.result_bet : null, type, detail, betsStatusContext)}
           />
         </GameCard>
       );
@@ -155,9 +157,9 @@ class GameBetsTab extends Component {
   }
 
   // TODO P3 refactor this method
-  handleBetSaveDone(gameId, newBet, saveType, responseDetail, betsStatusContext) {
+  handleBetSaveDone(gameId, newBetString, saveType, responseDetail, betsStatusContext) {
     const updatedGameWithSaveDetails = {
-      ...this.gamesWithSaveType.get(gameId), newBet, saveType, responseDetail,
+      ...this.gamesWithSaveType.get(gameId), newBet: newBetString, saveType, responseDetail,
     };
     this.gamesWithSaveType.set(gameId, updatedGameWithSaveDetails);
 

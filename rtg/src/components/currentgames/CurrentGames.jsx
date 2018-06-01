@@ -376,18 +376,12 @@ class CurrentGames extends Component {
       const updatedBetIndex = updatedBets.findIndex(bet => bet.id === betId);
       if (updatedBetIndex !== -1) {
         if (newBet) {
-          updatedBets[updatedBetIndex].result_bet = newBet;
+          updatedBets[updatedBetIndex] = newBet;
         } else {
           // remove bet from bets array
           updatedBets.splice(updatedBetIndex, 1);
         }
-      } else {
-        // TODO P2 where to get the proper full bet from? we need the entire response
-        // either only store result strings in this components state (also smaller, only thing
-        // needed for display) and have the bet card fetch the bet on edit
-        // OR refactor BetGameCard to return the entire object, which is, however,
-        // not trivial in case of errors and requires changing the entire (stable) behaviour
-        // on the bets page.
+      } else if (newBet) {
         updatedBets.push(newBet);
       }
       return { bets: updatedBets, editingBet: false };
@@ -449,7 +443,7 @@ class CurrentGames extends Component {
             {this.state.gamesToDisplayWindow.range.map((offset) => {
               const game = this.state.games[offset];
               const userBet = game ?
-                this.state.bets.find(bet => bet.bettable === game.id) || {} : null;
+                this.state.bets.find(bet => bet.bettable === game.id) : null;
               return (
                 <CurrentGameCard
                   key={`current-game-offset-${offset}`}
