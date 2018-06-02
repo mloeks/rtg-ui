@@ -12,7 +12,6 @@ import './Header.css';
 
 const HEADER_HEIGHT = 64;
 
-// TODO P2 add floating scroll to top button
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
   // make sure sticky headers on other pages are offset by HEADER_HEIGHT if the header is visible
