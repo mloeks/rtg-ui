@@ -23,8 +23,10 @@ export const betStatColumnStyle = {
 };
 
 export const betColumnStyle = {
-  ...betStatColumnStyle,
-  width: '30px',
+  width: '50px',
+  textAlign: 'right',
+  padding: '0 5px',
+  color: lightGrey,
 };
 
 export const pointsColumnStyle = {
