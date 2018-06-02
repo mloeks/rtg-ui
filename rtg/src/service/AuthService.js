@@ -42,14 +42,6 @@ class AuthService {
     return LocalStorageWrapper.get('username');
   }
 
-  static getEmail() {
-    return LocalStorageWrapper.get('email');
-  }
-
-  static setEmail(email) {
-    LocalStorageWrapper.set('email', email);
-  }
-
   static getHasPaid() {
     return LocalStorageWrapper.get('has-paid') === 'true';
   }
@@ -117,7 +109,6 @@ class AuthService {
       LocalStorageWrapper.set('token-expiry', decodedToken.exp);
       LocalStorageWrapper.set('user-id', authResponse.user_id);
       LocalStorageWrapper.set('username', decodedToken.username);
-      LocalStorageWrapper.set('email', authResponse.email);
       LocalStorageWrapper.set('has-paid', authResponse.has_paid);
       LocalStorageWrapper.set('avatar', authResponse.avatar);
       LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);

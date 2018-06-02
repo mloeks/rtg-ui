@@ -16,7 +16,7 @@ class ContactForm extends Component {
 
     return {
       author: isLoggedIn ? AuthService.getUsername() : '',
-      email: isLoggedIn ? AuthService.getEmail() : '',
+      email: '',
       content: '',
 
       formHasErrors: false,

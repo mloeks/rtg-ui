@@ -24,7 +24,6 @@ class UserDetailsProvider extends Component {
       isAdmin: false,
       userId: null,
       username: null,
-      email: null,
       avatar: null,
       openBetsCount: null,
 
@@ -46,7 +45,6 @@ class UserDetailsProvider extends Component {
       isAdmin: AuthService.isAdmin(),
       userId: AuthService.getUserId(),
       username: AuthService.getUsername(),
-      email: AuthService.getEmail(),
       avatar: AuthService.getAvatar(),
       hasPaid: AuthService.getHasPaid(),
       openBetsCount: AuthService.getOpenBetsCount(),
