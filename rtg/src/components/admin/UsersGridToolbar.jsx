@@ -9,6 +9,7 @@ import { darkGrey, grey } from '../../theme/RtgTheme';
 
 const UsersGridToolbar = props => (
   <Toolbar
+    className="UsersGridToolbar"
     style={{
       position: 'sticky',
       top: 0,
@@ -16,6 +17,7 @@ const UsersGridToolbar = props => (
       height: '60px',
       boxShadow: '0 3px 5px rgba(57, 63, 72, 0.3)',
       zIndex: 100,
+      transition: 'top 200ms cubic-bezier(0.0, 0.0, 0.2, 1)',
     }}
   >
     <ToolbarGroup firstChild>

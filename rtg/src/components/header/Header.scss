@@ -1,11 +1,12 @@
-@import '../../sass/_z-indexes.scss';
+@import '../../sass/utils';
+@import '../../sass/z-indexes';
 
 .Header {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: $zHeader;
-  transition: top 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: top 200ms $mdEasingDecelerate;
 
   &.nav-up {
     top: -64px;

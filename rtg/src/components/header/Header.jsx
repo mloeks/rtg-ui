@@ -12,11 +12,20 @@ import './Header.css';
 
 const HEADER_HEIGHT = 64;
 
-// TODO P2 header covers sticky sub-headers on the page (e.g. schedule filter, admin toolbar)
-// TODO P2 sticky on scroll header is still reacting a bit too slow
 // TODO P2 add floating scroll to top button
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
+  // make sure sticky headers on other pages are offset by HEADER_HEIGHT if the header is visible
+  static offsetStickyHeaders(offset) {
+    const otherStickyHeaderClassNames = [
+      'SchedulePage__toolbar', 'UsersGridToolbar',
+    ];
+    otherStickyHeaderClassNames.forEach((cls) => {
+      const el = document.querySelector(`.${cls}`);
+      if (el) { el.style.top = `${offset}px`; }
+    });
+  }
+
   constructor(props) {
     super(props);
     this.state = { menuOpen: false };
@@ -52,11 +61,13 @@ class Header extends Component {
       // Scroll Down
       headerEl.classList.remove('nav-down');
       headerEl.classList.add('nav-up');
+      Header.offsetStickyHeaders(0);
     } else if (position + window.innerHeight < document.body.scrollHeight) {
       // If did not scroll past the document (possible on mac)...
       // Scroll Up
       headerEl.classList.remove('nav-up');
       headerEl.classList.add('nav-down');
+      Header.offsetStickyHeaders(HEADER_HEIGHT);
     }
     this.lastKnownYPos = position;
   }
