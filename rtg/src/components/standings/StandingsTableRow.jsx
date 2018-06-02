@@ -33,7 +33,9 @@ class StandingsTableRow extends Component {
           style={{ height: rowHeight }}
           className={`StandingsTableRow ${this.props.self ? 'StandingsTableRow--self' : null}`}
         >
-          <TableRowColumn style={rankColumnStyle}>{this.props.rank}</TableRowColumn>
+          <TableRowColumn style={{ ...rankColumnStyle, height: rowHeight }}>
+            {this.props.rank}
+          </TableRowColumn>
           <TableRowColumn style={{ height: rowHeight, padding: 0 }}>
             <div
               role="button"
@@ -96,7 +98,9 @@ class StandingsTableRow extends Component {
               </TableRowColumn>
             </Fragment>}
 
-          <TableRowColumn style={pointsColumnStyle}>{this.props.points}</TableRowColumn>
+          <TableRowColumn style={{ ...pointsColumnStyle, height: rowHeight }}>
+            {this.props.points}
+          </TableRowColumn>
         </TableRow>
       </Fragment>
     );
