@@ -54,18 +54,20 @@ class Header extends Component {
     const delta = position - this.lastKnownYPos;
     const headerEl = this.headerRef.current;
 
-    if (delta > 0 && position > HEADER_HEIGHT) {
-      // If current position > last position AND scrolled past navbar...
-      // Scroll Down
-      headerEl.classList.remove('nav-down');
-      headerEl.classList.add('nav-up');
-      Header.offsetStickyHeaders(0);
-    } else if (position + window.innerHeight < document.body.scrollHeight) {
-      // If did not scroll past the document (possible on mac)...
-      // Scroll Up
-      headerEl.classList.remove('nav-up');
-      headerEl.classList.add('nav-down');
-      Header.offsetStickyHeaders(HEADER_HEIGHT);
+    if (headerEl) {
+      if (delta > 0 && position > HEADER_HEIGHT) {
+        // If current position > last position AND scrolled past navbar...
+        // Scroll Down
+        headerEl.classList.remove('nav-down');
+        headerEl.classList.add('nav-up');
+        Header.offsetStickyHeaders(0);
+      } else if (position + window.innerHeight < document.body.scrollHeight) {
+        // If did not scroll past the document (possible on mac)...
+        // Scroll Up
+        headerEl.classList.remove('nav-up');
+        headerEl.classList.add('nav-down');
+        Header.offsetStickyHeaders(HEADER_HEIGHT);
+      }
     }
     this.lastKnownYPos = position;
   }
