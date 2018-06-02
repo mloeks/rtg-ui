@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { TableRow, TableRowColumn } from 'material-ui';
-import { betStatColumnStyle, pointsColumnStyle, rankColumnStyle } from './StandingsTable';
+import { betColumnStyle, betStatColumnStyle, pointsColumnStyle, rankColumnStyle } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
 import { isEnter } from '../../service/KeyHelper';
@@ -73,6 +73,11 @@ class StandingsTableRow extends Component {
             </div>
           </TableRowColumn>
 
+          {this.props.showBetColumn &&
+            <TableRowColumn style={{ ...betColumnStyle, fontSize: '16px' }}>
+              {this.props.bet}
+            </TableRowColumn>}
+
           {this.props.showStatsColumns &&
             <Fragment>
               <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
@@ -111,6 +116,8 @@ StandingsTableRow.defaultProps = {
   self: false,
   rank: '',
   userAvatar: null,
+  bet: null,
+  showBetColumn: false,
   showStatsColumns: true,
 };
 
@@ -126,9 +133,11 @@ StandingsTableRow.propTypes = {
   noRemisTendenz: PropTypes.number.isRequired,
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
+  bet: PropTypes.string,
 
   self: PropTypes.bool,
   rowHeight: PropTypes.number.isRequired,
+  showBetColumn: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
 };
 

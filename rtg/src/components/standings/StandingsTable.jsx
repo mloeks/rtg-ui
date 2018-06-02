@@ -22,6 +22,11 @@ export const betStatColumnStyle = {
   color: lightGrey,
 };
 
+export const betColumnStyle = {
+  ...betStatColumnStyle,
+  width: '30px',
+};
+
 export const pointsColumnStyle = {
   width: '30px',
   textAlign: 'right',
@@ -95,21 +100,18 @@ class StandingsTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { rows: [] };
+    this.state = { rows: [], bets: [] };
     this.tableContainerRef = React.createRef();
+
+    this.fetchStatistics = this.fetchStatistics.bind(this);
+    this.fetchBets = this.fetchBets.bind(this);
   }
 
   componentDidMount() {
-    fetch(`${API_BASE_URL}/rtg/statistics/`,
-      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
-    ).then(FetchHelper.parseJson).then((response) => {
-      if (response.ok) {
-        this.setState({ loading: false, ...StandingsTable.statsToStateMapper(response.json) });
-      } else {
-        this.setState(response.status === 412 ?
-          this.fetchUsersOnly() : { loading: false, loadingError: true });
-      }
-    }).catch(() => this.setState({ loading: false, loadingError: true }));
+    this.fetchStatistics();
+    if (this.props.showBetColumnForBettable !== -1) {
+      this.fetchBets();
+    }
   }
 
   componentDidUpdate() {
@@ -152,6 +154,16 @@ class StandingsTable extends Component {
     return rows;
   }
 
+  getDisplayedRowsWithBets(rows) {
+    return rows.map((row) => {
+      const enhancedRow = Object.assign({}, row);
+      const bet = this.state.bets
+        .find(b => b.bettable === this.props.showBetColumnForBettable && b.user === row.userId);
+      enhancedRow.bet = bet ? bet.result_bet : null;
+      return enhancedRow;
+    });
+  }
+
   getScrollTop() {
     const maxScrollTopRows = this.state.rows.length - this.props.userExcerptRows;
     const userIndex = this.state.rows.findIndex(r => r.userId === AuthService.getUserId());
@@ -159,6 +171,20 @@ class StandingsTable extends Component {
 
     const scrollTopRows = Math.min(userIndex - halfExcerptHeightInRows, maxScrollTopRows);
     return scrollTopRows * (this.props.rowHeight + 1);
+  }
+
+  fetchStatistics() {
+    fetch(
+      `${API_BASE_URL}/rtg/statistics/`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then((response) => {
+      if (response.ok) {
+        this.setState({ loading: false, ...StandingsTable.statsToStateMapper(response.json) });
+      } else {
+        this.setState(response.status === 412 ?
+          this.fetchUsersOnly() : { loading: false, loadingError: true });
+      }
+    }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   fetchUsersOnly() {
@@ -173,9 +199,27 @@ class StandingsTable extends Component {
     )).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
+  fetchBets() {
+    fetch(
+      `${API_BASE_URL}/rtg/bets/?bettable=${this.props.showBetColumnForBettable}`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then((response) => {
+      this.setState(() => {
+        if (response.ok) {
+          return { loading: false, bets: response.json };
+        }
+        return { loading: false, loadingError: true };
+      });
+    }).catch(() => this.setState({ loading: false, loadingError: true }));
+  }
+
   render() {
     const standingsTableClassList = ['StandingsTable'];
-    const displayedRows = this.getDisplayedRows(this.state.rows, standingsTableClassList);
+    let displayedRows = this.getDisplayedRows(this.state.rows, standingsTableClassList);
+
+    if (this.props.showBetColumnForBettable !== -1 && this.state.bets) {
+      displayedRows = this.getDisplayedRowsWithBets(displayedRows);
+    }
 
     const innerTableHeight = this.props.showOnlyUserExcerpt && this.props.scrollable ?
       this.props.userExcerptRows * (this.props.rowHeight + 1) : 'auto';
@@ -207,6 +251,13 @@ class StandingsTable extends Component {
                   <TableRow>
                     <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
                     <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
+                    {this.props.showBetColumnForBettable !== -1 &&
+                      <TableHeaderColumn
+                        className="StandingsTable__bet-col"
+                        style={betColumnStyle}
+                      >Tipp
+                      </TableHeaderColumn>
+                    }
                     {this.props.showStatsColumns &&
                       <Fragment>
                         <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
@@ -244,6 +295,7 @@ class StandingsTable extends Component {
                   rank={row.displayRank}
                   rowHeight={this.props.rowHeight}
                   self={AuthService.getUserId() === row.userId}
+                  showBetColumn={this.props.showBetColumnForBettable !== -1}
                   showStatsColumns={this.props.showStatsColumns}
                   {...row}
                 />))}
@@ -258,6 +310,7 @@ class StandingsTable extends Component {
 StandingsTable.defaultProps = {
   rowHeight: 65,
   scrollable: false,
+  showBetColumnForBettable: -1,
   showOnlyUserExcerpt: false,
   showStatsColumns: true,
   showTableHeader: true,
@@ -267,6 +320,7 @@ StandingsTable.defaultProps = {
 StandingsTable.propTypes = {
   rowHeight: PropTypes.number,
   scrollable: PropTypes.bool,
+  showBetColumnForBettable: PropTypes.number,
   showOnlyUserExcerpt: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,
