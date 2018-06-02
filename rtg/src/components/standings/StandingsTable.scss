@@ -24,8 +24,6 @@
     overflow-y: scroll;
   }
 
-  &--scrollable-excerpt:before,
-  &--scrollable-excerpt:after,
   &--excerpt-top-fade:before,
   &--excerpt-bottom-fade:after {
     position: absolute;
@@ -37,14 +35,12 @@
     height: 25%;
   }
 
-  &--scrollable-excerpt:before,
   &--excerpt-top-fade:before {
     top: 0;
     background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
     z-index: 1;
   }
 
-  &--scrollable-excerpt:after,
   &--excerpt-bottom-fade:after {
     bottom: 0;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
