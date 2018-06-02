@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
 import HeaderMenuItems from './HeaderMenuItems';
-import { globalThrottledScrollListener, throttle } from '../../service/EventsHelper';
+import { throttle, ThrottledScrollPositionListener } from '../../service/EventsHelper';
 
 import './Header.css';
 
@@ -38,11 +38,14 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    globalThrottledScrollListener.addCallback(throttle(this.handleHeaderVisibility, 100));
+    this.scrollHandler = new ThrottledScrollPositionListener();
+    this.scrollHandler.addCallback(throttle(this.handleHeaderVisibility, 100));
   }
 
   componentWillUnmount() {
-    globalThrottledScrollListener.removeAll();
+    if (this.scrollHandler) {
+      this.scrollHandler.removeAll();
+    }
   }
 
   // Adopted from https://medium.com/@mariusc23/hide-header-on-scroll-down-show-on-scroll-up-67bbaae9a78c

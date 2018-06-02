@@ -3,26 +3,32 @@ import PropTypes from 'prop-types';
 import { scrollY } from 'verge';
 import { FloatingActionButton } from 'material-ui';
 import NavigationArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
-import { globalThrottledScrollListener, throttle } from '../service/EventsHelper';
+import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelper';
 
 // TODO P3 animate scrolling
 class BackToTopButton extends Component {
   constructor(props) {
     super(props);
     this.state = { show: scrollY() > this.props.showFromScrollPos };
+    this.scrollHandler = null;
     this.handleVisibility = this.handleVisibility.bind(this);
   }
 
   componentDidMount() {
-    globalThrottledScrollListener.addCallback(throttle(this.handleVisibility, 500));
+    this.scrollHandler = new ThrottledScrollPositionListener();
+    this.scrollHandler.addCallback(throttle(this.handleVisibility, 500));
   }
 
   componentWillUnmount() {
-    globalThrottledScrollListener.removeAll();
+    if (this.scrollHandler) {
+      this.scrollHandler.removeAll();
+    }
   }
 
   handleVisibility(position) {
-    this.setState({ show: position > this.props.showFromScrollPos });
+    this.setState({
+      show: position > this.props.showFromScrollPos
+    });
   }
 
   render() {

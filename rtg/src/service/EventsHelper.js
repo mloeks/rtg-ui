@@ -96,8 +96,6 @@ export class ThrottledScrollPositionListener {
   }
 }
 
-export const globalThrottledScrollListener = new ThrottledScrollPositionListener();
-
 export const hasScrolledBehind = elem => rectangle(elem).bottom < viewportH();
 
 // Returns a function, that, as long as it continues to be invoked, will not
