@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { scrollY } from 'verge';
 import { FloatingActionButton } from 'material-ui';
 import NavigationArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
-import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelper';
+import { throttle, throttledScrollListener } from '../service/EventsHelper';
 
 class BackToTopButton extends Component {
   constructor(props) {
@@ -13,8 +13,7 @@ class BackToTopButton extends Component {
   }
 
   componentDidMount() {
-    this.scrollHandler = new ThrottledScrollPositionListener();
-    this.scrollHandler.addCallback(throttle(this.handleVisibility, 500));
+    throttledScrollListener.addCallback(throttle(this.handleVisibility, 500));
   }
 
   componentWillUnmount() {

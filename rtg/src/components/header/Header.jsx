@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
 import HeaderMenuItems from './HeaderMenuItems';
-import { throttle, ThrottledScrollPositionListener } from '../../service/EventsHelper';
+import { throttle, throttledScrollListener } from '../../service/EventsHelper';
 
 import './Header.css';
 
@@ -39,8 +39,7 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.scrollHandler = new ThrottledScrollPositionListener();
-    this.scrollHandler.addCallback(throttle(this.handleHeaderVisibility, 100));
+    throttledScrollListener.addCallback(throttle(this.handleHeaderVisibility, 100));
   }
 
   componentWillUnmount() {
