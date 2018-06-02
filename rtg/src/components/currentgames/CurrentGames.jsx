@@ -124,7 +124,10 @@ class CurrentGames extends Component {
   }
 
   componentDidMount() {
-    this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false, (prevState, response) => ({ bets: response }));
+    this.fetchData(
+      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`,
+      'bets', false, (prevState, response) => ({ bets: response }),
+    );
     this.fetchKickoffs();
     this.registerEvents();
   }

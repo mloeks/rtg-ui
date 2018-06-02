@@ -74,7 +74,7 @@ class GameBetsTab extends Component {
 
   async updateData() {
     await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999&bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets', true);
-    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets', false);
 
     this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
 

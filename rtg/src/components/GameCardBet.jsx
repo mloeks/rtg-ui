@@ -99,15 +99,14 @@ class GameCardBet extends Component {
   }
 
   fetchUserBet() {
-    fetch(`${API_BASE_URL}/rtg/bets/?bettable=${this.props.gameId}`, {
+    fetch(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${this.props.gameId}`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        if (response.ok) {
-          const userBet = response.json.length > 0 ? response.json[0] : null;
-          this.setState({ userBet, ...GameCardBet.goalsStateFromUserBet(userBet) });
-        }
-      });
+    }).then(FetchHelper.parseJson).then((response) => {
+      if (response.ok) {
+        const userBet = response.json.length > 0 ? response.json[0] : null;
+        this.setState({ userBet, ...GameCardBet.goalsStateFromUserBet(userBet) });
+      }
+    });
   }
 
   // TODO P3 refactor!

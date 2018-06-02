@@ -49,16 +49,16 @@ export default class ExtraBetCard extends Component {
   }
 
   fetchUserBet() {
-    return fetch(`${API_BASE_URL}/rtg/bets/?bettable=${this.props.id}`, {
-      headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        this.setState(() => (
-          response.ok ?
-            { userBet: response.json.length > 0 ? response.json[0] : null }
-            : { loadingError: true }
-        ));
-      }).catch(() => this.setState({ loadingError: true }));
+    return fetch(
+      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${this.props.id}`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then((response) => {
+      this.setState(() => (
+        response.ok ?
+          { userBet: response.json.length > 0 ? response.json[0] : null }
+          : { loadingError: true }
+      ));
+    }).catch(() => this.setState({ loadingError: true }));
   }
 
   registerCountdown() {

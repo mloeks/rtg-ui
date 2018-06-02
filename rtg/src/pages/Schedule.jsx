@@ -54,7 +54,7 @@ class Schedule extends Component {
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
     await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true, this.selectCurrentRound);
-    await this.fetchData(`${API_BASE_URL}/rtg/bets/`, 'bets', false);
+    await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets', false);
 
     this.setState({ loading: false });
   }
