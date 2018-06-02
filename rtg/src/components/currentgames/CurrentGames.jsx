@@ -9,7 +9,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
 import { lightGrey, purple } from '../../theme/RtgTheme';
-import { debounce } from '../../service/EventsHelper';
+import { throttle } from '../../service/EventsHelper';
 import { getClosestGameIndex } from '../../service/GamesHelper';
 import Notification, { NotificationType } from '../Notification';
 import { unsavedChangesConfirmText } from '../../pages/Bets';
@@ -111,7 +111,7 @@ class CurrentGames extends Component {
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
-    this.onTouchMove = this.onTouchMove.bind(this);
+    this.throttledOnTouchMove = throttle(this.onTouchMove.bind(this), 10);
     this.onTouchCancel = this.onTouchCancel.bind(this);
     this.onTransitionEnd = this.onTransitionEnd.bind(this);
     this.horizontalMove = this.horizontalMove.bind(this);
@@ -144,7 +144,7 @@ class CurrentGames extends Component {
     if (this.gamesContainer) {
       this.gamesContainer.addEventListener('touchstart', this.onTouchStart, false);
       this.gamesContainer.addEventListener('touchend', this.onTouchEnd, false);
-      this.gamesContainer.addEventListener('touchmove', debounce(this.onTouchMove, 10), false);
+      this.gamesContainer.addEventListener('touchmove', this.throttledOnTouchMove, false);
       this.gamesContainer.addEventListener('touchcancel', this.onTouchCancel, false);
       this.gamesContainer.addEventListener('transitionend', this.onTransitionEnd, false);
     }
@@ -157,7 +157,7 @@ class CurrentGames extends Component {
     if (this.gamesContainer) {
       this.gamesContainer.removeEventListener('touchstart', this.onTouchStart);
       this.gamesContainer.removeEventListener('touchend', this.onTouchEnd);
-      this.gamesContainer.removeEventListener('touchmove', this.onTouchMove);
+      this.gamesContainer.removeEventListener('touchmove', this.throttledOnTouchMove);
       this.gamesContainer.removeEventListener('touchcancel', this.onTouchCancel);
       this.gamesContainer.removeEventListener('transitionend', this.onTransitionEnd);
     }
