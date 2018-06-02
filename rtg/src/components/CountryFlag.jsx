@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './CountryFlag.css';
 import countryFlags from '../theme/CountryFlagImporter';
 
-// TODO P2 edit ugly scandinavian flags
+// TODO P3 add context menu with links to team portraits
 const CountryFlag = ({ country, countryCode, displayTeamName }) => {
   // hack for the only team name which is as long that it breaks in two lines
   // which we don't want here in order to keep the height of the GameCards low
