@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/header/Header';
 import Footer from '../components/Footer';
 import UserDetailsProvider from '../components/providers/UserDetailsProvider';
+import BackToTopButton from '../components/BackToTopButton';
 
 import './Page.css';
 
@@ -13,6 +14,7 @@ const Page = props => (
       <section className="Page__content">
         {props.children}
       </section>
+      <BackToTopButton />
       <Footer />
     </UserDetailsProvider>
   </main>
