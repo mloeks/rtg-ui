@@ -75,7 +75,7 @@ class StandingsTableRow extends Component {
 
           {this.props.showBetColumn &&
             <TableRowColumn style={{ ...betColumnStyle, fontSize: '16px' }}>
-              {this.props.bet}
+              {this.props.bet || '---'}
             </TableRowColumn>}
 
           {this.props.showStatsColumns &&
