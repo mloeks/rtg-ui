@@ -34,13 +34,13 @@ class Header extends Component {
     this.scrollHandler = null;
     this.lastKnownYPos = scrollY();
 
-    this.onScroll = this.onScroll.bind(this);
+    this.handleHeaderVisibility = this.handleHeaderVisibility.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
   }
 
   componentDidMount() {
     this.scrollHandler = new ThrottledScrollPositionListener();
-    this.scrollHandler.addCallback(throttle(this.onScroll, 100));
+    this.scrollHandler.addCallback(throttle(this.handleHeaderVisibility, 100));
   }
 
   componentWillUnmount() {
@@ -52,7 +52,7 @@ class Header extends Component {
   // Adopted from https://medium.com/@mariusc23/hide-header-on-scroll-down-show-on-scroll-up-67bbaae9a78c
   // solved without state updates in order to be more performant and avoid render the entire
   // children tree.
-  onScroll(position) {
+  handleHeaderVisibility(position) {
     const delta = position - this.lastKnownYPos;
     const headerEl = this.headerRef.current;
 
