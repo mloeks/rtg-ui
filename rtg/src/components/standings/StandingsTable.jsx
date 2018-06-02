@@ -30,6 +30,9 @@ export const pointsColumnStyle = {
   fontWeight: 'bold',
 };
 
+// TODO P3 add scroll listener if scrollable and remove fading top/bottom when
+// scrolled to top/bottom. Alternatively, just remove the fading elements in StandingsTable.scss
+// for --excerpt-scrollable
 // TODO P3 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
   // TODO P2 take noBets into account?
@@ -93,6 +96,7 @@ class StandingsTable extends Component {
   constructor(props) {
     super(props);
     this.state = { rows: [] };
+    this.tableContainerRef = React.createRef();
   }
 
   componentDidMount() {
@@ -108,8 +112,21 @@ class StandingsTable extends Component {
     }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
+  componentDidUpdate() {
+    if (this.props.scrollable && this.tableContainerRef.current) {
+      this.tableContainerRef.current.scrollTop = this.getScrollTop();
+    }
+  }
+
   getDisplayedRows(rows, classList) {
     if (this.props.showOnlyUserExcerpt) {
+      if (this.props.scrollable) {
+        classList.push('StandingsTable--scrollable-excerpt');
+        return rows;
+      }
+
+      // if the table does not need to be scrollable, we can only
+      // put the visible rows into the DOM, not all rows.
       classList.push('StandingsTable--excerpt');
 
       const userRank = rows.findIndex(r => r.userId === AuthService.getUserId());
@@ -135,6 +152,15 @@ class StandingsTable extends Component {
     return rows;
   }
 
+  getScrollTop() {
+    const maxScrollTopRows = this.state.rows.length - this.props.userExcerptRows;
+    const userIndex = this.state.rows.findIndex(r => r.userId === AuthService.getUserId());
+    const halfExcerptHeightInRows = 0.5 * (this.props.userExcerptRows - 1);
+
+    const scrollTopRows = Math.min(userIndex - halfExcerptHeightInRows, maxScrollTopRows);
+    return scrollTopRows * (this.props.rowHeight + 1);
+  }
+
   fetchUsersOnly() {
     fetch(`${API_BASE_URL}/rtg/users_public/`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } },
@@ -151,70 +177,79 @@ class StandingsTable extends Component {
     const standingsTableClassList = ['StandingsTable'];
     const displayedRows = this.getDisplayedRows(this.state.rows, standingsTableClassList);
 
+    const innerTableHeight = this.props.showOnlyUserExcerpt && this.props.scrollable ?
+      this.props.userExcerptRows * (this.props.rowHeight + 1) : 'auto';
+
     return (
       <div className={standingsTableClassList.join(' ')}>
-        {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
-        {this.state.loadingError &&
-          <Notification
-            title="Es ist ein Fehler aufgetreten"
-            subtitle="Bitte versuche es später noch einmal."
-            type="error"
-            containerStyle={{ margin: '25px 0' }}
-          />}
+        <div
+          className="StandingsTable__inner"
+          ref={this.tableContainerRef}
+          style={{ height: innerTableHeight }}
+        >
+          {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
+          {this.state.loadingError &&
+            <Notification
+              title="Es ist ein Fehler aufgetreten"
+              subtitle="Bitte versuche es später noch einmal."
+              type="error"
+              containerStyle={{ margin: '25px 0' }}
+            />}
 
-        {(!this.state.loading && !this.state.loadingError) &&
-          <Table className="StandingsTable__table" selectable={false}>
-            {this.props.showTableHeader &&
-              <TableHeader
-                displaySelectAll={false}
-                adjustForCheckbox={false}
-                enableSelectAll={false}
-              >
-                <TableRow>
-                  <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
-                  <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
-                  {this.props.showStatsColumns &&
-                    <Fragment>
-                      <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
-                      <TableHeaderColumn
-                        className="StandingsTable__stat-col-desktop"
-                        style={betStatColumnStyle}
-                      >D
-                      </TableHeaderColumn>
-                      <TableHeaderColumn
-                        className="StandingsTable__stat-col-desktop"
-                        style={betStatColumnStyle}
-                      >RT
-                      </TableHeaderColumn>
-                      <TableHeaderColumn
-                        className="StandingsTable__stat-col-desktop"
-                        style={betStatColumnStyle}
-                      >T
-                      </TableHeaderColumn>
-                      <TableHeaderColumn
-                        className="StandingsTable__stat-col-desktop"
-                        style={betStatColumnStyle}
-                      >N
-                      </TableHeaderColumn>
-                    </Fragment>}
-                  <TableHeaderColumn
-                    style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
-                  >Pkt.
-                  </TableHeaderColumn>
-                </TableRow>
-              </TableHeader>}
+          {(!this.state.loading && !this.state.loadingError) &&
+            <Table className="StandingsTable__table" selectable={false}>
+              {this.props.showTableHeader &&
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
+                >
+                  <TableRow>
+                    <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
+                    <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
+                    {this.props.showStatsColumns &&
+                      <Fragment>
+                        <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
+                        <TableHeaderColumn
+                          className="StandingsTable__stat-col-desktop"
+                          style={betStatColumnStyle}
+                        >D
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          className="StandingsTable__stat-col-desktop"
+                          style={betStatColumnStyle}
+                        >RT
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          className="StandingsTable__stat-col-desktop"
+                          style={betStatColumnStyle}
+                        >T
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          className="StandingsTable__stat-col-desktop"
+                          style={betStatColumnStyle}
+                        >N
+                        </TableHeaderColumn>
+                      </Fragment>}
+                    <TableHeaderColumn
+                      style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
+                    >Pkt.
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>}
 
-            <TableBody showRowHover displayRowCheckbox={false}>
-              {displayedRows.map(row => (<StandingsTableRow
-                key={row.userId}
-                rank={row.displayRank}
-                rowHeight={this.props.rowHeight}
-                self={AuthService.getUserId() === row.userId}
-                showStatsColumns={this.props.showStatsColumns}
-                {...row}
-              />))}
-            </TableBody>
-          </Table>}
+              <TableBody showRowHover displayRowCheckbox={false}>
+                {displayedRows.map(row => (<StandingsTableRow
+                  key={row.userId}
+                  rank={row.displayRank}
+                  rowHeight={this.props.rowHeight}
+                  self={AuthService.getUserId() === row.userId}
+                  showStatsColumns={this.props.showStatsColumns}
+                  {...row}
+                />))}
+              </TableBody>
+            </Table>}
+        </div>
       </div>
     );
   }
@@ -222,6 +257,7 @@ class StandingsTable extends Component {
 
 StandingsTable.defaultProps = {
   rowHeight: 65,
+  scrollable: false,
   showOnlyUserExcerpt: false,
   showStatsColumns: true,
   showTableHeader: true,
@@ -230,6 +266,7 @@ StandingsTable.defaultProps = {
 
 StandingsTable.propTypes = {
   rowHeight: PropTypes.number,
+  scrollable: PropTypes.bool,
   showOnlyUserExcerpt: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,

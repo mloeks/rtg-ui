@@ -15,28 +15,39 @@
     }
   }
 
-  &--excerpt {
+  &--excerpt,
+  &--scrollable-excerpt {
     position: relative;
   }
 
+  &--scrollable-excerpt &__inner {
+    overflow-y: scroll;
+  }
+
+  &--scrollable-excerpt:before,
+  &--scrollable-excerpt:after,
   &--excerpt-top-fade:before,
   &--excerpt-bottom-fade:after {
     position: absolute;
     content: '';
     left: 0;
     width: 100%;
+    // if this is changed, the calculation of padding in StandingsTable.jsx
+    // has to be adjusted accordingly!
     height: 25%;
   }
 
+  &--scrollable-excerpt:before,
   &--excerpt-top-fade:before {
     top: 0;
-    background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
     z-index: 1;
   }
 
+  &--scrollable-excerpt:after,
   &--excerpt-bottom-fade:after {
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
   }
 
   @media only screen and (min-width : 850px) {
