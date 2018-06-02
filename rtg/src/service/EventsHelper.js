@@ -51,7 +51,7 @@ export class ThrottledEventListener {
 }
 
 // Adopted from https://developer.mozilla.org/en-US/docs/Web/Events/scroll
-class ThrottledScrollPositionListener {
+export class ThrottledScrollPositionListener {
   constructor() {
     this.callbacks = [];
     this.lastKnownScrollPosition = 0;
@@ -96,7 +96,7 @@ class ThrottledScrollPositionListener {
   }
 }
 
-export const throttledScrollListener = new ThrottledScrollPositionListener();
+export const globalThrottledScrollListener = new ThrottledScrollPositionListener();
 
 export const hasScrolledBehind = elem => rectangle(elem).bottom < viewportH();
 
