@@ -42,9 +42,7 @@ class Header extends Component {
   }
 
   componentWillUnmount() {
-    if (this.scrollHandler) {
-      this.scrollHandler.removeAll();
-    }
+    throttledScrollListener.removeAll();
   }
 
   // Adopted from https://medium.com/@mariusc23/hide-header-on-scroll-down-show-on-scroll-up-67bbaae9a78c

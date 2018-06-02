@@ -5,6 +5,7 @@ import { FloatingActionButton } from 'material-ui';
 import NavigationArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
 import { throttle, throttledScrollListener } from '../service/EventsHelper';
 
+// TODO P3 animate scrolling
 class BackToTopButton extends Component {
   constructor(props) {
     super(props);
@@ -17,9 +18,7 @@ class BackToTopButton extends Component {
   }
 
   componentWillUnmount() {
-    if (this.scrollHandler) {
-      this.scrollHandler.removeAll();
-    }
+    throttledScrollListener.removeAll();
   }
 
   handleVisibility(position) {
