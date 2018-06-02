@@ -89,10 +89,10 @@ class Post extends Component {
   }
 
   toggleExpanded() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const expanded = !prevState.expanded;
       if (expanded) {
-        // force reloading of comments when expanded
+        // force reloading of comments when expanding
         return { comments: [], expanded };
       }
       return { expanded };
@@ -112,17 +112,22 @@ class Post extends Component {
     this.setState({ userDetailsPopoverOpen: false });
   }
 
-  handleCommentAdded(comment) {
+  handleCommentAdded(newComment) {
     this.setState((prevState) => {
-      const updatedComments = prevState.comments.slice(0);
-      const replyToIndex = updatedComments.findIndex(c => c.id === comment.reply_to);
-      if (replyToIndex !== -1) {
-        updatedComments[replyToIndex].no_replies += 1;
+      let comments = [];
+      if (prevState.expanded) {
+        // only directly update comments if comments area is already visible
+        // otherwise they should be initially loaded (add comment when not yet visible)
+        comments = prevState.comments.slice(0);
+        const replyToIndex = comments.findIndex(c => c.id === newComment.reply_to);
+        if (replyToIndex !== -1) {
+          comments[replyToIndex].no_replies += 1;
+        }
+        comments.push(newComment);
       }
-      updatedComments.push(comment);
       return {
         expanded: true,
-        comments: updatedComments,
+        comments,
         commentCount: this.getCommentCountIncrementedBy(1, prevState),
       };
     });
