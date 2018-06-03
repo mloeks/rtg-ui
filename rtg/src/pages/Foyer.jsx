@@ -18,8 +18,11 @@ import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.css';
 
-// TODO P2 make images a bit smaller (800 px wide + guetzli)
-// & lazy load them when they are about to come in view
+// TODO P2 lazy pictures them when they are about to come in view
+// briefly attempted --> we need one more scroll listener and a ref for each
+// BigPicture, whose y-position if evaluated on each scroll and the state is updated
+// to actually contain the image and not null (BigPicture is prepared to accept null images
+// and show a placeholder then)
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
