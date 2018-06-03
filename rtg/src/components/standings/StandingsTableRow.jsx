@@ -17,8 +17,10 @@ class StandingsTableRow extends Component {
   }
 
   showUserDetailsPopover(e) {
-    e.preventDefault();
-    this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
+    if (this.props.showUserInfoOnClick) {
+      e.preventDefault();
+      this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
+    }
   }
 
   hideUserDetailsPopover() {
@@ -38,9 +40,9 @@ class StandingsTableRow extends Component {
           </TableRowColumn>
           <TableRowColumn style={{ height: rowHeight, padding: 0 }}>
             <div
-              role="button"
+              role={this.props.showUserInfoOnClick ? 'button' : null}
               className="TableRowColumn__user-wrapper"
-              tabIndex={0}
+              tabIndex={this.props.showUserInfoOnClick ? 0 : null}
               onClick={this.showUserDetailsPopover}
               onKeyPress={e => (isEnter(e) && this.showUserDetailsPopover(e))}
               style={{
@@ -119,6 +121,7 @@ StandingsTableRow.defaultProps = {
   bet: null,
   showBetColumn: false,
   showStatsColumns: true,
+  showUserInfoOnClick: true,
 };
 
 StandingsTableRow.propTypes = {
@@ -139,6 +142,7 @@ StandingsTableRow.propTypes = {
   rowHeight: PropTypes.number.isRequired,
   showBetColumn: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
+  showUserInfoOnClick: PropTypes.bool,
 };
 
 export default StandingsTableRow;
