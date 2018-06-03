@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { FlatButton } from 'material-ui';
 import StandingsTable from '../standings/StandingsTable';
 
+import './StandingsOverview.css';
+
 // TODO P3 lazy load standings when scrolled into view
 const StandingsOverview = () => (
-  <section style={{ margin: '20px auto', maxWidth: 640 }}>
-    <StandingsTable
-      showOnlyUserExcerpt
-      showTableHeader={false}
-      showStatsColumns={false}
-    />
-
+  <Fragment>
+    <section className="StandingsOverview">
+      <StandingsTable
+        showOnlyUserExcerpt
+        showTableHeader={false}
+        showStatsColumns={false}
+      />
+    </section>
     <Link to="/standings">
       <FlatButton
         primary
@@ -19,7 +22,7 @@ const StandingsOverview = () => (
         style={{ margin: '10px 0' }}
       />
     </Link>
-  </section>
+  </Fragment>
 );
 
 export default StandingsOverview;

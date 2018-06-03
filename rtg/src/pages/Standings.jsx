@@ -4,6 +4,7 @@ import BigPicture from '../components/BigPicture';
 import StandingsTable from '../components/standings/StandingsTable';
 
 import headingImg from '../theme/img/headings/mountain_pitch.jpg';
+import './Standings.css';
 
 const Standings = () => (
   <Page className="StandingsPage">
