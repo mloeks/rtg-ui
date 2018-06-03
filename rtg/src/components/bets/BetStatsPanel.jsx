@@ -102,12 +102,14 @@ class BetStatsPanel extends Component {
             <StandingsTable
               scrollable
               showOnlyUserExcerpt
-              showBetColumnForBettable={this.props.bettableId}
               showTableHeader={false}
               showStatsColumns={false}
               showUserInfoOnClick={false}
               userExcerptRows={6}
               rowHeight={35}
+
+              showBetColumnForBettable={this.props.bettableId}
+              bets={this.state.bets}
             />
           </div>}
       </section>
