@@ -11,13 +11,48 @@ import { randomHueHexColor } from '../../service/ColorHelper';
 
 import './BetStatsPanel.css';
 
+// TODO P2 finish calculation: sum up everything from index 5 onwards under "other"
 // TODO P2 check compatibility of PieChart with IE11, docs say it's 'partially supported'
 // TODO P2 style loading and loading error state
 class BetStatsPanel extends Component {
+  static aggregateChartData(bets) {
+    const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
+    const chartData = [];
+
+    let previousVal = null;
+    let resultIndex = -1;
+    sortedResults.forEach(val => {
+      if (previousVal === null || previousVal !== val) {
+        chartData.push({ value: 1, caption: val });
+        resultIndex += 1;
+      } else {
+        chartData[resultIndex].value += 1;
+      }
+      previousVal = val;
+    });
+
+    const sortedChartData = chartData
+      .sort((a, b) => a.value < b.value)
+      .map(data => ({
+        value: (100.0 * (data.value / bets.length)).toFixed(0),
+        caption: data.caption,
+        color: randomHueHexColor(65, 70),
+      }));
+
+    return [
+      { value: 10, caption: '2:1', color: randomHueHexColor(65, 70) },
+      { value: 15, caption: '0:0', color: randomHueHexColor(65, 70) },
+      { value: 20, caption: '1:3', color: randomHueHexColor(65, 70) },
+      { value: 5, caption: '1:1', color: randomHueHexColor(65, 70) },
+      { value: 2, caption: 'Sonstige', color: randomHueHexColor(65, 70) },
+    ];
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       bets: [],
+      chartData: [],
       loading: true,
       loadingError: false,
     };
@@ -29,14 +64,6 @@ class BetStatsPanel extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.open) {
       this.fetchBets();
-
-      this.chartData = [
-        { value: 10, caption: '2:1', color: randomHueHexColor(65, 70) },
-        { value: 15, caption: '0:0', color: randomHueHexColor(65, 70) },
-        { value: 20, caption: '1:3', color: randomHueHexColor(65, 70) },
-        { value: 5, caption: '1:1', color: randomHueHexColor(65, 70) },
-        { value: 2, caption: 'Sonstige', color: randomHueHexColor(65, 70) },
-      ];
     }
   }
 
@@ -47,7 +74,11 @@ class BetStatsPanel extends Component {
     ).then(FetchHelper.parseJson).then((response) => {
       this.setState(() => {
         if (response.ok) {
-          return { loading: false, bets: response.json };
+          return {
+            loading: false,
+            bets: response.json,
+            chartData: BetStatsPanel.aggregateChartData(response.json),
+          };
         }
         return { loading: false, loadingError: true };
       });
@@ -80,12 +111,12 @@ class BetStatsPanel extends Component {
           onClick={this.toggleOpen}
         />
 
-        {this.props.open &&
+        {this.props.open && this.state.chartData &&
           <div>
             <p style={{ marginTop: 0 }}>So hat die Gemeinschaft getippt:</p>
             <div className="BetStatsPanel__chart-wrapper">
               <PieChart
-                data={this.chartData}
+                data={this.state.chartData}
                 animate
                 animationDuration={375}
                 animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1)"
@@ -96,7 +127,7 @@ class BetStatsPanel extends Component {
               />
               <PieChartLegend
                 className="BetStatsPanel__chart-legend"
-                data={this.chartData}
+                data={this.state.chartData}
               />
             </div>
             <StandingsTable
