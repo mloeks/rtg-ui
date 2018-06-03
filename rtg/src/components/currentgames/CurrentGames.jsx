@@ -18,7 +18,7 @@ import './CurrentGames.css';
 
 const SCROLL_BUTTON_SIZE = 50;
 const MIN_X_OFFSET_TOUCHMOVE = 10;
-const MIN_TOUCH_MOVE_TO_SCROLL = 100;
+const MIN_TOUCH_MOVE_TO_SCROLL = 40;
 
 // TODO P3 add "today" button if one scrolls around all games ;-)
 // TODO P3 refactor this component, e.g. move game container into its own component with
