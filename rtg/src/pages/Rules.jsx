@@ -82,6 +82,15 @@ const Rules = () => (
 
       <RtgSeparator />
 
+      <h4>Platzierung</h4>
+      <p>
+        Bei Punktgleichheit zwischen zwei oder mehreren Mitspielern werden keine weiteren
+        Kriterien zur Entscheidung über die Platzierung angewendet. D.h. diese Spieler
+        haben dann allesamt den gleichen Tabellenplatz erreicht.
+      </p>
+
+      <RtgSeparator />
+
       <h4>Paare</h4>
       <p>
         Wie immer dürfen Liebespaare im Team spielen! Euer Username sollte dann eine

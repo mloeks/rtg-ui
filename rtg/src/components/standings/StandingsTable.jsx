@@ -42,10 +42,8 @@ export const pointsColumnStyle = {
 // for --excerpt-scrollable
 // TODO P3 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
-  // TODO P2 take noBets into account?
   static identicalRank(row, lastRow) {
-    return row && lastRow &&
-      row.points === lastRow.points && row.noVolltreffer === lastRow.noVolltreffer;
+    return row && lastRow && row.points === lastRow.points;
   }
 
   static statsToStateMapper(stats) {
