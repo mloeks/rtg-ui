@@ -100,7 +100,7 @@ class StandingsTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { rows: [], bets: [] };
+    this.state = { rows: [], bets: props.bets };
     this.tableContainerRef = React.createRef();
 
     this.fetchStatistics = this.fetchStatistics.bind(this);
@@ -109,7 +109,7 @@ class StandingsTable extends Component {
 
   componentDidMount() {
     this.fetchStatistics();
-    if (this.props.showBetColumnForBettable !== -1) {
+    if (this.props.showBetColumnForBettable !== -1 && !this.props.bets) {
       this.fetchBets();
     }
   }
@@ -312,24 +312,30 @@ StandingsTable.defaultProps = {
   rowHeight: 65,
   scrollable: false,
 
-  showBetColumnForBettable: -1,
   showOnlyUserExcerpt: false,
   userExcerptRows: 5,
   showStatsColumns: true,
   showTableHeader: true,
   showUserInfoOnClick: true,
+
+  showBetColumnForBettable: -1,
+  bets: [],
 };
 
 StandingsTable.propTypes = {
   rowHeight: PropTypes.number,
 
   scrollable: PropTypes.bool,
-  showBetColumnForBettable: PropTypes.number,
   showOnlyUserExcerpt: PropTypes.bool,
   userExcerptRows: PropTypes.number,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
+
+  showBetColumnForBettable: PropTypes.number,
+  // can be passed in if the previous option is set
+  // if it is empty, the bets are fetched by this component
+  bets: PropTypes.array,
 };
 
 export default StandingsTable;
