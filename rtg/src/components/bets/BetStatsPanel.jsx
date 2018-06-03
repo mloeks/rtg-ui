@@ -7,6 +7,7 @@ import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import PieChartLegend from './PieChartLegend';
+import { randomHueHexColor } from '../../service/ColorHelper';
 
 import './BetStatsPanel.css';
 
@@ -20,6 +21,7 @@ class BetStatsPanel extends Component {
       loading: true,
       loadingError: false,
     };
+    this.chartData = [];
     this.fetchBets = this.fetchBets.bind(this);
     this.toggleOpen = this.toggleOpen.bind(this);
   }
@@ -27,6 +29,14 @@ class BetStatsPanel extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.open) {
       this.fetchBets();
+
+      this.chartData = [
+        { value: 10, caption: '2:1', color: randomHueHexColor(65, 70) },
+        { value: 15, caption: '0:0', color: randomHueHexColor(65, 70) },
+        { value: 20, caption: '1:3', color: randomHueHexColor(65, 70) },
+        { value: 5, caption: '1:1', color: randomHueHexColor(65, 70) },
+        { value: 2, caption: 'Sonstige', color: randomHueHexColor(65, 70) },
+      ];
     }
   }
 
@@ -53,14 +63,6 @@ class BetStatsPanel extends Component {
   }
 
   render() {
-    const chartData = [
-      { value: 10, caption: '2:1', color: '#E38627' },
-      { value: 15, caption: '0:0', color: '#C13C37' },
-      { value: 20, caption: '1:3', color: '#6A2135' },
-      { value: 5, caption: '1:1', color: '#6A2135' },
-      { value: 2, caption: 'Sonstige', color: '#6A2135' },
-    ];
-
     return (
       <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`}>
         <FlatButton
@@ -80,20 +82,21 @@ class BetStatsPanel extends Component {
 
         {this.props.open &&
           <div>
-            <p>So haben die anderen Mitspieler getippt:</p>
+            <p style={{ marginTop: 0 }}>So hat die Gemeinschaft getippt:</p>
             <div className="BetStatsPanel__chart-wrapper">
               <PieChart
-                data={chartData}
+                data={this.chartData}
                 animate
                 animationDuration={375}
                 animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1)"
                 lineWidth={15}
                 paddingAngle={3}
+                startAngle={270}
                 style={{ margin: '10px auto', height: 250 }}
               />
               <PieChartLegend
                 className="BetStatsPanel__chart-legend"
-                data={chartData}
+                data={this.chartData}
               />
             </div>
             <StandingsTable
