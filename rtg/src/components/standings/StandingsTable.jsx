@@ -4,7 +4,7 @@ import { CircularProgress, Table, TableBody, TableHeader, TableHeaderColumn, Tab
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
-import { lightGrey } from '../../theme/RtgTheme';
+import { lightGrey, purple } from '../../theme/RtgTheme';
 import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.css';
@@ -26,7 +26,7 @@ export const betColumnStyle = {
   width: '50px',
   textAlign: 'right',
   padding: '0 5px',
-  color: lightGrey,
+  color: purple,
 };
 
 export const pointsColumnStyle = {
