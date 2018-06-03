@@ -13,6 +13,7 @@ import { throttle } from '../../service/EventsHelper';
 import { getClosestGameIndex } from '../../service/GamesHelper';
 import Notification, { NotificationType } from '../Notification';
 import { unsavedChangesConfirmText } from '../../pages/Bets';
+import BetStatsPanel from '../bets/BetStatsPanel';
 
 import './CurrentGames.css';
 
@@ -79,6 +80,7 @@ class CurrentGames extends Component {
       loadingError: false,
 
       editingBet: false,
+      offsetWithBetStatsOpen: -1,
 
       currentOffset: 0,
       gamesToDisplay: CurrentGames.getGamesToDisplay(),
@@ -334,7 +336,7 @@ class CurrentGames extends Component {
   scrollForward() {
     if (this.mayScrollForward() &&
       this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
-      this.setState({ scrolling: true }, () => {
+      this.setState({ scrolling: true, offsetWithBetStatsOpen: -1 }, () => {
         const nextOffset = this.state.currentOffset + this.state.gamesToDisplay;
         const maxOffset = this.state.games.length - this.state.gamesToDisplay;
         this.newOffsetAfterTransition = Math.min(nextOffset, maxOffset);
@@ -353,7 +355,7 @@ class CurrentGames extends Component {
   scrollBackward() {
     if (this.mayScrollBackward() &&
       this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
-      this.setState({ scrolling: true }, () => {
+      this.setState({ scrolling: true, offsetWithBetStatsOpen: -1 }, () => {
         this.newOffsetAfterTransition =
           Math.max(this.state.currentOffset - this.state.gamesToDisplay, 0);
 
@@ -412,7 +414,7 @@ class CurrentGames extends Component {
 
     return (
       this.state.games && (
-        <section className="CurrentGames">
+        <section className={`CurrentGames ${this.state.offsetWithBetStatsOpen !== -1 ? 'bet-stats-open' : ''}`}>
           <Prompt
             when={this.state.editingBet}
             message={unsavedChangesConfirmText}
@@ -452,14 +454,25 @@ class CurrentGames extends Component {
                   const userBet = game ?
                     this.state.bets.find(bet => bet.bettable === game.id) : null;
                   return (
-                    <CurrentGameCard
+                    <div
+                      className="CurrentGames__game-card-wrapper"
                       key={`current-game-offset-${offset}`}
-                      game={this.state.games[offset]}
-                      userBet={userBet}
-                      onBetEditStart={() => this.setState({ editingBet: true })}
-                      onBetEditCancel={() => this.setState({ editingBet: false })}
-                      onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
-                    />);
+                    >
+                      <CurrentGameCard
+                        game={this.state.games[offset]}
+                        userBet={userBet}
+                        onBetEditStart={() => this.setState({ editingBet: true })}
+                        onBetEditCancel={() => this.setState({ editingBet: false })}
+                        onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
+                      />
+                      {(game && !game.bets_open) &&
+                        <BetStatsPanel
+                          bettableId={game.id}
+                          open={offset === this.state.offsetWithBetStatsOpen}
+                          onClose={() => this.setState({ offsetWithBetStatsOpen: -1 })}
+                          onOpen={() => this.setState({ offsetWithBetStatsOpen: offset })}
+                        />}
+                    </div>);
                 })}
               </div>
             )}

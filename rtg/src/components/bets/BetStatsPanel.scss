@@ -1,0 +1,18 @@
+@import '../../sass/utils';
+
+.BetStatsPanel {
+  margin: 0;
+
+  transition:
+          box-shadow 300ms $mdEasingStandard 100ms,
+          margin-top 300ms $mdEasingStandard 100ms;
+
+  &.open {
+    margin-top: 20px;
+    box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
+  }
+
+  @media (min-width: 480px) {
+    margin: 0 20px;
+  }
+}
