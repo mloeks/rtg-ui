@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FlatButton } from 'material-ui';
 import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import PieChart from 'react-minimal-pie-chart';
 import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
+import PieChartLegend from './PieChartLegend';
 
 import './BetStatsPanel.css';
 
+// TODO P2 check compatibility of PieChart with IE11, docs say it's 'partially supported'
 // TODO P2 style loading and loading error state
 class BetStatsPanel extends Component {
   constructor(props) {
@@ -50,6 +53,14 @@ class BetStatsPanel extends Component {
   }
 
   render() {
+    const chartData = [
+      { value: 10, caption: '2:1', color: '#E38627' },
+      { value: 15, caption: '0:0', color: '#C13C37' },
+      { value: 20, caption: '1:3', color: '#6A2135' },
+      { value: 5, caption: '1:1', color: '#6A2135' },
+      { value: 2, caption: 'Sonstige', color: '#6A2135' },
+    ];
+
     return (
       <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`}>
         <FlatButton
@@ -69,7 +80,22 @@ class BetStatsPanel extends Component {
 
         {this.props.open &&
           <div>
-            <p>Das haben die anderen Mitspieler getippt:</p>
+            <p>So haben die anderen Mitspieler getippt:</p>
+            <div className="BetStatsPanel__chart-wrapper">
+              <PieChart
+                data={chartData}
+                animate
+                animationDuration={375}
+                animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1)"
+                lineWidth={15}
+                paddingAngle={3}
+                style={{ margin: '10px auto', height: 250 }}
+              />
+              <PieChartLegend
+                className="BetStatsPanel__chart-legend"
+                data={chartData}
+              />
+            </div>
             <StandingsTable
               scrollable
               showOnlyUserExcerpt

@@ -12,6 +12,22 @@
     box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
   }
 
+  &__chart-wrapper {
+    position: relative;
+  }
+
+  &__chart-legend {
+    $chart-width: 150px;
+    $chart-height: 130px;
+
+    position: absolute;
+    top: calc(50% - #{0.5 * $chart-height});
+    left: calc(50% - #{0.5 * $chart-width});
+    width: $chart-width;
+    height: $chart-height;
+    overflow: hidden;
+  }
+
   @media (min-width: 480px) {
     margin: 0 20px;
   }
