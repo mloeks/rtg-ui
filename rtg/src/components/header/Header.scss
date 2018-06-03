@@ -9,7 +9,7 @@
   transition: top 200ms $mdEasingDecelerate;
 
   &.nav-up {
-    top: -64px;
+    top: -64px - 10px;
   }
 
   h1:hover {
