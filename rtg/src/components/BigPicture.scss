@@ -1,4 +1,5 @@
-@import '../sass/_z-indexes.scss';
+@import '../sass/mixins/skeleton';
+@import '../sass/z-indexes';
 
 .BigPicture {
   position: relative;
@@ -21,6 +22,10 @@
   box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
 
   box-sizing: border-box;
+
+  &--skeleton {
+    @include skeleton('big-picture-placeholder', $shine-width: 40%, $shine-overflow: 70%);
+  }
 
   &__heading {
     color: white;
