@@ -42,6 +42,13 @@ export const pointsColumnStyle = {
 // for --excerpt-scrollable
 // TODO P3 FEATURE Prio 3 alle bets in Tabelle anzeigen (scrollbar) (a la Kicktipp / Doodle)
 class StandingsTable extends Component {
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.bets) {
+      return { bets: nextProps.bets };
+    }
+    return null;
+  }
+
   static identicalRank(row, lastRow) {
     return row && lastRow && row.points === lastRow.points;
   }
