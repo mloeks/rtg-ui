@@ -79,12 +79,6 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-// TODO P2 vertical touchMove on Avatar edit does not work properly, conflicts with page scroll
-// this only seems to be an issue with Chrome, preventing passive events from using
-// prevent default, cf. https://www.chromestatus.com/features/5093566007214080
-// works on firefox. How to disable it in Chrome? Open issue in github?
-
-// TODO P2 investigate about console error on editing save and cancel
 // TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
