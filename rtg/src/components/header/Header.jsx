@@ -10,18 +10,26 @@ import { throttle, ThrottledScrollPositionListener } from '../../service/EventsH
 
 import './Header.css';
 
-const HEADER_HEIGHT = 64;
+const HEADER_HEIGHT = 64; // sync with $headerHeight in _globals.scss
 
 // TODO P3 implement fancy trapecoid header design that I once planned
 class Header extends Component {
   // make sure sticky headers on other pages are offset by HEADER_HEIGHT if the header is visible
-  static offsetStickyHeaders(offset) {
+  static offsetStickyHeaders(setOffsetClass) {
     const otherStickyHeaderClassNames = [
-      'SchedulePage__toolbar', 'UsersGridToolbar',
+      'SchedulePage__toolbar', 'UsersGridToolbar', 'BetsPage__tabs',
     ];
     otherStickyHeaderClassNames.forEach((cls) => {
       const el = document.querySelector(`.${cls}`);
-      if (el) { el.style.top = `${offset}px`; }
+      if (el) {
+        if (setOffsetClass) {
+          el.classList.add('header-offset');
+          el.style.top = `${HEADER_HEIGHT}px`;
+        } else {
+          el.classList.remove('header-offset');
+          el.style.top = 0;
+        }
+      }
     });
   }
 
@@ -61,13 +69,13 @@ class Header extends Component {
         // Scroll Down
         headerEl.classList.remove('nav-down');
         headerEl.classList.add('nav-up');
-        Header.offsetStickyHeaders(0);
+        Header.offsetStickyHeaders(false);
       } else if (position + window.innerHeight < document.body.scrollHeight) {
         // If did not scroll past the document (possible on mac)...
         // Scroll Up
         headerEl.classList.remove('nav-up');
         headerEl.classList.add('nav-down');
-        Header.offsetStickyHeaders(HEADER_HEIGHT);
+        Header.offsetStickyHeaders(true);
       }
     }
     this.lastKnownYPos = position;

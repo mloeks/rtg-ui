@@ -10,6 +10,7 @@ import ExtraBetsTab from '../components/ExtraBetsTab';
 import { black, error, purple, white } from '../theme/RtgTheme';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
+import './Bets.css';
 
 export const BetsStatusContext = React.createContext();
 
@@ -25,7 +26,6 @@ export const countOpenBets = (bettables, allBets) => {
 
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
-// TODO P2 make tabs header also sticky
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
