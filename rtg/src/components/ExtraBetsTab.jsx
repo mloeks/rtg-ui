@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { CircularProgress } from 'material-ui';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import ExtraBetCard from './ExtraBetCard';
 import { BettableTypes, countOpenBets } from '../pages/Bets';
+import BetStatsPanel from './bets/BetStatsPanel';
 
 // TODO P3 a LOT of this is identical to GameBetsTab --> can a HOC be used?
 export default class ExtraBetsTab extends Component {
@@ -13,6 +14,7 @@ export default class ExtraBetsTab extends Component {
       bets: [],
       bettables: [],
       extras: [],
+      extraIdWithBetStatsOpen: -1,
 
       loading: true,
       loadingError: '',
@@ -83,12 +85,21 @@ export default class ExtraBetsTab extends Component {
 
           {(!this.state.loading && !this.state.loadingError) && this.state.extras
             .map(extraBet => (
-              <ExtraBetCard
-                key={extraBet.id}
-                onBetAdded={() => this.props.onOpenBetsUpdate(-1, true)}
-                onBetRemoved={() => this.props.onOpenBetsUpdate(1, true)}
-                {...extraBet}
-              />
+              <Fragment key={`extra-bet-card-${extraBet.id}`}>
+                <ExtraBetCard
+                  onBetAdded={() => this.props.onOpenBetsUpdate(-1, true)}
+                  onBetRemoved={() => this.props.onOpenBetsUpdate(1, true)}
+                  {...extraBet}
+                />
+                {(extraBet && !extraBet.open) &&
+                  <BetStatsPanel
+                    bettableId={extraBet.id}
+                    open={extraBet.id === this.state.extraIdWithBetStatsOpen}
+                    onClose={() => this.setState({ extraIdWithBetStatsOpen: -1 })}
+                    onOpen={() => this.setState({ extraIdWithBetStatsOpen: extraBet.id })}
+                    style={{ marginTop: -20, maxWidth: 620, textAlign: 'center' }}
+                  />}
+              </Fragment>
             ))
           }
           {this.state.loadingError &&
