@@ -17,9 +17,6 @@ import './index.css';
 
 injectTapEventPlugin();
 
-// TODO P2 replace local version of patched react-avatar-editor with new release,
-// once (and if) my PR has been merged and released:
-// https://github.com/mosch/react-avatar-editor/pull/251
 ReactDOM.render(
   <BrowserRouter>
     <ScrollToTop>
