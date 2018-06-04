@@ -7,12 +7,10 @@ import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import PieChartLegend from './PieChartLegend';
-import { randomHueHexColor } from '../../service/ColorHelper';
+import { lightenDarkenColor, randomHueHexColor } from '../../service/ColorHelper';
 
 import './BetStatsPanel.css';
 
-// TODO P2 finish calculation: sum up everything from index 5 onwards under "other"
-// TODO P2 check compatibility of PieChart with IE11, docs say it's 'partially supported'
 // TODO P2 style loading and loading error state
 class BetStatsPanel extends Component {
   static aggregateChartData(bets) {
@@ -21,7 +19,7 @@ class BetStatsPanel extends Component {
 
     let previousVal = null;
     let resultIndex = -1;
-    sortedResults.forEach(val => {
+    sortedResults.forEach((val) => {
       if (previousVal === null || previousVal !== val) {
         chartData.push({ value: 1, caption: val });
         resultIndex += 1;
@@ -31,21 +29,16 @@ class BetStatsPanel extends Component {
       previousVal = val;
     });
 
-    const sortedChartData = chartData
-      .sort((a, b) => a.value < b.value)
-      .map(data => ({
-        value: (100.0 * (data.value / bets.length)).toFixed(0),
-        caption: data.caption,
-        color: randomHueHexColor(65, 70),
-      }));
+    const chartDataSortedByValue = chartData.sort((a, b) => a.value < b.value);
+    const finalChartData = [...chartDataSortedByValue.slice(0, 4), chartDataSortedByValue.slice(4)
+      .reduce((a, b) => ({ value: a.value + b.value, caption: 'Sonstige' }))];
 
-    return [
-      { value: 10, caption: '2:1', color: randomHueHexColor(65, 70) },
-      { value: 15, caption: '0:0', color: randomHueHexColor(65, 70) },
-      { value: 20, caption: '1:3', color: randomHueHexColor(65, 70) },
-      { value: 5, caption: '1:1', color: randomHueHexColor(65, 70) },
-      { value: 2, caption: 'Sonstige', color: randomHueHexColor(65, 70) },
-    ];
+    const baseColor = randomHueHexColor(75, 20);
+    return finalChartData.map((entry, ix) => ({
+      value: 100.0 * (entry.value / bets.length),
+      caption: entry.caption,
+      color: lightenDarkenColor(baseColor, (ix + 1) * 35),
+    }));
   }
 
   constructor(props) {
@@ -119,7 +112,7 @@ class BetStatsPanel extends Component {
                 data={this.state.chartData}
                 animate
                 animationDuration={375}
-                animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1)"
+                animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1) 300ms"
                 lineWidth={15}
                 paddingAngle={3}
                 startAngle={270}
