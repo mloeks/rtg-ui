@@ -71,6 +71,10 @@ class CurrentGames extends Component {
     return -containerOffsetDecimal;
   }
 
+  static isTouchDisabled(e) {
+    return e.target.closest('.BetStatsPanel') !== null;
+  }
+
   constructor(props) {
     super(props);
 
@@ -191,7 +195,7 @@ class CurrentGames extends Component {
   }
 
   onTouchEnd(e) {
-    if (e.changedTouches && this.touchStartXPos) {
+    if (e.changedTouches && this.touchStartXPos && !CurrentGames.isTouchDisabled(e)) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
       if (movedX > MIN_TOUCH_MOVE_TO_SCROLL) {
         this.scrollBackward();
@@ -205,7 +209,7 @@ class CurrentGames extends Component {
   }
 
   onTouchMove(e) {
-    if (e.changedTouches && this.touchStartXPos) {
+    if (e.changedTouches && this.touchStartXPos && !CurrentGames.isTouchDisabled(e)) {
       const movedX = e.changedTouches[0].pageX - this.touchStartXPos;
       if (Math.abs(movedX) > MIN_X_OFFSET_TOUCHMOVE) {
         this.horizontalMove(movedX, false);

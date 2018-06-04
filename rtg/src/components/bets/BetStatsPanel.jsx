@@ -112,9 +112,9 @@ class BetStatsPanel extends Component {
         />
 
         {this.props.open && this.state.chartData &&
-          <div>
+          <div className="BetStatsPanel__inner">
             <p style={{ marginTop: 0 }}>So hat die Gemeinschaft getippt:</p>
-            <div className="BetStatsPanel__chart-wrapper">
+            <div className="BetStatsPanel__chart-wrapper" style={{ pointerEvents: 'none' }}>
               <PieChart
                 data={this.state.chartData}
                 animate
@@ -128,6 +128,7 @@ class BetStatsPanel extends Component {
               <PieChartLegend
                 className="BetStatsPanel__chart-legend"
                 data={this.state.chartData}
+                style={{ pointerEvents: 'none' }}
               />
             </div>
             <StandingsTable

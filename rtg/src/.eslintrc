@@ -4,6 +4,7 @@
     "window": true,
     "document": true,
     "fetch": true,
+    "Element": true
   },
   "rules": {
     "jsx-a11y/anchor-is-valid": [ "error", {

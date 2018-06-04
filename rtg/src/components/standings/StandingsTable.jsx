@@ -232,7 +232,7 @@ class StandingsTable extends Component {
       this.props.userExcerptRows * (this.props.rowHeight + 1) : 'auto';
 
     return (
-      <div className={standingsTableClassList.join(' ')}>
+      <div className={standingsTableClassList.join(' ')} style={{ touchAction: 'pan-y' }}>
         <div
           className="StandingsTable__inner"
           ref={this.tableContainerRef}

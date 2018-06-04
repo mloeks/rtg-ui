@@ -12,6 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import ScrollToTop from './components/ScrollToTop';
 import App from './App';
+import './service/closest-polyfill';
 
 import './index.css';
 
