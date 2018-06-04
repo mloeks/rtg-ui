@@ -76,7 +76,10 @@ export default class ExtraBetsTab extends Component {
           <p>Bitte gib alle Zusatztipps <b>vor Beginn der WM</b> ab.</p>
         </div>
 
-        <section className="ExtraBetsTab__extra-bets-container">
+        <section
+          className="ExtraBetsTab__extra-bets-container"
+          style={{ paddingBottom: 30 }}
+        >
           {this.state.loading &&
             <CircularProgress
               className="ExtraBetsTab__loadingSpinner"
@@ -98,6 +101,7 @@ export default class ExtraBetsTab extends Component {
                     onClose={() => this.setState({ extraIdWithBetStatsOpen: -1 })}
                     onOpen={() => this.setState({ extraIdWithBetStatsOpen: extraBet.id })}
                     style={{ marginTop: -20, maxWidth: 620, textAlign: 'center' }}
+                    standingsBetColumnStyle={{ width: '80px' }}
                   />}
               </Fragment>
             ))

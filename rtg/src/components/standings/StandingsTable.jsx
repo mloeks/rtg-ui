@@ -261,7 +261,7 @@ class StandingsTable extends Component {
                     {this.props.showBetColumnForBettable !== -1 &&
                       <TableHeaderColumn
                         className="StandingsTable__bet-col"
-                        style={betColumnStyle}
+                        style={{ ...betColumnStyle, ...this.props.betColumnStyle }}
                       >Tipp
                       </TableHeaderColumn>
                     }
@@ -305,6 +305,7 @@ class StandingsTable extends Component {
                   showBetColumn={this.props.showBetColumnForBettable !== -1}
                   showStatsColumns={this.props.showStatsColumns}
                   showUserInfoOnClick={this.props.showUserInfoOnClick}
+                  betColumnStyle={this.props.betColumnStyle}
                   {...row}
                 />))}
               </TableBody>
@@ -327,6 +328,7 @@ StandingsTable.defaultProps = {
 
   showBetColumnForBettable: -1,
   bets: [],
+  betColumnStyle: {},
 };
 
 StandingsTable.propTypes = {
@@ -343,6 +345,7 @@ StandingsTable.propTypes = {
   // can be passed in if the previous option is set
   // if it is empty, the bets are fetched by this component
   bets: PropTypes.array,
+  betColumnStyle: PropTypes.object,
 };
 
 export default StandingsTable;

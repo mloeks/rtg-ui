@@ -136,6 +136,7 @@ class BetStatsPanel extends Component {
 
               showBetColumnForBettable={this.props.bettableId}
               bets={this.state.bets}
+              betColumnStyle={this.props.standingsBetColumnStyle}
             />
           </div>}
       </section>
@@ -146,6 +147,7 @@ class BetStatsPanel extends Component {
 BetStatsPanel.defaultProps = {
   style: {},
   buttonStyle: {},
+  standingsBetColumnStyle: {},
   onClose: () => {},
   onOpen: () => {},
 };
@@ -155,6 +157,7 @@ BetStatsPanel.propTypes = {
   open: PropTypes.bool.isRequired,
   style: PropTypes.object,
   buttonStyle: PropTypes.object,
+  standingsBetColumnStyle: PropTypes.object,
 
   onClose: PropTypes.func,
   onOpen: PropTypes.func,

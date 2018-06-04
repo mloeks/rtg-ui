@@ -76,8 +76,14 @@ class StandingsTableRow extends Component {
           </TableRowColumn>
 
           {this.props.showBetColumn &&
-            <TableRowColumn style={{ ...betColumnStyle, height: rowHeight, fontSize: '16px' }}>
-              {this.props.bet || '---'}
+            <TableRowColumn
+              style={{
+                ...betColumnStyle,
+                height: rowHeight,
+                fontSize: '16px',
+                ...this.props.betColumnStyle,
+              }}
+            >{this.props.bet || '---'}
             </TableRowColumn>}
 
           {this.props.showStatsColumns &&
@@ -122,6 +128,7 @@ StandingsTableRow.defaultProps = {
   showBetColumn: false,
   showStatsColumns: true,
   showUserInfoOnClick: true,
+  betColumnStyle: {},
 };
 
 StandingsTableRow.propTypes = {
@@ -143,6 +150,7 @@ StandingsTableRow.propTypes = {
   showBetColumn: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
+  betColumnStyle: PropTypes.object,
 };
 
 export default StandingsTableRow;
