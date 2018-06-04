@@ -50,17 +50,21 @@ const DrawerMenu = (props) => {
       <Divider />
 
       {!AuthService.getHasPaid() &&
-        <a
-          className="DrawerMenu__paypal-link"
-          href="https://paypal.me/rtg2018/5"
-          target="_blank"
-          rel="noopener noreferrer"
-        ><img
-          src={payPalLogo}
-          alt="PayPal link"
-          style={{ width: '100px' }}
-        /><span>Tippeinsatz jetzt bezahlen</span>
-        </a>}
+        <div className="DrawerMenu__payment-hint">
+          <span>Bitte 5€ Tippeinsatz bezahlen</span>
+          <a
+            className="DrawerMenu__paypal-link"
+            href="https://paypal.me/rtg2018/5"
+            target="_blank"
+            rel="noopener noreferrer"
+          ><img
+            src={payPalLogo}
+            alt="PayPal link"
+            style={{ width: '100px' }}
+          />
+          </a>
+          <p className="DrawerMenu__bank-account">oder: DE64 5001 0517 5413 9735 33</p>
+        </div>}
       {!AuthService.getHasPaid() && <Divider />}
 
       <Link to="/foyer">
