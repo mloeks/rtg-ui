@@ -101,7 +101,7 @@ class BetStatsPanel extends Component {
             }}
           />}
           label={this.props.open ? 'Zuklappen' : 'Alle Tipps ansehen'}
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 10, ...this.props.buttonStyle }}
           onClick={this.toggleOpen}
         />
 
@@ -145,6 +145,7 @@ class BetStatsPanel extends Component {
 
 BetStatsPanel.defaultProps = {
   style: {},
+  buttonStyle: {},
   onClose: () => {},
   onOpen: () => {},
 };
@@ -153,6 +154,7 @@ BetStatsPanel.propTypes = {
   bettableId: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   style: PropTypes.object,
+  buttonStyle: PropTypes.object,
 
   onClose: PropTypes.func,
   onOpen: PropTypes.func,

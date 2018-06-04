@@ -152,6 +152,7 @@ class Schedule extends Component {
               onClose={() => this.setState({ gameIdWithBetStatsOpen: -1 })}
               onOpen={() => this.setState({ gameIdWithBetStatsOpen: game.id })}
               style={{ marginTop: -30, maxWidth: 580 }}
+              buttonStyle={{ color: lightGrey }}
             />}
         </Fragment>,
       );
