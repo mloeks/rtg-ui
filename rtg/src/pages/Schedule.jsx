@@ -21,6 +21,7 @@ import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
+import BetStatsPanel from "../components/bets/BetStatsPanel";
 
 const DEFAULT_ROUND_INDEX = 'VOR';
 
@@ -36,6 +37,7 @@ class Schedule extends Component {
       rounds: [],
       groups: [],
       bets: [],
+      gameIdWithBetStatsOpen: -1,
 
       loading: true,
       loadingError: '',
@@ -124,25 +126,34 @@ class Schedule extends Component {
       }
       const userBet = bets.find(bet => bet.bettable === game.id) || {};
       gameCardsWithDateSubheadings.push(
-        <div
-          key={game.id}
-          role="button"
-          className="GameCard__click-wrapper"
-          tabIndex={0}
-          onClick={() => this.props.history.push('/bets')}
-          onKeyPress={e => (isEnter(e) && this.props.history.push('/bets'))}
-        >
-          <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
-            <GameCardGameInfo
-              city={game.city}
-              kickoff={parse(game.kickoff)}
-              result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
-              resultBetType={userBet.result_bet_type}
-              points={userBet.points}
-              userBet={userBet.result_bet}
-            />
-          </GameCard>
-        </div>,
+        <Fragment key={`game-card-${game.id}`}>
+          <div
+            role="button"
+            className="GameCard__click-wrapper"
+            tabIndex={0}
+            onClick={() => this.props.history.push('/bets')}
+            onKeyPress={e => (isEnter(e) && this.props.history.push('/bets'))}
+          >
+            <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
+              <GameCardGameInfo
+                city={game.city}
+                kickoff={parse(game.kickoff)}
+                result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
+                resultBetType={userBet.result_bet_type}
+                points={userBet.points}
+                userBet={userBet.result_bet}
+              />
+            </GameCard>
+          </div>
+          {(game && !game.bets_open) &&
+            <BetStatsPanel
+              bettableId={game.id}
+              open={game.id === this.state.gameIdWithBetStatsOpen}
+              onClose={() => this.setState({ gameIdWithBetStatsOpen: -1 })}
+              onOpen={() => this.setState({ gameIdWithBetStatsOpen: game.id })}
+              style={{ marginTop: -30, maxWidth: 580 }}
+            />}
+        </Fragment>,
       );
     });
     return gameCardsWithDateSubheadings;

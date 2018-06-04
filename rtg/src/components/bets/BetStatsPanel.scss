@@ -1,11 +1,13 @@
 @import '../../sass/utils';
 
+// TODO P3 make expanding of bet stats smoother
 .BetStatsPanel {
-  margin: 10px 0;
+  margin: 0;
 
   transition: box-shadow 300ms $mdEasingStandard 100ms;
 
-  &.open {
+  &.open &__inner {
+    padding-top: 10px;
     box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
   }
 
@@ -26,6 +28,6 @@
   }
 
   @media (min-width: 480px) {
-    margin: 10px;
+    margin: 0 auto;
   }
 }

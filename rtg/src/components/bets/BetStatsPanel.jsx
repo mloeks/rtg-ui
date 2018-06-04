@@ -12,6 +12,7 @@ import { lightenDarkenColor, randomHueHexColor } from '../../service/ColorHelper
 import './BetStatsPanel.css';
 
 // TODO P2 style loading and loading error state
+// TODO P3 switch between result stats and 2/0/1 stats
 class BetStatsPanel extends Component {
   static aggregateChartData(bets) {
     const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
@@ -88,7 +89,7 @@ class BetStatsPanel extends Component {
 
   render() {
     return (
-      <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`}>
+      <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`} style={this.props.style}>
         <FlatButton
           primary
           icon={<HardwareKeyboardArrowDown
@@ -143,6 +144,7 @@ class BetStatsPanel extends Component {
 }
 
 BetStatsPanel.defaultProps = {
+  style: {},
   onClose: () => {},
   onOpen: () => {},
 };
@@ -150,6 +152,7 @@ BetStatsPanel.defaultProps = {
 BetStatsPanel.propTypes = {
   bettableId: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
+  style: PropTypes.object,
 
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
