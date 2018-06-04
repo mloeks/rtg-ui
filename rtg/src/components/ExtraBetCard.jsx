@@ -17,7 +17,9 @@ import './ExtraBetCard.css';
 // TODO P3 display country flags in drop down
 export default class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
-    return distanceInWordsToNow(deadline, { locale: de });
+    const absoluteDateTime = format(deadline, 'dd. DD. MMM, HH:mm [Uhr]', { locale: de });
+    const relativeDistance = distanceInWordsToNow(deadline, { locale: de });
+    return `${relativeDistance} – ${absoluteDateTime}`;
   }
 
   constructor(props) {
@@ -140,10 +142,7 @@ export default class ExtraBetCard extends Component {
           <Star style={iconStyle} color={grey} />{this.props.points} Punkte
         </span>
         {this.props.open &&
-          <span
-            className="ExtraBetCard__subtitle-deadline"
-            title={format(this.props.deadline, 'dd. DD. MMMM - HH:mm [Uhr]', { locale: de })}
-          >
+          <span className="ExtraBetCard__subtitle-deadline">
             <br /><Alarm style={iconStyle} color={error} />Noch {this.state.remainingTime}
           </span>}
       </div>

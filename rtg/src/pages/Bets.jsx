@@ -26,6 +26,7 @@ export const countOpenBets = (bettables, allBets) => {
 
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
+// TODO P2 pre-selecting EXTRA tab does not work? Not loading...
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
