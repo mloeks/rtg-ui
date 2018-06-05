@@ -30,7 +30,7 @@ export default class ExtraBetsTab extends Component {
   }
 
   componentDidMount() {
-    if (this.state.active) {
+    if (this.props.active) {
       this.updateData();
     }
   }
