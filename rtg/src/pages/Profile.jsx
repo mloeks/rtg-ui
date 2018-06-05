@@ -5,7 +5,7 @@ import ProfileForm from '../components/profile/ProfileForm';
 import BigEditableAvatar from '../components/profile/BigEditableAvatar';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
-import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
+import { LogoutReason, UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import RtgSeparator from '../components/RtgSeparator';
 import ChangePasswordForm from '../components/profile/ChangePasswordForm';
 import DeleteAccountButton from '../components/profile/DeleteAccountButton';
@@ -97,7 +97,10 @@ class Profile extends Component {
                   <ChangePasswordForm />
 
                   <RtgSeparator style={{ maxWidth: '500px' }} />
-                  <DeleteAccountButton userId={this.state.userId} onDelete={userContext.doLogout} />
+                  <DeleteAccountButton
+                    userId={this.state.userId}
+                    onDelete={() => userContext.doLogout(LogoutReason.ACCOUNT_DELETED)}
+                  />
                 </Fragment>
               )}
             </UserDetailsContext.Consumer>

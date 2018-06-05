@@ -40,6 +40,7 @@ const App = () => {
 
         <Switch>
           <Route exact path="/" component={Reception} />
+          <Route exact path="/login/:reason?" component={Reception} />
           <Route exact path="/403" component={PermissionDenied} />
 
           {/* Static, public pages */}

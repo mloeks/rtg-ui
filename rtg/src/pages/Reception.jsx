@@ -5,11 +5,25 @@ import Page from './Page';
 import LoginForm from '../components/LoginForm';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
+import { LogoutReason } from '../components/providers/UserDetailsProvider';
+import Notification, { NotificationType } from '../components/Notification';
 
 import headingImg from '../theme/img/headings/gate.jpg';
 import './Reception.css';
 
 class Reception extends Component {
+  static getReasonNotification(reason) {
+    if (reason === LogoutReason.ACCOUNT_DELETED) {
+      return (<Notification
+        dismissable
+        type={NotificationType.SUCCESS}
+        title="Dein Account wurde gelöscht"
+        subtitle="Auf Wiedersehen und alles Gute!"
+        containerStyle={{ maxWidth: 400, margin: '20px auto'}}
+      />);
+    }
+  }
+
   constructor(props) {
     super(props);
 
@@ -42,8 +56,12 @@ class Reception extends Component {
       return (<Redirect to={from} />);
     }
 
+    const reasonToReLogin = this.props.match.params.reason;
+    const userNotificationIfReasonPresent = Reception.getReasonNotification(reasonToReLogin);
+
     return (
       <Page className="ReceptionPage">
+        {reasonToReLogin && userNotificationIfReasonPresent}
         <BigPicture className="ReceptionPage__heading" img={headingImg}>
           <h1 className="BigPicture__heading">Willkommen</h1>
         </BigPicture>
@@ -69,6 +87,10 @@ class Reception extends Component {
   }
 }
 
+Reception.defaultProps = {
+  match: {},
+};
+
 Reception.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -77,6 +99,7 @@ Reception.propTypes = {
       }),
     }),
   }).isRequired,
+  match: PropTypes.shape(),
 };
 
 export default Reception;

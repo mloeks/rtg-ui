@@ -8,8 +8,7 @@ import AuthService from '../../service/AuthService';
 export const UserDetailsContext = React.createContext();
 
 export const LogoutReason = {
-  USER_DETAILS_LOAD_ERROR: 'USER_DETAILS_LOAD_ERROR',
-  INVALID_TOKEN: 'INVALID_TOKEN',
+  ACCOUNT_DELETED: 'ACCOUNT_DELETED',
 };
 
 class UserDetailsProvider extends Component {
@@ -52,9 +51,8 @@ class UserDetailsProvider extends Component {
   }
 
   handleLogout(reason) {
-    // TODO P2 set URL parameter if reason is set and render info message on login page
-    // especially important as confirmation on account deletion!
-    AuthService.logout().then(() => this.props.history.push('/'));
+    AuthService.logout().then(() =>
+      this.props.history.push(`/login${reason ? `/${reason}` : ''}`));
   }
 
   handleUpdateAvatar(avatar) {
