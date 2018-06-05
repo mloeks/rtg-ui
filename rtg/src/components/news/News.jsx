@@ -44,6 +44,8 @@ class News extends Component {
       addPostSuccess: false,
     };
 
+    this.newsSectionRef = React.createRef();
+
     this.handleAddNews = this.handleAddNews.bind(this);
     this.handlePostSaved = this.handlePostSaved.bind(this);
     this.handleAddPostCancelled = this.handleAddPostCancelled.bind(this);
@@ -69,8 +71,11 @@ class News extends Component {
 
   handleAddNews() {
     // TODO P3 animated scroll (lib?)
-    window.scrollTo(0, 0);
-    this.setState({ addingPost: true, addPostSuccess: false });
+    this.setState({ addingPost: true, addPostSuccess: false }, () => {
+      const addNewsTopYPos = (window.pageYOffset +
+        this.newsSectionRef.current.getBoundingClientRect().top) - 150;
+      window.scrollTo(0, addNewsTopYPos);
+    });
   }
 
   handlePostSaved(newPost) {
@@ -92,7 +97,7 @@ class News extends Component {
 
   render() {
     return (
-      <section className="News">
+      <section className="News" ref={this.newsSectionRef}>
         {this.state.loading && <CircularProgress />}
         {(!this.state.loading && this.state.loadingError) &&
           <Notification
