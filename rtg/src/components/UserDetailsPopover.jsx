@@ -10,7 +10,7 @@ import { darkGrey, grey } from '../theme/RtgTheme';
 
 import './UserDetailsPopover.css';
 
-// TODO P2 also load statistics and offer to show rank, bet stats etc. to other users
+// TODO P3 also load statistics and offer to show rank, bet stats etc. to other users
 class UserDetailsPopover extends Component {
   constructor(props) {
     super(props);
