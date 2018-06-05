@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
-import { debounce } from "../../service/EventsHelper";
+import { debounce } from '../../service/EventsHelper';
 
+// TODO P2 save drafts: test more (edge) cases
+// TODO P2 save drafts: represent state in UI
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
@@ -109,6 +111,7 @@ class AddPostForm extends Component {
   }
 
   handleSaveDraft() {
+    this.setState({ draftSaving: true });
     const postToSave = { ...this.getPostBodyFromState(), finished: false };
     this.savePost(postToSave, (responseJson) => {
       this.setState({
@@ -124,6 +127,7 @@ class AddPostForm extends Component {
 
   handleSave(e) {
     e.preventDefault();
+    this.setState({ savingInProgress: true });
     const postToSave = { ...this.getPostBodyFromState(), finished: true };
 
     this.savePost(postToSave, (responseJson) => {
@@ -155,6 +159,10 @@ class AddPostForm extends Component {
 
       savingInProgress={this.state.savingInProgress}
       savingError={this.state.savingError}
+
+      draftSaving={this.state.draftSaving}
+      draftSaved={this.state.draftSaved}
+      draftSavingError={this.state.draftSavingError}
 
       onFieldChange={this.handleFieldUpdate}
       onFieldsChange={this.handleFieldsUpdate}

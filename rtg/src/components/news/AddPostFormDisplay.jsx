@@ -88,7 +88,12 @@ const AddPostFormDisplay = (props) => {
         <br /><br />
 
         <div className="AddPostForm__button-row">
-          <FlatButton type="submit" label="Speichern" primary disabled={props.savingInProgress} />
+          <FlatButton
+            type="submit"
+            label="Speichern"
+            primary
+            disabled={props.savingInProgress || props.draftSaving}
+          />
           <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
         </div>
 
@@ -120,6 +125,10 @@ AddPostFormDisplay.defaultProps = {
 
   savingInProgress: false,
   savingError: false,
+
+  draftSaving: false,
+  draftSaved: false,
+  draftSavingError: false,
 };
 
 AddPostFormDisplay.propTypes = {
@@ -137,6 +146,10 @@ AddPostFormDisplay.propTypes = {
 
   savingInProgress: PropTypes.bool,
   savingError: PropTypes.bool,
+
+  draftSaving: PropTypes.bool,
+  draftSaved: PropTypes.bool,
+  draftSavingError: PropTypes.bool,
 
   onFieldChange: PropTypes.func.isRequired,
   onFieldsChange: PropTypes.func.isRequired,

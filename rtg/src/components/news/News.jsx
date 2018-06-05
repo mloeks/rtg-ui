@@ -11,8 +11,8 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
+// TODO P2 save drafts: directly show draft post in addPostForm if we fetch one
 // TODO P2 Lazy load news
-// TODO P2 Save drafts while adding a post
 // TODO P3 Allow deletion of news if admin
 class News extends Component {
   static async loadPosts() {
