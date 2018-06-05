@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FlatButton } from 'material-ui';
+import { CircularProgress, FlatButton } from 'material-ui';
 import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import PieChart from 'react-minimal-pie-chart';
 import StandingsTable from '../standings/StandingsTable';
@@ -8,11 +8,12 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import PieChartLegend from './PieChartLegend';
 import { lightenDarkenColor, randomHueHexColor } from '../../service/ColorHelper';
+import Notification, { NotificationType } from '../Notification';
 
 import './BetStatsPanel.css';
 
-// TODO P2 style loading and loading error state
-// TODO P3 switch between result stats and 2/0/1 stats
+// TODO P3 switch between result stats and 2/0/1 stats (for games only)
+// TODO P3 how to display abbreviations for extra bets? (width on small devices...)
 class BetStatsPanel extends Component {
   static aggregateChartData(bets) {
     const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
@@ -105,39 +106,52 @@ class BetStatsPanel extends Component {
           onClick={this.toggleOpen}
         />
 
-        {this.props.open && this.state.chartData &&
+        {this.props.open &&
           <div className="BetStatsPanel__inner">
             <p style={{ marginTop: 0 }}>So hat die Gemeinschaft getippt:</p>
-            <div className="BetStatsPanel__chart-wrapper" style={{ pointerEvents: 'none' }}>
-              <PieChart
-                data={this.state.chartData}
-                animate
-                animationDuration={375}
-                animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1) 300ms"
-                lineWidth={15}
-                paddingAngle={3}
-                startAngle={270}
-                style={{ margin: '10px auto', height: 250 }}
-              />
-              <PieChartLegend
-                className="BetStatsPanel__chart-legend"
-                data={this.state.chartData}
-                style={{ pointerEvents: 'none' }}
-              />
-            </div>
-            <StandingsTable
-              scrollable
-              showOnlyUserExcerpt
-              showTableHeader={false}
-              showStatsColumns={false}
-              showUserInfoOnClick={false}
-              userExcerptRows={6}
-              rowHeight={35}
 
-              showBetColumnForBettable={this.props.bettableId}
-              bets={this.state.bets}
-              betColumnStyle={this.props.standingsBetColumnStyle}
-            />
+            {this.state.loading && <CircularProgress />}
+            {this.state.loadingError &&
+            <Notification
+              type={NotificationType.ERROR}
+              title="Fehler beim Laden"
+              subtitle="Bitte versuche es erneut."
+            />}
+
+            {!this.state.loading && !this.state.loadingError && this.state.chartData &&
+              <Fragment>
+                <div className="BetStatsPanel__chart-wrapper" style={{ pointerEvents: 'none' }}>
+                  <PieChart
+                    data={this.state.chartData}
+                    animate
+                    animationDuration={375}
+                    animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1) 300ms"
+                    lineWidth={15}
+                    paddingAngle={3}
+                    startAngle={270}
+                    style={{ margin: '10px auto', height: 250 }}
+                  />
+                  <PieChartLegend
+                    className="BetStatsPanel__chart-legend"
+                    data={this.state.chartData}
+                    style={{ pointerEvents: 'none' }}
+                  />
+                </div>
+                <StandingsTable
+                  scrollable
+                  showOnlyUserExcerpt
+                  showTableHeader={false}
+                  showStatsColumns={false}
+                  showUserInfoOnClick={false}
+                  userExcerptRows={6}
+                  rowHeight={35}
+
+                  showBetColumnForBettable={this.props.bettableId}
+                  bets={this.state.bets}
+                  betColumnStyle={this.props.standingsBetColumnStyle}
+                />
+              </Fragment>
+            }
           </div>}
       </section>
     );
