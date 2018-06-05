@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
+import { debounce } from "../../service/EventsHelper";
 
 class AddPostForm extends Component {
   static resetFieldErrors() {
@@ -13,6 +14,10 @@ class AddPostForm extends Component {
   }
 
   static errorResponseToStateMapper(responseJson) {
+    if (!responseJson) {
+      return { savingError: true };
+    }
+
     return {
       savingError: true,
       nonFieldError: responseJson.detail || '',
@@ -22,14 +27,23 @@ class AddPostForm extends Component {
       },
     };
   }
+  static draftSavedResponseToState(responseJson) {
+    return {
+      id: responseJson.id,
+      title: responseJson.title,
+      content: responseJson.content,
+      appearInNews: responseJson.news_appear,
+    };
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      title: '',
-      content: '',
-      appearInNews: true,
+      id: props.draft ? props.draft.id : null,
+      title: props.draft ? props.draft.title : '',
+      content: props.draft ? props.draft.content : '',
+      appearInNews: props.draft ? props.draft.news_appear : true,
       sendMail: true,
       sendMailToSubscribers: true,
       sendMailToActive: false,
@@ -38,19 +52,39 @@ class AddPostForm extends Component {
 
       savingInProgress: false,
       savingError: false,
+
+      draftSaving: false,
+      draftSaved: false,
+      draftSavingError: false,
+
       nonFieldError: '',
       fieldErrors: AddPostForm.resetFieldErrors(),
     };
 
-    this.postPost = this.postPost.bind(this);
+    this.savePost = this.savePost.bind(this);
     this.handleFieldUpdate = this.handleFieldUpdate.bind(this);
     this.handleFieldsUpdate = this.handleFieldsUpdate.bind(this);
+    this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
   }
 
-  postPost(post) {
-    fetch(`${API_BASE_URL}/rtg/posts/`, {
-      method: 'POST',
+  getPostBodyFromState() {
+    return {
+      id: this.state.id,
+      author: AuthService.getUserId(),
+      title: this.state.title,
+      content: this.state.content,
+      news_appear: this.state.appearInNews,
+      as_mail: this.state.sendMail,
+      force_active_users: this.state.sendMailToActive,
+      force_inactive_users: this.state.sendMailToInactive,
+      force_all_users: this.state.sendMailToAll,
+    };
+  }
+
+  savePost(post, successCallback, errorCallback) {
+    fetch(`${API_BASE_URL}/rtg/posts/${post.id ? `${post.id}/` : ''}`, {
+      method: post.id ? 'PATCH' : 'POST',
       body: JSON.stringify(post),
       headers: {
         Authorization: `Token ${AuthService.getToken()}`,
@@ -59,40 +93,48 @@ class AddPostForm extends Component {
     }).then(FetchHelper.parseJson)
       .then((response) => {
         if (response.ok) {
-          this.setState({ savingInProgress: false });
-          this.props.onSaved(response.json);
+          successCallback(response.json);
         } else {
-          this.setState(() => ({
-            savingInProgress: false,
-            savingError: true,
-            ...AddPostForm.errorResponseToStateMapper(response.json),
-          }));
+          errorCallback(response.json);
         }
-      }).catch(() => this.setState({ savingInProgress: false, savingError: true }));
+      }).catch(() => errorCallback());
   }
 
   handleFieldUpdate(fieldName, value) {
-    this.setState({ [fieldName]: value });
+    this.setState({ [fieldName]: value }, this.handleSaveDraft);
   }
 
   handleFieldsUpdate(updatedFieldsObject) {
-    this.setState(updatedFieldsObject);
+    this.setState(updatedFieldsObject, this.handleSaveDraft);
+  }
+
+  handleSaveDraft() {
+    const postToSave = { ...this.getPostBodyFromState(), finished: false };
+    this.savePost(postToSave, (responseJson) => {
+      this.setState({
+        draftSaving: false,
+        draftSaved: true,
+        draftSavingError: false,
+        ...AddPostForm.draftSavedResponseToState(responseJson),
+      });
+    }, () => {
+      this.setState({ draftSaving: false, draftSaved: false, draftSavingError: true });
+    });
   }
 
   handleSave(e) {
     e.preventDefault();
-    const newPost = {
-      author: AuthService.getUserId(),
-      title: this.state.title,
-      content: this.state.content,
-      finished: true,
-      news_appear: this.state.appearInNews,
-      as_mail: this.state.sendMail,
-      force_active_users: this.state.sendMailToActive,
-      force_inactive_users: this.state.sendMailToInactive,
-      force_all_users: this.state.sendMailToAll,
-    };
-    this.postPost(newPost);
+    const postToSave = { ...this.getPostBodyFromState(), finished: true };
+
+    this.savePost(postToSave, (responseJson) => {
+      this.setState({ savingInProgress: false });
+      this.props.onSaved(responseJson);
+    }, (responseJson) => {
+      this.setState({
+        savingInProgress: false,
+        ...AddPostForm.errorResponseToStateMapper(responseJson),
+      });
+    });
   }
 
   render() {
@@ -122,7 +164,18 @@ class AddPostForm extends Component {
   }
 }
 
+AddPostForm.defaultProps = {
+  draft: null,
+};
+
 AddPostForm.propTypes = {
+  draft: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    author: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    news_appear: PropTypes.bool,
+  }),
   onSaved: PropTypes.func.isRequired,
   onCancelled: PropTypes.func.isRequired,
 };
