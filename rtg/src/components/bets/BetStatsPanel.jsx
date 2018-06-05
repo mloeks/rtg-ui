@@ -142,6 +142,7 @@ class BetStatsPanel extends Component {
                   showOnlyUserExcerpt
                   showTableHeader={false}
                   showStatsColumns={false}
+                  showUserAvatar={false}
                   showUserInfoOnClick={false}
                   userExcerptRows={6}
                   rowHeight={35}

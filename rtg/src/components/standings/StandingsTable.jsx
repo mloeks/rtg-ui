@@ -304,6 +304,7 @@ class StandingsTable extends Component {
                   self={AuthService.getUserId() === row.userId}
                   showBetColumn={this.props.showBetColumnForBettable !== -1}
                   showStatsColumns={this.props.showStatsColumns}
+                  showUserAvatar={this.props.showUserAvatar}
                   showUserInfoOnClick={this.props.showUserInfoOnClick}
                   betColumnStyle={this.props.betColumnStyle}
                   {...row}
@@ -324,6 +325,7 @@ StandingsTable.defaultProps = {
   userExcerptRows: 5,
   showStatsColumns: true,
   showTableHeader: true,
+  showUserAvatar: true,
   showUserInfoOnClick: true,
 
   showBetColumnForBettable: -1,
@@ -339,6 +341,7 @@ StandingsTable.propTypes = {
   userExcerptRows: PropTypes.number,
   showStatsColumns: PropTypes.bool,
   showTableHeader: PropTypes.bool,
+  showUserAvatar: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
 
   showBetColumnForBettable: PropTypes.number,

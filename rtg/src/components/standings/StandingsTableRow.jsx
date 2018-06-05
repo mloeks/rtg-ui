@@ -61,12 +61,12 @@ class StandingsTableRow extends Component {
                 onClose={this.hideUserDetailsPopover}
               />
 
-              <UserAvatar
+              {this.props.showUserAvatar && <UserAvatar
                 img={this.props.userAvatar}
                 size={0.65 * rowHeight}
                 username={this.props.username}
                 style={{ marginRight: '10px', minWidth: 0.65 * rowHeight }}
-              />
+              />}
               <span
                 className={`TableRowColumn__${rowHeight < 55 ? 'username' : 'username--multi-line'}`}
                 style={{ maxHeight: 0.65 * rowHeight }}
@@ -127,6 +127,7 @@ StandingsTableRow.defaultProps = {
   bet: null,
   showBetColumn: false,
   showStatsColumns: true,
+  showUserAvatar: true,
   showUserInfoOnClick: true,
   betColumnStyle: {},
 };
@@ -149,6 +150,7 @@ StandingsTableRow.propTypes = {
   rowHeight: PropTypes.number.isRequired,
   showBetColumn: PropTypes.bool,
   showStatsColumns: PropTypes.bool,
+  showUserAvatar: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
   betColumnStyle: PropTypes.object,
 };
