@@ -5,8 +5,6 @@ import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import { debounce } from '../../service/EventsHelper';
 
-// TODO P2 save drafts: test more (edge) cases
-// TODO P2 save drafts: represent state in UI
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
@@ -104,11 +102,17 @@ class AddPostForm extends Component {
   }
 
   handleFieldUpdate(fieldName, value) {
-    this.setState({ [fieldName]: value }, this.handleSaveDraft);
+    this.setState(
+      { [fieldName]: value, draftSaving: true, draftSaved: false },
+      this.handleSaveDraft,
+    );
   }
 
   handleFieldsUpdate(updatedFieldsObject) {
-    this.setState(updatedFieldsObject, this.handleSaveDraft);
+    this.setState(
+      { ...updatedFieldsObject, draftSaving: true, draftSaved: false },
+      this.handleSaveDraft,
+    );
   }
 
   handleSaveDraft() {

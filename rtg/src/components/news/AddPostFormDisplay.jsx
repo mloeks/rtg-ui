@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, CircularProgress, FlatButton, Paper, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
+import AlertError from 'material-ui/svg-icons/alert/error';
+import NavigationCheck from 'material-ui/svg-icons/navigation/check';
 import Notification, { NotificationType } from '../Notification';
+import { error, success } from '../../theme/RtgTheme';
 
 import './AddPostForm.css';
 
@@ -44,7 +47,21 @@ const AddPostFormDisplay = (props) => {
           errorText={props.contentError}
           rows={3}
           onChange={(e, v) => props.onFieldChange('content', v)}
-        /><br /><br />
+        /><br />
+        <div className="AddPostForm__draft-info">
+          {props.draftSaved &&
+            <span className="AddPostForm__draft-info--success">
+              <NavigationCheck style={{ height: 20, width: 20, color: success }} />&nbsp;
+              Entwurf gespeichert.
+            </span>}
+          {props.draftSaving && 'Speichern...'}
+          {props.draftSavingError &&
+            <span className="AddPostForm__draft-info--error">
+              <AlertError style={{ height: 20, width: 20, color: error }} />&nbsp;
+              Fehler beim Zwischenspeichern!
+            </span>}
+        </div>
+        <br />
 
         <Checkbox
           label="Bei den Neuigkeiten auf dieser Seite anzeigen"
