@@ -28,12 +28,7 @@ class AddPostForm extends Component {
     };
   }
   static draftSavedResponseToState(responseJson) {
-    return {
-      id: responseJson.id,
-      title: responseJson.title,
-      content: responseJson.content,
-      appearInNews: responseJson.news_appear,
-    };
+    return { id: responseJson.id };
   }
 
   constructor(props) {
@@ -117,7 +112,9 @@ class AddPostForm extends Component {
 
   handleSaveDraft() {
     this.setState({ draftSaving: true });
-    const postToSave = { ...this.getPostBodyFromState(), finished: false };
+    // always save drafts with news_appear = true (regardless of the actual checkbox value)
+    // otherwise drafts currently won't be loaded after page reload
+    const postToSave = { ...this.getPostBodyFromState(), finished: false, news_appear: true };
     this.savePost(postToSave, (responseJson) => {
       this.setState({
         draftSaving: false,
@@ -195,7 +192,6 @@ AddPostForm.defaultProps = {
 AddPostForm.propTypes = {
   draft: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    author: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     news_appear: PropTypes.bool,

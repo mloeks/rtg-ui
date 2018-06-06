@@ -14,22 +14,6 @@ import './News.css';
 // TODO P2 Lazy load news
 // TODO P3 Allow deletion of news if admin
 class News extends Component {
-  static async loadPosts() {
-    return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}/rtg/posts/`, {
-        method: 'GET',
-        headers: { Authorization: `Token ${AuthService.getToken()}` },
-      })
-        .then(FetchHelper.parseJson)
-        .then(response => (
-          response.ok ? resolve(response.json) : reject(new Error('Ein Fehler ist aufgetreten.'))
-        ))
-        .catch(() => {
-          reject(new Error('Ein Fehler ist aufgetreten.'));
-        });
-    });
-  }
-
   constructor(props) {
     super(props);
 
@@ -40,10 +24,13 @@ class News extends Component {
       posts: [],
       draft: null,
 
+      offset: 0,
+
       addingPost: false,
       addPostSuccess: false,
     };
 
+    this.pageSize = 5;
     this.newsSectionRef = React.createRef();
 
     this.handleAddNews = this.handleAddNews.bind(this);
@@ -52,26 +39,46 @@ class News extends Component {
   }
 
   componentDidMount() {
-    News.loadPosts()
-      .then((response) => {
-        const draft = response.results
-          .find(post => !post.finished && post.author_details.pk === AuthService.getUserId());
-        this.setState({
-          addingPost: draft !== null && draft !== undefined,
+    this.loadPosts();
+  }
+
+  loadPosts() {
+    fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${this.state.offset}&limit=${this.pageSize}`, {
+      method: 'GET',
+      headers: { Authorization: `Token ${AuthService.getToken()}` },
+    }).then(FetchHelper.parseJson).then((response) => {
+      this.setState((prevState) => {
+        if (response.ok) {
+          const newPosts = response.json.results;
+          const draft = prevState.offset === 0 ? newPosts
+            .find(post => !post.finished && post.author_details.pk === AuthService.getUserId())
+            : null;
+
+          return {
+            addingPost: draft !== null && draft !== undefined,
+            loading: false,
+            loadingError: false,
+            posts: prevState.posts.concat(newPosts.filter(post => post.finished)),
+            draft,
+            offset: prevState.offset + this.pageSize,
+          };
+        }
+
+        return {
           loading: false,
-          loadingError: false,
-          posts: response.results.filter(post => post.finished),
-          draft,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          loading: false,
-          loadingError: error.message,
+          loadingError: 'Ein Fehler ist aufgetreten.',
           posts: [],
           draft: null,
-        });
+        };
       });
+    }).catch(() => {
+      this.setState({
+        loading: false,
+        loadingError: 'Ein Fehler ist aufgetreten.',
+        posts: [],
+        draft: null,
+      });
+    });
   }
 
   handleAddNews() {
@@ -92,6 +99,7 @@ class News extends Component {
         posts: newPosts,
         addingPost: false,
         addPostSuccess: true,
+        offset: prevState.offset + 1,
       };
     });
   }
