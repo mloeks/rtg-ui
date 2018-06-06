@@ -23,6 +23,8 @@ class BigPicture extends Component {
 
   componentDidMount() {
     if (this.props.lazyLoadWhenInViewport) {
+      this.displayIfLazyLoadAndInView();
+
       this.scrollListener.addCallback(this.displayIfLazyLoadAndInView);
       this.resizeListener.addCallback(this.displayIfLazyLoadAndInView);
     }
@@ -34,7 +36,7 @@ class BigPicture extends Component {
   }
 
   displayIfLazyLoadAndInView() {
-    if (this.props.lazyLoadWhenInViewport && inViewport(this.ref.current, -100)) {
+    if (this.props.lazyLoadWhenInViewport && inViewport(this.ref.current, 50)) {
       this.setState({ showImg: true });
     }
   }
