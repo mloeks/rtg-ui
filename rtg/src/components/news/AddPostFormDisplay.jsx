@@ -88,13 +88,13 @@ const AddPostFormDisplay = (props) => {
         <br /><br />
 
         <div className="AddPostForm__button-row">
+          <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
           <FlatButton
             type="submit"
             label="Speichern"
             primary
             disabled={props.savingInProgress || props.draftSaving}
           />
-          <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
         </div>
 
         <div className="AddPostForm__feedback">
