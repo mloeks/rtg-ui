@@ -18,11 +18,6 @@ import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.css';
 
-// TODO P2 lazy pictures them when they are about to come in view
-// briefly attempted --> we need one more scroll listener and a ref for each
-// BigPicture, whose y-position if evaluated on each scroll and the state is updated
-// to actually contain the image and not null (BigPicture is prepared to accept null images
-// and show a placeholder then)
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
@@ -51,23 +46,36 @@ const Foyer = () => (
     </BigPicture>
     <CurrentGames />
 
-    <BigPicture className="Foyer__news" img={newsHeadingImg}>
-      <h1 className="BigPicture__heading">Neuigkeiten</h1>
+    <BigPicture
+      className="Foyer__news"
+      img={newsHeadingImg}
+      lazyLoadWhenInViewport
+    ><h1 className="BigPicture__heading">Neuigkeiten</h1>
     </BigPicture>
     <News />
 
-    <BigPicture className="Foyer__bets-overview" img={betsHeadingImg} positionY={25}>
-      <h1 className="BigPicture__heading">Tippabgabe</h1>
+    <BigPicture
+      className="Foyer__bets-overview"
+      img={betsHeadingImg}
+      positionY={25}
+      lazyLoadWhenInViewport
+    ><h1 className="BigPicture__heading">Tippabgabe</h1>
     </BigPicture>
     <BetsOverview />
 
-    <BigPicture className="Foyer__schedule-overview" img={scheduleHeadingImg}>
-      <h1 className="BigPicture__heading">Spielplan</h1>
+    <BigPicture
+      className="Foyer__schedule-overview"
+      img={scheduleHeadingImg}
+      lazyLoadWhenInViewport
+    ><h1 className="BigPicture__heading">Spielplan</h1>
     </BigPicture>
     <ScheduleOverview />
 
-    <BigPicture className="Foyer__standings-overview" img={standingsHeadingImg}>
-      <h1 className="BigPicture__heading">Aktueller Spielstand</h1>
+    <BigPicture
+      className="Foyer__standings-overview"
+      img={standingsHeadingImg}
+      lazyLoadWhenInViewport
+    ><h1 className="BigPicture__heading">Aktueller Spielstand</h1>
     </BigPicture>
     <StandingsOverview />
   </Page>
