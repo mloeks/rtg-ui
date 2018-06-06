@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { CircularProgress, FloatingActionButton } from 'material-ui';
+import { CircularProgress, FlatButton, FloatingActionButton } from 'material-ui';
 import { ContentAdd } from 'material-ui/svg-icons/index';
 import ChatBubbleOutline from 'material-ui/svg-icons/communication/chat-bubble-outline';
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
@@ -11,7 +12,7 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
-// TODO P2 Lazy load news
+// TODO P2 Do some more thorough tests with post pagination and drafts
 // TODO P3 Allow deletion of news if admin
 // TODO P3 load potential draft in a separate request and filter
 // drafts out of the main posts request. Then persist news_appear correctly
@@ -27,6 +28,7 @@ class News extends Component {
       posts: [],
       draft: null,
 
+      count: 0,
       offset: 0,
 
       addingPost: false,
@@ -36,6 +38,7 @@ class News extends Component {
     this.pageSize = 5;
     this.newsSectionRef = React.createRef();
 
+    this.loadPosts = this.loadPosts.bind(this);
     this.handleAddNews = this.handleAddNews.bind(this);
     this.handlePostSaved = this.handlePostSaved.bind(this);
     this.handleAddPostCancelled = this.handleAddPostCancelled.bind(this);
@@ -46,6 +49,7 @@ class News extends Component {
   }
 
   loadPosts() {
+    this.setState({ loading: true });
     fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${this.state.offset}&limit=${this.pageSize}`, {
       method: 'GET',
       headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -63,6 +67,7 @@ class News extends Component {
             loadingError: false,
             posts: prevState.posts.concat(newPosts.filter(post => post.finished)),
             draft,
+            count: response.json.count,
             offset: prevState.offset + this.pageSize,
           };
         }
@@ -102,7 +107,8 @@ class News extends Component {
         posts: newPosts,
         addingPost: false,
         addPostSuccess: true,
-        offset: prevState.offset + 1,
+        count: newPost.news_appear ? prevState.count + 1 : prevState.count,
+        offset: newPost.news_appear ? prevState.offset + 1 : prevState.offset,
       };
     });
   }
@@ -112,17 +118,9 @@ class News extends Component {
   }
 
   render() {
+    const numberOfFurtherPosts = Math.min(this.pageSize, this.state.count - this.state.offset);
     return (
       <section className="News" ref={this.newsSectionRef}>
-        {this.state.loading && <CircularProgress />}
-        {(!this.state.loading && this.state.loadingError) &&
-          <Notification
-            type={NotificationType.ERROR}
-            title="Fehler beim Laden der Neuigkeiten"
-            subtitle={this.state.loadingError}
-            containerStyle={{ margin: 'auto', maxWidth: '480px' }}
-          />}
-
         {(AuthService.isAdmin() && this.state.addingPost) &&
           <AddPostForm
             draft={this.state.draft}
@@ -137,16 +135,36 @@ class News extends Component {
             disappearAfterMs={3000}
           />}
 
-        {(!this.state.loading && !this.state.loadingError) &&
-          this.state.posts
-            .filter(post => post.news_appear === true)
-            .map(post => <Post key={post.id} post={post} />)}
+        {(!this.state.loadingError) && this.state.posts
+          .filter(post => post.news_appear === true)
+          .map(post => <Post key={post.id} post={post} />)}
 
         {(!this.state.loading && !this.state.loadingError) && this.state.posts.length === 0 &&
           <div className="News__empty-state" style={{ color: lightGrey }}>
             <ChatBubbleOutline color={lightGrey} style={{ height: 80, width: 80 }} /><br />
             Keine Neuigkeiten.
           </div>}
+
+        {(this.state.offset < this.state.count) &&
+          <FlatButton
+            disabled={this.state.loading}
+            primary
+            label={`${numberOfFurtherPosts} weitere Neuigkeit${numberOfFurtherPosts > 1 ? 'en' : ''} laden`}
+            labelPosition="before"
+            icon={<KeyboardArrowDown />}
+            onClick={this.loadPosts}
+            labelStyle={{ fontSize: '14px' }}
+          />}
+        <br />
+
+        {this.state.loading && <CircularProgress style={{ margin: '20px auto' }}/>}
+        {(!this.state.loading && this.state.loadingError) &&
+          <Notification
+            type={NotificationType.ERROR}
+            title="Fehler beim Laden der Neuigkeiten"
+            subtitle={this.state.loadingError}
+            containerStyle={{ margin: 'auto', maxWidth: '480px' }}
+          />}
 
         {(AuthService.isAdmin() && !this.state.addingPost) &&
           <div className="News__add-button">
