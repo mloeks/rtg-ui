@@ -11,7 +11,6 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
-// TODO P2 save drafts: directly show draft post in addPostForm if we fetch one
 // TODO P2 Lazy load news
 // TODO P3 Allow deletion of news if admin
 class News extends Component {
@@ -39,6 +38,7 @@ class News extends Component {
       loadingError: null,
 
       posts: [],
+      draft: null,
 
       addingPost: false,
       addPostSuccess: false,
@@ -54,10 +54,14 @@ class News extends Component {
   componentDidMount() {
     News.loadPosts()
       .then((response) => {
+        const draft = response.results
+          .find(post => !post.finished && post.author_details.pk === AuthService.getUserId());
         this.setState({
+          addingPost: draft !== null && draft !== undefined,
           loading: false,
           loadingError: false,
-          posts: response.results,
+          posts: response.results.filter(post => post.finished),
+          draft,
         });
       })
       .catch((error) => {
@@ -65,6 +69,7 @@ class News extends Component {
           loading: false,
           loadingError: error.message,
           posts: [],
+          draft: null,
         });
       });
   }
@@ -109,6 +114,7 @@ class News extends Component {
 
         {(AuthService.isAdmin() && this.state.addingPost) &&
           <AddPostForm
+            draft={this.state.draft}
             onSaved={this.handlePostSaved}
             onCancelled={this.handleAddPostCancelled}
           />
