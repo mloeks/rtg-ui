@@ -12,7 +12,6 @@ import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
-// TODO P2 Do some more thorough tests with post pagination and drafts
 // TODO P3 Allow deletion of news if admin
 // TODO P3 load potential draft in a separate request and filter
 // drafts out of the main posts request. Then persist news_appear correctly
