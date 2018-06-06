@@ -13,6 +13,9 @@ import './News.css';
 
 // TODO P2 Lazy load news
 // TODO P3 Allow deletion of news if admin
+// TODO P3 load potential draft in a separate request and filter
+// drafts out of the main posts request. Then persist news_appear correctly
+// in the draft.
 class News extends Component {
   constructor(props) {
     super(props);
