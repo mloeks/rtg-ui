@@ -68,6 +68,7 @@ class AddPostForm extends Component {
     this.handleFieldsUpdate = this.handleFieldsUpdate.bind(this);
     this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
+    this.handleCancelled = this.handleCancelled.bind(this);
   }
 
   getPostBodyFromState() {
@@ -141,6 +142,17 @@ class AddPostForm extends Component {
     });
   }
 
+  handleCancelled() {
+    // fire & forget DELETE post
+    if (this.state.id) {
+      fetch(`${API_BASE_URL}/rtg/posts/${this.state.id}/`, {
+        method: 'DELETE',
+        headers: { Authorization: `Token ${AuthService.getToken()}` },
+      });
+    }
+    this.props.onCancelled();
+  }
+
   render() {
     return (<AddPostFormDisplay
       title={this.state.title}
@@ -167,7 +179,7 @@ class AddPostForm extends Component {
       onFieldChange={this.handleFieldUpdate}
       onFieldsChange={this.handleFieldsUpdate}
       onSubmit={this.handleSave}
-      onCancel={this.props.onCancelled}
+      onCancel={this.handleCancelled}
     />);
   }
 }

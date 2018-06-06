@@ -92,7 +92,7 @@ class News extends Component {
   }
 
   handleAddPostCancelled() {
-    this.setState({ addingPost: false, addPostSuccess: false, });
+    this.setState({ addingPost: false, addPostSuccess: false });
   }
 
   render() {
