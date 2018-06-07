@@ -52,7 +52,7 @@ class BackToTopButton extends Component {
 BackToTopButton.defaultProps = {
   bottomOffset: 24,
   rightOffset: 24,
-  showFromScrollPos: 200,
+  showFromScrollPos: 300,
 };
 
 BackToTopButton.propTypes = {
