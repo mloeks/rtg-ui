@@ -114,7 +114,7 @@ class Header extends Component {
                 {loggedIn && <DrawerMenu
                   open={this.state.menuOpen}
                   openBetsCount={userContext.openBetsCount}
-                  onLogout={userContext.doLogout}
+                  onLogout={() => userContext.doLogout()}
                   onRequestChange={menuOpen => this.setState({ menuOpen })}
                 />}
               </header>
