@@ -7,11 +7,9 @@
 
   &__add-button {
     position: sticky;
-    padding: 0 24px 95px;
-    bottom: 0;
-
+    margin-right: 24px;
+    bottom: 95px;
     text-align: right;
-    z-index: $zAddNewsButton;
   }
 
   &__empty-state {
