@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { darkGrey, lightGold } from '../../theme/RtgTheme';
 
 const PieChartLegend = (props) => {
+  const rowPadding = 3;
   return (
     <div className={props.className} style={props.containerStyle}>
       {props.data.map(dataEntry => (
@@ -12,8 +13,9 @@ const PieChartLegend = (props) => {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
+            height: props.entryRowHeight - (2 * rowPadding) - 1,
             alignItems: 'center',
-            padding: '3px 0',
+            padding: `${rowPadding}px 0`,
             borderBottom: `1px solid ${lightGold}`,
             color: darkGrey,
             textAlign: 'left',
@@ -50,6 +52,7 @@ const PieChartLegend = (props) => {
 
 PieChartLegend.defaultProps = {
   className: '',
+  entryRowHeight: 25,
   containerStyle: {},
   entryStyle: {},
 };
@@ -61,6 +64,7 @@ PieChartLegend.propTypes = {
     caption: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
   })).isRequired,
+  entryRowHeight: PropTypes.number,
   containerStyle: PropTypes.object,
   entryStyle: PropTypes.object,
 };

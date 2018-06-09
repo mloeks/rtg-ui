@@ -97,6 +97,9 @@ class BetStatsPanel extends Component {
   }
 
   render() {
+    const legendRowHeight = 25;
+    const legendHeight = Math.max(legendRowHeight, this.state.chartData.length * legendRowHeight);
+
     return (
       <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`} style={this.props.style}>
         <FlatButton
@@ -140,9 +143,17 @@ class BetStatsPanel extends Component {
                     style={{ margin: '10px auto', height: 250 }}
                   />
                   <PieChartLegend
-                    className="BetStatsPanel__chart-legend"
                     data={this.state.chartData}
+                    rowHeight={25}
                     style={{ pointerEvents: 'none' }}
+                    containerStyle={{
+                      position: 'absolute',
+                      top: `calc(50% - ${0.5 * legendHeight}px)`,
+                      left: `calc(50% - ${0.5 * 150}px)`,
+                      width: 150,
+                      height: legendHeight,
+                      overflow: 'hidden',
+                    }}
                   />
                 </div>
                 <StandingsTable
