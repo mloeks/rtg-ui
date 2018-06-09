@@ -15,34 +15,6 @@ import './BetStatsPanel.css';
 // TODO P3 switch between result stats and 2/0/1 stats (for games only)
 // TODO P3 how to display abbreviations for extra bets? (width on small devices...)
 class BetStatsPanel extends Component {
-  static aggregateChartData(bets) {
-    const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
-    const chartData = [];
-
-    let previousVal = null;
-    let resultIndex = -1;
-    sortedResults.forEach((val) => {
-      if (previousVal === null || previousVal !== val) {
-        chartData.push({ value: 1, caption: val });
-        resultIndex += 1;
-      } else {
-        chartData[resultIndex].value += 1;
-      }
-      previousVal = val;
-    });
-
-    const chartDataSortedByValue = chartData.sort((a, b) => a.value < b.value);
-    const finalChartData = [...chartDataSortedByValue.slice(0, 4), chartDataSortedByValue.slice(4)
-      .reduce((a, b) => ({ value: a.value + b.value, caption: 'Sonstige' }))];
-
-    const baseColor = randomHueHexColor(75, 20);
-    return finalChartData.map((entry, ix) => ({
-      value: 100.0 * (entry.value / bets.length),
-      caption: entry.caption,
-      color: lightenDarkenColor(baseColor, (ix + 1) * 35),
-    }));
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +23,7 @@ class BetStatsPanel extends Component {
       loading: true,
       loadingError: false,
     };
-    this.chartData = [];
+    this.chartBaseColor = randomHueHexColor(75, 20);
     this.fetchBets = this.fetchBets.bind(this);
     this.toggleOpen = this.toggleOpen.bind(this);
   }
@@ -72,7 +44,7 @@ class BetStatsPanel extends Component {
           return {
             loading: false,
             bets: response.json,
-            chartData: BetStatsPanel.aggregateChartData(response.json),
+            chartData: this.aggregateChartData(response.json),
           };
         }
         return { loading: false, loadingError: true };
@@ -86,6 +58,42 @@ class BetStatsPanel extends Component {
     } else {
       this.props.onOpen();
     }
+  }
+
+  aggregateChartData(bets) {
+    if (!bets) {
+      return { value: 100, caption: 'Kein Tipp', color: this.chartBaseColor };
+    }
+
+    const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
+    const chartData = [];
+
+    let previousVal = null;
+    let resultIndex = -1;
+    sortedResults.forEach((val) => {
+      if (previousVal === null || previousVal !== val) {
+        chartData.push({ value: 1, caption: val });
+        resultIndex += 1;
+      } else {
+        chartData[resultIndex].value += 1;
+      }
+      previousVal = val;
+    });
+
+    const chartDataSortedByValue = chartData.sort((a, b) => a.value < b.value);
+
+    let finalChartData = chartDataSortedByValue.slice(0, 4);
+    const accumulatedRestData = chartDataSortedByValue.slice(4);
+    if (accumulatedRestData.length > 0) {
+      finalChartData = finalChartData
+        .concat(accumulatedRestData.reduce((a, b) => ({ value: a.value + b.value, caption: 'Sonstige' })));
+    }
+
+    return finalChartData.map((entry, ix) => ({
+      value: 100.0 * (entry.value / bets.length),
+      caption: entry.caption,
+      color: lightenDarkenColor(this.chartBaseColor, (ix + 1) * 35),
+    }));
   }
 
   render() {
