@@ -11,6 +11,7 @@ import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
 import GameCardBet, { SavingErrorType } from '../GameCardBet';
 import Notification, { NotificationType } from '../Notification';
+import { lightGrey } from '../../theme/RtgTheme';
 
 import './CurrentGameCard.css';
 
@@ -96,11 +97,19 @@ class CurrentGameCard extends Component {
       <div className="CurrentGameCard">
         <RtgSeparator
           content={this.props.game ?
-            CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff) : '...'}
+            <div>
+              {CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff)}<br />
+              <span style={{
+                fontSize: '12px',
+                color: lightGrey,
+                textTransform: 'initial',
+                letterSpacing: 0
+              }}>{formattedRoundInfo(this.props.game)}
+              </span>
+            </div> : '...'}
           contentStyle={{ margin: 0 }}
+          style={{ marginBottom: 10 }}
         />
-
-        <div className="CurrentGameCard__round-info">{formattedRoundInfo(this.props.game)}</div>
 
         {this.props.game ? (
           <GameCard displayTeamNames="small" {...this.props.game}>

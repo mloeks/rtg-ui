@@ -429,7 +429,7 @@ class CurrentGames extends Component {
               className="CurrentGames__scroll-button"
               disabled={this.state.scrolling}
               onClick={this.scrollBackward}
-              style={{ left: 0, marginLeft: '-5px', ...scrollButtonStyle }}
+              style={{ left: 0, margin: '4px 0 0 -5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowLeft color={lightGrey} hoverColor={purple} />
             </IconButton>}
@@ -438,7 +438,7 @@ class CurrentGames extends Component {
               className="CurrentGames__scroll-button"
               disabled={this.state.scrolling}
               onClick={this.scrollForward}
-              style={{ right: 0, marginRight: '-5px', ...scrollButtonStyle }}
+              style={{ right: 0, margin: '4px -5px 0 0', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
             ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
             </IconButton>}
