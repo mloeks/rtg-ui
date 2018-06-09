@@ -108,7 +108,7 @@ const AddPostFormDisplay = (props) => {
           <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
           <FlatButton
             type="submit"
-            label="Speichern"
+            label="Absenden"
             primary
             disabled={props.savingInProgress || props.draftSaving}
           />
