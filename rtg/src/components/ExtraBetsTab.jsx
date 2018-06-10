@@ -30,9 +30,7 @@ export default class ExtraBetsTab extends Component {
   }
 
   componentDidMount() {
-    if (this.props.active) {
-      this.updateData();
-    }
+    this.updateData();
   }
 
   // TODO P3 replace by getDerivedStateFromProps, as this will be deprecated

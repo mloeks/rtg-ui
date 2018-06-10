@@ -26,6 +26,8 @@ export const countOpenBets = (bettables, allBets) => {
 
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
+// TODO P3 refactor such that bets are not loaded twice (in each tab once currently...)
+// maybe load bets here and pass down as props
 class Bets extends Component {
   static openBetsBadge(title, count) {
     if (count > 0) {
