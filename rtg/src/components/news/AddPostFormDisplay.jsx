@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactQuill from 'react-quill';
 import { Checkbox, CircularProgress, FlatButton, Paper, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import AlertError from 'material-ui/svg-icons/alert/error';
 import NavigationCheck from 'material-ui/svg-icons/navigation/check';
 import Notification, { NotificationType } from '../Notification';
 import { error, success } from '../../theme/RtgTheme';
 
+import 'react-quill/dist/quill.snow.css'; // ES6
 import './AddPostForm.css';
 
 const AddPostFormDisplay = (props) => {
@@ -28,6 +30,21 @@ const AddPostFormDisplay = (props) => {
     props.onFieldsChange(updatedMailRelatedFields);
   };
 
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link'],
+      ['clean']
+    ],
+  };
+
+  const quillFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'list', 'bullet', 'indent',
+    'link'
+  ];
+
   return (
     <form className="AddPostForm" noValidate onSubmit={props.onSubmit}>
       <Paper className="AddPostForm__paper" zDepth={3}>
@@ -39,15 +56,16 @@ const AddPostFormDisplay = (props) => {
           errorText={props.titleError}
           onChange={(e, v) => props.onFieldChange('title', v)}
         /><br />
-        <TextField
-          floatingLabelText="Inhalt"
+
+        <ReactQuill
           value={props.content}
-          fullWidth
-          multiLine
-          errorText={props.contentError}
-          rows={3}
-          onChange={(e, v) => props.onFieldChange('content', v)}
-        /><br />
+          modules={quillModules}
+          formats={quillFormats}
+          onChange={(val) => props.onFieldChange('content', val)}
+          style={{ marginTop: 10, fontSize: '20px' }}
+        />
+
+        <br />
         <div className="AddPostForm__draft-info">
           {props.draftSaved &&
             <span className="AddPostForm__draft-info--success">

@@ -162,7 +162,8 @@ class Post extends Component {
               fontSize: '16px',
             }}
           >
-            <pre
+            <div
+              dangerouslySetInnerHTML={{ __html: this.props.post.content }}
               ref={this.contentRef}
               style={{
                 margin: 0,
@@ -171,8 +172,7 @@ class Post extends Component {
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word',
               }}
-            >{this.props.post.content}
-            </pre>
+            />
             {this.state.contentWrappedForLength &&
               <div className="Post__content-show-all">
                 <FlatButton
