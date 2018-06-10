@@ -9,7 +9,6 @@
     "date-fns": "^1.29.0",
     "eslint-config-airbnb": "^16.1.0",
     "hsl-to-hex": "^1.0.0",
-    "json-server": "^0.12.1",
     "jwt-decode": "^2.2.0",
     "material-ui": "^0.20.0",
     "node-sass-chokidar": "^1.2.2",
@@ -36,7 +35,6 @@
     "build-js": "react-scripts build",
     "build": "REACT_APP_ENV=production npm-run-all build-css build-js",
     "build:demo": "REACT_APP_ENV=demo npm-run-all build-css build-js",
-    "mock-server": "json-server -p 8000 -w -d 300 config/json-server/db.json",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
