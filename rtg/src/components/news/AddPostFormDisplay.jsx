@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
 import { Checkbox, CircularProgress, FlatButton, Paper, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import AlertError from 'material-ui/svg-icons/alert/error';
 import NavigationCheck from 'material-ui/svg-icons/navigation/check';
 import Notification, { NotificationType } from '../Notification';
 import { error, success } from '../../theme/RtgTheme';
 
-import 'react-quill/dist/quill.snow.css';
 import './AddPostForm.css';
 
 const AddPostFormDisplay = (props) => {
@@ -56,13 +54,17 @@ const AddPostFormDisplay = (props) => {
           errorText={props.titleError}
           onChange={(e, v) => props.onFieldChange('title', v)}
         /><br />
-        <ReactQuill
+
+        {props.quill && <props.quill
+          placeholder="Inhalt schreiben..."
           value={props.content}
           modules={quillModules}
           formats={quillFormats}
           onChange={(val) => props.onFieldChange('content', val)}
           style={{ marginTop: 10, fontSize: '20px' }}
-        />
+        />}
+        {!props.quill && <CircularProgress />}
+
         <br />
         <div className="AddPostForm__draft-info">
           {props.draftSaved &&
@@ -146,6 +148,8 @@ const AddPostFormDisplay = (props) => {
 };
 
 AddPostFormDisplay.defaultProps = {
+  quill: null,
+
   appearInNews: true,
   sendMail: true,
   sendMailToSubscribers: true,
@@ -165,6 +169,8 @@ AddPostFormDisplay.defaultProps = {
 };
 
 AddPostFormDisplay.propTypes = {
+  quill: PropTypes.func,
+
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   appearInNews: PropTypes.bool,

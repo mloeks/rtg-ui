@@ -4,11 +4,9 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import { debounce } from '../../service/EventsHelper';
+import QuillAsyncLoader from '../../service/QuillAsyncLoader';
 
-// TODO P2 load Quill on demand only when adding a post?
-// no normal user ever needs it, so should not load it... (~ 70 KB)
-// https://tailordev.fr/blog/2016/03/17/loading-dependencies-asynchronously-in-react-components/
-// http://blog.netgusto.com/asynchronous-reactjs-component-loading-with-webpack/
+// TODO P3 since adding Quill editor, it is possible to add posts without content
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
@@ -39,6 +37,8 @@ class AddPostForm extends Component {
     super(props);
 
     this.state = {
+      quill: null,
+
       id: props.draft ? props.draft.id : null,
       title: props.draft ? props.draft.title : '',
       content: props.draft ? props.draft.content : '',
@@ -66,6 +66,12 @@ class AddPostForm extends Component {
     this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancelled = this.handleCancelled.bind(this);
+  }
+
+  componentDidMount() {
+    // only load quill library when this component is mounted
+    // no normal user ever needs it and should not load this pretty big library
+    QuillAsyncLoader().then(quill => this.setState({ quill }));
   }
 
   getPostBodyFromState() {
@@ -160,6 +166,8 @@ class AddPostForm extends Component {
 
   render() {
     return (<AddPostFormDisplay
+      quill={this.state.quill}
+
       title={this.state.title}
       content={this.state.content}
       appearInNews={this.state.appearInNews}
