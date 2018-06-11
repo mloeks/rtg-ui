@@ -7,7 +7,7 @@ import NavigationCheck from 'material-ui/svg-icons/navigation/check';
 import Notification, { NotificationType } from '../Notification';
 import { error, success } from '../../theme/RtgTheme';
 
-import 'react-quill/dist/quill.snow.css'; // ES6
+import 'react-quill/dist/quill.snow.css';
 import './AddPostForm.css';
 
 const AddPostFormDisplay = (props) => {
@@ -56,7 +56,6 @@ const AddPostFormDisplay = (props) => {
           errorText={props.titleError}
           onChange={(e, v) => props.onFieldChange('title', v)}
         /><br />
-
         <ReactQuill
           value={props.content}
           modules={quillModules}
@@ -64,7 +63,6 @@ const AddPostFormDisplay = (props) => {
           onChange={(val) => props.onFieldChange('content', val)}
           style={{ marginTop: 10, fontSize: '20px' }}
         />
-
         <br />
         <div className="AddPostForm__draft-info">
           {props.draftSaved &&

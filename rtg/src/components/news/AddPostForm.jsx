@@ -5,6 +5,10 @@ import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import { debounce } from '../../service/EventsHelper';
 
+// TODO P2 load Quill on demand only when adding a post?
+// no normal user ever needs it, so should not load it... (~ 70 KB)
+// https://tailordev.fr/blog/2016/03/17/loading-dependencies-asynchronously-in-react-components/
+// http://blog.netgusto.com/asynchronous-reactjs-component-loading-with-webpack/
 class AddPostForm extends Component {
   static resetFieldErrors() {
     return {
