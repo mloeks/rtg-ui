@@ -26,7 +26,7 @@ const Foyer = () => (
       <UserDetailsContext.Consumer>
         {userContext => (
           <Fragment>
-            <img className="Foyer__top-logo" src={logo} alt="RTG Logo" /><br />
+            <img className="Foyer__top-logo" src={logo} alt="RTG Logo" />
             <h3 className="Foyer__greeting">Herzlich Willkommen,<br />{userContext.username}!</h3>
 
             {!AuthService.getLastLogin() &&

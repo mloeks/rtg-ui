@@ -1,7 +1,11 @@
 .Foyer {
   &__welcome {
     position: relative;
-    padding: 20px 0;
+    padding: 10px 0;
+
+    @media only screen and (min-width : 480px) {
+      padding: 20px 0;
+    }
 
     &:before {
       position: absolute;
@@ -31,7 +35,12 @@
   }
 
   &__top-logo {
+    display: none;
     width: 50px;
+
+    @media only screen and (min-width : 480px) {
+      display: inline;
+    }
   }
 
   &__greeting {
