@@ -18,7 +18,6 @@ import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.css';
 
-// TODO P2 reduce height of things on mobile (greeting, pictures)
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">

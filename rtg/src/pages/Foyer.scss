@@ -1,9 +1,12 @@
 .Foyer {
   &__welcome {
+    display: none;
+
     position: relative;
     padding: 10px 0;
 
     @media only screen and (min-width : 480px) {
+      display: block;
       padding: 20px 0;
     }
 
