@@ -52,6 +52,14 @@
     padding: 100px 20px;
     font-size: 22px;
   }
+
+  &__add-game-button {
+    position: sticky;
+    margin-right: 4px;
+    bottom: 95px;
+    text-align: right;
+    z-index: $zAddGameButton;
+  }
 }
 
 .GameCard__click-wrapper {

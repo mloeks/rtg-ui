@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
-import { Divider, DropDownMenu, MenuItem } from 'material-ui';
+import { Divider, DropDownMenu, FloatingActionButton, MenuItem } from 'material-ui';
+import { ContentAdd } from 'material-ui/svg-icons/index';
 import AvNotInterested from 'material-ui/svg-icons/av/not-interested';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
@@ -17,11 +18,12 @@ import Notification, { NotificationType } from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
 import { isEnter } from '../service/KeyHelper';
 import { getClosestGameIndex } from '../service/GamesHelper';
+import BetStatsPanel from '../components/bets/BetStatsPanel';
+import AddGameForm from '../components/schedule/AddPostForm';
 import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
-import BetStatsPanel from "../components/bets/BetStatsPanel";
 
 const DEFAULT_ROUND_INDEX = 'VOR';
 
@@ -39,14 +41,21 @@ class Schedule extends Component {
       bets: [],
       gameIdWithBetStatsOpen: -1,
 
+      addingGame: true,
+      addGameSuccess: false,
+
       loading: true,
       loadingError: '',
     };
     this.stickybitsInstance = null;
+    this.gamesSectionRef = React.createRef();
 
     this.selectCurrentRound = this.selectCurrentRound.bind(this);
     this.handleSelectedRoundChange = this.handleSelectedRoundChange.bind(this);
     this.handleGroupFilterChanged = this.handleGroupFilterChanged.bind(this);
+    this.handleAddGame = this.handleAddGame.bind(this);
+    this.handleGameSaved = this.handleGameSaved.bind(this);
+    this.handleAddGameCancelled = this.handleAddGameCancelled.bind(this);
     this.gamesFilter = this.gamesFilter.bind(this);
   }
 
@@ -102,6 +111,32 @@ class Schedule extends Component {
 
   handleGroupFilterChanged(event, index, value) {
     this.setState({ selectedGroupFilter: value });
+  }
+
+  handleAddGame() {
+    // TODO P3 animated scroll (lib?)
+    this.setState({ addingGame: true, addGameSuccess: false }, () => {
+      const addGameTopYPos = (window.pageYOffset +
+        this.gamesSectionRef.current.getBoundingClientRect().top) - 150;
+      window.scrollTo(0, addGameTopYPos);
+    });
+  }
+
+  handleGameSaved(newGame) {
+    this.setState((prevState) => {
+      const newGames = prevState.games.slice(0);
+      newGames.unshift(newGame);
+
+      return {
+        games: newGames,
+        addingGame: false,
+        addGameSuccess: true,
+      };
+    });
+  }
+
+  handleAddGameCancelled() {
+    this.setState({ addingGame: false, addGameSuccess: false });
   }
 
   gamesFilter(game) {
@@ -175,7 +210,7 @@ class Schedule extends Component {
           <h1 className="BigPicture__heading">Spielplan</h1>
         </BigPicture>
 
-        <section className="SchedulePage__content">
+        <section className="SchedulePage__content" ref={this.gamesSectionRef}>
           <section
             id="schedule-toolbar"
             className="SchedulePage__toolbar"
@@ -229,6 +264,18 @@ class Schedule extends Component {
             </DropDownMenu>}
           </section>
 
+          {(AuthService.isAdmin() && this.state.addingGame) &&
+            <AddGameForm
+              onSaved={this.handleGameSaved}
+              onCancelled={this.handleAddGameCancelled}
+            />}
+          {(AuthService.isAdmin() && this.state.addGameSuccess) &&
+            <Notification
+              type={NotificationType.SUCCESS}
+              title="Spiel erfolgreich hinzugefügt"
+              disappearAfterMs={3000}
+            />}
+
           <section className="SchedulePage__game-container">
             {(!this.state.loading && !this.state.loadingError) && gameContainerItems}
 
@@ -253,6 +300,13 @@ class Schedule extends Component {
                 subtitle="Bitte versuche es erneut."
               />
             }
+
+            {(AuthService.isAdmin() && !this.state.addingGame) &&
+              <div className="SchedulePage__add-game-button">
+                <FloatingActionButton onClick={this.handleAddGame}>
+                  <ContentAdd />
+                </FloatingActionButton>
+              </div>}
           </section>
         </section>
       </Page>);
