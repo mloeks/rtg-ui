@@ -19,7 +19,7 @@ import GameCardGameInfo from '../components/GameCardGameInfo';
 import { isEnter } from '../service/KeyHelper';
 import { getClosestGameIndex } from '../service/GamesHelper';
 import BetStatsPanel from '../components/bets/BetStatsPanel';
-import AddGameForm from '../components/schedule/AddPostForm';
+import AddGameForm from '../components/schedule/AddGameForm';
 import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
@@ -27,7 +27,6 @@ import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
 const DEFAULT_ROUND_INDEX = 'VOR';
 
-// TODO P2 add possibility to add games for admins
 class Schedule extends Component {
   constructor(props) {
     super(props);
@@ -41,7 +40,7 @@ class Schedule extends Component {
       bets: [],
       gameIdWithBetStatsOpen: -1,
 
-      addingGame: true,
+      addingGame: false,
       addGameSuccess: false,
 
       loading: true,
@@ -131,6 +130,7 @@ class Schedule extends Component {
         games: newGames,
         addingGame: false,
         addGameSuccess: true,
+        selectedRoundIndex: newGame.round_details.abbreviation,
       };
     });
   }

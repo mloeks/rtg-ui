@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddGameFormDisplay from './AddGameFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
-import AddPostForm from "../news/AddPostForm";
+import { format, startOfMinute } from 'date-fns';
 
 class AddGameForm extends Component {
   static resetFieldErrors() {
@@ -25,7 +25,7 @@ class AddGameForm extends Component {
 
     return {
       savingError: true,
-      nonFieldError: responseJson.detail || '',
+      nonFieldError: responseJson.non_field_errors ? responseJson.non_field_errors[0] :  '',
       fieldErrors: {
         round: responseJson.tournament_round ? responseJson.tournament_round[0] : '',
         group: responseJson.tournament_group ? responseJson.tournament_group[0] : '',
@@ -39,8 +39,9 @@ class AddGameForm extends Component {
   }
 
   static isoDateStringFromDateAndTime(dateString, timeString) {
-    // TODO parse and format
-    return '2018-06-06T12:00:00Z';
+    const datePart = format(dateString, 'YYYY-MM-DD');
+    const timePart = format(startOfMinute(timeString), 'THH:mm:ss');
+    return datePart + timePart;
   }
 
   constructor(props) {
@@ -96,12 +97,12 @@ class AddGameForm extends Component {
 
   getPostBodyFromState() {
     return {
-      kickoff: AddPostForm.isoDateStringFromDateAndTime(this.state.kickoffDate, this.state.kickoffTime),
-      deadline: AddPostForm.isoDateStringFromDateAndTime(this.state.deadlineDate, this.state.deadlineTime),
+      round: this.state.round,
+      group: this.state.group,
+      kickoff: AddGameForm.isoDateStringFromDateAndTime(this.state.kickoffDate, this.state.kickoffTime),
+      deadline: AddGameForm.isoDateStringFromDateAndTime(this.state.deadlineDate, this.state.deadlineTime),
       hometeam: this.state.team1,
       awayteam: this.state.team2,
-      tournamentround: this.state.round,
-      tournamentgroup: this.state.group,
       venue: this.state.venue,
     };
   }
@@ -125,7 +126,16 @@ class AddGameForm extends Component {
   }
 
   handleFieldUpdate(fieldName, value) {
-    this.setState({ [fieldName]: value });
+    this.setState(prevState => {
+      const updatedState = { [fieldName]: value };
+      if (fieldName === 'kickoffDate' && !prevState.deadlineDate) {
+        updatedState['deadlineDate'] = value;
+      }
+      if (fieldName === 'kickoffTime' && !prevState.deadlineTime) {
+        updatedState['deadlineTime'] = value;
+      }
+      return updatedState;
+    });
   }
 
   handleSave(e) {
@@ -170,6 +180,7 @@ class AddGameForm extends Component {
 
       savingInProgress={this.state.savingInProgress}
       savingError={this.state.savingError}
+      nonFieldError={this.state.nonFieldError}
 
       onFieldChange={this.handleFieldUpdate}
       onSubmit={this.handleSave}

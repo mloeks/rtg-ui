@@ -10,7 +10,21 @@ import {
   Subheader,
   TimePicker
 } from 'material-ui';
+import areIntlLocalesSupported from 'intl-locales-supported';
 import Notification, { NotificationType } from '../Notification';
+
+let DateTimeFormat;
+
+/**
+ * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
+ */
+if (areIntlLocalesSupported(['de'])) {
+  DateTimeFormat = global.Intl.DateTimeFormat;
+} else {
+  const IntlPolyfill = require('intl');
+  DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  require('intl/locale-data/jsonp/de');
+}
 
 const AddGameFormDisplay = (props) => {
   const selectedRound = props.rounds.find(round => round.id === props.round);
@@ -90,6 +104,9 @@ const AddGameFormDisplay = (props) => {
           <DatePicker
             hintText="Datum"
             cancelLabel="Abbrechen"
+            locale="de"
+            DateTimeFormat={DateTimeFormat}
+            value={props.kickoffDate}
             onChange={(e, v) => props.onFieldChange('kickoffDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
@@ -99,6 +116,7 @@ const AddGameFormDisplay = (props) => {
             hintText="Uhrzeit (MESZ)"
             minutesStep={5}
             cancelLabel="Abbrechen"
+            value={props.kickoffTime}
             onChange={(e, v) => props.onFieldChange('kickoffTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
@@ -110,6 +128,9 @@ const AddGameFormDisplay = (props) => {
           <DatePicker
             hintText="Datum"
             cancelLabel="Abbrechen"
+            locale="de"
+            DateTimeFormat={DateTimeFormat}
+            value={props.deadlineDate}
             onChange={(e, v) => props.onFieldChange('deadlineDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
@@ -119,6 +140,7 @@ const AddGameFormDisplay = (props) => {
             hintText="Uhrzeit (MESZ)"
             minutesStep={5}
             cancelLabel="Abbrechen"
+            value={props.deadlineTime}
             onChange={(e, v) => props.onFieldChange('deadlineTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
@@ -156,6 +178,7 @@ const AddGameFormDisplay = (props) => {
             <Notification
               type={NotificationType.ERROR}
               title="Das hat leider nicht geklappt"
+              subtitle={props.nonFieldError || 'Bitte überprüfe Deine Angaben.'}
             />}
         </div>
       </Paper>
@@ -184,6 +207,7 @@ AddGameFormDisplay.defaultProps = {
 
   savingInProgress: false,
   savingError: false,
+  nonFieldError: null,
 };
 
 AddGameFormDisplay.propTypes = {
@@ -196,10 +220,10 @@ AddGameFormDisplay.propTypes = {
   group: PropTypes.number,
   team1: PropTypes.number,
   team2: PropTypes.number,
-  kickoffDate: PropTypes.object,
-  kickoffTime: PropTypes.object,
-  deadlineDate: PropTypes.object,
-  deadlineTime: PropTypes.object,
+  kickoffDate: PropTypes.objectOf(Date),
+  kickoffTime: PropTypes.objectOf(Date),
+  deadlineDate: PropTypes.objectOf(Date),
+  deadlineTime: PropTypes.objectOf(Date),
   venue: PropTypes.number,
 
   roundError: PropTypes.string,
@@ -212,6 +236,7 @@ AddGameFormDisplay.propTypes = {
 
   savingInProgress: PropTypes.bool,
   savingError: PropTypes.bool,
+  nonFieldError: PropTypes.string,
 
   onFieldChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

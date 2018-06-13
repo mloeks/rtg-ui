@@ -12,6 +12,7 @@ import Notification, { NotificationType } from '../Notification';
 
 import './BetStatsPanel.css';
 
+// TODO P2 display result bet type with color, points and font weight in table
 // TODO P3 switch between result stats and 2/0/1 stats (for games only)
 // TODO P3 how to display abbreviations for extra bets? (width on small devices...)
 class BetStatsPanel extends Component {
