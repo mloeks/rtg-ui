@@ -6,11 +6,11 @@
   &.bet { @include game-card-ribbon($ribbonBet, 65px, 75px); }
   &.skeleton { @include game-card-ribbon(lighten($ribbonNeutral, 20%), 65px, 75px); }
   &.neutral { @include game-card-ribbon($ribbonNeutral, 65px, 75px); }
-  &.niete { @include game-card-ribbon($ribbonNiete, 65px, 75px); }
-  &.tendenz { @include game-card-ribbon($ribbonTendenz, 65px, 75px); }
-  &.remis_tendenz { @include game-card-ribbon($ribbonRemisTendenz, 65px, 75px); }
-  &.differenz { @include game-card-ribbon($ribbonDifferenz, 65px, 75px); }
-  &.volltreffer { @include game-card-ribbon($ribbonVolltreffer, 65px, 75px); }
+  &.niete { @include game-card-ribbon($betResultNiete, 65px, 75px); }
+  &.tendenz { @include game-card-ribbon($betResultTendenz, 65px, 75px); }
+  &.remis_tendenz { @include game-card-ribbon($betResultRemisTendenz, 65px, 75px); }
+  &.differenz { @include game-card-ribbon($betResultDifferenz, 65px, 75px); }
+  &.volltreffer { @include game-card-ribbon($betResultVolltreffer, 65px, 75px); }
 
   display: flex;
   align-items: center;

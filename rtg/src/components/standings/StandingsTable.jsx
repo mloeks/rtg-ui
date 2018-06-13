@@ -166,7 +166,7 @@ class StandingsTable extends Component {
       const enhancedRow = Object.assign({}, row);
       const bet = this.state.bets
         .find(b => b.bettable === this.props.showBetColumnForBettable && b.user === row.userId);
-      enhancedRow.bet = bet ? bet.result_bet : null;
+      enhancedRow.bet = bet || null;
       return enhancedRow;
     });
   }

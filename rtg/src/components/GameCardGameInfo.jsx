@@ -9,7 +9,7 @@ import { white } from '../theme/RtgTheme';
 import crown from '../theme/img/crown.svg';
 import './GameCardGameInfo.css';
 
-const StateEnum = {
+export const StateEnum = {
   NEUTRAL: 'neutral',
   NIETE: 'niete',
   TENDENZ: 'tendenz',

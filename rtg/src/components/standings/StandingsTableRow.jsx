@@ -5,6 +5,7 @@ import { betColumnStyle, betStatColumnStyle, pointsColumnStyle, rankColumnStyle 
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
 import { isEnter } from '../../service/KeyHelper';
+import ColouredResultBetColumn from './ColouredResultBetColumn';
 
 import './StandingsTableRow.css';
 
@@ -76,15 +77,15 @@ class StandingsTableRow extends Component {
           </TableRowColumn>
 
           {this.props.showBetColumn &&
-            <TableRowColumn
+            <ColouredResultBetColumn
+              bet={this.props.bet}
               style={{
                 ...betColumnStyle,
                 height: rowHeight,
                 fontSize: '16px',
                 ...this.props.betColumnStyle,
               }}
-            >{this.props.bet || '---'}
-            </TableRowColumn>}
+            />}
 
           {this.props.showStatsColumns &&
             <Fragment>
@@ -144,7 +145,7 @@ StandingsTableRow.propTypes = {
   noRemisTendenz: PropTypes.number.isRequired,
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
-  bet: PropTypes.string,
+  bet: PropTypes.object,
 
   self: PropTypes.bool,
   rowHeight: PropTypes.number.isRequired,

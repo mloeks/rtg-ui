@@ -12,6 +12,12 @@ $lightGold: #E9C467;
 $success: #58ce38;
 $error: #ce3838;
 
+$betResultNiete: hsl(18, 85%, 40%);
+$betResultTendenz: hsl(45, 85%, 40%);
+$betResultRemisTendenz: hsl(65, 85%, 40%);
+$betResultDifferenz: hsl(180, 85%, 40%);
+$betResultVolltreffer: hsl(138, 85%, 40%);
+
 // some nice Pantone colours
 $pantoneTpxSilver: #999B9B;
 $pantoneCherryBlossom: #F4CFE0;
@@ -20,8 +26,3 @@ $pantoneTcxHarborMist: #AFB1B4;
 
 $ribbonBet: darken($pantoneAshRose, 20%);
 $ribbonNeutral: darken($pantoneTcxHarborMist, 5%);
-$ribbonNiete: hsl(18, 85%, 40%);
-$ribbonTendenz: hsl(45, 85%, 40%);
-$ribbonRemisTendenz: hsl(65, 85%, 40%);
-$ribbonDifferenz: hsl(180, 85%, 40%);
-$ribbonVolltreffer: hsl(138, 85%, 40%);
