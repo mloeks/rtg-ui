@@ -26,7 +26,7 @@ import AdminRoute from './components/auth/AdminRoute';
 import rtg from './theme/RtgTheme';
 import './App.css';
 
-// TODO P2 Datenschutz page
+// TODO P3 Datenschutz page
 // TODO P3 Implement bottom navigation for mobile breakpoints
 const App = () => {
   const isDemo = window.location.href.match(/.*demo.*/i);

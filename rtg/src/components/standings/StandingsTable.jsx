@@ -37,6 +37,7 @@ export const pointsColumnStyle = {
   fontWeight: 'bold',
 };
 
+// TODO P3 check loading state (often takes longer and does not show progress indicator)
 // TODO P3 add scroll listener if scrollable and remove fading top/bottom when
 // scrolled to top/bottom. Alternatively, just remove the fading elements in StandingsTable.scss
 // for --excerpt-scrollable
