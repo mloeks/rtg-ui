@@ -167,7 +167,7 @@ class BetStatsPanel extends Component {
                   showStatsColumns={false}
                   showUserAvatar={false}
                   showUserInfoOnClick={false}
-                  userExcerptRows={6}
+                  userExcerptRows={10}
                   rowHeight={35}
 
                   showBetColumnForBettable={this.props.bettableId}
