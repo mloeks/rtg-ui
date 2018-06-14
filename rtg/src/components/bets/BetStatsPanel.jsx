@@ -80,10 +80,14 @@ class BetStatsPanel extends Component {
       previousVal = val;
     });
 
-    const chartDataSortedByValue = chartData.sort((a, b) => a.value < b.value);
+    chartData.sort((a, b) => {
+      if (a.value > b.value) return -1;
+      if (a.value === b.value) return 0;
+      return 1;
+    });
 
-    let finalChartData = chartDataSortedByValue.slice(0, 4);
-    const accumulatedRestData = chartDataSortedByValue.slice(4);
+    let finalChartData = chartData.slice(0, 4);
+    const accumulatedRestData = chartData.slice(4);
     if (accumulatedRestData.length > 0) {
       finalChartData = finalChartData
         .concat(accumulatedRestData.reduce((a, b) => ({ value: a.value + b.value, caption: 'Sonstige' })));
