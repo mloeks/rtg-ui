@@ -87,6 +87,7 @@ class RegisterDialog extends Component {
       this.setState({ registerSuccessful: true });
     })
       .catch((errors) => {
+        console.log(errors);
         this.setState({
           fieldErrors: errors.fieldErrors || {},
           formHasErrors: errors.nonFieldError,
@@ -125,8 +126,8 @@ class RegisterDialog extends Component {
             {this.state.formHasErrors &&
               <Notification
                 type={NotificationType.ERROR}
-                title={this.state.formError}
-                subtitle="Bitte versuche es erneut."
+                title="Das hat leider nicht geklappt"
+                subtitle={this.state.formError}
               />}
           </div>}
         style={{ textAlign: 'left', paddingTop: 0 }}

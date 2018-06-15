@@ -192,7 +192,8 @@ class AuthService {
                 // returns it like this
                 password: responseJson.password1 || responseJson.password2 || '',
               },
-              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
+              nonFieldError: responseJson.non_field_errors ?
+                responseJson.non_field_errors[0] : responseJson.error,
             });
           }
         })
