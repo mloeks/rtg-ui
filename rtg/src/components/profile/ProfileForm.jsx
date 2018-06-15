@@ -181,7 +181,10 @@ class ProfileForm extends Component {
   }
 }
 
-ProfileForm.defaultProps = { user: null };
+ProfileForm.defaultProps = {
+  user: null,
+  onUserUpdate: () => {},
+};
 
 ProfileForm.propTypes = {
   userId: PropTypes.number.isRequired,
@@ -200,7 +203,7 @@ ProfileForm.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadingError: PropTypes.bool.isRequired,
 
-  onUserUpdate: PropTypes.func.isRequired,
+  onUserUpdate: PropTypes.func,
 };
 
 export default ProfileForm;

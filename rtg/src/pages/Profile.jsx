@@ -34,10 +34,6 @@ class Profile extends Component {
     userContext.updateAvatar(newAvatar);
   }
 
-  static handleUserUpdate(newUser) {
-    AuthService.setEmail(newUser.email);
-  }
-
   constructor(props) {
     super(props);
 
@@ -90,7 +86,6 @@ class Profile extends Component {
                     user={this.state.user}
                     loading={this.state.loading}
                     loadingError={this.state.loadingError}
-                    onUserUpdate={Profile.handleUserUpdate}
                   />
 
                   <RtgSeparator style={{ maxWidth: '500px' }} />
