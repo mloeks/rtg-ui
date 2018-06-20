@@ -11,9 +11,10 @@ export const getClosestGameIndex = (gameKickoffs, referenceDate = new Date()) =>
   for (let i = 0; i < gameKickoffs.length; i += 1) {
     const distance = differenceInMinutes(parse(gameKickoffs[i]), referenceDate);
 
-    if (distance < 0 && distance > -90) {
-      // We found a currently running game. use this and stop immediately. This is important in
-      // order to prefer running games over follow-up games which kickoff might be closer.
+    if (distance < 0 && distance > -135) {
+      // If there is a currently running game or a game which has just finished, use this
+      // and stop immediately. This way running (or just finished) games are preferred
+      // over follow-up games which kickoff might be closer.
       closestIndex = i;
       break;
     }
