@@ -18,7 +18,7 @@ export const getClosestGameIndex = (gameKickoffs, referenceDate = new Date()) =>
       closestIndex = i;
       break;
     }
-    if (Math.abs(distance) >= closestKickoffAbsDifference) {
+    if (Math.abs(distance) > closestKickoffAbsDifference) {
       // since the kickoffs are ordered chronologically,
       // we can immediately stop if the absolute difference gets larger.
       break;
