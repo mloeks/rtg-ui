@@ -94,11 +94,11 @@ class GameBetsTab extends Component {
 
   createGameCardsWithDeadlineSubheadings(games, betsStatusContext) {
     const gameCardsWithDeadlineSubheadings = [];
-    let lastDeadlineText = null;
+    let lastFormattedDeadline = null;
     games.forEach((game) => {
-      const relativeDeadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
-      const absoluteDeadlineText = format(game.deadline, 'dd. DD.MM. - HH:mm [Uhr]', { locale: de });
-      if (lastDeadlineText === null || relativeDeadlineText !== lastDeadlineText) {
+      const formattedDeadline = format(game.deadline, 'dd. DD.MM. - HH:mm [Uhr]', { locale: de });
+      if (lastFormattedDeadline === null || formattedDeadline !== lastFormattedDeadline) {
+        const relativeDeadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
         gameCardsWithDeadlineSubheadings
           .push(
             <div
@@ -112,13 +112,13 @@ class GameBetsTab extends Component {
                   contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
                 />
                 <RtgSeparator
-                  content={this.createDeadlineWithIcon(game.deadline, absoluteDeadlineText)}
+                  content={this.createDeadlineWithIcon(game.deadline, formattedDeadline)}
                   contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
                 />
               </div>
             </div>,
           );
-        lastDeadlineText = relativeDeadlineText;
+        lastFormattedDeadline = formattedDeadline;
       }
       const gameCardWithBet = (
         <GameCard key={game.id} style={{ marginBottom: 25 }} {...game} >
