@@ -18,6 +18,8 @@ export const StateEnum = {
   VOLLTREFFER: 'volltreffer',
 };
 
+// TODO P3 setTimeout for updating game running state if deadline is close
+// this way the game switches to "running" without the need to reload the page
 const GameCardGameInfo = (props) => {
   const now = new Date();
   const gameHasStarted = () => isAfter(now, props.kickoff);

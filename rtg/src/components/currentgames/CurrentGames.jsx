@@ -21,6 +21,9 @@ const SCROLL_BUTTON_SIZE = 50;
 const MIN_X_OFFSET_TOUCHMOVE = 10;
 const MIN_TOUCH_MOVE_TO_SCROLL = 40;
 
+// TODO P2 check if game deadline has passed in the client instead of relying on the
+// backend bets_open flag. This way server clock offsets are avoided and the
+// UI of running games and the bets stats panel is consistent.
 // TODO P3 add "today" button if one scrolls around all games ;-)
 // TODO P3 refactor this component, e.g. move game container into its own component with
 // all event handling etc. attached
