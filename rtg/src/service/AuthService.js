@@ -100,19 +100,22 @@ class AuthService {
     return differenceInSeconds(new Date(AuthService.getTokenExpiryDate() * 1000), Date.now());
   }
 
+  // TODO handle refresh token
   static updatePropsFromAuthResponse(authResponse) {
     try {
-      const decodedToken = jwtDecode(authResponse.token);
+      const decodedToken = jwtDecode(authResponse.access);
+      const decodedRefreshToken = jwtDecode(authResponse.refresh);
 
-      LocalStorageWrapper.set('admin', authResponse.admin === true);
-      LocalStorageWrapper.set('token', authResponse.token);
+      LocalStorageWrapper.set('admin', decodedToken.admin === true);
+      LocalStorageWrapper.set('token', authResponse.access);
+      LocalStorageWrapper.set('refresh-token', authResponse.refresh);
       LocalStorageWrapper.set('token-expiry', decodedToken.exp);
-      LocalStorageWrapper.set('user-id', authResponse.user_id);
+      LocalStorageWrapper.set('user-id', decodedToken.user_id);
       LocalStorageWrapper.set('username', decodedToken.username);
-      LocalStorageWrapper.set('has-paid', authResponse.has_paid);
-      LocalStorageWrapper.set('avatar', authResponse.avatar);
-      LocalStorageWrapper.set('open-bets-count', authResponse.no_open_bets);
-      LocalStorageWrapper.set('last-login', authResponse.last_login);
+      LocalStorageWrapper.set('has-paid', decodedToken.has_paid);
+      LocalStorageWrapper.set('avatar', decodedToken.avatar);
+      LocalStorageWrapper.set('open-bets-count', decodedToken.no_open_bets);
+      LocalStorageWrapper.set('last-login', decodedToken.last_login);
     } catch (error) {
       // TODO P3 handle invalid token (how?)
     }
