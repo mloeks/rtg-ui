@@ -2,7 +2,8 @@
 
 ## Current upgrades & TODOs
 
-* Material UI v1.0
+* Material UI v1.x
+    * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
 
 ## Toolchain
 
