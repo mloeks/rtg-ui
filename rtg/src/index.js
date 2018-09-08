@@ -9,20 +9,17 @@ import 'blob-polyfill';
 import 'canvas-toBlob';
 
 import { BrowserRouter } from 'react-router-dom';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import ScrollToTop from './components/ScrollToTop';
 import App from './App';
 import './service/closest-polyfill';
 
 import './index.css';
 
-injectTapEventPlugin();
-
 ReactDOM.render(
   <BrowserRouter>
     <ScrollToTop>
       <App />
     </ScrollToTop>
-  </BrowserRouter>
-  , document.getElementById('root'), // eslint-disable-line no-undef
+  </BrowserRouter>,
+  document.getElementById('root'), // eslint-disable-line no-undef
 );
