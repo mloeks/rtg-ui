@@ -26,6 +26,10 @@ class AuthService {
     return LocalStorageWrapper.get('token');
   }
 
+  static getRefreshToken() {
+    return LocalStorageWrapper.get('refresh-token');
+  }
+
   static getTokenExpiryDate() {
     return LocalStorageWrapper.get('token-expiry');
   }
@@ -100,15 +104,12 @@ class AuthService {
     return differenceInSeconds(new Date(AuthService.getTokenExpiryDate() * 1000), Date.now());
   }
 
-  // TODO handle refresh token
   static updatePropsFromAuthResponse(authResponse) {
     try {
       const decodedToken = jwtDecode(authResponse.access);
-      const decodedRefreshToken = jwtDecode(authResponse.refresh);
 
       LocalStorageWrapper.set('admin', decodedToken.admin === true);
       LocalStorageWrapper.set('token', authResponse.access);
-      LocalStorageWrapper.set('refresh-token', authResponse.refresh);
       LocalStorageWrapper.set('token-expiry', decodedToken.exp);
       LocalStorageWrapper.set('user-id', decodedToken.user_id);
       LocalStorageWrapper.set('username', decodedToken.username);
@@ -116,6 +117,10 @@ class AuthService {
       LocalStorageWrapper.set('avatar', decodedToken.avatar);
       LocalStorageWrapper.set('open-bets-count', decodedToken.no_open_bets);
       LocalStorageWrapper.set('last-login', decodedToken.last_login);
+
+      if (authResponse.refresh) {
+        LocalStorageWrapper.set('refresh-token', authResponse.refresh);
+      }
     } catch (error) {
       // TODO P3 handle invalid token (how?)
     }
@@ -317,13 +322,17 @@ class AuthService {
   static async refreshToken() {
     return fetch(`${API_BASE_URL}/api-token-refresh/`, {
       method: 'POST',
-      body: JSON.stringify({ token: AuthService.getToken() }),
+      body: JSON.stringify({ refresh: AuthService.getRefreshToken() }),
       headers: { 'Content-Type': 'application/json' },
     })
       .then(FetchHelper.parseJson)
       .then((response) => {
         if (response.ok) {
           AuthService.updatePropsFromAuthResponse(response.json);
+        } else {
+          // TODO P2 handle refresh token expiration in AuthRoute instead in
+          // order to handleLogout with a reason
+          AuthService.logout();
         }
       });
   }
