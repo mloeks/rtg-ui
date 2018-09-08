@@ -27,7 +27,7 @@
     "react-minimal-pie-chart": "^3.3.0",
     "react-quill": "^1.2.7",
     "react-router-dom": "^4.3.1",
-    "react-router-prop-types": "^1.0.3",
+    "react-router-prop-types": "^1.0.4",
     "react-scripts": "^1.1.5",
     "stickybits": "^3.3.2",
     "verge": "^1.10.2",
