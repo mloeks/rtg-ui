@@ -1,5 +1,9 @@
 # RTG UI
 
+## Current upgrades & TODOs
+
+* Material UI v1.0
+
 ## Toolchain
 
 This project is built using [create-react-app](https://github.com/facebookincubator/create-react-app).
