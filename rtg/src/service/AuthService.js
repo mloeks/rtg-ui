@@ -68,8 +68,10 @@ class AuthService {
   }
 
   static getLastLogin() {
-    const lastLoginProp = LocalStorageWrapper.get('last-login');
-    return lastLoginProp === 'null' ? null : new Date(lastLoginProp);
+    // const lastLoginProp = LocalStorageWrapper.get('last-login');
+    // return lastLoginProp === 'null' ? null : new Date(lastLoginProp);
+    // TODO P1 un-comment to previous logic as soon as backend returns correct info again
+    return true;
   }
 
   static resetProps() {
