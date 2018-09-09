@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, FlatButton } from 'material-ui';
-import HardwareKeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import PieChart from 'react-minimal-pie-chart';
 import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -106,9 +107,9 @@ class BetStatsPanel extends Component {
 
     return (
       <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`} style={this.props.style}>
-        <FlatButton
-          primary
-          icon={<HardwareKeyboardArrowDown
+        <Button
+          color="primary"
+          icon={<KeyboardArrowDownIcon
             style={{
               width: 22,
               height: 22,
@@ -116,10 +117,11 @@ class BetStatsPanel extends Component {
               transition: 'transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
             }}
           />}
-          label={this.props.open ? 'Zuklappen' : 'Alle Tipps ansehen'}
           style={{ marginBottom: 10, ...this.props.buttonStyle }}
           onClick={this.toggleOpen}
-        />
+        >
+          {this.props.open ? 'Zuklappen' : 'Alle Tipps ansehen'}
+        </Button>
 
         {this.props.open &&
           <div className="BetStatsPanel__inner">

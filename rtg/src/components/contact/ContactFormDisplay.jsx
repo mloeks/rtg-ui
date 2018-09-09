@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { RaisedButton, TextField } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 const ContactFormPresentational = props => (
   <Fragment>
@@ -12,7 +13,8 @@ const ContactFormPresentational = props => (
       errorText={props.authorError}
       style={{ textAlign: 'left' }}
       onChange={(e, v) => props.onFieldChange('author', v)}
-    /><br />
+    />
+    <br />
     <TextField
       name="email"
       floatingLabelText="Deine E-Mail Adresse"
@@ -21,7 +23,8 @@ const ContactFormPresentational = props => (
       errorText={props.emailError}
       style={{ textAlign: 'left' }}
       onChange={(e, v) => props.onFieldChange('email', v)}
-    /><br />
+    />
+    <br />
     <TextField
       name="content"
       floatingLabelText="Nachricht an das Königshaus"
@@ -32,15 +35,18 @@ const ContactFormPresentational = props => (
       errorText={props.contentError}
       style={{ textAlign: 'left' }}
       onChange={(e, v) => props.onFieldChange('content', v)}
-    /><br />
+    />
+    <br />
 
-    <RaisedButton
-      label={props.isSaving ? 'Unterwegs...' : 'Zur Post geben'}
+    <Button
+      variant="raised"
+      color="primary"
       type="submit"
-      primary
       disabled={props.isSaving || props.formHasErrors}
       style={{ width: 200, margin: '30px auto' }}
-    />
+    >
+      {props.isSaving ? 'Unterwegs...' : 'Zur Post geben'}
+    </Button>
   </Fragment>
 );
 

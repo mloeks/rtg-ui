@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatButton, RaisedButton } from 'material-ui';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import VisiblePasswordField from './VisiblePasswordField';
 import RegisterDialog from './RegisterDialog';
@@ -90,15 +90,19 @@ class LoginForm extends Component {
             fullWidth
             onChange={this.updatePassword}
           />
-          <br /><br />
+          <br />
+          <br />
 
-          <RaisedButton
+          <Button
+            variant="raised"
             className="LoginForm__button"
             fullWidth
-            primary
+            color="primary"
             type="submit"
-            label="Eintreten"
-          /><br />
+          >
+            Eintreten
+          </Button>
+          <br />
 
           {this.state.formError &&
           <div
@@ -110,19 +114,17 @@ class LoginForm extends Component {
 
         <br />
         <div className="LoginForm__second-button-row">
-          <FlatButton
-            label="Registrieren"
-            onClick={() => { this.setState({ registerModalOpen: true }); }}
-          />
+          <Button onClick={() => { this.setState({ registerModalOpen: true }); }}>
+            Registrieren
+          </Button>
           <RegisterDialog
             open={this.state.registerModalOpen}
             onCancel={() => { this.setState({ registerModalOpen: false }); }}
           />
 
-          <FlatButton
-            label="Passwort vergessen"
-            onClick={() => { this.setState({ passwordForgotDialogOpen: true }); }}
-          />
+          <Button onClick={() => { this.setState({ passwordForgotDialogOpen: true }); }}>
+            Passwort vergessen
+          </Button>
           <ForgotPasswordDialog
             open={this.state.passwordForgotDialogOpen}
             onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}

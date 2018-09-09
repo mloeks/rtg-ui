@@ -2,9 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
-import { Dialog, FlatButton } from 'material-ui';
-import ImageEdit from 'material-ui/svg-icons/image/edit';
-import ContentSave from 'material-ui/svg-icons/content/save';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
@@ -139,26 +140,28 @@ class CurrentGameCard extends Component {
           <div className="CurrentGameCard__actions">
             {this.state.editingBet && (
               <Fragment>
-                <FlatButton
-                  label="Speichern"
-                  primary
-                  icon={<ContentSave style={{ width: 20, height: 20 }} />}
+                <Button
+                  color="primary"
+                  icon={<SaveIcon style={{ width: 20, height: 20 }} />}
                   disabled={this.state.shouldSaveBet}
                   onClick={this.handleBetSave}
-                /><br />
-                <FlatButton
-                  label="Abbrechen"
-                  onClick={this.handleBetEditCancel}
-                />
+                >
+                  Speichern
+                </Button>
+                <br />
+                <Button onClick={this.handleBetEditCancel}>Abbrechen</Button>
               </Fragment>)}
 
-            {(!this.state.editingBet && !this.state.editingBetSuccessful) && (
-              <FlatButton
-                label={this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
-                primary
-                icon={<ImageEdit style={{ width: 20, height: 20 }} />}
+            {(!this.state.editingBet && !this.state.editingBetSuccessful)
+            && (
+              <Button
+                color="primary"
+                icon={<EditIcon style={{ width: 20, height: 20 }} />}
                 onClick={this.handleBetEdit}
-              />)}
+              >
+                {this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
+              </Button>
+            )}
 
             {this.state.editingBetSuccessful && (
               <Notification
@@ -176,11 +179,9 @@ class CurrentGameCard extends Component {
         <Dialog
           modal={false}
           actions={[
-            <FlatButton
-              label="Ok"
-              primary
-              onClick={this.handleBetSaveErrorInfoDialogClosed}
-            />]}
+            <Button color="primary" onClick={this.handleBetSaveErrorInfoDialogClosed}>
+              Ok
+            </Button>]}
           open={this.state.betSaveFailed}
           onRequestClose={this.handleBetSaveErrorInfoDialogClosed}
         >

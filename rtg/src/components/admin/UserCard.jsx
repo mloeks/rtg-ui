@@ -1,21 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Card,
-  CardActions,
-  CardMedia,
-  CardText,
-  CardTitle,
-  CircularProgress,
-  Dialog,
-  FlatButton,
-  IconButton,
-} from 'material-ui';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
-import ActionEuroSymbol from 'material-ui/svg-icons/action/euro-symbol';
-import AlertWarning from 'material-ui/svg-icons/alert/warning';
-import Person from 'material-ui/svg-icons/social/person';
-import { teal400 } from 'material-ui/styles/colors';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
+import WarningIcon from '@material-ui/icons/Warning';
+import PersonIcon from '@material-ui/icons/Person';
+import teal from '@material-ui/core/colors/teal';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { darkGold, darkGrey, error, gold, grey, lightGrey } from '../../theme/RtgTheme';
 import { lightenDarkenColor } from '../../service/ColorHelper';
@@ -24,8 +22,8 @@ const CARD_SIZE = 140;
 
 const DeleteConfirmationModal = (props) => {
   const actions = [
-    <FlatButton label="Abbrechen" onClick={props.onCancel} />,
-    <FlatButton label="User löschen" primary onClick={props.onConfirm} />,
+    <Button onClick={props.onCancel}>Abbrechen</Button>,
+    <Button color="primary" onClick={props.onConfirm}>User löschen</Button>,
   ];
 
   return (
@@ -122,7 +120,7 @@ class UserCard extends Component {
       margin: 0,
     };
     const paidSymbol = (
-      <ActionEuroSymbol
+      <EuroSymbolIcon
         color={this.props.has_paid ?
           gold : lightenDarkenColor(lightGrey, 40)}
         hoverColor={this.props.has_paid ? darkGold : lightGrey}
@@ -136,9 +134,9 @@ class UserCard extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100%',
-          backgroundColor: teal400,
+          backgroundColor: teal['400'],
         }}
-      ><Person color="white" style={{ width: '90%', height: '90%' }} />
+      ><PersonIcon color="white" style={{ width: '90%', height: '90%' }} />
       </div>
     );
 
@@ -160,7 +158,7 @@ class UserCard extends Component {
         >
           <CardMedia
             overlay={
-              <CardTitle
+              <CardHeader
                 title={this.props.username}
                 style={{ padding: '10px'}}
                 titleStyle={{
@@ -179,7 +177,7 @@ class UserCard extends Component {
             {this.props.avatar && <img src={`${API_BASE_URL}/media/${this.props.avatar}`} alt="User avatar" />}
             {!this.props.avatar && noAvatarPlaceholder}
           </CardMedia>
-          <CardText
+          <CardContent
             style={{
               fontSize: '14px',
               flexGrow: 1,
@@ -200,7 +198,7 @@ class UserCard extends Component {
             ><span>{this.props.email}</span><br />
               {this.props.email2 && <span>{this.props.email2}</span>}
             </div>
-          </CardText>
+          </CardContent>
 
           <CardActions
             style={{ display: 'flex', justifyContent: isInactive ? 'flex-end' : 'space-between' }}
@@ -220,7 +218,7 @@ class UserCard extends Component {
                 title="Fehler beim Speichern, bitte neu laden."
                 style={iconButtonStyle}
                 iconStyle={{ margin: 0 }}
-              ><AlertWarning color={error} />
+              ><WarningIcon color={error} />
               </IconButton>}
 
             <IconButton
@@ -228,7 +226,7 @@ class UserCard extends Component {
               onClick={this.handleDeleteRequest}
               style={iconButtonStyle}
               iconStyle={{ margin: 0 }}
-            ><ActionDelete color={grey} hoverColor={darkGrey} />
+            ><DeleteIcon color={grey} hoverColor={darkGrey} />
             </IconButton>
           </CardActions>
         </Card>

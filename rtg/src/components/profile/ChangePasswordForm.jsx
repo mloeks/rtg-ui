@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { RaisedButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import VisiblePasswordField from '../VisiblePasswordField';
 import Notification, { NotificationType } from '../Notification';
 import AuthService from '../../service/AuthService';
@@ -27,13 +27,13 @@ const ChangePasswordFormDisplay = props => (
     /><br />
 
     <div className="ChangePasswordForm__button-wrapper">
-      <RaisedButton
-        label={props.isSaving ? 'Speichern...' : 'Passwort ändern'}
+      <Button
+        variant="raised"
+        color="primary"
         type="submit"
-        primary
         disabled={props.isSaving || props.formHasErrors}
         style={{ width: 250 }}
-      />
+      >{props.isSaving ? 'Speichern...' : 'Passwort ändern'}</Button>
     </div>
   </div>
 );

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterProptypes from 'react-router-prop-types';
-import { FlatButton, Paper, RaisedButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Page from './Page';
@@ -88,20 +89,22 @@ class PasswordReset extends Component {
               onChange={this.updatePassword}
             /><br /><br />
 
-            <RaisedButton
+            <Button
+              variant="raised"
               className="PasswordReset__submit"
               fullWidth
-              primary
+              color="primary"
               type="submit"
-              label="Abschicken"
-            />
+            >
+              Abschicken
+            </Button>
           </form>
 
           {this.state.resetSuccessful === true &&
           <div className="PasswordReset__resetSuccess" style={formSuccessStyle}>
             Vielen Dank, du kannst dich nun mit deinem neuen Passwort einloggen.<br />
             <Link to="/">
-              <FlatButton label="Zum Login" style={{ marginTop: '20px' }} />
+              <Button style={{ marginTop: '20px' }}>Zum Login</Button>
             </Link>
           </div>}
 

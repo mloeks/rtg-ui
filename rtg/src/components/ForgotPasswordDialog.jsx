@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, Dialog, FlatButton, TextField } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import AuthService from '../service/AuthService';
 
@@ -81,21 +84,20 @@ class ForgotPasswordDialog extends Component {
   render() {
     const actions = [];
     if (this.state.passwordReminderSuccessful) {
-      actions.push(<FlatButton
-        label="Schließen"
-        primary
-        onClick={this.props.onClose}
-      />);
+      actions.push(<Button color="primary" onClick={this.props.onClose}>
+        Schließen
+      </Button>);
     } else {
-      actions.push(<FlatButton label="Abbrechen" secondary onClick={this.props.onClose} />);
-      actions.push(<FlatButton
-        label="Abschicken"
-        primary
+      actions.push(<Button color="secondary" onClick={this.props.onClose}>Abbrechen</Button>);
+      actions.push(<Button
+        color="primary"
         disabled={
           !this.state.email || this.state.email.length === 0 || this.state.requestInProgress
         }
         onClick={this.handleSubmit}
-      />);
+      >
+        Abschicken
+      </Button>);
     }
 
     const titleDiv = (

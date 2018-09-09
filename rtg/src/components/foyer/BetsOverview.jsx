@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import RtgSeparator from '../RtgSeparator';
 import { purple } from '../../theme/RtgTheme';
@@ -27,7 +27,7 @@ const BetsOverview = () => {
         Die ausführlichen Regeln kannst du dir hier noch einmal genauer durchlesen:
         <br />
         <Link to="/rules">
-          <FlatButton primary label="Regeln und Punktevergabe" style={{ margin: '10px 0' }} />
+          <Button color="primary" style={{ margin: '10px 0' }}>Regeln und Punktevergabe</Button>
         </Link>
       </p>
 
@@ -43,11 +43,9 @@ const BetsOverview = () => {
               {openBetsCount === 1 ? 'offenen Tipp' : 'offene Tipps'}.
               <br />
               <Link to="/bets">
-                <FlatButton
-                  primary
-                  label={`Jetzt ${openBetsCount === 1 ? 'Tipp' : 'Tipps'} abgeben`}
-                  style={{ margin: '10px 0' }}
-                />
+                <Button color="primary" style={{ margin: '10px 0' }}>
+                  {`Jetzt ${openBetsCount === 1 ? 'Tipp' : 'Tipps'} abgeben`}
+                </Button>
               </Link>
             </p>}
             {openBetsCount === 0 &&

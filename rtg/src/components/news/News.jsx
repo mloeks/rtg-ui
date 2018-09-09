@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { CircularProgress, FlatButton, FloatingActionButton } from 'material-ui';
-import { ContentAdd } from 'material-ui/svg-icons/index';
-import ChatBubbleOutline from 'material-ui/svg-icons/communication/chat-bubble-outline';
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import AddIcon from '@material-ui/icons/Add';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
@@ -140,20 +141,21 @@ class News extends Component {
 
         {(!this.state.loading && !this.state.loadingError) && this.state.posts.length === 0 &&
           <div className="News__empty-state" style={{ color: lightGrey }}>
-            <ChatBubbleOutline color={lightGrey} style={{ height: 80, width: 80 }} /><br />
+            <ChatBubbleOutlineIcon color={lightGrey} style={{ height: 80, width: 80 }} /><br />
             Keine Neuigkeiten.
           </div>}
 
         {(this.state.offset < this.state.count) &&
-          <FlatButton
+          <Button
             disabled={this.state.loading}
-            primary
-            label={`${numberOfFurtherPosts} weitere Neuigkeit${numberOfFurtherPosts > 1 ? 'en' : ''} laden`}
+            color="primary"
             labelPosition="before"
-            icon={<KeyboardArrowDown />}
+            icon={<KeyboardArrowDownIcon />}
             onClick={this.loadPosts}
             labelStyle={{ fontSize: '14px' }}
-          />}
+          >
+            {`${numberOfFurtherPosts} weitere Neuigkeit${numberOfFurtherPosts > 1 ? 'en' : ''} laden`}
+          </Button>}
         <br />
 
         {this.state.loading && <CircularProgress style={{ margin: '20px auto' }}/>}
@@ -167,9 +169,7 @@ class News extends Component {
 
         {(AuthService.isAdmin() && !this.state.addingPost) &&
           <div className="News__add-button">
-            <FloatingActionButton onClick={this.handleAddNews}>
-              <ContentAdd />
-            </FloatingActionButton>
+            <Button variant="fab" onClick={this.handleAddNews}><AddIcon /></Button>
           </div>}
       </section>
     );

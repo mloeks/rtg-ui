@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress } from 'material-ui';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ProfileFormDisplay from './ProfileFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';

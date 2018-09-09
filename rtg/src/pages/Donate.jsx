@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
@@ -39,7 +39,7 @@ const Donate = () => (
       <h4>Vielen herzlichen Dank für Deine Unterstützung!</h4>
 
       <Link to="/">
-        <FlatButton primary label="Zurück" style={{ marginBottom: '15px' }} />
+        <Button color="primary" style={{ marginBottom: '15px' }}>Zurück</Button>
       </Link>
     </section>
   </Page>

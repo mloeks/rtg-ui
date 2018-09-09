@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardHeader } from 'material-ui';
-import CheckCircle from 'material-ui/svg-icons/action/check-circle';
-import Close from 'material-ui/svg-icons/navigation/close';
-import Error from 'material-ui/svg-icons/alert/error';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { lightenDarkenColor } from '../service/ColorHelper';
 
@@ -18,9 +19,9 @@ class Notification extends Component {
   static getIconByType(type, color) {
     const iconStyle = { width: '30px', height: '30px' };
     if (type === NotificationType.SUCCESS) {
-      return <CheckCircle color={color} style={iconStyle} />;
+      return <CheckCircleIcon color={color} style={iconStyle} />;
     }
-    return <Error color={color} style={iconStyle} />;
+    return <ErrorIcon color={color} style={iconStyle} />;
   }
 
   constructor(props) {
@@ -61,7 +62,7 @@ class Notification extends Component {
         }}
       >
         <CardHeader
-          closeIcon={<Close onClick={this.handleClose} />}
+          closeIcon={<CloseIcon onClick={this.handleClose} />}
           title={this.props.title}
           showExpandableButton={this.props.dismissable}
           subtitle={this.props.subtitle}

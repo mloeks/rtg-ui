@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, CircularProgress, FlatButton, Slider } from 'material-ui';
-import { teal400 } from 'material-ui/styles/colors';
-import Person from 'material-ui/svg-icons/social/person';
-import ImageRotateLeft from 'material-ui/svg-icons/image/rotate-left';
-import ImageRotateRight from 'material-ui/svg-icons/image/rotate-right';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Slider from '@material-ui/lab/Slider';
+import teal from '@material-ui/core/colors/teal';
+import PersonIcon from '@material-ui/icons/Person';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import RotateRightIcon from '@material-ui/icons/RotateRight';
 import AvatarEditor from 'react-avatar-editor';
 import Notification, { NotificationType } from '../Notification';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -25,16 +28,13 @@ const EditingActions = props => (
     noValidate
   >
     <div className="BigEditableAvatar__rotation-wrapper">
-      <ImageRotateRight color={purple} onClick={props.onRotateRight} />
-      <ImageRotateLeft color={purple} onClick={props.onRotateLeft} />
+      <RotateRightIcon color={purple} onClick={props.onRotateRight} />
+      <RotateLeftIcon color={purple} onClick={props.onRotateLeft} />
     </div>
     <div className="BigEditableAvatar__slider-wrapper">
-      <FlatButton
-        primary
-        style={{ minWidth: '10px' }}
-        onClick={props.onZoomOut}
-      >–
-      </FlatButton>
+      <Button color="primary" style={{ minWidth: '10px' }} onClick={props.onZoomOut}>
+        –
+      </Button>
 
       <Slider
         className="BigEditableAvatar__slider"
@@ -45,16 +45,13 @@ const EditingActions = props => (
         onChange={props.onZoomChange}
       />
 
-      <FlatButton
-        primary
-        style={{ minWidth: '10px' }}
-        onClick={props.onZoomIn}
-      >+
-      </FlatButton>
+      <Button color="primary" style={{ minWidth: '10px' }} onClick={props.onZoomIn}>
+        +
+      </Button>
     </div>
 
-    <FlatButton type="submit" label="Speichern" primary />
-    <FlatButton label="Abbrechen" onClick={props.onCancel} />
+    <Button type="submit" color="primary">Speichern</Button>
+    <Button onClick={props.onCancel}>Abbrechen</Button>
   </form>
 );
 
@@ -241,7 +238,7 @@ class BigEditableAvatar extends Component {
           height: 'auto',
         }}
       >
-        <Person
+        <PersonIcon
           color="white"
           style={{ pointerEvents: 'none', width: '100%', height: '100%' }}
         />
@@ -278,7 +275,7 @@ class BigEditableAvatar extends Component {
               <label htmlFor="fileElem">
                 <Avatar
                   className="BigEditableAvatar__avatar-elem"
-                  backgroundColor={!this.state.avatarUrl ? teal400 : null}
+                  backgroundColor={!this.state.avatarUrl ? teal['400'] : null}
                   icon={!this.state.avatarUrl ? noAvatarPlaceholder : null}
                   src={this.state.avatarUrl ? `${API_BASE_URL}/media/${this.state.avatarUrl}` : null}
                   size={this.avatarSize}

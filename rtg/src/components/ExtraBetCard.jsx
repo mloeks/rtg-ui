@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card';
-import { MenuItem, RaisedButton, SelectField } from 'material-ui';
-import Star from 'material-ui/svg-icons/toggle/star';
-import Alarm from 'material-ui/svg-icons/action/alarm';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import StarIcon from '@material-ui/icons/Star';
+import AlarmIcon from '@material-ui/icons/Alarm';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -139,11 +144,11 @@ export default class ExtraBetCard extends Component {
     return (
       <div className="ExtraBetCard__subtitle">
         <span className="ExtraBetCard__subtitle-points">
-          <Star style={iconStyle} color={grey} />{this.props.points} Punkte
+          <StarIcon style={iconStyle} color={grey} />{this.props.points} Punkte
         </span>
         {this.props.open &&
           <span className="ExtraBetCard__subtitle-deadline">
-            <br /><Alarm style={iconStyle} color={error} />Noch {this.state.remainingTime}
+            <br /><AlarmIcon style={iconStyle} color={error} />Noch {this.state.remainingTime}
           </span>}
       </div>
     );
@@ -160,7 +165,7 @@ export default class ExtraBetCard extends Component {
 
     return (
       <Card className="ExtraBetCard">
-        <CardTitle
+        <CardHeader
           title={this.props.name}
           subtitle={this.createSubtitleDiv()}
         />
@@ -172,7 +177,7 @@ export default class ExtraBetCard extends Component {
           </span>
         </div>}
 
-        {!this.props.open && <CardText style={{ padding: 0 }}>{resultInfo}</CardText>}
+        {!this.props.open && <CardContent style={{ padding: 0 }}>{resultInfo}</CardContent>}
 
         {this.state.loadingError &&
           <div className="ExtraBetCard__loading-error">Fehler beim Laden.</div>}
@@ -184,7 +189,7 @@ export default class ExtraBetCard extends Component {
               className="ExtraBetCard__actions"
               style={{ padding: '0 20px 10px' }}
             >
-              <SelectField
+              <Select
                 floatingLabelText="Dein Tipp"
                 maxHeight={300}
                 value={userResultBet}
@@ -195,15 +200,17 @@ export default class ExtraBetCard extends Component {
                 <MenuItem value={null} primaryText="" />
                 {this.props.choices
                   .map(choice => <MenuItem key={choice} value={choice} primaryText={choice} />)}
-              </SelectField>
+              </Select>
               <div>
-                <RaisedButton
-                  label="Speichern"
-                  primary
+                <Button
+                  variant="raised"
+                  color="primary"
                   onClick={() => this.handleSave(betsStatusContext)}
                   disabled={this.state.isSaving || !this.state.hasChanges}
                   style={{ margin: '0 15px' }}
-                />
+                >
+                  Speichern
+                </Button>
               </div>
             </CardActions>
           )}

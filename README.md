@@ -4,6 +4,13 @@
 
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
+    * Last status: Replaced all imports except for muiTheme
+
+### Follow-up Material UI upgrade
+
+* Is Webpack able to correctly tree shake multi-component imports of material-ui?
+    * For now, I changed it to use individual imports for each component
+    * Maybe analyze bundle size with webpack bundle analyzer
 
 ## Toolchain
 

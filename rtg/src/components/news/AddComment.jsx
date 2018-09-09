@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, TextField } from 'material-ui';
-import ContentSend from 'material-ui/svg-icons/content/send';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import SendIcon from '@material-ui/icons/Send';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
@@ -89,20 +90,23 @@ class AddComment extends Component {
           />
           <IconButton
             type="submit"
-            disabled={this.state.saving || this.state.content.length === 0 ||
-              this.state.contentError.length > 0}
+            disabled={this.state.saving || this.state.content.length === 0
+            || this.state.contentError.length > 0}
             style={{ paddingRight: 0 }}
-          ><ContentSend color={purple} />
+          >
+            <SendIcon color={purple} />
           </IconButton>
         </form>
 
-        {(this.state.savingError && this.state.content.length > 0) &&
-          <Notification
-            type={NotificationType.ERROR}
-            dismissable
-            title="Fehler beim Speichern"
-            subtitle="Bitte versuche es erneut."
-          />}
+        {(this.state.savingError && this.state.content.length > 0)
+          && (
+            <Notification
+              type={NotificationType.ERROR}
+              dismissable
+              title="Fehler beim Speichern"
+              subtitle="Bitte versuche es erneut."
+            />
+          )}
       </Fragment>
     );
   }

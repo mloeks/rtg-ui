@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { TextField } from 'material-ui';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import TextField from '@material-ui/core/TextField';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { lightGrey, purple } from '../theme/RtgTheme';
 
 class VisiblePasswordField extends Component {
@@ -35,8 +35,8 @@ class VisiblePasswordField extends Component {
           {...this.props}
         />
         {this.state.visible ?
-          <VisibilityOff {...iconProps} /> :
-          <Visibility {...iconProps} />}
+          <VisibilityOffIcon {...iconProps} /> :
+          <VisibilityIcon {...iconProps} />}
       </div>
     );
   }

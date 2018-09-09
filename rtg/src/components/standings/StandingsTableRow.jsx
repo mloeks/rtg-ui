@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { TableRow, TableRowColumn } from 'material-ui';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import { betColumnStyle, betStatColumnStyle, pointsColumnStyle, rankColumnStyle } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
@@ -36,10 +37,10 @@ class StandingsTableRow extends Component {
           style={{ height: rowHeight }}
           className={`StandingsTableRow ${this.props.self ? 'StandingsTableRow--self' : null}`}
         >
-          <TableRowColumn style={{ ...rankColumnStyle, height: rowHeight }}>
+          <TableCell style={{ ...rankColumnStyle, height: rowHeight }}>
             {this.props.rank}
-          </TableRowColumn>
-          <TableRowColumn style={{ height: rowHeight, padding: 0 }}>
+          </TableCell>
+          <TableCell style={{ height: rowHeight, padding: 0 }}>
             <div
               role={this.props.showUserInfoOnClick ? 'button' : null}
               className="TableRowColumn__user-wrapper"
@@ -74,7 +75,7 @@ class StandingsTableRow extends Component {
               >{this.props.username}
               </span>
             </div>
-          </TableRowColumn>
+          </TableCell>
 
           {this.props.showBetColumn &&
             <ColouredResultBetColumn
@@ -89,32 +90,32 @@ class StandingsTableRow extends Component {
 
           {this.props.showStatsColumns &&
             <Fragment>
-              <TableRowColumn style={betStatColumnStyle}>{this.props.noVolltreffer}</TableRowColumn>
-              <TableRowColumn
+              <TableCell style={betStatColumnStyle}>{this.props.noVolltreffer}</TableCell>
+              <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={betStatColumnStyle}
               >{this.props.noDifferenz}
-              </TableRowColumn>
-              <TableRowColumn
+              </TableCell>
+              <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={betStatColumnStyle}
               >{this.props.noRemisTendenz}
-              </TableRowColumn>
-              <TableRowColumn
+              </TableCell>
+              <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={betStatColumnStyle}
               >{this.props.noTendenz}
-              </TableRowColumn>
-              <TableRowColumn
+              </TableCell>
+              <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={betStatColumnStyle}
               >{this.props.noNiete}
-              </TableRowColumn>
+              </TableCell>
             </Fragment>}
 
-          <TableRowColumn style={{ ...pointsColumnStyle, height: rowHeight }}>
+          <TableCell style={{ ...pointsColumnStyle, height: rowHeight }}>
             {this.props.points}
-          </TableRowColumn>
+          </TableCell>
         </TableRow>
       </Fragment>
     );

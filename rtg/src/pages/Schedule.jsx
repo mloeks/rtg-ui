@@ -2,9 +2,12 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
-import { Divider, DropDownMenu, FloatingActionButton, MenuItem } from 'material-ui';
-import { ContentAdd } from 'material-ui/svg-icons/index';
-import AvNotInterested from 'material-ui/svg-icons/av/not-interested';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import AddIcon from '@material-ui/icons/Add';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
 import Page from './Page';
@@ -217,7 +220,7 @@ class Schedule extends Component {
             style={{ color: white, backgroundColor: darkGrey }}
           >
             <div className="SchedulePage__toolbar-title">Spiele wählen</div>
-            <DropDownMenu
+            <Select
               className="SchedulePage__toolbar-dropdown"
               anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedRoundIndex}
@@ -234,9 +237,9 @@ class Schedule extends Component {
                   style={{ textAlign: 'left' }}
                 />))
               }
-            </DropDownMenu>
+            </Select>
             {this.state.selectedRoundIndex === 'VOR' &&
-            <DropDownMenu
+            <Select
               className="SchedulePage__toolbar-dropdown"
               anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
               value={this.state.selectedGroupFilter}
@@ -261,7 +264,7 @@ class Schedule extends Component {
                   style={{ textAlign: 'left' }}
                 />))
               }
-            </DropDownMenu>}
+            </Select>}
           </section>
 
           {(AuthService.isAdmin() && this.state.addingGame) &&
@@ -281,7 +284,7 @@ class Schedule extends Component {
 
             {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
               <div className="SchedulePage__empty-state" style={{ color: lightGrey }}>
-                <AvNotInterested
+                <NotInterestedIcon
                   color={lightGrey}
                   style={{ height: 80, width: 80, marginBottom: 10 }}
                 /><br />Keine Spiele vorhanden.
@@ -303,9 +306,9 @@ class Schedule extends Component {
 
             {(AuthService.isAdmin() && !this.state.addingGame) &&
               <div className="SchedulePage__add-game-button">
-                <FloatingActionButton onClick={this.handleAddGame}>
-                  <ContentAdd />
-                </FloatingActionButton>
+                <Button variant="fab" onClick={this.handleAddGame}>
+                  <AddIcon />
+                </Button>
               </div>}
           </section>
         </section>

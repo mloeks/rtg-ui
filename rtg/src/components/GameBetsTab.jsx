@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import Alarm from 'material-ui/svg-icons/action/alarm';
-import AvNotInterested from 'material-ui/svg-icons/av/not-interested';
+import AlarmIcon from '@material-ui/icons/Alarm';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -144,7 +144,7 @@ class GameBetsTab extends Component {
   createDeadlineWithIcon(deadlineDate, readableDeadlineText) {
     return (
       <div className="GameBetsTab__deadline-separator">
-        <Alarm
+        <AlarmIcon
           className="GameBetsTab__deadline-separator-icon"
           color={this.props.muiTheme.palette.errorColor}
           style={{ width: 24, height: 24, marginRight: 5 }}
@@ -231,7 +231,7 @@ class GameBetsTab extends Component {
 
               {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
                 <div className="GameBetsTab__empty-state" style={{ color: lightGrey }}>
-                  <AvNotInterested
+                  <NotInterestedIcon
                     color={lightGrey}
                     style={{ height: 80, width: 80, marginBottom: 10 }}
                   /><br />Keine offenen Tipps vorhanden.

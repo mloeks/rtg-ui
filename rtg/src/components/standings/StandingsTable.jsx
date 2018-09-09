@@ -1,6 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
@@ -251,51 +256,51 @@ class StandingsTable extends Component {
           {(!this.state.loading && !this.state.loadingError) &&
             <Table className="StandingsTable__table" selectable={false}>
               {this.props.showTableHeader &&
-                <TableHeader
+                <TableHead
                   displaySelectAll={false}
                   adjustForCheckbox={false}
                   enableSelectAll={false}
                 >
                   <TableRow>
-                    <TableHeaderColumn style={rankColumnStyle}>Pl.</TableHeaderColumn>
-                    <TableHeaderColumn style={{ paddingLeft: '5px' }}>Username</TableHeaderColumn>
+                    <TableCell style={rankColumnStyle}>Pl.</TableCell>
+                    <TableCell style={{ paddingLeft: '5px' }}>Username</TableCell>
                     {this.props.showBetColumnForBettable !== -1 &&
-                      <TableHeaderColumn
+                      <TableCell
                         className="StandingsTable__bet-col"
                         style={{ ...betColumnStyle, ...this.props.betColumnStyle }}
                       >Tipp
-                      </TableHeaderColumn>
+                      </TableCell>
                     }
                     {this.props.showStatsColumns &&
                       <Fragment>
-                        <TableHeaderColumn style={betStatColumnStyle}>V</TableHeaderColumn>
-                        <TableHeaderColumn
+                        <TableCell style={betStatColumnStyle}>V</TableCell>
+                        <TableCell
                           className="StandingsTable__stat-col-desktop"
                           style={betStatColumnStyle}
                         >D
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
+                        </TableCell>
+                        <TableCell
                           className="StandingsTable__stat-col-desktop"
                           style={betStatColumnStyle}
                         >RT
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
+                        </TableCell>
+                        <TableCell
                           className="StandingsTable__stat-col-desktop"
                           style={betStatColumnStyle}
                         >T
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
+                        </TableCell>
+                        <TableCell
                           className="StandingsTable__stat-col-desktop"
                           style={betStatColumnStyle}
                         >N
-                        </TableHeaderColumn>
+                        </TableCell>
                       </Fragment>}
-                    <TableHeaderColumn
+                    <TableCell
                       style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
                     >Pkt.
-                    </TableHeaderColumn>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>}
+                </TableHead>}
 
               <TableBody showRowHover displayRowCheckbox={false}>
                 {displayedRows.map(row => (<StandingsTableRow

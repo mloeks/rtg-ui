@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { addMinutes, format, isAfter, isBefore } from 'date-fns';
-import { Avatar } from 'material-ui';
-import Person from 'material-ui/svg-icons/social/person';
+import Avatar from '@material-ui/core/Avatar';
+import PersonIcon from '@material-ui/icons/Person';
 import GameCardRibbon from './GameCardRibbon';
 import { white } from '../theme/RtgTheme';
 
@@ -53,7 +53,7 @@ const GameCardGameInfo = (props) => {
     <GameCardRibbon stateCssClass={getStateByResultBetType(props.resultBetType)}>
       <div className="GameCardGameInfo">
         <div className="GameCardGameInfo__userBet">
-          <Person
+          <PersonIcon
             style={{ width: '16px', height: '16px', marginTop: '2px' }}
             color={white}
           />&nbsp;{props.userBet || '-:-'}

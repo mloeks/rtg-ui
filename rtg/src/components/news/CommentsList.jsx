@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
@@ -86,11 +87,11 @@ class CommentsList extends Component {
           />}
 
 
-        {(this.state.collapsed && this.props.commentCount > 0) &&
-          <FlatButton
+        {(this.state.collapsed && this.props.commentCount > 0)
+        && (
+          <Button
             className="CommentsList__load-more-replies"
             fullWidth
-            label={CommentsList.getRepliesLabel(this.props.commentCount)}
             labelStyle={{ fontSize: '11px', fontWeight: 400, color: grey }}
             style={{
               backgroundColor: lightenDarkenColor(lightGrey, 55),
@@ -98,7 +99,10 @@ class CommentsList extends Component {
               lineHeight: '24px',
             }}
             onClick={() => this.setState({ collapsed: false })}
-          />}
+          >
+            {CommentsList.getRepliesLabel(this.props.commentCount)}
+          </Button>
+        )}
 
         {(!this.state.loading && !this.state.collapsed && !this.state.loadingError) &&
           comments.map(comment => (

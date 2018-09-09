@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Prompt } from 'react-router-dom';
-import { IconButton } from 'material-ui';
-import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { viewportW } from 'verge';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -434,7 +434,8 @@ class CurrentGames extends Component {
               onClick={this.scrollBackward}
               style={{ left: 0, margin: '4px 0 0 -5px', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
-            ><HardwareKeyboardArrowLeft color={lightGrey} hoverColor={purple} />
+            >
+              <KeyboardArrowLeftIcon color={lightGrey} hoverColor={purple} />
             </IconButton>}
           {this.mayScrollForward() &&
             <IconButton
@@ -443,7 +444,8 @@ class CurrentGames extends Component {
               onClick={this.scrollForward}
               style={{ right: 0, margin: '4px -5px 0 0', ...scrollButtonStyle }}
               iconStyle={scrollButtonIconStyle}
-            ><HardwareKeyboardArrowRight color={lightGrey} hoverColor={purple} />
+            >
+              <KeyboardArrowRightIcon color={lightGrey} hoverColor={purple} />
             </IconButton>}
 
           <UserDetailsContext.Consumer>

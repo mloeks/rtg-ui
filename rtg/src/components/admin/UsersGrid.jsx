@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import UserCard from './UserCard';
 import Notification, { NotificationType } from '../Notification';
-import { CircularProgress } from 'material-ui';
 import UsersGridToolbar from './UsersGridToolbar';
 import { grey } from '../../theme/RtgTheme';
 

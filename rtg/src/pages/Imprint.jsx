@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import headingImg from '../theme/img/headings/neuschwanstein.jpg';
@@ -30,7 +30,7 @@ const Imprint = () => (
         Feedback, Anregungen, Kritik, Fragen usw. jeglicher Art gerne
         jederzeit an das Königshaus.<br />
         <Link to="/contact">
-          <FlatButton label="Zum Kontaktformular" primary style={{ marginTop: '20px' }} />
+          <Button color="primary" style={{ marginTop: '20px' }}>Zum Kontaktformular</Button>
         </Link>
       </p>
 

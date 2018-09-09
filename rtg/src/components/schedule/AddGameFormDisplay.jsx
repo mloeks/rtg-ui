@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  CircularProgress,
-  DatePicker,
-  FlatButton,
-  MenuItem,
-  Paper,
-  SelectField,
-  Subheader,
-  TimePicker
-} from 'material-ui';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DatePicker from '@material-ui/core/DatePicker';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import TimePicker from '@material-ui/core/TimePicker';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import Notification, { NotificationType } from '../Notification';
 
@@ -43,7 +41,7 @@ const AddGameFormDisplay = (props) => {
       <Paper zDepth={3} style={{ padding: 15 }}>
         <h3 style={{ margin: 0 }}>Neues Spiel hinzufügen</h3>
 
-        <SelectField
+        <Select
           floatingLabelText="Runde"
           fullWidth
           value={props.round}
@@ -54,10 +52,10 @@ const AddGameFormDisplay = (props) => {
           <MenuItem value={null} primaryText="" />
           {props.rounds.map(round =>
             <MenuItem key={`round-${round.id}`} value={round.id} primaryText={round.name} />)}
-        </SelectField>
+        </Select>
         <br />
 
-        {selectedRound && !selectedRound.is_knock_out && <SelectField
+        {selectedRound && !selectedRound.is_knock_out && <Select
           floatingLabelText="Gruppe"
           fullWidth
           value={props.group}
@@ -68,10 +66,10 @@ const AddGameFormDisplay = (props) => {
           <MenuItem value={null} primaryText="" />
           {props.groups.map(group =>
             <MenuItem key={`group-${group.id}`} value={group.id} primaryText={group.name} />)}
-        </SelectField>}
+        </Select>}
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <SelectField
+          <Select
             floatingLabelText="Team 1"
             value={props.team1}
             errorText={props.team1Error}
@@ -82,9 +80,9 @@ const AddGameFormDisplay = (props) => {
             <MenuItem value={null} primaryText="" />
             {props.teams.map(team =>
               <MenuItem key={`team1-${team.id}`} value={team.id} primaryText={team.name} />)}
-          </SelectField>
+          </Select>
           <span style={{ margin: '25px 10px 0' }}>vs.</span>
-          <SelectField
+          <Select
             floatingLabelText="Team 2"
             value={props.team2}
             errorText={props.team2Error}
@@ -95,11 +93,11 @@ const AddGameFormDisplay = (props) => {
             <MenuItem value={null} primaryText="" />
             {props.teams.map(team =>
               <MenuItem key={`team2-${team.id}`} value={team.id} primaryText={team.name} />)}
-          </SelectField>
+          </Select>
         </div>
         <br />
 
-        <Subheader style={{ paddingLeft: 0 }}>Anstoß</Subheader>
+        <ListSubheader style={{ paddingLeft: 0 }}>Anstoß</ListSubheader>
         <div style={{ display: 'flex' }}>
           <DatePicker
             hintText="Datum"
@@ -123,7 +121,7 @@ const AddGameFormDisplay = (props) => {
           />
         </div>
 
-        <Subheader style={{ paddingLeft: 0 }}>Deadline</Subheader>
+        <ListSubheader style={{ paddingLeft: 0 }}>Deadline</ListSubheader>
         <div style={{ display: 'flex' }}>
           <DatePicker
             hintText="Datum"
@@ -147,7 +145,7 @@ const AddGameFormDisplay = (props) => {
           />
         </div>
 
-        <SelectField
+        <Select
           floatingLabelText="Austragungsort"
           fullWidth
           value={props.venue}
@@ -157,29 +155,27 @@ const AddGameFormDisplay = (props) => {
           menuItemStyle={{ textAlign: 'left' }}
         >
           <MenuItem value={null} primaryText="" />
-          {props.venues.map(venue =>
-            <MenuItem key={`round-${venue.id}`} value={venue.id} primaryText={venue.city} />)}
-        </SelectField>
+          {props.venues.map(venue => <MenuItem key={`round-${venue.id}`} value={venue.id} primaryText={venue.city} />)}
+        </Select>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
-          <FlatButton
-            type="submit"
-            label="Spiel anlegen"
-            primary
-            disabled={props.savingInProgress}
-          />
+          <Button color="secondary" onClick={props.onCancel}>Abbrechen</Button>
+          <Button color="primary" type="submit" disabled={props.savingInProgress}>
+            Spiel anlegen
+          </Button>
         </div>
 
         <div style={{ marginTop: 10, textAlign: 'center' }}>
           {props.savingInProgress &&
             <CircularProgress size={30} thickness={2.5} />}
-          {props.savingError === true &&
-            <Notification
-              type={NotificationType.ERROR}
-              title="Das hat leider nicht geklappt"
-              subtitle={props.nonFieldError || 'Bitte überprüfe Deine Angaben.'}
-            />}
+          {props.savingError === true
+            && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Das hat leider nicht geklappt"
+                subtitle={props.nonFieldError || 'Bitte überprüfe Deine Angaben.'}
+              />
+            )}
         </div>
       </Paper>
     </form>

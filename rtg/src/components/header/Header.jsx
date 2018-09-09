@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { scrollY } from 'verge';
-import AppBar from 'material-ui/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';

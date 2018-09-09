@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Dialog, FlatButton, TextField } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
@@ -103,13 +105,14 @@ class RegisterDialog extends Component {
     }
 
     const actions = [
-      <FlatButton label="Abbrechen" secondary onClick={this.props.onCancel} />,
-      <FlatButton
-        label="Registrieren"
-        primary
+      <Button color="secondary" onClick={this.props.onCancel}>Abbrechen</Button>,
+      <Button
+        color="primary"
         disabled={!this.state.hasChanges}
         onClick={this.handleSubmit}
-      />,
+      >
+        Registrieren
+      </Button>,
     ];
 
     return (

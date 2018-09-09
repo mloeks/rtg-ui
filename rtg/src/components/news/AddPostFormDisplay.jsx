@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, CircularProgress, FlatButton, Paper, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
-import AlertError from 'material-ui/svg-icons/alert/error';
-import NavigationCheck from 'material-ui/svg-icons/navigation/check';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Paper from '@material-ui/core/Paper';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import TextField from '@material-ui/core/TextField';
+import ErrorIcon from '@material-ui/icons/Error';
+import CheckIcon from '@material-ui/icons/Check';
 import Notification, { NotificationType } from '../Notification';
 import { error, success } from '../../theme/RtgTheme';
 
@@ -69,14 +75,14 @@ const AddPostFormDisplay = (props) => {
         <div className="AddPostForm__draft-info">
           {props.draftSaved &&
             <span className="AddPostForm__draft-info--success">
-              <NavigationCheck style={{ height: 20, width: 20, color: success }} />&nbsp;
-              Entwurf gespeichert.
+              <CheckIcon style={{ height: 20, width: 20, color: success }} />
+              &nbsp;Entwurf gespeichert.
             </span>}
           {props.draftSaving && 'Speichern...'}
           {props.draftSavingError &&
             <span className="AddPostForm__draft-info--error">
-              <AlertError style={{ height: 20, width: 20, color: error }} />&nbsp;
-              Fehler beim Zwischenspeichern!
+              <ErrorIcon style={{ height: 20, width: 20, color: error }} />
+              &nbsp;Fehler beim Zwischenspeichern!
             </span>}
         </div>
         <br />
@@ -92,55 +98,53 @@ const AddPostFormDisplay = (props) => {
           onCheck={(e, v) => props.onFieldChange('sendMail', v)}
         /><br />
 
-        <RadioButtonGroup
+        <RadioGroup
           className="AddPostForm__mail-choices-row"
           name="mailChoices"
           defaultSelected="sendMailToSubscribers"
           onChange={onMailChoiceChanged}
         >
-          <RadioButton
+          <FormControlLabel
             disabled={!props.sendMail}
             label="... an alle Abonnenten"
             value="sendMailToSubscribers"
           />
-          <RadioButton
+          <FormControlLabel
             disabled={!props.sendMail}
             label="... an alle aktiven User"
             value="sendMailToActive"
           />
-          <RadioButton
+          <FormControlLabel
             disabled={!props.sendMail}
             label="... nur an alle inaktiven User"
             value="sendMailToInactive"
           />
-          <RadioButton
+          <FormControlLabel
             disabled={!props.sendMail}
             label="... an alle bekannten User (aktiv & inaktiv)"
             value="sendMailToAll"
           />
-        </RadioButtonGroup>
+        </RadioGroup>
 
         <br /><br />
 
         <div className="AddPostForm__button-row">
-          <FlatButton label="Abbrechen" secondary onClick={props.onCancel} />
-          <FlatButton
-            type="submit"
-            label="Absenden"
-            primary
-            disabled={props.savingInProgress || props.draftSaving}
-          />
+          <Button color="secondary" onClick={props.onCancel}>Abbrechen</Button>
+          <Button type="submit" color="primary" disabled={props.savingInProgress || props.draftSaving}>
+            Absenden
+          </Button>
         </div>
 
         <div className="AddPostForm__feedback">
-          {props.savingInProgress &&
-            <CircularProgress size={30} thickness={2.5} />}
-          {props.savingError === true &&
-            <Notification
-              type={NotificationType.ERROR}
-              title="Das hat leider nicht geklappt"
-              subtitle={getSuitableSavingErrorSubtitle()}
-            />}
+          {props.savingInProgress && <CircularProgress size={30} thickness={2.5} />}
+          {props.savingError === true
+            && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Das hat leider nicht geklappt"
+                subtitle={getSuitableSavingErrorSubtitle()}
+              />
+            )}
         </div>
       </Paper>
     </form>

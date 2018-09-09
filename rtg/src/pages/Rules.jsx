@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import RtgSeparator from '../components/RtgSeparator';
@@ -98,7 +98,7 @@ const Rules = () => (
       </p>
 
       <Link to="/">
-        <FlatButton primary label="Zurück" style={{ marginTop: '30px' }} />
+        <Button color="primary" style={{ marginTop: '30px' }}>Zurück</Button>
       </Link>
     </section>
   </Page>

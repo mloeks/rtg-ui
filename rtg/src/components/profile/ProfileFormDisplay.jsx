@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RaisedButton, TextField, Toggle } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
 
 import './ProfileForm.css';
 
@@ -30,14 +32,16 @@ const ProfileFormDisplay = props => (
       value={props.email}
       errorText={props.emailError}
       onChange={(e, v) => props.onFieldChange('email', v)}
-    /><br />
+    />
+    <br />
     <TextField
       floatingLabelText="Weitere E-Mail (nur für News)"
       fullWidth
       value={props.email2}
       errorText={props.email2Error}
       onChange={(e, v) => props.onFieldChange('email2', v)}
-    /><br />
+    />
+    <br />
     <TextField
       floatingLabelText="Ein Satz über Dich / Euch"
       fullWidth
@@ -45,36 +49,44 @@ const ProfileFormDisplay = props => (
       value={props.about}
       errorText={props.aboutError}
       onChange={(e, v) => props.onFieldChange('about', v)}
-    /><br />
+    />
+    <br />
     <TextField
       floatingLabelText="Wohnort"
       fullWidth
       value={props.location}
       errorText={props.locationError}
       onChange={(e, v) => props.onFieldChange('location', v)}
-    /><br /><br />
+    />
+    <br />
+    <br />
 
-    <Toggle
+    <Switch
       label="Tägliche News per E-Mail"
       labelPosition="right"
       toggled={props.dailyEmails}
       onToggle={(e, v) => props.onFieldChange('dailyEmails', v)}
-    /><br />
-    <Toggle
+    />
+    <br />
+    <Switch
       label="Tipperinnerungen per E-Mail"
       labelPosition="right"
       toggled={props.reminderEmails}
       onToggle={(e, v) => props.onFieldChange('reminderEmails', v)}
-    /><br /><br />
+    />
+    <br />
+    <br />
 
     <div className="ProfileForm__button-wrapper">
-      <RaisedButton
-        label={props.isSaving ? 'Speichern...' : 'Änderungen speichern'}
+      <Button
+        variant="raised"
         type="submit"
-        primary
+        color="primary"
         disabled={props.isSaving || props.formHasErrors}
         style={{ width: 250 }}
-      />
+      >
+        {props.isSaving ? 'Speichern...' : 'Änderungen speichern'}
+      </Button>
     </div>
   </div>
 );

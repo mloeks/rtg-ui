@@ -1,8 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardActions, CardText, CardTitle, FlatButton, ListItem } from 'material-ui';
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import EditorModeComment from 'material-ui/svg-icons/editor/mode-comment';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import ListItem from '@material-ui/core/ListItem';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import ModeCommentIcon from '@material-ui/icons/ModeComment';
 import {
   differenceInMinutes,
   differenceInSeconds,
@@ -142,7 +147,7 @@ class Post extends Component {
         expanded={this.state.expanded}
         containerStyle={{ paddingBottom: 0 }}
       >
-        <CardTitle
+        <CardHeader
           className="Post__card-title"
           title={this.props.post.title}
           style={{ backgroundColor: this.randomPostColour }}
@@ -155,7 +160,7 @@ class Post extends Component {
         />
 
         {this.props.post &&
-          <CardText
+          <CardContent
             className={`Post__content ${this.state.contentWrappedForLength ? 'Post__content--wrapped' : ''}`}
             style={{
               backgroundColor: 'white',
@@ -175,16 +180,17 @@ class Post extends Component {
             />
             {this.state.contentWrappedForLength &&
               <div className="Post__content-show-all">
-                <FlatButton
-                  primary
-                  label="Alles lesen"
+                <Button
+                  color="primary"
                   labelPosition="before"
-                  icon={<KeyboardArrowDown />}
+                  icon={<KeyboardArrowDownIcon />}
                   onClick={this.showAllContent}
                   labelStyle={{ fontSize: '12px' }}
-                />
+                >
+                  Alles lesen
+                </Button>
               </div>}
-          </CardText>}
+          </CardContent>}
 
         <CardActions
           className="Post__card-actions"
@@ -225,11 +231,10 @@ class Post extends Component {
                 onClick={this.showUserDetailsPopover}
                 style={{ left: 0, top: 0 }}
               />}
-            rightIcon={<FlatButton
+            rightIcon={<Button
               disabled={this.state.commentCount === 0}
-              label={Post.getCommentsLabel(this.state.commentCount)}
               labelPosition="before"
-              icon={<EditorModeComment color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
+              icon={<ModeCommentIcon color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
               onClick={this.toggleExpanded}
               style={{
                 color: grey,
@@ -241,7 +246,9 @@ class Post extends Component {
                 minWidth: '10px',
                 width: 'auto',
               }}
-            />}
+            >
+              {Post.getCommentsLabel(this.state.commentCount)}
+            </Button>}
             style={{ padding: '0 0 0 50px' }}
           />
           <AddComment
@@ -251,7 +258,7 @@ class Post extends Component {
           />
         </CardActions>
 
-        <CardText className="Post__comments" expandable>
+        <CardContent className="Post__comments" expandable>
           <CommentsList
             hierarchyLevel={0}
             postId={this.props.post.id}
@@ -261,13 +268,14 @@ class Post extends Component {
             onCommentsLoaded={comments => this.setState({ comments })}
           />
           <div style={{ textAlign: 'center' }}>
-            <FlatButton
-              label="Zuklappen"
+            <Button
               labelStyle={{ color: grey, fontSize: '12px', fontWeight: 400 }}
               onClick={this.toggleExpanded}
-            />
+            >
+              Zuklappen
+            </Button>
           </div>
-        </CardText>
+        </CardContent>
       </Card>
     );
   }

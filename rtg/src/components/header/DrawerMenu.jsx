@@ -1,12 +1,15 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Badge, Divider, Drawer, MenuItem } from 'material-ui';
-import ActionSettings from 'material-ui/svg-icons/action/settings';
-import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
-import Home from 'material-ui/svg-icons/action/home';
-import List from 'material-ui/svg-icons/action/list';
-import Today from 'material-ui/svg-icons/action/today';
-import TrendingUp from 'material-ui/svg-icons/action/trending-up';
+import Badge from '@material-ui/core/Badge';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import MenuItem from '@material-ui/core/MenuItem';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeIcon from '@material-ui/icons/Home';
+import ListIcon from '@material-ui/icons/List';
+import TodayIcon from '@material-ui/icons/Today';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Link } from 'react-router-dom';
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
@@ -68,29 +71,31 @@ const DrawerMenu = (props) => {
       {!AuthService.getHasPaid() && <Divider />}
 
       <Link to="/foyer">
-        <MenuItem primaryText="Foyer" leftIcon={<Home />} />
+        <MenuItem primaryText="Foyer" leftIcon={<HomeIcon />} />
       </Link>
       <Link to="/schedule">
-        <MenuItem primaryText="Spielplan" leftIcon={<Today />} />
+        <MenuItem primaryText="Spielplan" leftIcon={<TodayIcon />} />
       </Link>
       <Link to="/standings">
-        <MenuItem primaryText="Spielstand" leftIcon={<List />} />
+        <MenuItem primaryText="Spielstand" leftIcon={<ListIcon />} />
       </Link>
       <Link to="/bets">
         <MenuItem
           primaryText={openBetsBadge('Tipps', props.openBetsCount)}
-          leftIcon={<TrendingUp />}
+          leftIcon={<TrendingUpIcon />}
         />
       </Link>
 
       <Divider />
 
-      {AuthService.isAdmin() &&
-        <Link to="/admin/users">
-          <MenuItem primaryText="Benutzerverwaltung" leftIcon={<ActionSettings />} />
-        </Link>}
+      {AuthService.isAdmin()
+        && (
+          <Link to="/admin/users">
+            <MenuItem primaryText="Benutzerverwaltung" leftIcon={<SettingsIcon />} />
+          </Link>
+        )}
 
-      <MenuItem primaryText="Ausloggen" leftIcon={<ActionExitToApp />} onClick={props.onLogout} />
+      <MenuItem primaryText="Ausloggen" leftIcon={<ExitToAppIcon />} onClick={props.onLogout} />
     </Drawer>);
 };
 

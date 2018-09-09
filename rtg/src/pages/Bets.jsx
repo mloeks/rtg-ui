@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Prompt } from 'react-router-dom';
-import { Tab, Tabs } from 'material-ui/Tabs';
-import { Badge } from 'material-ui';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Badge from '@material-ui/core/Badge';
 import Page from './Page';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import BigPicture from '../components/BigPicture';

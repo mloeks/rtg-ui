@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import StandingsTable from '../standings/StandingsTable';
 
 import './StandingsOverview.css';
@@ -16,11 +16,9 @@ const StandingsOverview = () => (
       />
     </section>
     <Link to="/standings">
-      <FlatButton
-        primary
-        label="Zum vollständigen Spielstand"
-        style={{ margin: '10px 0' }}
-      />
+      <Button color="primary" style={{ margin: '10px 0' }}>
+        Zum vollständigen Spielstand
+      </Button>
     </Link>
   </Fragment>
 );

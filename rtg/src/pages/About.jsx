@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import ReactRouterProptypes from 'react-router-prop-types';
 import Page from './Page';
@@ -26,12 +26,11 @@ const About = props => (
         in ganz Deutschland, sondern auch in der ganzen Welt verteilt sind.
         Wenn Du mit dem Royalen Paar bekannt bist, fühl Dich herzlich eingeladen,
         an diesem wunderbaren und hochroyalen Spaß teilzuhaben!
-      </p><br />
-      <FlatButton
-        label="Jetzt mitmachen!"
-        primary
-        onClick={() => props.history.push('/')}
-      />
+      </p>
+      <br />
+      <Button color="primary" onClick={() => props.history.push('/')}>
+        Jetzt mitmachen!
+      </Button>
     </section>
   </Page>
 );

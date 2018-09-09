@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, IconButton, Popover } from 'material-ui';
-import MapsPlace from 'material-ui/svg-icons/maps/place';
-import Close from 'material-ui/svg-icons/navigation/close';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import Popover from '@material-ui/core/Popover';
+import PlaceIcon from '@material-ui/icons/Place';
+import CloseIcon from '@material-ui/icons/Close';
 import UserAvatar from './UserAvatar';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -66,7 +68,8 @@ class UserDetailsPopover extends Component {
               title="Schließen"
               style={{ position: 'absolute', top: 0, right: 0 }}
               iconStyle={{ color: darkGrey, width: 18, height: 18 }}
-            ><Close />
+            >
+              <CloseIcon />
             </IconButton>
 
             <h3 className="UserDetailsPopover__username">{this.props.username}</h3>
@@ -81,7 +84,7 @@ class UserDetailsPopover extends Component {
                   </p>}
                 {this.state.user.location &&
                   <p className="UserDetailsPopover__location">
-                    <MapsPlace style={{ color: grey, width: '18px', height: '18px' }}/>&nbsp;
+                    <PlaceIcon style={{ color: grey, width: '18px', height: '18px' }}/>&nbsp;
                     {this.state.user.location}
                   </p>}
               </div>

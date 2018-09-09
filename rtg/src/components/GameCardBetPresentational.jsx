@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import TextField from '@material-ui/core/TextField';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import GameCardRibbon from './GameCardRibbon';
 import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStringHelper';
 
@@ -55,8 +55,8 @@ const GoalChangeArrow = (props) => {
     opacity: 0.8,
   };
   return (props.direction === 'up' ?
-    <KeyboardArrowUp className="GameCardBet__arrow" style={arrowStyle} onClick={props.onClick} /> :
-    <KeyboardArrowDown
+    <KeyboardArrowUpIcon className="GameCardBet__arrow" style={arrowStyle} onClick={props.onClick} /> :
+    <KeyboardArrowDownIcon
       className="GameCardBet__arrow"
       style={arrowStyle}
       onClick={props.onClick}

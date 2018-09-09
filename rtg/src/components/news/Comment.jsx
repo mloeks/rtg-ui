@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import CommentsList from './CommentsList';
 import { lightGrey } from '../../theme/RtgTheme';
 import UserAvatar from '../UserAvatar';
@@ -77,18 +77,22 @@ class Comment extends Component {
         </div>
 
         <div className="Comment__actions">
-          {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <FlatButton
-            label="Antworten"
-            labelPosition="after"
-            style={{
-              color: lightGrey,
-              height: '24px',
-              lineHeight: '24px',
-              marginLeft: '35px',
-            }}
-            labelStyle={{ fontSize: '12px', fontWeight: 400 }}
-            onClick={this.toggleAddReply}
-          />}
+          {this.props.hierarchyLevel <= MAX_REPLY_DEPTH
+          && (
+            <Button
+              labelPosition="after"
+              style={{
+                color: lightGrey,
+                height: '24px',
+                lineHeight: '24px',
+                marginLeft: '35px',
+              }}
+              labelStyle={{ fontSize: '12px', fontWeight: 400 }}
+              onClick={this.toggleAddReply}
+            >
+              Antworten
+            </Button>
+          )}
         </div>
 
         {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <CommentsList

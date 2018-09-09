@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scrollY } from 'verge';
-import { FloatingActionButton } from 'material-ui';
-import NavigationArrowUpward from 'material-ui/svg-icons/navigation/arrow-upward';
+import Button from '@material-ui/core/Button';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelper';
 
 // TODO P3 animate scrolling
@@ -33,7 +33,8 @@ class BackToTopButton extends Component {
 
   render() {
     return (
-      <FloatingActionButton
+      <Button
+        variant="fab"
         title="Nach oben"
         style={{
           position: 'fixed',
@@ -43,8 +44,9 @@ class BackToTopButton extends Component {
           transition: 'bottom 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
         }}
         onClick={() => { window.scrollTo(0, 0); }}
-      ><NavigationArrowUpward />
-      </FloatingActionButton>
+      >
+        <ArrowUpwardIcon />
+      </Button>
     );
   }
 }

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, FlatButton, RaisedButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification, { NotificationType } from '../Notification';
 
 const DeleteConfirmationModal = (props) => {
   const actions = [
-    <FlatButton label="Abbrechen" onClick={props.onCancel} />,
-    <FlatButton label="Account löschen" primary onClick={props.onConfirm} />,
+    <Button onClick={props.onCancel}>Abbrechen</Button>,
+    <Button color="primary" onClick={props.onConfirm}>Account löschen</Button>,
   ];
 
   return (
@@ -86,21 +87,25 @@ class DeleteAccountButton extends Component {
           um aus der Royalen Tippgemeinschaft auszutreten:
         </p>
 
-        <RaisedButton
-          label="Löschen"
-          primary
+        <Button
+          variant="raised"
+          color="primary"
           disabled={this.state.saving}
           style={{ width: 250 }}
           onClick={this.handleDeleteRequest}
-        />
+        >
+          Löschen
+        </Button>
 
-        {this.state.savingIssues &&
+        {this.state.savingIssues
+        && (
           <Notification
             type={NotificationType.ERROR}
             title="Problem beim Löschen"
             subtitle="Account wurde nicht gelöscht! Bitte versuche es erneut."
             containerStyle={{ margin: '20px auto', maxWidth: 500 }}
-          />}
+          />
+        )}
       </div>
     );
   }

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { lighten } from 'material-ui/utils/colorManipulator';
-import SvgIcon from 'material-ui/SvgIcon';
+import SvgIcon from '@material-ui/core/SvgIcon';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import './Footer.css';
@@ -26,7 +25,6 @@ const InstagramIcon = props => (
 
 const Footer = props => {
   const socialMediaIconColor = props.muiTheme.palette.footerSocialIconColor;
-  const socialMediaIconHoverColor = lighten(socialMediaIconColor, 0.7);
 
   return (
     <footer className="Footer" style={{backgroundColor: props.muiTheme.palette.footerColor}}>
@@ -57,7 +55,6 @@ const Footer = props => {
               className="Footer__socialmedia-icon"
               viewBox="0 0 155.139 155.139"
               color={socialMediaIconColor}
-              hoverColor={socialMediaIconHoverColor}
             />
           </a>
           <a
@@ -70,7 +67,6 @@ const Footer = props => {
               className="Footer__socialmedia-icon"
               viewBox="0 0 24 24"
               color={socialMediaIconColor}
-              hoverColor={socialMediaIconHoverColor}
             />
           </a>
           <a

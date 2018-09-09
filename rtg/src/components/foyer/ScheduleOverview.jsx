@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatButton } from 'material-ui';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 const ScheduleOverview = () => (
@@ -10,11 +10,9 @@ const ScheduleOverview = () => (
       entsprechenden Spiele:
     </p>
     <Link to="/schedule">
-      <FlatButton
-        primary
-        label="Zum Spielplan der WM"
-        style={{ margin: '10px 0' }}
-      />
+      <Button color="primary" style={{ margin: '10px 0' }}>
+        Zum Spielplan der WM
+      </Button>
     </Link>
   </section>
 );

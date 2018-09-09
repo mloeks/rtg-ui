@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, Divider, FlatButton, ListItem } from 'material-ui';
-import Error from 'material-ui/svg-icons/alert/error';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ErrorIcon from '@material-ui/icons/Error';
 import { SavingErrorType } from '../GameCardBet';
 import { error } from '../../theme/RtgTheme';
 
@@ -19,7 +22,7 @@ const SavingIssuesDialog = (props) => {
 
   return (
     <Dialog
-      actions={[<FlatButton label="Schließen" onClick={props.onClose} />]}
+      actions={[<Button onClick={props.onClose}>Schließen</Button>]}
       autoScrollBodyContent
       modal
       open={props.open}
@@ -36,7 +39,7 @@ const SavingIssuesDialog = (props) => {
         {props.games.map(game => (
           <ListItem
             key={game.id}
-            leftIcon={<Error color={error} />}
+            leftIcon={<ErrorIcon color={error} />}
             primaryText={`${game.hometeam_name} ${game.newBet} ${game.awayteam_name}`}
             secondaryText={errorTextBySaveType(game.saveType, game.responseDetail)}
           />

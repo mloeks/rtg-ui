@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import stickybits from 'stickybits';
-import { FlatButton, LinearProgress } from 'material-ui';
-import Done from 'material-ui/svg-icons/action/done';
+import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import DoneIcon from '@material-ui/icons/Done';
 import { success } from '../../theme/RtgTheme';
 
 import './BetsStatusPanel.css';
@@ -43,21 +44,22 @@ class BetsStatusPanel extends Component {
         {this.props.saving && <div className="BetsStatusPanel__saving-overlay" />}
         <div className={`BetsStatusPanel ${this.props.success ? 'BetsStatusPanel--success' : ''} ${!shouldDisplay ? 'BetsStatusPanel--hidden' : ''}`}>
           {(this.props.hasChanges && !this.state.showSavingIndicator && !this.props.success) &&
-          <FlatButton
-            label="Änderungen Speichern"
+          <Button
             fullWidth
-            primary
+            color="primary"
             disabled={this.props.saving}
             onClick={this.props.onSave}
             labelStyle={{ fontSize: '16px' }}
-          />}
+          >
+            Änderungen speichern
+          </Button>}
 
           {this.state.showSavingIndicator &&
           <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }} />}
           {this.state.showSavingIndicator && <span>Speichern...</span>}
           {this.props.success &&
             <span className="BetsStatusPanel__success-info">
-              <Done color={success} />Änderungen gespeichert.
+              <DoneIcon color={success} />Änderungen gespeichert.
             </span>
           }
         </div>
