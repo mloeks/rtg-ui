@@ -5,7 +5,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '@material-ui/icons/Error';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 import { lightenDarkenColor } from '../service/ColorHelper';
 
 export const NotificationType = {
@@ -51,7 +51,7 @@ class Notification extends Component {
       return null;
     }
 
-    const notificationColor = this.props.muiTheme.palette[`${this.props.type}Color`];
+    const notificationColor = this.props.theme.palette[`${this.props.type}Color`];
 
     return (
       <Card
@@ -104,7 +104,7 @@ Notification.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default muiThemeable()(Notification);
+export default withTheme()(Notification);

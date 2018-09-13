@@ -4,7 +4,7 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 import Page from './Page';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
@@ -48,6 +48,7 @@ class PasswordReset extends Component {
   }
 
   updatePassword(event, newValue) { this.updateFormField('password', newValue); }
+
   updatePasswordRepeat(event, newValue) { this.updateFormField('passwordRepeat', newValue); }
 
   handleSubmit(e) {
@@ -70,8 +71,8 @@ class PasswordReset extends Component {
   }
 
   render() {
-    const formSuccessStyle = { color: this.props.muiTheme.palette.successColor, marginTop: '20px', textAlign: 'center' };
-    const formErrorStyle = { color: this.props.muiTheme.palette.errorColor, marginTop: '20px', textAlign: 'center' };
+    const formSuccessStyle = { color: this.props.theme.palette.success, marginTop: '20px', textAlign: 'center' };
+    const formErrorStyle = { color: this.props.theme.palette.error.main, marginTop: '20px', textAlign: 'center' };
 
     return (
       <Page className="PasswordResetPage">
@@ -127,7 +128,7 @@ PasswordReset.propTypes = {
   // eslint-disable-next-line react/no-typos
   match: ReactRouterProptypes.match.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
-export default muiThemeable()(PasswordReset);
+export default withTheme()(PasswordReset);

@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 import AuthService from '../service/AuthService';
 
 class ForgotPasswordDialog extends Component {
@@ -106,7 +106,7 @@ class ForgotPasswordDialog extends Component {
         <p style={{ marginBottom: '0', lineHeight: 1.4 }}>Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.</p>
 
         {this.state.formHasErrors &&
-        <p style={{ color: this.props.muiTheme.palette.errorColor, marginBottom: '0' }}>{this.state.formError}</p>}
+        <p style={{ color: this.props.theme.palette.error.main, marginBottom: '0' }}>{this.state.formError}</p>}
       </div>);
 
     return (
@@ -133,7 +133,7 @@ class ForgotPasswordDialog extends Component {
 
         {this.state.requestInProgress && <CircularProgress />}
         {this.state.passwordReminderSuccessful &&
-        <p style={{ color: this.props.muiTheme.palette.successColor, textAlign: 'center' }}>
+        <p style={{ color: this.props.theme.palette.successColor, textAlign: 'center' }}>
           Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
           Passwort zurückzusetzen.
         </p>}
@@ -144,9 +144,9 @@ class ForgotPasswordDialog extends Component {
 
 ForgotPasswordDialog.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default muiThemeable()(ForgotPasswordDialog);
+export default withTheme()(ForgotPasswordDialog);

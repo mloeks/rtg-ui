@@ -1,6 +1,5 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Route, Switch } from 'react-router-dom';
 
 import Rules from './pages/Rules';
@@ -33,7 +32,7 @@ const App = () => {
   const isLocal = window.location.href.match(/.*(localhost|192.168.).*/i);
 
   return (
-    <MuiThemeProvider muiTheme={getMuiTheme(rtg)}>
+    <MuiThemeProvider theme={createMuiTheme(rtg)}>
       <div className="App">
         {(isDemo || isLocal) &&
           <div className="App__demo-indicator">{isDemo ? 'DEMO' : 'LOCAL'}</div>}

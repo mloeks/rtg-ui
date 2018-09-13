@@ -1,6 +1,6 @@
 import hsl from 'hsl-to-hex';
 // Sometimes helpful template:
-// https://github.com/mui-org/material-ui/blob/master/src/styles/getMuiTheme.js
+// https://v1-5-0.material-ui.com/customization/default-theme/
 
 /* eslint-disable no-unused-vars */
 // Keep in sync with _colors.scss
@@ -24,13 +24,30 @@ export const betResultVolltreffer = hsl(138, 85, 40);
 /* eslint-enable no-unused-vars */
 
 export default {
-  fontFamily: 'Roboto, sans-serif',
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
   palette: {
-    primary1Color: purple,
-    accent1Color: gold,
-    accent2Color: lightGold,
-    textColor: black,
-    canvasColor: white,
+    common: {
+      black,
+      white,
+    },
+    primary: {
+      main: purple,
+    },
+    secondary: {
+      main: gold,
+      light: lightGold,
+    },
+    error: {
+      main: error,
+    },
+    text: {
+      primary: black,
+    },
+    background: {
+      paper: white,
+    },
     errorColor: error,
     successColor: success,
     footerColor: darkGrey,

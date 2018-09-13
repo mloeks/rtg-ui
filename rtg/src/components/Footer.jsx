@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 
 import './Footer.css';
 import logo from '../theme/img/logo_tiny.png';
@@ -23,13 +23,13 @@ const InstagramIcon = props => (
 );
 /* eslint-enable max-len */
 
-const Footer = props => {
-  const socialMediaIconColor = props.muiTheme.palette.footerSocialIconColor;
+const Footer = (props) => {
+  const socialMediaIconColor = props.theme.palette.footerSocialIconColor;
 
   return (
-    <footer className="Footer" style={{backgroundColor: props.muiTheme.palette.footerColor}}>
+    <footer className="Footer" style={{ backgroundColor: props.theme.palette.footerColor }}>
       <Link to="/" className="Footer__title">
-        <img alt="logo" className="Footer__logo" src={logo}/>
+        <img alt="logo" className="Footer__logo" src={logo} />
         <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>
         <h4 className="Footer__title--abbrev">RTG 2018</h4>
       </Link>
@@ -87,7 +87,7 @@ const Footer = props => {
 
 Footer.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
-export default muiThemeable()(Footer);
+export default withTheme()(Footer);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 import VisiblePasswordField from './VisiblePasswordField';
 import RegisterDialog from './RegisterDialog';
 import ForgotPasswordDialog from './ForgotPasswordDialog';
@@ -107,7 +107,7 @@ class LoginForm extends Component {
           {this.state.formError &&
           <div
             className="LoginForm__formError"
-            style={{ color: this.props.muiTheme.palette.errorColor }}
+            style={{ color: this.props.theme.palette.error.main }}
           >{this.state.formError}
           </div>}
         </form>
@@ -136,8 +136,8 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  muiTheme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   onLogin: PropTypes.func.isRequired,
 };
 
-export default muiThemeable()(LoginForm);
+export default withTheme()(LoginForm);

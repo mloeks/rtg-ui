@@ -4,7 +4,6 @@
 
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
-    * Last status: Replaced all imports except for muiTheme
 
 ### Follow-up Material UI upgrade
 

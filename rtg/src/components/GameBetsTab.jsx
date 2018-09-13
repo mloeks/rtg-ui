@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import withTheme from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { distanceInWordsToNow, format } from 'date-fns';
@@ -146,7 +146,7 @@ class GameBetsTab extends Component {
       <div className="GameBetsTab__deadline-separator">
         <AlarmIcon
           className="GameBetsTab__deadline-separator-icon"
-          color={this.props.muiTheme.palette.errorColor}
+          color={this.props.theme.palette.error.main}
           style={{ width: 24, height: 24, marginRight: 5 }}
         />
         <span className="GameBetsTab__deadline-separator-text">{readableDeadlineText}</span>
@@ -258,8 +258,8 @@ class GameBetsTab extends Component {
 
 GameBetsTab.propTypes = {
   active: PropTypes.bool.isRequired,
-  muiTheme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onOpenBetsUpdate: PropTypes.func.isRequired,
 };
 
-export default muiThemeable()(GameBetsTab);
+export default withTheme()(GameBetsTab);
