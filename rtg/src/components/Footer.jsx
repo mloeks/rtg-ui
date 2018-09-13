@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import withTheme from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 
 import './Footer.css';
 import logo from '../theme/img/logo_tiny.png';

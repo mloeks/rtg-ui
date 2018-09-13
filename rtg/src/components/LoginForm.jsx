@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import withTheme from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import VisiblePasswordField from './VisiblePasswordField';
 import RegisterDialog from './RegisterDialog';
 import ForgotPasswordDialog from './ForgotPasswordDialog';

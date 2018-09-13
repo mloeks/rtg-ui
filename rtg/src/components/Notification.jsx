@@ -5,7 +5,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '@material-ui/icons/Error';
-import withTheme from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import { lightenDarkenColor } from '../service/ColorHelper';
 
 export const NotificationType = {

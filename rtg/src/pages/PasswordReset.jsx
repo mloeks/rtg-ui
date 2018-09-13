@@ -4,7 +4,7 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
-import withTheme from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import Page from './Page';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
