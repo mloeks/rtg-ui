@@ -4,6 +4,8 @@
 
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
+    * Find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
+    * STYLES
 
 ### Follow-up Material UI upgrade
 

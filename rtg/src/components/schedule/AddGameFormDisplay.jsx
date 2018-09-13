@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DatePicker from '@material-ui/core/DatePicker';
+// TODO find replacement for DatePicker
+// import DatePicker from '@material-ui/core/DatePicker';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import TimePicker from '@material-ui/core/TimePicker';
+import TextField from '@material-ui/core/TextField';
+// TODO find replacement for TimePicker
+// import TimePicker from '@material-ui/core/TimePicker';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import Notification, { NotificationType } from '../Notification';
 
@@ -99,21 +102,15 @@ const AddGameFormDisplay = (props) => {
 
         <ListSubheader style={{ paddingLeft: 0 }}>Anstoß</ListSubheader>
         <div style={{ display: 'flex' }}>
-          <DatePicker
-            hintText="Datum"
-            cancelLabel="Abbrechen"
-            locale="de"
-            DateTimeFormat={DateTimeFormat}
+          <TextField
+            label="Datum"
             value={props.kickoffDate}
             onChange={(e, v) => props.onFieldChange('kickoffDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
-          <TimePicker
-            format="24hr"
-            hintText="Uhrzeit (MESZ)"
-            minutesStep={5}
-            cancelLabel="Abbrechen"
+          <TextField
+            label="Uhrzeit (MESZ)"
             value={props.kickoffTime}
             onChange={(e, v) => props.onFieldChange('kickoffTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
@@ -123,21 +120,15 @@ const AddGameFormDisplay = (props) => {
 
         <ListSubheader style={{ paddingLeft: 0 }}>Deadline</ListSubheader>
         <div style={{ display: 'flex' }}>
-          <DatePicker
-            hintText="Datum"
-            cancelLabel="Abbrechen"
-            locale="de"
-            DateTimeFormat={DateTimeFormat}
+          <TextField
+            label="Datum"
             value={props.deadlineDate}
             onChange={(e, v) => props.onFieldChange('deadlineDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
-          <TimePicker
-            format="24hr"
-            hintText="Uhrzeit (MESZ)"
-            minutesStep={5}
-            cancelLabel="Abbrechen"
+          <TextField
+            label="Uhrzeit (MESZ)"
             value={props.deadlineTime}
             onChange={(e, v) => props.onFieldChange('deadlineTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
