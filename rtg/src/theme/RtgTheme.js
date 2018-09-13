@@ -26,6 +26,12 @@ export const betResultVolltreffer = hsl(138, 85, 40);
 export default {
   typography: {
     fontFamily: 'Roboto, sans-serif',
+    headline: {
+      fontFamily: 'Lobster Two, cursive',
+      fontWeight: 'normal',
+      fontSize: 32,
+      fontStyle: 'normal',
+    },
   },
   palette: {
     common: {

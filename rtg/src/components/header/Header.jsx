@@ -2,6 +2,10 @@ import React, { Component, Fragment } from 'react';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { scrollY } from 'verge';
 import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
@@ -89,16 +93,29 @@ class Header extends Component {
     const createAppBarVariant = (userContext, loggedIn, title, className) => (
       <AppBar
         className={`Header__AppBar ${className}`}
-        title={title}
-        showMenuIconButton={loggedIn}
-        iconElementRight={loggedIn ?
-          <HeaderMenuItems openBetsCount={userContext.openBetsCount} /> : null}
         iconStyleRight={{ display: 'flex', alignItems: 'center', margin: 0 }}
-        onLeftIconButtonClick={this.handleMenuToggle}
-        onTitleClick={() => { this.props.history.push('/'); }}
-        style={{ height: HEADER_HEIGHT }}
-        titleStyle={{ textAlign: loggedIn ? 'left' : 'center', flexGrow: 1 }}
-      />
+        classes={{ root: { height: HEADER_HEIGHT } }}
+      >
+        <Toolbar>
+          {loggedIn && (
+            <IconButton
+              onClick={this.handleMenuToggle}
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography
+            variant="headline"
+            classes={{ root: { textAlign: loggedIn ? 'left' : 'center', flexGrow: 1 } }}
+            onClick={() => { this.props.history.push('/'); }}
+          >
+            {title}
+          </Typography>
+          {loggedIn && <HeaderMenuItems openBetsCount={userContext.openBetsCount} />}
+
+        </Toolbar>
+      </AppBar>
     );
 
     return (
@@ -111,12 +128,14 @@ class Header extends Component {
               <header ref={this.headerRef} className="Header">
                 {createAppBarVariant(userContext, loggedIn, 'RTG', 'Header__AppBar--mobile')}
                 {createAppBarVariant(userContext, loggedIn, 'Royale Tippgemeinschaft', 'Header__AppBar--desktop')}
-                {loggedIn && <DrawerMenu
-                  open={this.state.menuOpen}
-                  openBetsCount={userContext.openBetsCount}
-                  onLogout={() => userContext.doLogout()}
-                  onRequestChange={menuOpen => this.setState({ menuOpen })}
-                />}
+                {loggedIn && (
+                  <DrawerMenu
+                    open={this.state.menuOpen}
+                    openBetsCount={userContext.openBetsCount}
+                    onLogout={() => userContext.doLogout()}
+                    onRequestChange={menuOpen => this.setState({ menuOpen })}
+                  />
+                )}
               </header>
             </Fragment>);
         }}
