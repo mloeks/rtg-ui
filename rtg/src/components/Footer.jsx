@@ -23,67 +23,63 @@ const InstagramIcon = props => (
 );
 /* eslint-enable max-len */
 
-const Footer = (props) => {
-  const socialMediaIconColor = props.theme.palette.footerSocialIconColor;
+const Footer = (props) => (
+  <footer className="Footer" style={{ backgroundColor: props.theme.palette.footerColor }}>
+    <Link to="/" className="Footer__title">
+      <img alt="logo" className="Footer__logo" src={logo} />
+      <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>
+      <h4 className="Footer__title--abbrev">RTG 2018</h4>
+    </Link>
 
-  return (
-    <footer className="Footer" style={{ backgroundColor: props.theme.palette.footerColor }}>
-      <Link to="/" className="Footer__title">
-        <img alt="logo" className="Footer__logo" src={logo} />
-        <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>
-        <h4 className="Footer__title--abbrev">RTG 2018</h4>
-      </Link>
+    <div className="Footer__content">
+      <ul className="Footer__links">
+        <li><Link to="/">Foyer</Link></li>
+        <li><Link to="/about">Über die RTG</Link></li>
+        <li><Link to="/rules">Regeln</Link></li>
+        <li><Link to="/imprint">Impressum</Link></li>
+        <li><Link to="/contact">Kontakt</Link></li>
+        <li><Link to="/donate">Spenden</Link></li>
+      </ul>
 
-      <div className="Footer__content">
-        <ul className="Footer__links">
-          <li><Link to="/">Foyer</Link></li>
-          <li><Link to="/about">Über die RTG</Link></li>
-          <li><Link to="/rules">Regeln</Link></li>
-          <li><Link to="/imprint">Impressum</Link></li>
-          <li><Link to="/contact">Kontakt</Link></li>
-          <li><Link to="/donate">Spenden</Link></li>
-        </ul>
-
-        <div className="Footer__socialmedia">
-          <a
-            href="http://www.facebook.com/groups/219528178065049"
-            title="Zur Facebook-Gruppe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FacebookIcon
-              className="Footer__socialmedia-icon"
-              viewBox="0 0 155.139 155.139"
-              color={socialMediaIconColor}
-            />
-          </a>
-          <a
-            href="https://www.instagram.com/royaletippgemeinschaft/"
-            title="Zur Instagram-Gruppe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <InstagramIcon
-              className="Footer__socialmedia-icon"
-              viewBox="0 0 24 24"
-              color={socialMediaIconColor}
-            />
-          </a>
-          <a
-            href="http://www.twitter.com"
-            title="Zur Twitter-Gruppe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          </a>
-        </div>
+      <div className="Footer__socialmedia">
+        <a
+          href="http://www.facebook.com/groups/219528178065049"
+          title="Zur Facebook-Gruppe"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FacebookIcon
+            className="Footer__socialmedia-icon"
+            viewBox="0 0 155.139 155.139"
+            color="secondary"
+          />
+        </a>
+        <a
+          href="https://www.instagram.com/royaletippgemeinschaft/"
+          title="Zur Instagram-Gruppe"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <InstagramIcon
+            className="Footer__socialmedia-icon"
+            viewBox="0 0 24 24"
+            color="secondary"
+          />
+        </a>
+        <a
+          href="http://www.twitter.com"
+          title="Zur Twitter-Gruppe"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+        </a>
       </div>
+    </div>
 
-      {/* TODO P3 add 10 years jubilee logo  */}
-      <div className="Footer__copyright">© Copyright 2008 - 2018 Royale Tippgemeinschaft</div>
-    </footer>
-  );
-};
+    {/* TODO P3 add 10 years jubilee logo  */}
+    <div className="Footer__copyright">© Copyright 2008 - 2018 Royale Tippgemeinschaft</div>
+  </footer>
+);
 
 Footer.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
