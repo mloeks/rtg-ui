@@ -3,9 +3,10 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import { scrollY } from 'verge';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import RootRef from '@material-ui/core/RootRef';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import DrawerMenu from './DrawerMenu';
@@ -90,32 +91,16 @@ class Header extends Component {
   }
 
   render() {
-    const createAppBarVariant = (userContext, loggedIn, title, className) => (
-      <AppBar
-        className={`Header__AppBar ${className}`}
-        iconStyleRight={{ display: 'flex', alignItems: 'center', margin: 0 }}
-        classes={{ root: { height: HEADER_HEIGHT } }}
+    const createTitleVariant = (className, title, loggedIn) => (
+      <Typography
+        className={`Header__title ${className}`}
+        variant="title"
+        color="primary"
+        style={{ margin: loggedIn ? '0' : '0 auto' }}
+        onClick={() => { this.props.history.push('/'); }}
       >
-        <Toolbar>
-          {loggedIn && (
-            <IconButton
-              onClick={this.handleMenuToggle}
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography
-            variant="headline"
-            classes={{ root: { textAlign: loggedIn ? 'left' : 'center', flexGrow: 1 } }}
-            onClick={() => { this.props.history.push('/'); }}
-          >
-            {title}
-          </Typography>
-          {loggedIn && <HeaderMenuItems openBetsCount={userContext.openBetsCount} />}
-
-        </Toolbar>
-      </AppBar>
+        {title}
+      </Typography>
     );
 
     return (
@@ -125,18 +110,32 @@ class Header extends Component {
           return (
             <Fragment>
               <div className="Header__fixed-placeholder" style={{ height: HEADER_HEIGHT }} />
-              <header ref={this.headerRef} className="Header">
-                {createAppBarVariant(userContext, loggedIn, 'RTG', 'Header__AppBar--mobile')}
-                {createAppBarVariant(userContext, loggedIn, 'Royale Tippgemeinschaft', 'Header__AppBar--desktop')}
-                {loggedIn && (
-                  <DrawerMenu
-                    open={this.state.menuOpen}
-                    openBetsCount={userContext.openBetsCount}
-                    onLogout={() => userContext.doLogout()}
-                    onRequestChange={menuOpen => this.setState({ menuOpen })}
-                  />
-                )}
-              </header>
+              <RootRef rootRef={this.headerRef}>
+                <AppBar className="Header" color="secondary" style={{ height: HEADER_HEIGHT }}>
+                  <Toolbar style={{ height: '100%' }}>
+                    {loggedIn && (
+                      <IconButton
+                        onClick={this.handleMenuToggle}
+                        aria-label="Menu"
+                      >
+                        <MenuIcon />
+                      </IconButton>
+                    )}
+                    {createTitleVariant('Header__title--desktop', 'Royale Tippgemeinschaft', loggedIn)}
+                    {createTitleVariant('Header__title--mobile', 'RTG', loggedIn)}
+                    {loggedIn && <HeaderMenuItems openBetsCount={userContext.openBetsCount} />}
+                  </Toolbar>
+                </AppBar>
+              </RootRef>
+
+              {loggedIn && (
+                <DrawerMenu
+                  open={this.state.menuOpen}
+                  openBetsCount={userContext.openBetsCount}
+                  onLogout={() => userContext.doLogout()}
+                  onRequestChange={menuOpen => this.setState({ menuOpen })}
+                />
+              )}
             </Fragment>);
         }}
       </UserDetailsContext.Consumer>);

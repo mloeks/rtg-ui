@@ -9,7 +9,7 @@ import OpenBetsIndicator from './OpenBetsIndicator';
 import './HeaderMenuItems.css';
 
 const HeaderMenuItems = props => (
-  <div className="HeaderMenuItems">
+  <div className="HeaderMenuItems" style={{ display: 'flex', alignItems: 'center', margin: 0 }}>
     <Link to="/standings" title="Spielstand">
       <Button
         className="HeaderMenuItems__item"

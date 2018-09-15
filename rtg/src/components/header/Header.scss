@@ -1,3 +1,4 @@
+@import '../../sass/globals';
 @import '../../sass/utils';
 @import '../../sass/z-indexes';
 
@@ -9,21 +10,21 @@
   transition: top 200ms $mdEasingDecelerate;
 
   &.nav-up {
-    top: -64px - 10px;
+    top: -$headerHeight - 10px;
   }
 
-  h1:hover {
+  &__title:hover {
     cursor: pointer;
   }
 
-  &__AppBar--desktop {
+  &__title--desktop {
     display: none !important;
     @media only screen and (min-width : 480px) {
       display: flex !important;
     }
   }
 
-  &__AppBar--mobile {
+  &__title--mobile {
     @media only screen and (min-width : 480px) {
       display: none !important;
     }
