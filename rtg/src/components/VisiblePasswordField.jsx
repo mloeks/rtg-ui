@@ -30,7 +30,7 @@ class VisiblePasswordField extends Component {
       <div style={{ position: 'relative' }}>
         <TextField
           type={visible ? 'text' : 'password'}
-          inputStyle={{ paddingRight: '40px' }}
+          inputProps={{ style: { paddingRight: '40px' } }}
           {...this.props}
         />
         {visible
