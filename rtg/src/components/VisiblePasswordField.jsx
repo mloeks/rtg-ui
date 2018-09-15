@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { lightGrey } from '../theme/RtgTheme';
 
 class VisiblePasswordField extends Component {
   constructor(props) {
@@ -16,8 +15,9 @@ class VisiblePasswordField extends Component {
   }
 
   render() {
+    const { visible } = this.state;
     const iconProps = {
-      color: lightGrey,
+      color: 'primary',
       onClick: this.handleIconClick,
       style: {
         position: 'absolute',
@@ -29,13 +29,13 @@ class VisiblePasswordField extends Component {
     return (
       <div style={{ position: 'relative' }}>
         <TextField
-          type={this.state.visible ? 'text' : 'password'}
+          type={visible ? 'text' : 'password'}
           inputStyle={{ paddingRight: '40px' }}
           {...this.props}
         />
-        {this.state.visible ?
-          <VisibilityOffIcon {...iconProps} /> :
-          <VisibilityIcon {...iconProps} />}
+        {visible
+          ? <VisibilityOffIcon {...iconProps} />
+          : <VisibilityIcon {...iconProps} />}
       </div>
     );
   }
