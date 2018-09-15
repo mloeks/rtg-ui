@@ -74,20 +74,24 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Paper className="LoginForm" zDepth={3}>
+      <Paper className="LoginForm" elevation={12}>
         <h3 className="LoginForm__heading">Bitte eintreten:</h3>
         <form className="LoginForm__form" onSubmit={this.handleLogin}>
+          <br />
           <TextField
-            errorText={this.state.fieldErrors.username || false}
-            floatingLabelText="E-Mail / Username"
+            error={this.state.fieldErrors.username}
             fullWidth
+            helperText={this.state.fieldErrors.username || false}
+            label="E-Mail / Username"
             onChange={this.updateUsername}
           />
           <br />
+          <br />
           <VisiblePasswordField
-            errorText={this.state.fieldErrors.password || false}
-            floatingLabelText="Passwort"
+            error={this.state.fieldErrors.password || false}
             fullWidth
+            helperText={this.state.fieldErrors.password || false}
+            label="Passwort"
             onChange={this.updatePassword}
           />
           <br />

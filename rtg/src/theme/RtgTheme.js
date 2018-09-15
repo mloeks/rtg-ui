@@ -59,6 +59,9 @@ export default {
     footerSocialIconColor: lightGrey,
     scheduleToolbarColor: darkGrey,
   },
+  shape: {
+    borderRadius: 2,
+  },
   appBar: {
     color: white,
     textColor: purple,

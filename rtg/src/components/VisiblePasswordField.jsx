@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { lightGrey, purple } from '../theme/RtgTheme';
+import { lightGrey } from '../theme/RtgTheme';
 
 class VisiblePasswordField extends Component {
   constructor(props) {
@@ -18,12 +18,11 @@ class VisiblePasswordField extends Component {
   render() {
     const iconProps = {
       color: lightGrey,
-      hoverColor: purple,
       onClick: this.handleIconClick,
       style: {
         position: 'absolute',
-        top: '37px',
-        right: '5px',
+        top: 21,
+        right: 5,
       },
     };
 
