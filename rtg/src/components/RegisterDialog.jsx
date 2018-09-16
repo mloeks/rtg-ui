@@ -166,8 +166,7 @@ class RegisterDialog extends Component {
           <br />
           <VisiblePasswordField
             error={Boolean(fieldErrors.password)}
-            helperText={fieldErrors.password || false}
-            label="Passwort"
+            helperText={fieldErrors.password}
             fullWidth
             onChange={this.updatePassword}
           />

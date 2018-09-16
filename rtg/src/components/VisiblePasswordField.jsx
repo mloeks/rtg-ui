@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import PropTypes from 'prop-types';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 class VisiblePasswordField extends Component {
   constructor(props) {
@@ -15,30 +21,57 @@ class VisiblePasswordField extends Component {
   }
 
   render() {
+    const {
+      error,
+      fullWidth,
+      helperText,
+      label,
+      onChange,
+      value,
+    } = this.props;
     const { visible } = this.state;
-    const iconProps = {
-      color: 'primary',
-      onClick: this.handleIconClick,
-      style: {
-        position: 'absolute',
-        top: 21,
-        right: 5,
-      },
-    };
 
     return (
-      <div style={{ position: 'relative' }}>
-        <TextField
+      <FormControl error={error} fullWidth={fullWidth}>
+        <InputLabel>{label}</InputLabel>
+        <Input
           type={visible ? 'text' : 'password'}
-          inputProps={{ style: { paddingRight: '40px' } }}
-          {...this.props}
+          value={value}
+          onChange={onChange}
+          endAdornment={(
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="Toggle password visibility"
+                onClick={this.handleIconClick}
+                onMouseDown={(e) => { e.preventDefault(); }}
+              >
+                {visible ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          )}
         />
-        {visible
-          ? <VisibilityOffIcon {...iconProps} />
-          : <VisibilityIcon {...iconProps} />}
-      </div>
+        <FormHelperText>{helperText}</FormHelperText>
+      </FormControl>
     );
   }
 }
+
+VisiblePasswordField.propTypes = {
+  error: PropTypes.bool,
+  fullWidth: PropTypes.bool,
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.string,
+
+  onChange: PropTypes.func.isRequired,
+};
+
+VisiblePasswordField.defaultProps = {
+  error: false,
+  fullWidth: false,
+  helperText: null,
+  label: 'Passwort',
+  value: '',
+};
 
 export default VisiblePasswordField;

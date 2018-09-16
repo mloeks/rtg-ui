@@ -12,17 +12,19 @@ const ChangePasswordFormDisplay = props => (
     <h3 className="ChangePasswordForm__title">Passwort ändern</h3>
 
     <VisiblePasswordField
-      floatingLabelText="Aktuelles Passwort"
+      label="Aktuelles Passwort"
       fullWidth
       value={props.oldPassword}
-      errorText={props.oldPasswordError}
+      error={Boolean(props.oldPasswordError)}
+      helperText={props.oldPasswordError}
       onChange={(e, v) => props.onFieldChange('oldPassword', v)}
     />
     <VisiblePasswordField
-      floatingLabelText="Neues Passwort"
+      label="Neues Passwort"
       fullWidth
       value={props.newPassword}
-      errorText={props.newPasswordError}
+      error={Boolean(props.newPasswordError)}
+      helperText={props.newPasswordError}
       onChange={(e, v) => props.onFieldChange('newPassword', v)}
     /><br />
 

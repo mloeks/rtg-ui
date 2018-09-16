@@ -35,12 +35,12 @@ class LoginForm extends Component {
     this.validate = this.validate.bind(this);
   }
 
-  updateUsername(event, newValue) {
-    this.setState({ formError: null, formHasErrors: false, username: newValue });
+  updateUsername(e) {
+    this.setState({ formError: null, formHasErrors: false, username: e.target.value });
   }
 
-  updatePassword(event, newValue) {
-    this.setState({ formError: null, formHasErrors: false, password: newValue });
+  updatePassword(e) {
+    this.setState({ formError: null, formHasErrors: false, password: e.target.value });
   }
 
   handleLogin(event) {
@@ -80,6 +80,7 @@ class LoginForm extends Component {
     const {
       fieldErrors,
       formError,
+      password,
       passwordForgotDialogOpen,
       registerModalOpen,
     } = this.state;
@@ -91,7 +92,7 @@ class LoginForm extends Component {
           <br />
           <TextField
             autoFocus
-            error={fieldErrors.username}
+            error={Boolean(fieldErrors.username)}
             fullWidth
             helperText={fieldErrors.username || false}
             label="E-Mail / Username"
@@ -100,10 +101,10 @@ class LoginForm extends Component {
           <br />
           <br />
           <VisiblePasswordField
-            error={fieldErrors.password || false}
+            error={Boolean(fieldErrors.password)}
             fullWidth
-            helperText={fieldErrors.password || false}
-            label="Passwort"
+            helperText={fieldErrors.password}
+            value={password || ''}
             onChange={this.updatePassword}
           />
           <br />
