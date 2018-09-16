@@ -44,9 +44,12 @@ class LoginForm extends Component {
   }
 
   handleLogin(event) {
+    const { onLogin } = this.props;
+    const { formHasErrors, password, username } = this.state;
+
     this.validate(() => {
-      if (!this.state.formHasErrors) {
-        this.props.onLogin(this.state.username, this.state.password, this.loginErrorCallback);
+      if (!formHasErrors) {
+        onLogin(username, password, this.loginErrorCallback);
       }
     });
     event.preventDefault();
@@ -73,24 +76,33 @@ class LoginForm extends Component {
   }
 
   render() {
+    const { theme } = this.props;
+    const {
+      fieldErrors,
+      formError,
+      passwordForgotDialogOpen,
+      registerModalOpen,
+    } = this.state;
+
     return (
       <Paper className="LoginForm" elevation={12}>
         <h3 className="LoginForm__heading">Bitte eintreten:</h3>
         <form className="LoginForm__form" onSubmit={this.handleLogin}>
           <br />
           <TextField
-            error={this.state.fieldErrors.username}
+            autoFocus
+            error={fieldErrors.username}
             fullWidth
-            helperText={this.state.fieldErrors.username || false}
+            helperText={fieldErrors.username || false}
             label="E-Mail / Username"
             onChange={this.updateUsername}
           />
           <br />
           <br />
           <VisiblePasswordField
-            error={this.state.fieldErrors.password || false}
+            error={fieldErrors.password || false}
             fullWidth
-            helperText={this.state.fieldErrors.password || false}
+            helperText={fieldErrors.password || false}
             label="Passwort"
             onChange={this.updatePassword}
           />
@@ -108,12 +120,14 @@ class LoginForm extends Component {
           </Button>
           <br />
 
-          {this.state.formError &&
-          <div
-            className="LoginForm__formError"
-            style={{ color: this.props.theme.palette.error.main }}
-          >{this.state.formError}
-          </div>}
+          {formError && (
+            <div
+              className="LoginForm__formError"
+              style={{ color: theme.palette.error.main }}
+            >
+              {formError}
+            </div>
+          )}
         </form>
 
         <br />
@@ -122,7 +136,7 @@ class LoginForm extends Component {
             Registrieren
           </Button>
           <RegisterDialog
-            open={this.state.registerModalOpen}
+            open={registerModalOpen}
             onCancel={() => { this.setState({ registerModalOpen: false }); }}
           />
 
@@ -130,7 +144,7 @@ class LoginForm extends Component {
             Passwort vergessen
           </Button>
           <ForgotPasswordDialog
-            open={this.state.passwordForgotDialogOpen}
+            open={passwordForgotDialogOpen}
             onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}
           />
         </div>
