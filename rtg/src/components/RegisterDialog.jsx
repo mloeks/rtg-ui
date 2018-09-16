@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
@@ -62,8 +66,9 @@ class RegisterDialog extends Component {
   }
 
   handleKeyUpEvent(e) {
+    const { hasChanges } = this.state;
     if (e.keyCode === 13) {
-      if (this.state.hasChanges) {
+      if (hasChanges) {
         this.handleSubmit();
       }
     }
@@ -75,21 +80,30 @@ class RegisterDialog extends Component {
     this.setState(newState);
   }
 
-  updateUsername(event, newValue) { this.updateFormField('username', newValue); }
-  updatePassword(event, newValue) { this.updateFormField('password', newValue); }
-  updateFirstName(event, newValue) { this.updateFormField('firstName', newValue); }
-  updateLastName(event, newValue) { this.updateFormField('lastName', newValue); }
-  updateEmail(event, newValue) { this.updateFormField('email', newValue); }
+  updateUsername(e) { this.updateFormField('username', e.target.value); }
+
+  updatePassword(e) { this.updateFormField('password', e.target.value); }
+
+  updateFirstName(e) { this.updateFormField('firstName', e.target.value); }
+
+  updateLastName(e) { this.updateFormField('lastName', e.target.value); }
+
+  updateEmail(e) { this.updateFormField('email', e.target.value); }
 
   handleSubmit() {
-    AuthService.register(
-      this.state.username, this.state.email, this.state.password,
-      this.state.firstName, this.state.lastName,
-    ).then(() => {
-      this.setState({ registerSuccessful: true });
-    })
+    const {
+      email,
+      firstName,
+      lastName,
+      password,
+      username,
+    } = this.state;
+
+    AuthService.register(username, email, password, firstName, lastName)
+      .then(() => {
+        this.setState({ registerSuccessful: true });
+      })
       .catch((errors) => {
-        console.log(errors);
         this.setState({
           fieldErrors: errors.fieldErrors || {},
           formHasErrors: errors.nonFieldError,
@@ -100,90 +114,102 @@ class RegisterDialog extends Component {
   }
 
   render() {
-    if (this.state.registerSuccessful) {
+    const { fullScreen, onCancel, open } = this.props;
+    const {
+      fieldErrors,
+      formError,
+      formHasErrors,
+      hasChanges,
+      registerSuccessful,
+    } = this.state;
+
+    if (registerSuccessful) {
       return (<Redirect to="/foyer" />);
     }
-
-    const actions = [
-      <Button color="secondary" onClick={this.props.onCancel}>Abbrechen</Button>,
-      <Button
-        color="primary"
-        disabled={!this.state.hasChanges}
-        onClick={this.handleSubmit}
-      >
-        Registrieren
-      </Button>,
-    ];
 
     return (
       <Dialog
         className="RegisterDialog"
-        actions={actions}
-        autoScrollBodyContent
-        modal
-        open={this.props.open}
-        repositionOnUpdate={false}
-        title={
-          <div style={{ textAlign: 'center' }}>
-            <h3 style={{ margin: '10px auto' }}>Werde Teil der RTG</h3>
-            {this.state.formHasErrors &&
-              <Notification
-                type={NotificationType.ERROR}
-                title="Das hat leider nicht geklappt"
-                subtitle={this.state.formError}
-              />}
-          </div>}
-        style={{ textAlign: 'left', paddingTop: 0 }}
-        titleStyle={{ padding: '12px' }}
-        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 0)' }}
+        fullScreen={fullScreen}
+        open={open}
+        aria-labelledby="RegisterDialog__title"
+        onClose={onCancel}
       >
+        <DialogTitle id="RegisterDialog__title">Werde Teil der RTG</DialogTitle>
+        <DialogContent>
+          {formHasErrors && (
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle={formError}
+              containerStyle={{ marginBottom: 20 }}
+            />
+          )}
 
-        <TextField
-          errorText={this.state.fieldErrors.username || false}
-          floatingLabelText="Username"
-          fullWidth
-          onChange={this.updateUsername}
-        />
-        <br />
-        <TextField
-          errorText={this.state.fieldErrors.email || false}
-          floatingLabelText="E-Mail"
-          fullWidth
-          onChange={this.updateEmail}
-        />
-        <br />
-        <VisiblePasswordField
-          errorText={this.state.fieldErrors.password || false}
-          floatingLabelText="Passwort"
-          fullWidth
-          onChange={this.updatePassword}
-        />
-        <div style={{ display: 'flex' }}>
           <TextField
-            style={{ marginRight: '10px', width: '50%' }}
-            errorText={this.state.fieldErrors.firstName || false}
-            floatingLabelText="Vorname"
-            onChange={this.updateFirstName}
+            error={Boolean(fieldErrors.username)}
+            helperText={fieldErrors.username || false}
+            label="Username"
+            fullWidth
+            onChange={this.updateUsername}
           />
+          <br />
+          <br />
           <TextField
-            style={{ marginLeft: '10px', width: '50%' }}
-            errorText={this.state.fieldErrors.lastName || false}
-            floatingLabelText="Nachname"
-            onChange={this.updateLastName}
+            error={Boolean(fieldErrors.email)}
+            helperText={fieldErrors.email || false}
+            label="E-Mail"
+            fullWidth
+            onChange={this.updateEmail}
           />
-        </div><br />
-        <p style={{ margin: 0, color: lightGrey, fontSize: '14px' }}>
-          Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
-          Dein Name ist nicht für andere Mitspieler sichtbar.
-        </p>
+          <br />
+          <br />
+          <VisiblePasswordField
+            error={Boolean(fieldErrors.password)}
+            helperText={fieldErrors.password || false}
+            label="Passwort"
+            fullWidth
+            onChange={this.updatePassword}
+          />
+          <br />
+          <div style={{ display: 'flex' }}>
+            <TextField
+              error={Boolean(fieldErrors.firstName)}
+              helperText={fieldErrors.firstName || false}
+              label="Vorname"
+              style={{ marginRight: '10px', width: '50%' }}
+              onChange={this.updateFirstName}
+            />
+            <TextField
+              error={Boolean(fieldErrors.lastName)}
+              helperText={fieldErrors.lastName || false}
+              label="Nachname"
+              style={{ marginLeft: '10px', width: '50%' }}
+              onChange={this.updateLastName}
+            />
+          </div>
+          <br />
+          <p style={{ margin: 0, color: lightGrey }}>
+            Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
+            Dein Name ist nicht für andere Mitspieler sichtbar.
+          </p>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={onCancel}>Abbrechen</Button>
+          <Button color="primary" disabled={!hasChanges} onClick={this.handleSubmit}>
+            Registrieren
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }
 }
 
 RegisterDialog.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
 
-export default RegisterDialog;
+export default withMobileDialog()(RegisterDialog);
