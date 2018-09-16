@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { withTheme } from '@material-ui/core/styles';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 import AuthService from '../service/AuthService';
 
 class ForgotPasswordDialog extends Component {
@@ -44,32 +49,34 @@ class ForgotPasswordDialog extends Component {
   }
 
   handleKeyUpEvent(e) {
+    const { email } = this.state;
     if (e.keyCode === 13) {
-      if (this.state.email) {
+      if (email) {
         this.handleSubmit();
       }
     }
   }
 
-  updateEmail(event, newValue) {
+  updateEmail(event) {
     this.setState({
       formError: null,
       formHasErrors: false,
       fieldErrors: {},
-      email: newValue,
+      email: event.target.value,
     });
   }
 
   handleSubmit() {
+    const { onClose } = this.props;
+    const { email } = this.state;
+
     this.setState({ requestInProgress: true });
-    AuthService.requestPasswordReset(this.state.email).then(() => {
+    AuthService.requestPasswordReset(email).then(() => {
       this.setState({
         ...ForgotPasswordDialog.getInitialState(),
         requestInProgress: false,
         passwordReminderSuccessful: true,
-      }, () => {
-        setTimeout(this.props.onClose, 5000);
-      });
+      }, () => { setTimeout(onClose, 5000); });
     })
       .catch((errors) => {
         this.setState({
@@ -82,71 +89,86 @@ class ForgotPasswordDialog extends Component {
   }
 
   render() {
-    const actions = [];
-    if (this.state.passwordReminderSuccessful) {
-      actions.push(<Button color="primary" onClick={this.props.onClose}>
-        Schließen
-      </Button>);
-    } else {
-      actions.push(<Button color="secondary" onClick={this.props.onClose}>Abbrechen</Button>);
-      actions.push(<Button
-        color="primary"
-        disabled={
-          !this.state.email || this.state.email.length === 0 || this.state.requestInProgress
-        }
-        onClick={this.handleSubmit}
-      >
-        Abschicken
-      </Button>);
-    }
+    const {
+      fullScreen,
+      onClose,
+      open,
+      theme
+    } = this.props;
 
-    const titleDiv = (
-      <div style={{ fontSize: '16px', textAlign: 'center', marginBottom: 0, paddingBottom: 0 }}>
-        <h3 style={{ margin: 0 }}>Passwort vergessen</h3>
-        <p style={{ marginBottom: '0', lineHeight: 1.4 }}>Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.</p>
-
-        {this.state.formHasErrors &&
-        <p style={{ color: this.props.theme.palette.error.main, marginBottom: '0' }}>{this.state.formError}</p>}
-      </div>);
+    const {
+      email,
+      fieldErrors,
+      formError,
+      formHasErrors,
+      passwordReminderSuccessful,
+      requestInProgress,
+    } = this.state;
 
     return (
       <Dialog
         className="ForgotPasswordDialog"
-        actions={actions}
-        autoScrollBodyContent
-        modal
-        open={this.props.open}
-        repositionOnUpdate={false}
-        title={titleDiv}
-        style={{ textAlign: 'left', paddingTop: 0 }}
-        contentClassName="ForgotPasswordDialog__content"
-        contentStyle={{ padding: '10px', width: '100%', transform: 'translate(0, 0)' }}
+        fullScreen={fullScreen}
+        open={open}
+        aria-labelledby="ForgotPasswordDialog__title"
+        onClose={onClose}
       >
-        {!this.state.passwordReminderSuccessful && !this.state.requestInProgress &&
-          <TextField
-            errorText={this.state.fieldErrors.email || false}
-            floatingLabelText="E-Mail Adresse"
-            fullWidth
-            value={this.state.email}
-            onChange={this.updateEmail}
-          />}
+        <DialogTitle id="ForgotPasswordDialog__title">Passwort vergessen</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
+            {formHasErrors && (
+              <p style={{ color: theme.palette.error.main, marginBottom: '0' }}>{formError}</p>
+            )}
+          </DialogContentText>
 
-        {this.state.requestInProgress && <CircularProgress />}
-        {this.state.passwordReminderSuccessful &&
-        <p style={{ color: this.props.theme.palette.successColor, textAlign: 'center' }}>
-          Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
-          Passwort zurückzusetzen.
-        </p>}
+          {!passwordReminderSuccessful && !requestInProgress && (
+            <TextField
+              autoFocus
+              margin="dense"
+              error={typeof fieldErrors.email !== 'undefined'}
+              helperText={fieldErrors.email ? fieldErrors.email[0] : ''}
+              label="E-Mail Adresse"
+              type="email"
+              fullWidth
+              value={email}
+              onChange={this.updateEmail}
+            />
+          )}
+          {requestInProgress && <CircularProgress />}
+          {passwordReminderSuccessful && (
+            <p style={{ color: theme.palette.successColor, textAlign: 'center' }}>
+              Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
+              Passwort zurückzusetzen.
+            </p>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {passwordReminderSuccessful && <Button color="primary" onClick={onClose}>Schließen</Button>}
+          {!passwordReminderSuccessful && (
+            <Fragment>
+              <Button onClick={onClose}>Abbrechen</Button>
+              <Button
+                color="primary"
+                disabled={!email || email.length === 0 || requestInProgress}
+                onClick={this.handleSubmit}
+              >
+                Abschicken
+              </Button>
+            </Fragment>
+          )}
+        </DialogActions>
       </Dialog>
     );
   }
 }
 
 ForgotPasswordDialog.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   theme: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default withTheme()(ForgotPasswordDialog);
+export default withMobileDialog()(withTheme()(ForgotPasswordDialog));
