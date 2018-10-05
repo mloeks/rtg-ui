@@ -40,18 +40,24 @@ export default {
     },
     primary: {
       main: purple,
+      contrastText: white,
     },
     secondary: {
-      main: white,
+      light: lightGold,
+      main: gold,
+      dark: darkGold,
+      contrastText: black,
     },
     error: {
       main: error,
     },
     text: {
       primary: black,
+      secondary: darkGrey,
     },
     background: {
-      paper: white,
+      paper: '#fff',
+      default: white,
     },
     errorColor: error,
     successColor: success,
@@ -62,8 +68,11 @@ export default {
   shape: {
     borderRadius: 2,
   },
-  appBar: {
-    color: white,
-    textColor: purple,
+  overrides: {
+    MuiAppBar: {
+      colorSecondary: {
+        backgroundColor: white,
+      },
+    },
   },
 };
