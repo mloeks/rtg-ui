@@ -191,17 +191,17 @@ class AuthService {
             // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               fieldErrors: {
-                username: responseJson.username || '',
-                email: responseJson.email || '',
-                firstName: responseJson.first_name || '',
-                lastName: responseJson.last_name || '',
+                username: responseJson.username ? responseJson.username[0] : '',
+                email: responseJson.email ? responseJson.email[0] : '',
+                firstName: responseJson.first_name ? responseJson.first_name[0] : '',
+                lastName: responseJson.last_name ? responseJson.last_name[0] : '',
 
                 // password1 is intentional, because the backend serializers currently
                 // returns it like this
-                password: responseJson.password1 || responseJson.password2 || '',
+                password: responseJson.password1 ? responseJson.password1[0] : '',
               },
-              nonFieldError: responseJson.non_field_errors ?
-                responseJson.non_field_errors[0] : responseJson.error,
+              nonFieldError: responseJson.non_field_errors
+                ? responseJson.non_field_errors[0] : responseJson.error,
             });
           }
         })
