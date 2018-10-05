@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,7 +19,16 @@ import { error, white } from '../../theme/RtgTheme';
 import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.css';
 
-const DrawerMenu = (props) => {
+// TODO P3 the width is only once calculated on page load, not on re-open
+const drawerStyles = {
+  paper: {
+    width: window.matchMedia('(min-width: 480px)').matches ? 400 : '80%',
+  },
+};
+
+const DrawerMenu = ({
+  classes, onLogout, onClose, open, openBetsCount,
+}) => {
   const openBetsBadge = (title, count) => {
     if (count > 0) {
       return (
@@ -31,7 +41,8 @@ const DrawerMenu = (props) => {
             top: '3px',
             right: '-25px',
           }}
-        >{title}
+        >
+          {title}
         </Badge>);
     }
     return title;
@@ -40,11 +51,9 @@ const DrawerMenu = (props) => {
   return (
     <Drawer
       className="DrawerMenu"
-      docked={false}
-      open={props.open}
-      swipeAreaWidth={75}
-      width={window.matchMedia('(min-width: 480px)').matches ? 400 : '80%'}
-      onRequestChange={props.onRequestChange}
+      classes={{ paper: classes.paper }}
+      open={open}
+      onClose={onClose}
     >
       <Link to="/profile">
         <ProfileCard username={AuthService.getUsername()} avatar={AuthService.getAvatar()} />
@@ -52,22 +61,24 @@ const DrawerMenu = (props) => {
 
       <Divider />
 
-      {!AuthService.getHasPaid() &&
-        <div className="DrawerMenu__payment-hint">
-          <span>Bitte 5€ Tippeinsatz bezahlen</span>
-          <a
-            className="DrawerMenu__paypal-link"
-            href="https://paypal.me/rtg2018/5"
-            target="_blank"
-            rel="noopener noreferrer"
-          ><img
-            src={payPalLogo}
-            alt="PayPal link"
-            style={{ width: '100px' }}
-          />
-          </a>
-          <p className="DrawerMenu__bank-account">oder: DE64 5001 0517 5413 9735 33</p>
-        </div>}
+      {!AuthService.getHasPaid()
+        && (
+          <div className="DrawerMenu__payment-hint">
+            <span>Bitte 5€ Tippeinsatz bezahlen</span>
+            <a
+              className="DrawerMenu__paypal-link"
+              href="https://paypal.me/rtg2018/5"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={payPalLogo}
+                alt="PayPal link"
+                style={{ width: '100px' }}
+              />
+            </a>
+            <p className="DrawerMenu__bank-account">oder: DE64 5001 0517 5413 9735 33</p>
+          </div>)}
       {!AuthService.getHasPaid() && <Divider />}
 
       <Link to="/foyer">
@@ -81,7 +92,7 @@ const DrawerMenu = (props) => {
       </Link>
       <Link to="/bets">
         <MenuItem
-          primaryText={openBetsBadge('Tipps', props.openBetsCount)}
+          primaryText={openBetsBadge('Tipps', openBetsCount)}
           leftIcon={<TrendingUpIcon />}
         />
       </Link>
@@ -95,7 +106,7 @@ const DrawerMenu = (props) => {
           </Link>
         )}
 
-      <MenuItem primaryText="Ausloggen" leftIcon={<ExitToAppIcon />} onClick={props.onLogout} />
+      <MenuItem primaryText="Ausloggen" leftIcon={<ExitToAppIcon />} onClick={onLogout} />
     </Drawer>);
 };
 
@@ -103,7 +114,8 @@ DrawerMenu.propTypes = {
   open: PropTypes.bool.isRequired,
   openBetsCount: PropTypes.number.isRequired,
   onLogout: PropTypes.func.isRequired,
-  onRequestChange: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default DrawerMenu;
+export default withStyles(drawerStyles)(DrawerMenu);

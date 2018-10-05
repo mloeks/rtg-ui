@@ -91,6 +91,8 @@ class Header extends Component {
   }
 
   render() {
+    const { menuOpen } = this.state;
+
     const createTitleVariant = (className, title, loggedIn) => (
       <Typography
         className={`Header__title ${className}`}
@@ -130,10 +132,10 @@ class Header extends Component {
 
               {loggedIn && (
                 <DrawerMenu
-                  open={this.state.menuOpen}
+                  open={menuOpen}
                   openBetsCount={userContext.openBetsCount}
                   onLogout={() => userContext.doLogout()}
-                  onRequestChange={menuOpen => this.setState({ menuOpen })}
+                  onClose={() => this.setState({ menuOpen: false })}
                 />
               )}
             </Fragment>);
