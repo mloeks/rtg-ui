@@ -116,6 +116,8 @@ class RegisterDialog extends Component {
   render() {
     const { fullScreen, onCancel, open } = this.props;
     const {
+      password,
+
       fieldErrors,
       formError,
       formHasErrors,
@@ -147,6 +149,7 @@ class RegisterDialog extends Component {
           )}
 
           <TextField
+            autoFocus
             error={Boolean(fieldErrors.username)}
             helperText={fieldErrors.username || false}
             label="Username"
@@ -166,8 +169,9 @@ class RegisterDialog extends Component {
           <br />
           <VisiblePasswordField
             error={Boolean(fieldErrors.password)}
-            helperText={fieldErrors.password}
+            helperText={fieldErrors.password || ''}
             fullWidth
+            value={password || ''}
             onChange={this.updatePassword}
           />
           <br />
@@ -195,7 +199,7 @@ class RegisterDialog extends Component {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onCancel}>Abbrechen</Button>
+          <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
           <Button color="primary" disabled={!hasChanges} onClick={this.handleSubmit}>
             Registrieren
           </Button>
