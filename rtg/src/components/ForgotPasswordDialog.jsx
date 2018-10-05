@@ -125,8 +125,7 @@ class ForgotPasswordDialog extends Component {
           {!passwordReminderSuccessful && !requestInProgress && (
             <TextField
               autoFocus
-              margin="dense"
-              error={typeof fieldErrors.email !== 'undefined'}
+              error={Boolean(fieldErrors.email)}
               helperText={fieldErrors.email ? fieldErrors.email[0] : ''}
               label="E-Mail Adresse"
               type="email"
@@ -147,7 +146,7 @@ class ForgotPasswordDialog extends Component {
           {passwordReminderSuccessful && <Button color="primary" onClick={onClose}>Schließen</Button>}
           {!passwordReminderSuccessful && (
             <Fragment>
-              <Button onClick={onClose}>Abbrechen</Button>
+              <Button color="secondary" onClick={onClose}>Abbrechen</Button>
               <Button
                 color="primary"
                 disabled={!email || email.length === 0 || requestInProgress}
