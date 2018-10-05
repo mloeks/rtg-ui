@@ -67,6 +67,9 @@ export default {
     error: {
       main: error,
     },
+    success: {
+      main: success,
+    },
     text: {
       primary: black,
       secondary: lightGrey,

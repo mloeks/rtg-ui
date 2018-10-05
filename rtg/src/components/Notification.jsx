@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '@material-ui/icons/Error';
-import { withTheme } from '@material-ui/core/styles';
 import { lightenDarkenColor } from '../service/ColorHelper';
 
 export const NotificationType = {
@@ -13,15 +16,31 @@ export const NotificationType = {
   ERROR: 'error',
 };
 
+const styles = theme => ({
+  root: {
+    boxShadow: 'rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px',
+  },
+  icon: {
+    marginRight: 0,
+    width: 30,
+    height: 30,
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    color: theme.palette.grey['600'],
+  },
+});
+
 // TODO P3 closing by button click does not work in IE
 // TODO P3 animated show/hide
 class Notification extends Component {
   static getIconByType(type, color) {
-    const iconStyle = { width: '30px', height: '30px' };
     if (type === NotificationType.SUCCESS) {
-      return <CheckCircleIcon color={color} style={iconStyle} />;
+      return <CheckCircleIcon style={{ color }} />;
     }
-    return <ErrorIcon color={color} style={iconStyle} />;
+    return <ErrorIcon style={{ color }} />;
   }
 
   constructor(props) {
@@ -32,8 +51,9 @@ class Notification extends Component {
   }
 
   componentDidMount() {
-    if (this.props.disappearAfterMs) {
-      this.disappearTimeoutHandler = setTimeout(this.handleClose, this.props.disappearAfterMs);
+    const { disappearAfterMs } = this.props;
+    if (disappearAfterMs) {
+      this.disappearTimeoutHandler = setTimeout(this.handleClose, disappearAfterMs);
     }
   }
 
@@ -42,42 +62,53 @@ class Notification extends Component {
   }
 
   handleClose() {
+    const { onClose } = this.props;
     this.setState({ visible: false });
-    this.props.onClose();
+    onClose();
   }
 
   render() {
-    if (!this.state.visible) {
-      return null;
-    }
+    const { visible } = this.state;
+    const {
+      classes,
+      className,
+      containerStyle,
+      dismissable,
+      subtitle,
+      theme,
+      title,
+      type,
+    } = this.props;
 
-    const notificationColor = this.props.theme.palette[`${this.props.type}Color`];
+    if (!visible) { return null; }
+
+    const notificationColor = type === NotificationType.SUCCESS
+      ? theme.palette.success.main : theme.palette.error.main;
 
     return (
-      <Card
-        className={this.props.className}
+      <ListItem
+        className={className}
+        classes={{ root: classes.root }}
+        component="div"
         style={{
           backgroundColor: lightenDarkenColor(notificationColor, 150),
-          ...this.props.containerStyle,
+          ...containerStyle,
         }}
       >
-        <CardHeader
-          closeIcon={<CloseIcon onClick={this.handleClose} />}
-          title={this.props.title}
-          showExpandableButton={this.props.dismissable}
-          subtitle={this.props.subtitle}
-          subtitleStyle={{ fontWeight: 400 }}
-          style={{
-            textAlign: 'left',
-            display: 'flex',
-            alignItems: 'center',
-            lineHeight: '1.4',
-            ...this.props.style,
-          }}
-          textStyle={{ paddingRight: this.props.dismissable ? '23px' : '0' }}
-          avatar={Notification.getIconByType(this.props.type, notificationColor)}
+        <ListItemIcon classes={{ root: classes.icon }}>
+          {Notification.getIconByType(type, notificationColor)}
+        </ListItemIcon>
+        <ListItemText
+          classes={{ secondary: classes.subtitle }}
+          primary={title}
+          secondary={subtitle}
         />
-      </Card>
+        {dismissable && (
+          <IconButton onClick={this.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        )}
+      </ListItem>
     );
   }
 }
@@ -88,7 +119,6 @@ Notification.defaultProps = {
   subtitle: null,
   onClose: () => {},
   className: null,
-  style: {},
   containerStyle: {},
 };
 
@@ -102,9 +132,12 @@ Notification.propTypes = {
   onClose: PropTypes.func,
 
   className: PropTypes.string,
-  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+
+  /* eslint-disable react/forbid-prop-types */
+  containerStyle: PropTypes.object,
+  theme: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
-export default withTheme()(Notification);
+export default withStyles(styles)(withTheme()(Notification));

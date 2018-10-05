@@ -170,7 +170,6 @@ class CurrentGameCard extends Component {
                 dismissable
                 disappearAfterMs={2000}
                 containerStyle={{ margin: '0 auto', maxWidth: 185 }}
-                style={{ padding: '5px' }}
                 onClose={() => this.setState({ editingBetSuccessful: false })}
               />)}
           </div>
