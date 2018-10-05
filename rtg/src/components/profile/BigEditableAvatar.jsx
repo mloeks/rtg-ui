@@ -121,14 +121,16 @@ class BigEditableAvatar extends Component {
   }
 
   getCropOrUploadErrorReadableText() {
-    if (this.state.uploadError) {
-      return this.state.uploadError;
+    const { cropError, uploadError } = this.state;
+    if (uploadError) {
+      return uploadError;
     }
 
-    if (this.state.cropError === 'maxsize') {
+    if (cropError === 'maxsize') {
       const maxSizeReadable = `${this.maxImageSize / 1024 / 1024} MB`;
       return `Das Bild überschreitet die maximale erlaubte Dateigröße von ${maxSizeReadable}`;
-    } else if (this.state.cropError === 'not_image') {
+    }
+    if (cropError === 'not_image') {
       return 'Erlaubte Dateitypen sind PNG/JPG/JPEG.';
     }
     return 'Bitte versuche es später noch einmal.';
@@ -218,6 +220,20 @@ class BigEditableAvatar extends Component {
   }
 
   render() {
+    const {
+      avatarEditScale,
+      avatarRotation,
+      avatarUrl,
+      chosenFile,
+      cropError,
+      editing,
+      uploadError,
+      uploadInProgress,
+      uploadSuccess,
+    } = this.state;
+
+    const { username } = this.props;
+
     const avatarPlusBorderSize = this.avatarSize + (2 * this.avatarBorderSize);
     const avatarDivStyle = {
       backgroundColor: 'white',
@@ -249,71 +265,90 @@ class BigEditableAvatar extends Component {
     return (
       <div className="BigEditableAvatar" style={{ marginTop: -(avatarPlusBorderSize / 2) - 10 }}>
         <div className="BigEditableAvatar__avatar" style={avatarDivStyle}>
-          {(this.state.editing && this.state.chosenFile) &&
-            <AvatarEditor
-              ref={this.setEditorRef}
-              image={this.state.chosenFile}
-              width={this.avatarSize}
-              height={this.avatarSize}
-              border={0}
-              borderRadius={this.avatarSize / 2}
-              scale={this.state.avatarEditScale}
-              rotate={this.state.avatarRotation}
-              style={{ borderRadius: this.avatarSize / 2 }}
-            />}
-
-          {!this.state.editing &&
-            <div>
-              <input
-                type="file"
-                id="fileElem"
-                multiple
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={this.handleFileInputChange}
+          {(editing && chosenFile)
+            && (
+              <AvatarEditor
+                ref={this.setEditorRef}
+                image={chosenFile}
+                width={this.avatarSize}
+                height={this.avatarSize}
+                border={0}
+                borderRadius={this.avatarSize / 2}
+                scale={avatarEditScale}
+                rotate={avatarRotation}
+                style={{ borderRadius: this.avatarSize / 2 }}
               />
-              <label htmlFor="fileElem">
-                <Avatar
-                  className="BigEditableAvatar__avatar-elem"
-                  backgroundColor={!this.state.avatarUrl ? teal['400'] : null}
-                  icon={!this.state.avatarUrl ? noAvatarPlaceholder : null}
-                  src={this.state.avatarUrl ? `${API_BASE_URL}/media/${this.state.avatarUrl}` : null}
-                  size={this.avatarSize}
+            )}
+
+          {!editing
+            && (
+              <div>
+                <input
+                  type="file"
+                  id="fileElem"
+                  multiple
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={this.handleFileInputChange}
                 />
-              </label>
-            </div>}
+                <label htmlFor="fileElem">
+                  <Avatar
+                    className="BigEditableAvatar__avatar-elem"
+                    src={avatarUrl ? `${API_BASE_URL}/media/${avatarUrl}` : null}
+                    style={{
+                      width: this.avatarSize,
+                      height: this.avatarSize,
+                      backgroundColor: !avatarUrl ? teal['400'] : null,
+                    }}
+                  >
+                    {!avatarUrl && noAvatarPlaceholder}
+                  </Avatar>
+                </label>
+              </div>
+            )}
         </div>
 
-        {(this.state.editing && !this.state.uploadInProgress) &&
-          <EditingActions
-            sliderValue={this.state.avatarEditScale}
-            onZoomIn={() => this.handleAvatarZoom(1)}
-            onZoomOut={() => this.handleAvatarZoom(-1)}
-            onZoomChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
-            onRotateLeft={() => this.handleAvatarRotate(-90)}
-            onRotateRight={() => this.handleAvatarRotate(90)}
-            onSave={this.handleEditSave}
-            onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
-            style={{ maxWidth: 250, margin: '0 auto' }}
-          />}
+        {(editing && !uploadInProgress)
+          && (
+            <EditingActions
+              sliderValue={avatarEditScale}
+              onZoomIn={() => this.handleAvatarZoom(1)}
+              onZoomOut={() => this.handleAvatarZoom(-1)}
+              onZoomChange={(e, val) => { this.setState({ avatarEditScale: val }); }}
+              onRotateLeft={() => this.handleAvatarRotate(-90)}
+              onRotateRight={() => this.handleAvatarRotate(90)}
+              onSave={this.handleEditSave}
+              onCancel={() => { this.setState(BigEditableAvatar.getInitialState()); }}
+              style={{ maxWidth: 250, margin: '0 auto' }}
+            />
+          )}
 
         <div className="BigEditableAvatar__feedback">
-          {this.state.uploadInProgress &&
-            <CircularProgress size={30} thickness={2.5} style={{ margin: '20px 0' }} />}
-          {(this.state.cropError || this.state.uploadError) && <Notification
-            type={NotificationType.ERROR}
-            title="Das hat leider nicht geklappt"
-            subtitle={this.getCropOrUploadErrorReadableText()}
-          />}
-          {this.state.uploadSuccess && <Notification
-            type={NotificationType.SUCCESS}
-            title="Avatar erfolgreich geändert"
-            disappearAfterMs={3000}
-          />}
+          {uploadInProgress
+            && <CircularProgress size={30} thickness={2.5} style={{ margin: '20px 0' }} />
+          }
+
+          {(cropError || uploadError)
+            && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Das hat leider nicht geklappt"
+                subtitle={this.getCropOrUploadErrorReadableText()}
+              />
+            )}
+
+          {uploadSuccess
+            && (
+              <Notification
+                type={NotificationType.SUCCESS}
+                title="Avatar erfolgreich geändert"
+                disappearAfterMs={3000}
+              />
+            )}
         </div>
 
         <h2 className="BigEditableAvatar__username" style={{ margin: '15px 0 0' }}>
-          {this.props.username}
+          {username}
         </h2>
       </div>
     );
