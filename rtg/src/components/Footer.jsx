@@ -66,13 +66,6 @@ const Footer = (props) => (
             color="secondary"
           />
         </a>
-        <a
-          href="http://www.twitter.com"
-          title="Zur Twitter-Gruppe"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-        </a>
       </div>
     </div>
 
