@@ -53,7 +53,7 @@ export default {
     },
     text: {
       primary: black,
-      secondary: darkGrey,
+      secondary: lightGrey,
     },
     background: {
       paper: '#fff',
