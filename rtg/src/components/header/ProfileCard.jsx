@@ -5,19 +5,19 @@ import UserAvatar from '../UserAvatar';
 import profileBgImage from '../../theme/img/headings/french_windows.jpg';
 import './ProfileCard.css';
 
-const ProfileCard = props => (
+const ProfileCard = ({ avatar, username }) => (
   <div
     className="ProfileCard"
     style={{ backgroundImage: `url(${profileBgImage})` }}
   >
     <UserAvatar
-      size={65}
-      img={props.avatar}
-      username={props.username}
+      size={75}
+      img={avatar}
+      username={username}
       style={{ boxShadow: 'rgba(0, 0, 0, 0.16) 0 0 3px, rgba(0, 0, 0, 0.15) 2px 3px 5px' }}
     />
     <div className="ProfileCard__content">
-      <div className="ProfileCard__username">{props.username}</div>
+      <div className="ProfileCard__username">{username}</div>
       <div className="ProfileCard__subtitle">Hier klicken für persönliche Einstellungen</div>
     </div>
   </div>

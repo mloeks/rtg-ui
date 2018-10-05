@@ -1,17 +1,23 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
+
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
-import MenuItem from '@material-ui/core/MenuItem';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
 import TodayIcon from '@material-ui/icons/Today';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import { Link } from 'react-router-dom';
+
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
 import { error, white } from '../../theme/RtgTheme';
@@ -58,7 +64,6 @@ const DrawerMenu = ({
       <Link to="/profile">
         <ProfileCard username={AuthService.getUsername()} avatar={AuthService.getAvatar()} />
       </Link>
-
       <Divider />
 
       {!AuthService.getHasPaid()
@@ -81,32 +86,51 @@ const DrawerMenu = ({
           </div>)}
       {!AuthService.getHasPaid() && <Divider />}
 
-      <Link to="/foyer">
-        <MenuItem primaryText="Foyer" leftIcon={<HomeIcon />} />
-      </Link>
-      <Link to="/schedule">
-        <MenuItem primaryText="Spielplan" leftIcon={<TodayIcon />} />
-      </Link>
-      <Link to="/standings">
-        <MenuItem primaryText="Spielstand" leftIcon={<ListIcon />} />
-      </Link>
-      <Link to="/bets">
-        <MenuItem
-          primaryText={openBetsBadge('Tipps', openBetsCount)}
-          leftIcon={<TrendingUpIcon />}
-        />
-      </Link>
+      <List>
+        <Link to="/foyer">
+          <ListItem button>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText primary="Foyer" />
+          </ListItem>
+        </Link>
+        <Link to="/schedule">
+          <ListItem button>
+            <ListItemIcon><TodayIcon /></ListItemIcon>
+          <ListItemText primary="Spielplan" />
+          </ListItem>
+        </Link>
+        <Link to="/standings">
+          <ListItem button>
+            <ListItemIcon><ListIcon /></ListItemIcon>
+            <ListItemText primary="Spielstand" />
+          </ListItem>
+        </Link>
+        <Link to="/bets">
+          <ListItem button>
+            <ListItemIcon><TrendingUpIcon /></ListItemIcon>
+            <ListItemText primary={openBetsBadge('Tipps', openBetsCount)}/>
+          </ListItem>
+        </Link>
+      </List>
 
       <Divider />
 
-      {AuthService.isAdmin()
-        && (
-          <Link to="/admin/users">
-            <MenuItem primaryText="Benutzerverwaltung" leftIcon={<SettingsIcon />} />
-          </Link>
-        )}
+      <List>
+        {AuthService.isAdmin()
+          && (
+            <Link to="/admin/users">
+              <ListItem button>
+                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                <ListItemText primary="Benutzerverwaltung" />
+              </ListItem>
+            </Link>
+          )}
 
-      <MenuItem primaryText="Ausloggen" leftIcon={<ExitToAppIcon />} onClick={onLogout} />
+        <ListItem button onClick={onLogout}>
+          <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+          <ListItemText primary="Ausloggen" />
+        </ListItem>
+      </List>
     </Drawer>);
 };
 
