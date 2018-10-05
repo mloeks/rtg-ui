@@ -98,7 +98,7 @@ class Header extends Component {
         className={`Header__title ${className}`}
         variant="title"
         color="primary"
-        style={{ margin: loggedIn ? '0' : '0 auto' }}
+        style={{ margin: loggedIn ? '0' : '0 auto', flexGrow: loggedIn ? 1 : 0 }}
         onClick={() => { this.props.history.push('/'); }}
       >
         {title}
@@ -117,8 +117,10 @@ class Header extends Component {
                   <Toolbar style={{ height: '100%' }}>
                     {loggedIn && (
                       <IconButton
+                        color="primary"
                         onClick={this.handleMenuToggle}
                         aria-label="Menu"
+                        style={{ margin: '0 8px 0 -8px' }}
                       >
                         <MenuIcon />
                       </IconButton>

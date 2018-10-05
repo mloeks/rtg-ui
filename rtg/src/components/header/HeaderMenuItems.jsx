@@ -11,21 +11,17 @@ import './HeaderMenuItems.css';
 const HeaderMenuItems = props => (
   <div className="HeaderMenuItems" style={{ display: 'flex', alignItems: 'center', margin: 0 }}>
     <Link to="/standings" title="Spielstand">
-      <Button
-        className="HeaderMenuItems__item"
-        color="primary"
-        icon={<ListIcon />}
-        style={{ minWidth: '20px' }}
-      >Spielstand</Button>
+      <Button variant="flat" color="primary" style={{ minWidth: 0, padding: 8 }}>
+        <ListIcon />
+        <span className="HeaderMenuItems__item-label">Spielstand</span>
+      </Button>
     </Link>
 
     <Link to="/bets" title="Tipps abgeben">
-      <Button
-        className="HeaderMenuItems__item"
-        color="primary"
-        icon={<TrendingUpIcon />}
-        style={{ minWidth: '20px' }}
-      >Tipps</Button>
+      <Button variant="flat" color="primary" style={{ minWidth: 0, padding: 8 }}>
+        <TrendingUpIcon />
+        <span className="HeaderMenuItems__item-label">Tipps</span>
+      </Button>
     </Link>
     <OpenBetsIndicator number={props.openBetsCount} />
   </div>

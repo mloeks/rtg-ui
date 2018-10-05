@@ -1,17 +1,9 @@
 .HeaderMenuItems {
-  &__item {
-    span {
-      display: none;
-      @media only screen and (min-width: 640px) {
-        display: inline;
-      }
-    }
-
-    svg {
-      padding: 0 12px 0 0;
-      @media only screen and (min-width: 640px) {
-        padding: 0;
-      }
+  &__item-label {
+    display: none;
+    @media only screen and (min-width: 640px) {
+      display: inherit;
+      margin-left: 8px;
     }
   }
 }
