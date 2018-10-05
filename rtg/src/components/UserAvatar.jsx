@@ -10,31 +10,43 @@ import { API_BASE_URL } from '../service/AuthService';
  */
 class UserAvatar extends Component {
   shouldComponentUpdate(nextProps) {
-    return this.props.username !== nextProps.username ||
-      this.props.size !== nextProps.size ||
-      this.props.img !== nextProps.img ||
+    const {
+      img,
+      size,
+      style,
+      username,
+    } = this.props;
+
+    return username !== nextProps.username || size !== nextProps.size || img !== nextProps.img
       // poor man's "deep" comparison - does only work with JSON serializable values!
-      JSON.stringify(this.props.style) !== JSON.stringify(nextProps.style);
+      || JSON.stringify(style) !== JSON.stringify(nextProps.style);
   }
 
   render() {
-    return (this.props.img ?
+    const {
+      className,
+      img,
+      onClick,
+      size,
+      style,
+      username,
+    } = this.props;
+
+    return (
       <Avatar
-        className={this.props.className}
-        size={this.props.size}
-        src={`${API_BASE_URL}/media/${this.props.img}`}
-        style={this.props.style}
-        onClick={this.props.onClick}
-      /> :
-      <Avatar
-        className={this.props.className}
-        color="#ffffff"
-        backgroundColor={randomHueHexColor(45, 80)}
-        size={this.props.size}
-        style={this.props.style}
-        onClick={this.props.onClick}
-      >{this.props.username[0].toUpperCase()}
-      </Avatar>);
+        className={className}
+        src={img ? `${API_BASE_URL}/media/${img}` : null}
+        style={{
+          backgroundColor: randomHueHexColor(45, 80),
+          width: size,
+          height: size,
+          ...style,
+        }}
+        onClick={onClick}
+      >
+        {!img && username[0].toUpperCase()}
+      </Avatar>
+    );
   }
 }
 
