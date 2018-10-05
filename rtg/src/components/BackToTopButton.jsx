@@ -9,7 +9,9 @@ import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelp
 class BackToTopButton extends Component {
   constructor(props) {
     super(props);
-    this.state = { show: scrollY() > this.props.showFromScrollPos };
+
+    const { showFromScrollPos } = this.props;
+    this.state = { show: scrollY() > showFromScrollPos };
     this.scrollHandler = null;
     this.handleVisibility = this.handleVisibility.bind(this);
   }
@@ -26,20 +28,23 @@ class BackToTopButton extends Component {
   }
 
   handleVisibility(position) {
-    this.setState({
-      show: position > this.props.showFromScrollPos
-    });
+    const { showFromScrollPos } = this.props;
+    this.setState({ show: position > showFromScrollPos });
   }
 
   render() {
+    const { show } = this.state;
+    const { bottomOffset, rightOffset } = this.props;
+
     return (
       <Button
+        color="primary"
         variant="fab"
         title="Nach oben"
         style={{
           position: 'fixed',
-          bottom: this.state.show ? this.props.bottomOffset : -70,
-          right: this.props.rightOffset,
+          bottom: show ? bottomOffset : -70,
+          right: rightOffset,
           zIndex: 9999,
           transition: 'bottom 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
         }}
