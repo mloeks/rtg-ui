@@ -145,17 +145,16 @@ class News extends Component {
             Keine Neuigkeiten.
           </div>}
 
-        {(this.state.offset < this.state.count) &&
+        {(this.state.offset < this.state.count) && (
           <Button
             disabled={this.state.loading}
             color="primary"
-            labelPosition="before"
-            icon={<KeyboardArrowDownIcon />}
             onClick={this.loadPosts}
-            labelStyle={{ fontSize: '14px' }}
           >
             {`${numberOfFurtherPosts} weitere Neuigkeit${numberOfFurtherPosts > 1 ? 'en' : ''} laden`}
-          </Button>}
+            <KeyboardArrowDownIcon style={{ marginLeft: 8 }}/>
+          </Button>
+        )}
         <br />
 
         {this.state.loading && <CircularProgress style={{ margin: '20px auto' }}/>}

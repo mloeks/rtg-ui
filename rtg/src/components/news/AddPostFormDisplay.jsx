@@ -14,89 +14,99 @@ import { error, success } from '../../theme/RtgTheme';
 
 import './AddPostForm.css';
 
-const AddPostFormDisplay = (props) => {
+const AddPostFormDisplay = ({
+  appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
+  onCancel, onFieldChange, onFieldsChange, onSubmit, quill, savingError, savingInProgress,
+  sendMail, title, titleError,
+}) => {
   const getSuitableSavingErrorSubtitle = () => {
-    if (props.titleError || props.contentError) {
+    if (titleError || contentError) {
       return 'Bitte überprüfe Deine Eingaben.';
-    } else if (props.nonFieldError) {
-      return props.nonFieldError;
     }
+    if (nonFieldError) { return nonFieldError; }
     return 'Bitte versuche es später erneut.';
   };
 
   const onMailChoiceChanged = (event, value) => {
-    const mailChoices =
-      ['sendMailToSubscribers', 'sendMailToActive', 'sendMailToInactive', 'sendMailToAll'];
+    const mailChoices = ['sendMailToSubscribers', 'sendMailToActive',
+      'sendMailToInactive', 'sendMailToAll'];
     const updatedMailRelatedFields = {};
     for (let i = 0; i < mailChoices.length; i += 1) {
       updatedMailRelatedFields[mailChoices[i]] = value === mailChoices[i];
     }
-    props.onFieldsChange(updatedMailRelatedFields);
+    onFieldsChange(updatedMailRelatedFields);
   };
 
   const quillModules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
       ['link'],
-      ['clean']
+      ['clean'],
     ],
   };
 
   const quillFormats = [
     'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet', 'indent',
-    'link'
+    'list', 'bullet', 'indent', 'link',
   ];
 
   return (
-    <form className="AddPostForm" noValidate onSubmit={props.onSubmit}>
+    <form className="AddPostForm" noValidate onSubmit={onSubmit}>
       <Paper className="AddPostForm__paper" zDepth={3}>
         <h4 className="AddPostForm__heading">Neuigkeit hinzufügen:</h4>
         <TextField
-          floatingLabelText="Titel"
-          value={props.title}
+          label="Titel"
+          value={title}
           fullWidth
-          errorText={props.titleError}
-          onChange={(e, v) => props.onFieldChange('title', v)}
-        /><br />
+          error={Boolean(titleError)}
+          helperText={titleError || false}
+          onChange={(e, v) => onFieldChange('title', v)}
+        />
+        <br />
 
-        {props.quill && <props.quill
-          placeholder="Inhalt schreiben..."
-          value={props.content}
-          modules={quillModules}
-          formats={quillFormats}
-          onChange={(val) => props.onFieldChange('content', val)}
-          style={{ marginTop: 10, fontSize: '20px' }}
-        />}
-        {!props.quill && <CircularProgress />}
+        {quill && (
+          <quill
+            placeholder="Inhalt schreiben..."
+            value={content}
+            modules={quillModules}
+            formats={quillFormats}
+            onChange={val => onFieldChange('content', val)}
+            style={{ marginTop: 10, fontSize: '20px' }}
+          />
+        )}
+        {!quill && <CircularProgress />}
 
         <br />
         <div className="AddPostForm__draft-info">
-          {props.draftSaved &&
+          {draftSaved && (
             <span className="AddPostForm__draft-info--success">
               <CheckIcon style={{ height: 20, width: 20, color: success }} />
               &nbsp;Entwurf gespeichert.
-            </span>}
-          {props.draftSaving && 'Speichern...'}
-          {props.draftSavingError &&
+            </span>
+          )}
+          {draftSaving && 'Speichern...'}
+          {draftSavingError && (
             <span className="AddPostForm__draft-info--error">
               <ErrorIcon style={{ height: 20, width: 20, color: error }} />
               &nbsp;Fehler beim Zwischenspeichern!
-            </span>}
+            </span>
+          )}
         </div>
         <br />
 
         <Checkbox
           label="Bei den Neuigkeiten auf dieser Seite anzeigen"
-          checked={props.appearInNews}
-          onCheck={(e, v) => props.onFieldChange('appearInNews', v)}
-        /><br />
+          checked={appearInNews}
+          onCheck={(e, v) => onFieldChange('appearInNews', v)}
+        />
+        <br />
         <Checkbox
           label="Per E-Mail senden ..."
-          checked={props.sendMail}
-          onCheck={(e, v) => props.onFieldChange('sendMail', v)}
-        /><br />
+          checked={sendMail}
+          onCheck={(e, v) => onFieldChange('sendMail', v)}
+        />
+        <br />
 
         <RadioGroup
           className="AddPostForm__mail-choices-row"
@@ -105,39 +115,40 @@ const AddPostFormDisplay = (props) => {
           onChange={onMailChoiceChanged}
         >
           <FormControlLabel
-            disabled={!props.sendMail}
+            disabled={!sendMail}
             label="... an alle Abonnenten"
             value="sendMailToSubscribers"
           />
           <FormControlLabel
-            disabled={!props.sendMail}
+            disabled={!sendMail}
             label="... an alle aktiven User"
             value="sendMailToActive"
           />
           <FormControlLabel
-            disabled={!props.sendMail}
+            disabled={!sendMail}
             label="... nur an alle inaktiven User"
             value="sendMailToInactive"
           />
           <FormControlLabel
-            disabled={!props.sendMail}
+            disabled={!sendMail}
             label="... an alle bekannten User (aktiv & inaktiv)"
             value="sendMailToAll"
           />
         </RadioGroup>
 
-        <br /><br />
+        <br />
+        <br />
 
         <div className="AddPostForm__button-row">
-          <Button color="secondary" onClick={props.onCancel}>Abbrechen</Button>
-          <Button type="submit" color="primary" disabled={props.savingInProgress || props.draftSaving}>
+          <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
+          <Button type="submit" color="primary" disabled={savingInProgress || draftSaving}>
             Absenden
           </Button>
         </div>
 
         <div className="AddPostForm__feedback">
-          {props.savingInProgress && <CircularProgress size={30} thickness={2.5} />}
-          {props.savingError === true
+          {savingInProgress && <CircularProgress size={30} thickness={2.5} />}
+          {savingError === true
             && (
               <Notification
                 type={NotificationType.ERROR}
