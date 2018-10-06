@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import ListItem from '@material-ui/core/ListItem';
+
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
+import { grey, lightGrey } from '../../theme/RtgTheme';
+
 import {
   differenceInMinutes,
   differenceInSeconds,
@@ -17,14 +21,21 @@ import {
   isYesterday,
 } from 'date-fns';
 import de from 'date-fns/locale/de';
+
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
-import { grey, lightGrey } from '../../theme/RtgTheme';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Post.css';
+
+const styles = {
+  headline: {
+    wordBreak: 'break-word',
+    overflowWrap: 'break-word',
+  },
+};
 
 export const getFormattedPostDate = (date) => {
   const now = new Date();
@@ -85,7 +96,8 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    const shouldWrapLongContent = this.contentRef.current.clientHeight > this.props.wrapFromHeight;
+    const { wrapFromHeight } = this.props;
+    const shouldWrapLongContent = this.contentRef.current.clientHeight > wrapFromHeight;
     this.setState({ contentWrappedForLength: shouldWrapLongContent });
   }
 
@@ -139,36 +151,42 @@ class Post extends Component {
   }
 
   render() {
-    const dateCreated = new Date(this.props.post.date_created);
+    const {
+      comments,
+      commentCount,
+      contentWrappedForLength,
+      expanded,
+      userDetailsPopoverAnchorEl,
+      userDetailsPopoverOpen,
+    } = this.state;
+    const { classes, post } = this.props;
+
+    const dateCreated = new Date(post.date_created);
 
     return (
       <Card
         className="Post__card"
-        expanded={this.state.expanded}
+        expanded={expanded}
         containerStyle={{ paddingBottom: 0 }}
       >
         <CardHeader
           className="Post__card-title"
-          title={this.props.post.title}
+          classes={{ title: classes.headline }}
+          title={post.title}
+          titleTypographyProps={{ color: 'textPrimary', component: 'h2', variant: 'headline' }}
           style={{ backgroundColor: this.randomPostColour }}
-          titleStyle={{
-            fontSize: '32px',
-            fontFamily: '"Lobster Two", sans-serif',
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word',
-          }}
         />
 
-        {this.props.post &&
+        {post && (
           <CardContent
-            className={`Post__content ${this.state.contentWrappedForLength ? 'Post__content--wrapped' : ''}`}
+            className={`Post__content ${contentWrappedForLength ? 'Post__content--wrapped' : ''}`}
             style={{
               backgroundColor: 'white',
               fontSize: '16px',
             }}
           >
             <div
-              dangerouslySetInnerHTML={{ __html: this.props.post.content }}
+              dangerouslySetInnerHTML={{ __html: post.content }}
               ref={this.contentRef}
               style={{
                 margin: 0,
@@ -178,7 +196,7 @@ class Post extends Component {
                 overflowWrap: 'break-word',
               }}
             />
-            {this.state.contentWrappedForLength &&
+            {contentWrappedForLength && (
               <div className="Post__content-show-all">
                 <Button
                   color="primary"
@@ -189,25 +207,26 @@ class Post extends Component {
                 >
                   Alles lesen
                 </Button>
-              </div>}
-          </CardContent>}
+              </div>)}
+          </CardContent>
+        )}
 
         <CardActions
           className="Post__card-actions"
           style={{ padding: '16px' }}
         >
           <UserDetailsPopover
-            anchorEl={this.state.userDetailsPopoverAnchorEl}
-            avatar={this.props.post.author_details.avatar}
-            userId={this.props.post.author_details.pk}
-            username={this.props.post.author_details.username}
-            open={this.state.userDetailsPopoverOpen}
+            anchorEl={userDetailsPopoverAnchorEl}
+            avatar={post.author_details.avatar}
+            userId={post.author_details.pk}
+            username={post.author_details.username}
+            open={userDetailsPopoverOpen}
             onClose={this.hideUserDetailsPopover}
           />
 
           <ListItem
             disabled
-            primaryText={
+            primaryText={(
               <div
                 role="button"
                 style={{
@@ -216,23 +235,23 @@ class Post extends Component {
                   overflow: 'hidden',
                   padding: '2px 0',
                 }}
-                title={this.props.post.author_details.username}
+                title={post.author_details.username}
               >
-                {this.props.post.author_details.username}
+                {post.author_details.username}
               </div>
-            }
+            )}
             secondaryText={`${getFormattedPostDate(dateCreated)}`}
             leftAvatar={
               <UserAvatar
                 className="Post__author-avatar"
                 size={40}
-                img={this.props.post.author_details.avatar}
-                username={this.props.post.author_details.username}
+                img={post.author_details.avatar}
+                username={post.author_details.username}
                 onClick={this.showUserDetailsPopover}
                 style={{ left: 0, top: 0 }}
               />}
             rightIcon={<Button
-              disabled={this.state.commentCount === 0}
+              disabled={commentCount === 0}
               labelPosition="before"
               icon={<ModeCommentIcon color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
               onClick={this.toggleExpanded}
@@ -247,13 +266,13 @@ class Post extends Component {
                 width: 'auto',
               }}
             >
-              {Post.getCommentsLabel(this.state.commentCount)}
+              {Post.getCommentsLabel(commentCount)}
             </Button>}
             style={{ padding: '0 0 0 50px' }}
           />
           <AddComment
             focusOnMount={false}
-            postId={this.props.post.id}
+            postId={post.id}
             onAdded={this.handleCommentAdded}
           />
         </CardActions>
@@ -261,9 +280,9 @@ class Post extends Component {
         <CardContent className="Post__comments" expandable>
           <CommentsList
             hierarchyLevel={0}
-            postId={this.props.post.id}
-            comments={this.state.comments}
-            commentCount={this.state.commentCount}
+            postId={post.id}
+            comments={comments}
+            commentCount={commentCount}
             onReplyAdded={this.handleCommentAdded}
             onCommentsLoaded={comments => this.setState({ comments })}
           />
@@ -289,6 +308,7 @@ Post.defaultProps = {
 Post.propTypes = {
   wrapFromHeight: PropTypes.number,
   post: PropTypes.shape().isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default Post;
+export default withStyles(styles)(Post);
