@@ -214,14 +214,24 @@ class Post extends Component {
           title={post.author_details.username}
           subheader={`${getFormattedPostDate(dateCreated)}`}
           avatar={(
-            <UserAvatar
-              className="Post__author-avatar"
-              size={40}
-              img={post.author_details.avatar}
-              username={post.author_details.username}
-              onClick={this.showUserDetailsPopover}
-              style={{ left: 0, top: 0 }}
-            />
+            <Fragment>
+              <UserAvatar
+                className="Post__author-avatar"
+                size={40}
+                img={post.author_details.avatar}
+                username={post.author_details.username}
+                onClick={this.showUserDetailsPopover}
+                style={{ left: 0, top: 0 }}
+              />
+              <UserDetailsPopover
+                anchorEl={userDetailsPopoverAnchorEl}
+                avatar={post.author_details.avatar}
+                userId={post.author_details.pk}
+                username={post.author_details.username}
+                open={userDetailsPopoverOpen}
+                onClose={this.hideUserDetailsPopover}
+              />
+            </Fragment>
           )}
           action={(
             <Button
@@ -242,17 +252,7 @@ class Post extends Component {
             </Button>
           )}
           style={{ padding: '16px' }}
-        >
-          <UserDetailsPopover
-            anchorEl={userDetailsPopoverAnchorEl}
-            avatar={post.author_details.avatar}
-            userId={post.author_details.pk}
-            username={post.author_details.username}
-            open={userDetailsPopoverOpen}
-            onClose={this.hideUserDetailsPopover}
-          />
-
-        </CardHeader>
+        />
         <CardActions className="Post__add-comment" style={{ padding: '0 16px 16px', marginTop: -10 }}>
           <AddComment
             focusOnMount={false}
