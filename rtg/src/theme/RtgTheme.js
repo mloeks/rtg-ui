@@ -99,5 +99,12 @@ export default {
         backgroundColor: white,
       },
     },
+    MuiCardHeader: {
+      title: {
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+      },
+    },
   },
 };

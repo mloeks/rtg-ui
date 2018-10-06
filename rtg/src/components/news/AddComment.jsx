@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import SendIcon from '@material-ui/icons/Send';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
-import { purple } from '../../theme/RtgTheme';
 
 class AddComment extends Component {
   constructor(props) {
@@ -19,14 +20,7 @@ class AddComment extends Component {
       savingError: false,
     };
 
-    this.textInput = null;
     this.postComment = this.postComment.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.textInput && this.props.focusOnMount) {
-      this.textInput.focus();
-    }
   }
 
   async postComment(e) {
@@ -64,41 +58,58 @@ class AddComment extends Component {
   }
 
   render() {
+    const {
+      content,
+      contentError,
+      saving,
+      savingError,
+    } = this.state;
+    const { focusOnMount, label } = this.props;
+
     return (
       <Fragment>
         <form
           className="AddComment__form"
           onSubmit={this.postComment}
           noValidate
+          autoComplete="off"
           style={{
             display: 'flex',
             alignItems: 'flex-end',
-            marginTop: '-10px',
+            marginTop: '-15px',
             width: '100%',
           }}
         >
           <TextField
-            ref={(input) => { this.textInput = input; }}
+            autoFocus={focusOnMount}
+            dense
+            error={Boolean(contentError)}
+            fullWidth
+            label={label}
+            multiline
             name="content"
-            floatingLabelText={this.props.label}
-            multiLine
-            value={this.state.content}
-            errorText={this.state.contentError}
-            style={{ textAlign: 'left', flexGrow: 1 }}
-            onChange={(e, content) =>
-              this.setState({ content, contentError: '', savingError: false })}
+            value={content}
+            helperText={contentError || false}
+            onChange={e => this.setState({
+              content: e.target.value, contentError: '', savingError: false,
+            })}
+            style={{ flexGrow: 1 }}
           />
-          <IconButton
-            type="submit"
-            disabled={this.state.saving || this.state.content.length === 0
-            || this.state.contentError.length > 0}
-            style={{ paddingRight: 0 }}
-          >
-            <SendIcon color={purple} />
-          </IconButton>
+          <Tooltip title="Kommentar abschicken">
+            <IconButton
+              aria-label="Kommentar abschicken"
+              color="primary"
+              type="submit"
+              size="small"
+              disabled={saving || content.length === 0 || contentError.length > 0}
+              style={{ height: 32, width: 32, marginLeft: 8 }}
+            >
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
         </form>
 
-        {(this.state.savingError && this.state.content.length > 0)
+        {(savingError && content.length > 0)
           && (
             <Notification
               type={NotificationType.ERROR}

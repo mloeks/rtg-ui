@@ -1,16 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import ListItem from '@material-ui/core/ListItem';
 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
-import { grey, lightGrey } from '../../theme/RtgTheme';
 
 import {
   differenceInMinutes,
@@ -159,7 +157,7 @@ class Post extends Component {
       userDetailsPopoverAnchorEl,
       userDetailsPopoverOpen,
     } = this.state;
-    const { classes, post } = this.props;
+    const { classes, post, theme } = this.props;
 
     const dateCreated = new Date(post.date_created);
 
@@ -207,8 +205,38 @@ class Post extends Component {
           </CardContent>
         )}
 
-        <CardActions
+        <CardHeader
           className="Post__card-actions"
+          title={post.author_details.username}
+          subheader={`${getFormattedPostDate(dateCreated)}`}
+          avatar={(
+            <UserAvatar
+              className="Post__author-avatar"
+              size={40}
+              img={post.author_details.avatar}
+              username={post.author_details.username}
+              onClick={this.showUserDetailsPopover}
+              style={{ left: 0, top: 0 }}
+            />
+          )}
+          action={(
+            <Button
+              disabled={commentCount === 0}
+              onClick={this.toggleExpanded}
+              style={{
+                color: theme.palette.grey['500'],
+                lineHeight: 'inherit',
+                margin: 0,
+                right: 0,
+                top: '10px',
+                minWidth: '10px',
+                width: 'auto',
+              }}
+            >
+              {Post.getCommentsLabel(commentCount)}
+              <ModeCommentIcon style={{ width: '20px', marginLeft: 8 }} />
+            </Button>
+          )}
           style={{ padding: '16px' }}
         >
           <UserDetailsPopover
@@ -220,52 +248,8 @@ class Post extends Component {
             onClose={this.hideUserDetailsPopover}
           />
 
-          <ListItem
-            disabled
-            primaryText={(
-              <div
-                role="button"
-                style={{
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden',
-                  padding: '2px 0',
-                }}
-                title={post.author_details.username}
-              >
-                {post.author_details.username}
-              </div>
-            )}
-            secondaryText={`${getFormattedPostDate(dateCreated)}`}
-            leftAvatar={
-              <UserAvatar
-                className="Post__author-avatar"
-                size={40}
-                img={post.author_details.avatar}
-                username={post.author_details.username}
-                onClick={this.showUserDetailsPopover}
-                style={{ left: 0, top: 0 }}
-              />}
-            rightIcon={<Button
-              disabled={commentCount === 0}
-              labelPosition="before"
-              icon={<ModeCommentIcon color={lightGrey} style={{ width: '20px', marginRight: 0 }} />}
-              onClick={this.toggleExpanded}
-              style={{
-                color: grey,
-                fontSize: '12px',
-                lineHeight: 'inherit',
-                margin: 0,
-                right: 0,
-                top: '10px',
-                minWidth: '10px',
-                width: 'auto',
-              }}
-            >
-              {Post.getCommentsLabel(commentCount)}
-            </Button>}
-            style={{ padding: '0 0 0 50px' }}
-          />
+        </CardHeader>
+        <CardActions>
           <AddComment
             focusOnMount={false}
             postId={post.id}
@@ -280,11 +264,12 @@ class Post extends Component {
             comments={comments}
             commentCount={commentCount}
             onReplyAdded={this.handleCommentAdded}
-            onCommentsLoaded={comments => this.setState({ comments })}
+            onCommentsLoaded={loadedComments => this.setState({ comments: loadedComments })}
           />
           <div style={{ textAlign: 'center' }}>
             <Button
-              labelStyle={{ color: grey, fontSize: '12px', fontWeight: 400 }}
+              color="secondary"
+              size="small"
               onClick={this.toggleExpanded}
             >
               Zuklappen
@@ -304,7 +289,11 @@ Post.defaultProps = {
 Post.propTypes = {
   wrapFromHeight: PropTypes.number,
   post: PropTypes.shape().isRequired,
+
+  /* eslint-disable react/forbid-prop-types */
+  theme: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
-export default withStyles(styles)(Post);
+export default withStyles(styles)(withTheme()(Post));
