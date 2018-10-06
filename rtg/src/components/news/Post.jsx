@@ -33,6 +33,11 @@ const styles = {
     wordBreak: 'break-word',
     overflowWrap: 'break-word',
   },
+  authorTitle: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
 };
 
 export const getFormattedPostDate = (date) => {
@@ -207,6 +212,7 @@ class Post extends Component {
 
         <CardHeader
           className="Post__card-actions"
+          classes={{ title: classes.authorTitle }}
           title={post.author_details.username}
           subheader={`${getFormattedPostDate(dateCreated)}`}
           avatar={(
