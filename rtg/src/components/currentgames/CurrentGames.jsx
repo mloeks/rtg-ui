@@ -8,7 +8,6 @@ import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
-import { lightGrey, purple } from '../../theme/RtgTheme';
 import { throttle } from '../../service/EventsHelper';
 import { getClosestGameIndex } from '../../service/GamesHelper';
 import Notification, { NotificationType } from '../Notification';
@@ -398,18 +397,24 @@ class CurrentGames extends Component {
   }
 
   render() {
+    const {
+      bets,
+      editingBet,
+      games,
+      gamesToDisplayWindow,
+      loadingError,
+      offsetWithBetStatsOpen,
+      scrolling,
+    } = this.state;
+
     const scrollButtonStyle = {
       position: 'absolute',
       padding: 0,
       width: SCROLL_BUTTON_SIZE,
       height: SCROLL_BUTTON_SIZE,
     };
-    const scrollButtonIconStyle = {
-      width: 0.9 * SCROLL_BUTTON_SIZE,
-      height: 0.9 * SCROLL_BUTTON_SIZE,
-    };
 
-    if (this.state.loadingError) {
+    if (loadingError) {
       return (
         <Notification
           type={NotificationType.ERROR}
@@ -420,67 +425,67 @@ class CurrentGames extends Component {
     }
 
     return (
-      this.state.games && (
-        <section className={`CurrentGames ${this.state.offsetWithBetStatsOpen !== -1 ? 'bet-stats-open' : ''}`}>
+      games && (
+        <section className={`CurrentGames ${offsetWithBetStatsOpen !== -1 ? 'bet-stats-open' : ''}`}>
           <Prompt
-            when={this.state.editingBet}
+            when={editingBet}
             message={unsavedChangesConfirmText}
           />
 
-          {this.mayScrollBackward() &&
+          {this.mayScrollBackward() && (
             <IconButton
               className="CurrentGames__scroll-button"
-              disabled={this.state.scrolling}
+              disabled={scrolling}
               onClick={this.scrollBackward}
               style={{ left: 0, margin: '4px 0 0 -5px', ...scrollButtonStyle }}
-              iconStyle={scrollButtonIconStyle}
             >
-              <KeyboardArrowLeftIcon color={lightGrey} hoverColor={purple} />
-            </IconButton>}
-          {this.mayScrollForward() &&
+              <KeyboardArrowLeftIcon color="primary" />
+            </IconButton>
+          )}
+          {this.mayScrollForward() && (
             <IconButton
               className="CurrentGames__scroll-button"
-              disabled={this.state.scrolling}
+              disabled={scrolling}
               onClick={this.scrollForward}
               style={{ right: 0, margin: '4px -5px 0 0', ...scrollButtonStyle }}
-              iconStyle={scrollButtonIconStyle}
             >
-              <KeyboardArrowRightIcon color={lightGrey} hoverColor={purple} />
-            </IconButton>}
+              <KeyboardArrowRightIcon color="primary" />
+            </IconButton>
+          )}
 
           <UserDetailsContext.Consumer>
             {userContext => (
               <div
-                className={`CurrentGames__game-card-container ${this.state.scrolling ? 'scrolling' : ''}`}
+                className={`CurrentGames__game-card-container ${scrolling ? 'scrolling' : ''}`}
                 ref={this.currentGamesContainerRef}
                 style={{
-                  left: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.left}%`,
-                  width: `${100.0 * this.state.gamesToDisplayWindow.containerStyle.width}%`,
+                  left: `${100.0 * gamesToDisplayWindow.containerStyle.left}%`,
+                  width: `${100.0 * gamesToDisplayWindow.containerStyle.width}%`,
                 }}
               >
-                {this.state.gamesToDisplayWindow.range.map((offset) => {
-                  const game = this.state.games[offset];
-                  const userBet = game ?
-                    this.state.bets.find(bet => bet.bettable === game.id) : null;
+                {gamesToDisplayWindow.range.map((offset) => {
+                  const game = games[offset];
+                  const userBet = game ? bets.find(bet => bet.bettable === game.id) : null;
                   return (
                     <div
                       className="CurrentGames__game-card-wrapper"
                       key={`current-game-offset-${offset}`}
                     >
                       <CurrentGameCard
-                        game={this.state.games[offset]}
+                        game={games[offset]}
                         userBet={userBet}
                         onBetEditStart={() => this.setState({ editingBet: true })}
                         onBetEditCancel={() => this.setState({ editingBet: false })}
                         onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
                       />
-                      {(game && !game.bets_open) &&
+                      {(game && !game.bets_open) && (
                         <BetStatsPanel
                           bettableId={game.id}
-                          open={offset === this.state.offsetWithBetStatsOpen}
+                          open={offset === offsetWithBetStatsOpen}
                           onClose={() => this.setState({ offsetWithBetStatsOpen: -1 })}
                           onOpen={() => this.setState({ offsetWithBetStatsOpen: offset })}
-                        />}
+                        />
+                      )}
                     </div>);
                 })}
               </div>
