@@ -198,14 +198,10 @@ class Post extends Component {
             />
             {contentWrappedForLength && (
               <div className="Post__content-show-all">
-                <Button
-                  color="primary"
-                  labelPosition="before"
-                  icon={<KeyboardArrowDownIcon />}
-                  onClick={this.showAllContent}
-                  labelStyle={{ fontSize: '12px' }}
-                >
+                <Button color="primary" size="small" onClick={this.showAllContent}>
+                  <KeyboardArrowDownIcon />
                   Alles lesen
+                  <KeyboardArrowDownIcon />
                 </Button>
               </div>)}
           </CardContent>
