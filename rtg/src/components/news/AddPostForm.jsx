@@ -29,6 +29,7 @@ class AddPostForm extends Component {
       },
     };
   }
+
   static draftSavedResponseToState(responseJson) {
     return { id: responseJson.id };
   }
@@ -75,16 +76,27 @@ class AddPostForm extends Component {
   }
 
   getPostBodyFromState() {
+    const {
+      appearInNews,
+      content,
+      id,
+      sendMail,
+      sendMailToActive,
+      sendMailToAll,
+      sendMailToInactive,
+      title,
+    } = this.state;
+
     return {
-      id: this.state.id,
+      id,
       author: AuthService.getUserId(),
-      title: this.state.title,
-      content: this.state.content,
-      news_appear: this.state.appearInNews,
-      as_mail: this.state.sendMail,
-      force_active_users: this.state.sendMailToActive,
-      force_inactive_users: this.state.sendMailToInactive,
-      force_all_users: this.state.sendMailToAll,
+      title,
+      content,
+      news_appear: appearInNews,
+      as_mail: sendMail,
+      force_active_users: sendMailToActive,
+      force_inactive_users: sendMailToInactive,
+      force_all_users: sendMailToAll,
     };
   }
 
@@ -143,8 +155,9 @@ class AddPostForm extends Component {
     const postToSave = { ...this.getPostBodyFromState(), finished: true };
 
     this.savePost(postToSave, (responseJson) => {
+      const { onSaved } = this.props;
       this.setState({ savingInProgress: false });
-      this.props.onSaved(responseJson);
+      onSaved(responseJson);
     }, (responseJson) => {
       this.setState({
         savingInProgress: false,
@@ -154,46 +167,70 @@ class AddPostForm extends Component {
   }
 
   handleCancelled() {
+    const { id } = this.state;
+    const { onCancelled } = this.props;
+
     // fire & forget DELETE post
-    if (this.state.id) {
-      fetch(`${API_BASE_URL}/rtg/posts/${this.state.id}/`, {
+    if (id) {
+      fetch(`${API_BASE_URL}/rtg/posts/${id}/`, {
         method: 'DELETE',
         headers: { Authorization: `Token ${AuthService.getToken()}` },
       });
     }
-    this.props.onCancelled();
+    onCancelled();
   }
 
   render() {
-    return (<AddPostFormDisplay
-      quill={this.state.quill}
+    const {
+      appearInNews,
+      content,
+      draftSaved,
+      draftSaving,
+      draftSavingError,
+      fieldErrors,
+      nonFieldError,
+      quill,
+      savingError,
+      savingInProgress,
+      sendMail,
+      sendMailToActive,
+      sendMailToAll,
+      sendMailToInactive,
+      sendMailToSubscribers,
+      title,
+    } = this.state;
 
-      title={this.state.title}
-      content={this.state.content}
-      appearInNews={this.state.appearInNews}
+    return (
+      <AddPostFormDisplay
+        quill={quill}
 
-      sendMail={this.state.sendMail}
-      sendMailToSubscribers={this.state.sendMailToSubscribers}
-      sendMailToActive={this.state.sendMailToActive}
-      sendMailToInactive={this.state.sendMailToInactive}
-      sendMailToAll={this.state.sendMailToAll}
+        title={title}
+        content={content}
+        appearInNews={appearInNews}
 
-      nonFieldError={this.state.nonFieldError}
-      titleError={this.state.fieldErrors.title}
-      contentError={this.state.fieldErrors.content}
+        sendMail={sendMail}
+        sendMailToSubscribers={sendMailToSubscribers}
+        sendMailToActive={sendMailToActive}
+        sendMailToInactive={sendMailToInactive}
+        sendMailToAll={sendMailToAll}
 
-      savingInProgress={this.state.savingInProgress}
-      savingError={this.state.savingError}
+        nonFieldError={nonFieldError}
+        titleError={fieldErrors.title}
+        contentError={fieldErrors.content}
 
-      draftSaving={this.state.draftSaving}
-      draftSaved={this.state.draftSaved}
-      draftSavingError={this.state.draftSavingError}
+        savingInProgress={savingInProgress}
+        savingError={savingError}
 
-      onFieldChange={this.handleFieldUpdate}
-      onFieldsChange={this.handleFieldsUpdate}
-      onSubmit={this.handleSave}
-      onCancel={this.handleCancelled}
-    />);
+        draftSaving={draftSaving}
+        draftSaved={draftSaved}
+        draftSavingError={draftSavingError}
+
+        onFieldChange={this.handleFieldUpdate}
+        onFieldsChange={this.handleFieldsUpdate}
+        onSubmit={this.handleSave}
+        onCancel={this.handleCancelled}
+      />
+    );
   }
 }
 

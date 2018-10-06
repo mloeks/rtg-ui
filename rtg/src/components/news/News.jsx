@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
@@ -9,7 +11,6 @@ import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
-import { lightGrey } from '../../theme/RtgTheme';
 
 import './News.css';
 
@@ -49,8 +50,9 @@ class News extends Component {
   }
 
   loadPosts() {
+    const { offset } = this.state;
     this.setState({ loading: true });
-    fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${this.state.offset}&limit=${this.pageSize}`, {
+    fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${offset}&limit=${this.pageSize}`, {
       method: 'GET',
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson).then((response) => {
@@ -92,8 +94,8 @@ class News extends Component {
   handleAddNews() {
     // TODO P3 animated scroll (lib?)
     this.setState({ addingPost: true, addPostSuccess: false }, () => {
-      const addNewsTopYPos = (window.pageYOffset +
-        this.newsSectionRef.current.getBoundingClientRect().top) - 150;
+      const addNewsTopYPos = (window.pageYOffset
+        + this.newsSectionRef.current.getBoundingClientRect().top) - 150;
       window.scrollTo(0, addNewsTopYPos);
     });
   }
@@ -118,55 +120,67 @@ class News extends Component {
   }
 
   render() {
-    const numberOfFurtherPosts = Math.min(this.pageSize, this.state.count - this.state.offset);
+    const {
+      addingPost,
+      addPostSuccess,
+      count,
+      draft,
+      loading,
+      loadingError,
+      offset,
+      posts,
+    } = this.state;
+    const { theme } = this.props;
+
+    const numberOfFurtherPosts = Math.min(this.pageSize, count - offset);
     return (
       <section className="News" ref={this.newsSectionRef}>
-        {(AuthService.isAdmin() && this.state.addingPost) &&
+        {(AuthService.isAdmin() && addingPost) && (
           <AddPostForm
-            draft={this.state.draft}
+            draft={draft}
             onSaved={this.handlePostSaved}
             onCancelled={this.handleAddPostCancelled}
           />
-        }
-        {(AuthService.isAdmin() && this.state.addPostSuccess) &&
+        )}
+        {(AuthService.isAdmin() && addPostSuccess) && (
           <Notification
             type={NotificationType.SUCCESS}
             title="Neuigkeit erfolgreich hinzugefügt/verschickt."
             disappearAfterMs={3000}
-          />}
+          />
+        )}
 
-        {(!this.state.loadingError) && this.state.posts
+        {!loadingError && posts
           .filter(post => post.news_appear === true)
           .map(post => <Post key={post.id} post={post} />)}
 
-        {(!this.state.loading && !this.state.loadingError) && this.state.posts.length === 0 &&
-          <div className="News__empty-state" style={{ color: lightGrey }}>
-            <ChatBubbleOutlineIcon color={lightGrey} style={{ height: 80, width: 80 }} /><br />
+        {(!loading && !loadingError) && posts.length === 0 && (
+          <div className="News__empty-state" style={{ color: theme.palette.grey['500'] }}>
+            <ChatBubbleOutlineIcon style={{ height: 80, width: 80 }} />
+            <br />
             Keine Neuigkeiten.
-          </div>}
+          </div>
+        )}
 
-        {(this.state.offset < this.state.count) && (
-          <Button
-            disabled={this.state.loading}
-            color="primary"
-            onClick={this.loadPosts}
-          >
+        {(offset < count) && (
+          <Button disabled={loading} color="primary" onClick={this.loadPosts}>
             {`${numberOfFurtherPosts} weitere Neuigkeit${numberOfFurtherPosts > 1 ? 'en' : ''} laden`}
-            <KeyboardArrowDownIcon style={{ marginLeft: 8 }}/>
+            <KeyboardArrowDownIcon style={{ marginLeft: 8 }} />
           </Button>
         )}
         <br />
 
-        {this.state.loading && <CircularProgress style={{ margin: '20px auto' }}/>}
-        {(!this.state.loading && this.state.loadingError) &&
+        {loading && <CircularProgress style={{ margin: '20px auto' }} />}
+        {(!loading && loadingError) && (
           <Notification
             type={NotificationType.ERROR}
-            title="Fehler beim Laden der Neuigkeiten"
-            subtitle={this.state.loadingError}
+            title="Fehler beim Laden der Neuigkeiten."
+            subtitle={loadingError}
             containerStyle={{ margin: 'auto', maxWidth: '480px' }}
-          />}
+          />
+        )}
 
-        {(AuthService.isAdmin() && !this.state.addingPost) && (
+        {(AuthService.isAdmin() && !addingPost) && (
           <div className="News__add-button">
             <Button variant="fab" color="primary" onClick={this.handleAddNews}><AddIcon /></Button>
           </div>
@@ -176,4 +190,8 @@ class News extends Component {
   }
 }
 
-export default News;
+News.propTypes = {
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+export default withTheme()(News);
