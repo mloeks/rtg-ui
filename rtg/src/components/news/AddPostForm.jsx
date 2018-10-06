@@ -186,7 +186,7 @@ class AddPostForm extends Component {
 
     return (
       <AddPostFormDisplay
-        quill={quill}
+        Quill={quill}
 
         title={title}
         content={content}

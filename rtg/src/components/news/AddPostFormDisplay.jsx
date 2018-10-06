@@ -18,7 +18,7 @@ import './AddPostForm.css';
 
 const AddPostFormDisplay = ({
   appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
-  onCancel, onFieldChange, onSubmit, quill, savingError, savingInProgress,
+  onCancel, onFieldChange, onSubmit, Quill, savingError, savingInProgress,
   sendMail, sendMailOption, titleError,
 }) => {
   const getSuitableSavingErrorSubtitle = () => {
@@ -57,8 +57,8 @@ const AddPostFormDisplay = ({
         />
         <br />
 
-        {quill && (
-          <quill
+        {Quill && (
+          <Quill
             placeholder="Inhalt schreiben..."
             value={content}
             modules={quillModules}
@@ -67,7 +67,7 @@ const AddPostFormDisplay = ({
             style={{ marginTop: 10, fontSize: '20px' }}
           />
         )}
-        {!quill && <CircularProgress />}
+        {!Quill && <CircularProgress />}
 
         <br />
         <div className="AddPostForm__draft-info">
@@ -180,7 +180,7 @@ AddPostFormDisplay.defaultProps = {
 };
 
 AddPostFormDisplay.propTypes = {
-  quill: PropTypes.func,
+  Quill: PropTypes.func,
 
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
