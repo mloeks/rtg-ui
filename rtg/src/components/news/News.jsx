@@ -167,10 +167,11 @@ class News extends Component {
             containerStyle={{ margin: 'auto', maxWidth: '480px' }}
           />}
 
-        {(AuthService.isAdmin() && !this.state.addingPost) &&
+        {(AuthService.isAdmin() && !this.state.addingPost) && (
           <div className="News__add-button">
-            <Button variant="fab" onClick={this.handleAddNews}><AddIcon /></Button>
-          </div>}
+            <Button variant="fab" color="primary" onClick={this.handleAddNews}><AddIcon /></Button>
+          </div>
+        )}
       </section>
     );
   }
