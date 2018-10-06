@@ -14,27 +14,27 @@ import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.css';
 
-export const rankColumnStyle = {
+export const baseRankColumnStyle = {
   width: '23px',
   textAlign: 'center',
   padding: '0 5px',
 };
 
-export const betStatColumnStyle = {
+export const baseBetStatColumnStyle = {
   width: '20px',
   textAlign: 'center',
   padding: '0 5px',
   color: lightGrey,
 };
 
-export const betColumnStyle = {
+export const baseBetColumnStyle = {
   width: '50px',
   textAlign: 'right',
   padding: '0 5px',
   color: purple,
 };
 
-export const pointsColumnStyle = {
+export const basePointsColumnStyle = {
   width: '30px',
   textAlign: 'right',
   padding: '0 15px 0 5px',
@@ -104,8 +104,8 @@ class StandingsTable extends Component {
     let lastRow = null;
     return rows.map((row, ix) => {
       const rankEnhancedRow = Object.assign({}, row);
-      rankEnhancedRow.displayRank =
-        StandingsTable.identicalRank(row, lastRow) ? '' : (ix + 1).toString();
+      rankEnhancedRow.displayRank = StandingsTable.identicalRank(row, lastRow) ? ''
+        : (ix + 1).toString();
       lastRow = row;
       return rankEnhancedRow;
     });
@@ -121,21 +121,24 @@ class StandingsTable extends Component {
   }
 
   componentDidMount() {
+    const { bets, showBetColumnForBettable } = this.props;
     this.fetchStatistics();
-    if (this.props.showBetColumnForBettable !== -1 && !this.props.bets) {
+    if (showBetColumnForBettable !== -1 && !bets) {
       this.fetchBets();
     }
   }
 
   componentDidUpdate() {
-    if (this.props.scrollable && this.tableContainerRef.current) {
+    const { scrollable } = this.props;
+    if (scrollable && this.tableContainerRef.current) {
       this.tableContainerRef.current.scrollTop = this.getScrollTop();
     }
   }
 
   getDisplayedRows(rows, classList) {
-    if (this.props.showOnlyUserExcerpt) {
-      if (this.props.scrollable) {
+    const { scrollable, showOnlyUserExcerpt, userExcerptRows } = this.props;
+    if (showOnlyUserExcerpt) {
+      if (scrollable) {
         classList.push('StandingsTable--scrollable-excerpt');
         return rows;
       }
@@ -145,19 +148,19 @@ class StandingsTable extends Component {
       classList.push('StandingsTable--excerpt');
 
       const userRank = rows.findIndex(r => r.userId === AuthService.getUserId());
-      const numberUsersAroundUserOneSide = Math.floor(this.props.userExcerptRows / 2);
+      const numberUsersAroundUserOneSide = Math.floor(userExcerptRows / 2);
       const fromIndex = userRank - numberUsersAroundUserOneSide;
       if (fromIndex <= 0) {
         // top end
         classList.push('StandingsTable--excerpt-bottom-fade');
-        return rows.slice(0, this.props.userExcerptRows);
+        return rows.slice(0, userExcerptRows);
       }
 
       const toIndex = userRank + numberUsersAroundUserOneSide;
       if (toIndex >= rows.length - 1) {
         // bottom end
         classList.push('StandingsTable--excerpt-top-fade');
-        return rows.slice(-this.props.userExcerptRows);
+        return rows.slice(-userExcerptRows);
       }
 
       classList.push('StandingsTable--excerpt-top-fade');
@@ -168,22 +171,25 @@ class StandingsTable extends Component {
   }
 
   getDisplayedRowsWithBets(rows) {
+    const { bets } = this.state;
+    const { showBetColumnForBettable } = this.props;
     return rows.map((row) => {
       const enhancedRow = Object.assign({}, row);
-      const bet = this.state.bets
-        .find(b => b.bettable === this.props.showBetColumnForBettable && b.user === row.userId);
+      const bet = bets.find(b => b.bettable === showBetColumnForBettable && b.user === row.userId);
       enhancedRow.bet = bet || null;
       return enhancedRow;
     });
   }
 
   getScrollTop() {
-    const maxScrollTopRows = this.state.rows.length - this.props.userExcerptRows;
-    const userIndex = this.state.rows.findIndex(r => r.userId === AuthService.getUserId());
-    const halfExcerptHeightInRows = 0.5 * (this.props.userExcerptRows - 1);
+    const { rows } = this.state;
+    const { rowHeight, userExcerptRows } = this.props;
+    const maxScrollTopRows = rows.length - userExcerptRows;
+    const userIndex = rows.findIndex(r => r.userId === AuthService.getUserId());
+    const halfExcerptHeightInRows = 0.5 * (userExcerptRows - 1);
 
     const scrollTopRows = Math.min(userIndex - halfExcerptHeightInRows, maxScrollTopRows);
-    return scrollTopRows * (this.props.rowHeight + 1);
+    return scrollTopRows * (rowHeight + 1);
   }
 
   fetchStatistics() {
@@ -194,48 +200,69 @@ class StandingsTable extends Component {
       if (response.ok) {
         this.setState({ loading: false, ...StandingsTable.statsToStateMapper(response.json) });
       } else {
-        this.setState(response.status === 412 ?
-          this.fetchUsersOnly() : { loading: false, loadingError: true });
+        this.setState(response.status === 412
+          ? this.fetchUsersOnly() : { loading: false, loadingError: true });
       }
     }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   fetchUsersOnly() {
     fetch(`${API_BASE_URL}/rtg/users_public/`,
-      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
-    ).then(FetchHelper.parseJson).then(response => (
-      this.setState({
-        loading: false,
-        ...response.ok ?
-          StandingsTable.usersOnlyToStateMapper(response.json) : { loadingError: true },
-      })
-    )).catch(() => this.setState({ loading: false, loadingError: true }));
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } })
+      .then(FetchHelper.parseJson).then(response => (
+        this.setState({
+          loading: false,
+          ...response.ok
+            ? StandingsTable.usersOnlyToStateMapper(response.json)
+            : { loadingError: true },
+        })
+      )).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   fetchBets() {
-    fetch(
-      `${API_BASE_URL}/rtg/bets/?bettable=${this.props.showBetColumnForBettable}`,
-      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
-    ).then(FetchHelper.parseJson).then((response) => {
-      this.setState(() => {
-        if (response.ok) {
-          return { loading: false, bets: response.json };
-        }
-        return { loading: false, loadingError: true };
-      });
-    }).catch(() => this.setState({ loading: false, loadingError: true }));
+    const { showBetColumnForBettable } = this.props;
+    fetch(`${API_BASE_URL}/rtg/bets/?bettable=${showBetColumnForBettable}`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } })
+      .then(FetchHelper.parseJson).then((response) => {
+        this.setState(() => {
+          if (response.ok) {
+            return { loading: false, bets: response.json };
+          }
+          return { loading: false, loadingError: true };
+        });
+      }).catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
   render() {
-    const standingsTableClassList = ['StandingsTable'];
-    let displayedRows = this.getDisplayedRows(this.state.rows, standingsTableClassList);
+    const {
+      bets,
+      loading,
+      loadingError,
+      rows,
+    } = this.state;
 
-    if (this.props.showBetColumnForBettable !== -1 && this.state.bets) {
+    const {
+      betColumnStyle,
+      rowHeight,
+      scrollable,
+      showBetColumnForBettable,
+      showOnlyUserExcerpt,
+      showStatsColumns,
+      showTableHeader,
+      showUserAvatar,
+      showUserInfoOnClick,
+      userExcerptRows,
+    } = this.props;
+
+    const standingsTableClassList = ['StandingsTable'];
+    let displayedRows = this.getDisplayedRows(rows, standingsTableClassList);
+
+    if (showBetColumnForBettable !== -1 && bets) {
       displayedRows = this.getDisplayedRowsWithBets(displayedRows);
     }
 
-    const innerTableHeight = this.props.showOnlyUserExcerpt && this.props.scrollable ?
-      this.props.userExcerptRows * (this.props.rowHeight + 1) : 'auto';
+    const innerTableHeight = showOnlyUserExcerpt && scrollable
+      ? userExcerptRows * (rowHeight + 1) : 'auto';
 
     return (
       <div className={standingsTableClassList.join(' ')} style={{ touchAction: 'pan-y' }}>
@@ -244,79 +271,87 @@ class StandingsTable extends Component {
           ref={this.tableContainerRef}
           style={{ height: innerTableHeight }}
         >
-          {this.state.loading && <CircularProgress className="StandingsTable__loading-spinner" />}
-          {this.state.loadingError &&
+          {loading && <CircularProgress className="StandingsTable__loading-spinner" />}
+          {loadingError && (
             <Notification
               title="Es ist ein Fehler aufgetreten"
               subtitle="Bitte versuche es später noch einmal."
               type="error"
               containerStyle={{ margin: '25px 0' }}
-            />}
+            />
+          )}
 
-          {(!this.state.loading && !this.state.loadingError) &&
-            <Table className="StandingsTable__table" selectable={false}>
-              {this.props.showTableHeader &&
-                <TableHead
-                  displaySelectAll={false}
-                  adjustForCheckbox={false}
-                  enableSelectAll={false}
-                >
+          {(!loading && !loadingError) && (
+            <Table className="StandingsTable__table">
+              {showTableHeader && (
+                <TableHead>
                   <TableRow>
-                    <TableCell style={rankColumnStyle}>Pl.</TableCell>
+                    <TableCell style={baseRankColumnStyle}>Pl.</TableCell>
                     <TableCell style={{ paddingLeft: '5px' }}>Username</TableCell>
-                    {this.props.showBetColumnForBettable !== -1 &&
+                    {showBetColumnForBettable !== -1 && (
                       <TableCell
                         className="StandingsTable__bet-col"
-                        style={{ ...betColumnStyle, ...this.props.betColumnStyle }}
-                      >Tipp
+                        style={{ ...baseBetColumnStyle, ...betColumnStyle }}
+                      >
+                        Tipp
                       </TableCell>
-                    }
-                    {this.props.showStatsColumns &&
+                    )}
+                    {showStatsColumns && (
                       <Fragment>
-                        <TableCell style={betStatColumnStyle}>V</TableCell>
+                        <TableCell style={baseBetStatColumnStyle}>V</TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={betStatColumnStyle}
-                        >D
+                          style={baseBetStatColumnStyle}
+                        >
+                          D
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={betStatColumnStyle}
-                        >RT
+                          style={baseBetStatColumnStyle}
+                        >
+                          RT
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={betStatColumnStyle}
-                        >T
+                          style={baseBetStatColumnStyle}
+                        >
+                          T
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={betStatColumnStyle}
-                        >N
+                          style={baseBetStatColumnStyle}
+                        >
+                          N
                         </TableCell>
-                      </Fragment>}
+                      </Fragment>
+                    )}
                     <TableCell
-                      style={{ ...pointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
-                    >Pkt.
+                      style={{ ...basePointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
+                    >
+                      Pkt.
                     </TableCell>
                   </TableRow>
-                </TableHead>}
+                </TableHead>
+              )}
 
-              <TableBody showRowHover displayRowCheckbox={false}>
-                {displayedRows.map(row => (<StandingsTableRow
-                  key={row.userId}
-                  rank={row.displayRank}
-                  rowHeight={this.props.rowHeight}
-                  self={AuthService.getUserId() === row.userId}
-                  showBetColumn={this.props.showBetColumnForBettable !== -1}
-                  showStatsColumns={this.props.showStatsColumns}
-                  showUserAvatar={this.props.showUserAvatar}
-                  showUserInfoOnClick={this.props.showUserInfoOnClick}
-                  betColumnStyle={this.props.betColumnStyle}
-                  {...row}
-                />))}
+              <TableBody>
+                {displayedRows.map(row => (
+                  <StandingsTableRow
+                    key={row.userId}
+                    rank={row.displayRank}
+                    rowHeight={rowHeight}
+                    self={AuthService.getUserId() === row.userId}
+                    showBetColumn={showBetColumnForBettable !== -1}
+                    showStatsColumns={showStatsColumns}
+                    showUserAvatar={showUserAvatar}
+                    showUserInfoOnClick={showUserInfoOnClick}
+                    betColumnStyle={{ ...baseBetColumnStyle, betColumnStyle }}
+                    {...row}
+                  />
+                ))}
               </TableBody>
-            </Table>}
+            </Table>
+          )}
         </div>
       </div>
     );
