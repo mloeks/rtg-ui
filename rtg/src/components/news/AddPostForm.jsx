@@ -45,10 +45,7 @@ class AddPostForm extends Component {
       content: props.draft ? props.draft.content : '',
       appearInNews: props.draft ? props.draft.news_appear : true,
       sendMail: true,
-      sendMailToSubscribers: true,
-      sendMailToActive: false,
-      sendMailToInactive: false,
-      sendMailToAll: false,
+      sendMailOption: 'sendMailToSubscribers',
 
       savingInProgress: false,
       savingError: false,
@@ -63,7 +60,6 @@ class AddPostForm extends Component {
 
     this.savePost = this.savePost.bind(this);
     this.handleFieldUpdate = this.handleFieldUpdate.bind(this);
-    this.handleFieldsUpdate = this.handleFieldsUpdate.bind(this);
     this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancelled = this.handleCancelled.bind(this);
@@ -81,9 +77,7 @@ class AddPostForm extends Component {
       content,
       id,
       sendMail,
-      sendMailToActive,
-      sendMailToAll,
-      sendMailToInactive,
+      sendMailOption,
       title,
     } = this.state;
 
@@ -94,9 +88,9 @@ class AddPostForm extends Component {
       content,
       news_appear: appearInNews,
       as_mail: sendMail,
-      force_active_users: sendMailToActive,
-      force_inactive_users: sendMailToInactive,
-      force_all_users: sendMailToAll,
+      force_active_users: sendMailOption === 'sendMailToActive',
+      force_inactive_users: sendMailOption === 'sendMailToInactive',
+      force_all_users: sendMailOption === 'sendMailToAll',
     };
   }
 
@@ -121,13 +115,6 @@ class AddPostForm extends Component {
   handleFieldUpdate(fieldName, value) {
     this.setState(
       { [fieldName]: value, draftSaving: true, draftSaved: false },
-      this.handleSaveDraft,
-    );
-  }
-
-  handleFieldsUpdate(updatedFieldsObject) {
-    this.setState(
-      { ...updatedFieldsObject, draftSaving: true, draftSaved: false },
       this.handleSaveDraft,
     );
   }
@@ -193,10 +180,7 @@ class AddPostForm extends Component {
       savingError,
       savingInProgress,
       sendMail,
-      sendMailToActive,
-      sendMailToAll,
-      sendMailToInactive,
-      sendMailToSubscribers,
+      sendMailOption,
       title,
     } = this.state;
 
@@ -209,10 +193,7 @@ class AddPostForm extends Component {
         appearInNews={appearInNews}
 
         sendMail={sendMail}
-        sendMailToSubscribers={sendMailToSubscribers}
-        sendMailToActive={sendMailToActive}
-        sendMailToInactive={sendMailToInactive}
-        sendMailToAll={sendMailToAll}
+        sendMailOption={sendMailOption}
 
         nonFieldError={nonFieldError}
         titleError={fieldErrors.title}
@@ -226,7 +207,6 @@ class AddPostForm extends Component {
         draftSavingError={draftSavingError}
 
         onFieldChange={this.handleFieldUpdate}
-        onFieldsChange={this.handleFieldsUpdate}
         onSubmit={this.handleSave}
         onCancel={this.handleCancelled}
       />
