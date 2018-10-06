@@ -211,7 +211,7 @@ class Post extends Component {
         )}
 
         <CardHeader
-          className="Post__card-actions"
+          className="Post__author-and-comments"
           classes={{ title: classes.authorTitle }}
           title={post.author_details.username}
           subheader={`${getFormattedPostDate(dateCreated)}`}
@@ -255,7 +255,7 @@ class Post extends Component {
           />
 
         </CardHeader>
-        <CardActions>
+        <CardActions style={{ padding: '0 16px 16px' }}>
           <AddComment
             focusOnMount={false}
             postId={post.id}
