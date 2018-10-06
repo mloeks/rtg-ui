@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import Collapse from '@material-ui/core/Collapse';
 
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
@@ -51,11 +52,8 @@ export const getFormattedPostDate = (date) => {
   }
 
   const formattedTime = format(date, 'HH:mm [Uhr]');
-  if (isToday(date)) {
-    return `Heute, ${formattedTime}`;
-  } else if (isYesterday(date)) {
-    return `Gestern, ${formattedTime}`;
-  }
+  if (isToday(date)) { return `Heute, ${formattedTime}`; }
+  if (isYesterday(date)) { return `Gestern, ${formattedTime}`; }
 
   return `${format(date, 'dd. D. MMMM', { locale: de })}, ${formattedTime}`;
 };
@@ -255,7 +253,7 @@ class Post extends Component {
           />
 
         </CardHeader>
-        <CardActions style={{ padding: '0 16px 16px' }}>
+        <CardActions className="Post__add-comment" style={{ padding: '0 16px 16px', marginTop: -10 }}>
           <AddComment
             focusOnMount={false}
             postId={post.id}
@@ -263,25 +261,23 @@ class Post extends Component {
           />
         </CardActions>
 
-        <CardContent className="Post__comments" expandable>
-          <CommentsList
-            hierarchyLevel={0}
-            postId={post.id}
-            comments={comments}
-            commentCount={commentCount}
-            onReplyAdded={this.handleCommentAdded}
-            onCommentsLoaded={loadedComments => this.setState({ comments: loadedComments })}
-          />
-          <div style={{ textAlign: 'center' }}>
-            <Button
-              color="secondary"
-              size="small"
-              onClick={this.toggleExpanded}
-            >
-              Zuklappen
-            </Button>
-          </div>
-        </CardContent>
+        <Collapse in={expanded} unmountOnExit>
+          <CardContent className="Post__comments" expandable style={{ paddingBottom: 8 }}>
+            <CommentsList
+              hierarchyLevel={0}
+              postId={post.id}
+              comments={comments}
+              commentCount={commentCount}
+              onReplyAdded={this.handleCommentAdded}
+              onCommentsLoaded={loadedComments => this.setState({ comments: loadedComments })}
+            />
+            <div style={{ textAlign: 'center' }}>
+              <Button color="secondary" size="small" onClick={this.toggleExpanded}>
+                Zuklappen
+              </Button>
+            </div>
+          </CardContent>
+        </Collapse>
       </Card>
     );
   }

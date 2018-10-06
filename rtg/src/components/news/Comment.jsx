@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CommentsList from './CommentsList';
-import { lightGrey } from '../../theme/RtgTheme';
 import UserAvatar from '../UserAvatar';
 import { getFormattedPostDate } from './Post';
 import UserDetailsPopover from '../UserDetailsPopover';
@@ -41,53 +40,56 @@ class Comment extends Component {
   }
 
   handleReplyAdded(comment) {
-    this.setState({ showAddComment: false }, this.props.onReplyAdded(comment));
+    const { onReplyAdded } = this.props;
+    this.setState({ showAddComment: false }, onReplyAdded(comment));
   }
 
   render() {
+    const { userDetailsPopoverAnchorEl, userDetailsPopoverOpen, showAddComment } = this.state;
+    const {
+      comment,
+      hierarchyLevel,
+      postId,
+      replies,
+    } = this.props;
+
     return (
       <div className="Comment">
         <div className="Comment__avatar-content-wrapper">
           <div className="Comment__avatar">
             <UserDetailsPopover
-              anchorEl={this.state.userDetailsPopoverAnchorEl}
-              avatar={this.props.comment.author_details.avatar}
-              userId={this.props.comment.author_details.pk}
-              username={this.props.comment.author_details.username}
-              open={this.state.userDetailsPopoverOpen}
+              anchorEl={userDetailsPopoverAnchorEl}
+              avatar={comment.author_details.avatar}
+              userId={comment.author_details.pk}
+              username={comment.author_details.username}
+              open={userDetailsPopoverOpen}
               onClose={this.hideUserDetailsPopover}
             />
 
             <UserAvatar
               size={40}
-              username={this.props.comment.author_details.username}
-              img={this.props.comment.author_details.avatar}
+              username={comment.author_details.username}
+              img={comment.author_details.avatar}
               onClick={this.showUserDetailsPopover}
             />
           </div>
           <div>
             <div className="Comment__author-date">
               <span className="Comment__author">
-                {this.props.comment.author_details.username}&nbsp;–&nbsp;
+                {comment.author_details.username}&nbsp;–&nbsp;
               </span>
-              <span>{getFormattedPostDate(this.props.comment.date_created)}</span>
+              <span>{getFormattedPostDate(comment.date_created)}</span>
             </div>
-            <pre className="Comment__content">{this.props.comment.content}</pre>
+            <pre className="Comment__content">{comment.content}</pre>
           </div>
         </div>
 
         <div className="Comment__actions">
-          {this.props.hierarchyLevel <= MAX_REPLY_DEPTH
-          && (
+          {hierarchyLevel <= MAX_REPLY_DEPTH && (
             <Button
-              labelPosition="after"
-              style={{
-                color: lightGrey,
-                height: '24px',
-                lineHeight: '24px',
-                marginLeft: '35px',
-              }}
-              labelStyle={{ fontSize: '12px', fontWeight: 400 }}
+              size="small"
+              color="primary"
+              style={{ marginLeft: 42 }}
               onClick={this.toggleAddReply}
             >
               Antworten
@@ -95,16 +97,18 @@ class Comment extends Component {
           )}
         </div>
 
-        {this.props.hierarchyLevel <= MAX_REPLY_DEPTH && <CommentsList
-          showAddComment={this.state.showAddComment}
-          collapsed={this.props.hierarchyLevel > 0}
-          hierarchyLevel={this.props.hierarchyLevel + 1}
-          postId={this.props.postId}
-          comments={this.props.replies}
-          commentCount={this.props.comment.no_replies}
-          replyTo={this.props.comment.id}
-          onReplyAdded={this.handleReplyAdded}
-        />}
+        {hierarchyLevel <= MAX_REPLY_DEPTH && (
+          <CommentsList
+            showAddComment={showAddComment}
+            collapsed={hierarchyLevel > 0}
+            hierarchyLevel={hierarchyLevel + 1}
+            postId={postId}
+            comments={replies}
+            commentCount={comment.no_replies}
+            replyTo={comment.id}
+            onReplyAdded={this.handleReplyAdded}
+          />
+        )}
       </div>
     );
   }

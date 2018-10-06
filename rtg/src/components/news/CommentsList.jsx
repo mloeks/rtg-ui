@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -7,10 +8,20 @@ import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 import Comment from './Comment';
 import AddComment from './AddComment';
-import { grey, lightGrey } from '../../theme/RtgTheme';
-import { lightenDarkenColor } from '../../service/ColorHelper';
 
 import './CommentsList.css';
+
+const styles = theme => ({
+  loadMoreRepliesButton: {
+    backgroundColor: theme.palette.grey['200'],
+    minHeight: 24,
+    padding: 0,
+  },
+  loadMoreRepliesLabel: {
+    color: theme.palette.grey['600'],
+    fontSize: 11,
+  },
+});
 
 class CommentsList extends Component {
   static getRepliesLabel(count) {
@@ -33,22 +44,22 @@ class CommentsList extends Component {
   }
 
   componentDidMount() {
-    if (this.props.comments.length === 0) {
-      this.loadComments();
-    }
+    const { comments } = this.props;
+    if (comments.length === 0) { this.loadComments(); }
   }
 
   async loadComments() {
+    const { onCommentsLoaded, postId } = this.props;
     this.setState({ loading: true, collapsed: false });
 
-    return fetch(`${API_BASE_URL}/rtg/comments/?post=${this.props.postId}`, {
+    return fetch(`${API_BASE_URL}/rtg/comments/?post=${postId}`, {
       method: 'GET',
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     })
       .then(FetchHelper.parseJson)
       .then((response) => {
         if (response.ok) {
-          this.props.onCommentsLoaded(response.json.results);
+          onCommentsLoaded(response.json.results);
           this.setState({ loading: false });
         } else {
           this.setState({ loading: false, loadingError: true });
@@ -58,70 +69,81 @@ class CommentsList extends Component {
   }
 
   handleCommentAdded(comment) {
-    this.setState({ collapsed: false }, () => {
-      this.props.onReplyAdded(comment);
-    });
+    const { onReplyAdded } = this.props;
+    this.setState({ collapsed: false }, () => { onReplyAdded(comment); });
   }
 
   render() {
+    const {
+      classes,
+      comments,
+      commentCount,
+      hierarchyLevel,
+      onReplyAdded,
+      postId,
+      replyTo,
+      showAddComment,
+    } = this.props;
+    const { collapsed, loading, loadingError } = this.state;
+
     // TODO P3 is being re-rendered 2*comment count times when post comments are only toggled?!
-    const comments = this.props.hierarchyLevel === 0 ?
-      this.props.comments.filter(c => !c.reply_to) :
-      this.props.comments.filter(c => c.reply_to === this.props.replyTo);
+    const displayComments = hierarchyLevel === 0
+      ? comments.filter(c => !c.reply_to)
+      : comments.filter(c => c.reply_to === replyTo);
 
     return (
       <div
-        className={`CommentsList ${this.state.collapsed ? 'CommentsList--collapsed' : ''} ${this.props.hierarchyLevel === 0 ? 'CommentsList--top-level' : ''}`}
+        className={`CommentsList ${collapsed ? 'CommentsList--collapsed' : ''} ${hierarchyLevel === 0 ? 'CommentsList--top-level' : ''}`}
       >
-        {this.state.loading &&
+        {loading && (
           <div style={{ textAlign: 'center' }}>
             <CircularProgress size={25} thickness={2} style={{ margin: '0 auto' }} />
-          </div>}
+          </div>
+        )}
 
-        {(this.props.showAddComment && !this.state.loading) &&
-          <AddComment
-            label="Antwort hinzufügen..."
-            postId={this.props.postId}
-            replyTo={this.props.replyTo}
-            onAdded={this.handleCommentAdded}
-          />}
+        {(showAddComment && !loading) && (
+          <Fragment>
+            <AddComment
+              label="Antwort hinzufügen..."
+              postId={postId}
+              replyTo={replyTo}
+              onAdded={this.handleCommentAdded}
+            />
+            <br />
+          </Fragment>
+        )}
 
-
-        {(this.state.collapsed && this.props.commentCount > 0)
-        && (
+        {(collapsed && commentCount > 0) && (
           <Button
+            size="small"
             className="CommentsList__load-more-replies"
+            classes={{ root: classes.loadMoreRepliesButton, label: classes.loadMoreRepliesLabel }}
             fullWidth
-            labelStyle={{ fontSize: '11px', fontWeight: 400, color: grey }}
-            style={{
-              backgroundColor: lightenDarkenColor(lightGrey, 55),
-              height: '24px',
-              lineHeight: '24px',
-            }}
             onClick={() => this.setState({ collapsed: false })}
           >
-            {CommentsList.getRepliesLabel(this.props.commentCount)}
+            {CommentsList.getRepliesLabel(commentCount)}
           </Button>
         )}
 
-        {(!this.state.loading && !this.state.collapsed && !this.state.loadingError) &&
-          comments.map(comment => (
+        {(!loading && !collapsed && !loadingError) && (
+          displayComments.map(c => (
             <Comment
-              key={`comment-${comment.id}`}
-              hierarchyLevel={this.props.hierarchyLevel}
-              postId={this.props.postId}
-              comment={comment}
-              replies={this.props.comments}
-              onReplyAdded={this.props.onReplyAdded}
+              key={`comment-${c.id}`}
+              hierarchyLevel={hierarchyLevel}
+              postId={postId}
+              comment={c}
+              replies={comments}
+              onReplyAdded={onReplyAdded}
             />))
-        }
+        )}
 
-        {this.state.loadingError &&
+        {loadingError && (
           <Notification
             type={NotificationType.ERROR}
             title="Fehler beim Laden"
             subtitle="Bitte versuche es erneut."
-          />}
+          />
+        )}
       </div>
     );
   }
@@ -146,6 +168,8 @@ CommentsList.propTypes = {
   showAddComment: PropTypes.bool,
   onCommentsLoaded: PropTypes.func,
   onReplyAdded: PropTypes.func,
+
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default CommentsList;
+export default withStyles(styles)(CommentsList);

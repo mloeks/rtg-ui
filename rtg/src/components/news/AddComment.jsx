@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import SendIcon from '@material-ui/icons/Send';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -94,18 +93,16 @@ class AddComment extends Component {
             })}
             style={{ flexGrow: 1 }}
           />
-          <Tooltip title="Kommentar abschicken">
-            <IconButton
-              aria-label="Kommentar abschicken"
-              color="primary"
-              type="submit"
-              size="small"
-              disabled={saving || content.length === 0 || contentError.length > 0}
-              style={{ height: 32, width: 32, marginLeft: 8 }}
-            >
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            aria-label="Kommentar abschicken"
+            color="primary"
+            type="submit"
+            size="small"
+            disabled={saving || content.length === 0 || contentError.length > 0}
+            style={{ height: 32, width: 32, marginLeft: 8 }}
+          >
+            <SendIcon />
+          </IconButton>
         </form>
 
         {(savingError && content.length > 0)
