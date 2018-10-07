@@ -19,7 +19,8 @@ class StandingsTableRow extends Component {
   }
 
   showUserDetailsPopover(e) {
-    if (this.props.showUserInfoOnClick) {
+    const { showUserInfoOnClick } = this.props;
+    if (showUserInfoOnClick) {
       e.preventDefault();
       this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
     }
@@ -30,13 +31,20 @@ class StandingsTableRow extends Component {
   }
 
   render() {
+    const { userDetailsPopoverAnchorEl, userDetailsPopoverOpen } = this.state;
     const {
       bet,
       betColumnStyle,
+      noDifferenz,
+      noNiete,
+      noRemisTendenz,
+      noTendenz,
+      points,
       rank,
       rowHeight,
       self,
       showBetColumn,
+      showStatsColumns,
       showUserAvatar,
       showUserInfoOnClick,
       userAvatar,
@@ -69,11 +77,11 @@ class StandingsTableRow extends Component {
               }}
             >
               <UserDetailsPopover
-                anchorEl={this.state.userDetailsPopoverAnchorEl}
+                anchorEl={userDetailsPopoverAnchorEl}
                 avatar={userAvatar}
                 userId={userId}
                 username={username}
-                open={this.state.userDetailsPopoverOpen}
+                open={userDetailsPopoverOpen}
                 onClose={this.hideUserDetailsPopover}
               />
 
@@ -105,34 +113,37 @@ class StandingsTableRow extends Component {
             />
           )}
 
-          {this.props.showStatsColumns &&
+          {showStatsColumns && (
             <Fragment>
               <TableCell style={baseBetStatColumnStyle}>{this.props.noVolltreffer}</TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={baseBetStatColumnStyle}
-              >{this.props.noDifferenz}
+              >
+                {noDifferenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={baseBetStatColumnStyle}
-              >{this.props.noRemisTendenz}
+              >
+                {noRemisTendenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={baseBetStatColumnStyle}
-              >{this.props.noTendenz}
+              >
+                {noTendenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
                 style={baseBetStatColumnStyle}
-              >{this.props.noNiete}
+              >
+                {noNiete}
               </TableCell>
-            </Fragment>}
+            </Fragment>
+          )}
 
-          <TableCell style={{ ...basePointsColumnStyle, height: rowHeight }}>
-            {this.props.points}
-          </TableCell>
+          <TableCell style={{ ...basePointsColumnStyle, height: rowHeight }}>{points}</TableCell>
         </TableRow>
       </Fragment>
     );
@@ -157,7 +168,6 @@ StandingsTableRow.propTypes = {
   username: PropTypes.string.isRequired,
   userAvatar: PropTypes.string,
   points: PropTypes.number.isRequired,
-  noBets: PropTypes.number.isRequired,
   noVolltreffer: PropTypes.number.isRequired,
   noDifferenz: PropTypes.number.isRequired,
   noRemisTendenz: PropTypes.number.isRequired,
