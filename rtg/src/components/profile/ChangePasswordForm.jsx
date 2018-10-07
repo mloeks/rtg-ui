@@ -7,35 +7,42 @@ import AuthService from '../../service/AuthService';
 
 import './ChangePasswordForm.css';
 
-const ChangePasswordFormDisplay = props => (
+const ChangePasswordFormDisplay = ({
+  formHasErrors, isSaving, newPassword, newPasswordError,
+  oldPassword, oldPasswordError, onFieldChange,
+}) => (
   <div className="ChangePasswordForm">
     <h3 className="ChangePasswordForm__title">Passwort ändern</h3>
 
     <VisiblePasswordField
       label="Aktuelles Passwort"
       fullWidth
-      value={props.oldPassword}
-      error={Boolean(props.oldPasswordError)}
-      helperText={props.oldPasswordError}
-      onChange={(e, v) => props.onFieldChange('oldPassword', v)}
+      value={oldPassword}
+      error={Boolean(oldPasswordError)}
+      helperText={oldPasswordError}
+      onChange={e => onFieldChange('oldPassword', e.target.value)}
     />
     <VisiblePasswordField
       label="Neues Passwort"
       fullWidth
-      value={props.newPassword}
-      error={Boolean(props.newPasswordError)}
-      helperText={props.newPasswordError}
-      onChange={(e, v) => props.onFieldChange('newPassword', v)}
-    /><br />
+      value={newPassword}
+      error={Boolean(newPasswordError)}
+      helperText={newPasswordError}
+      onChange={e => onFieldChange('newPassword', e.target.value)}
+    />
+    <br />
+    <br />
 
     <div className="ChangePasswordForm__button-wrapper">
       <Button
         variant="raised"
         color="primary"
         type="submit"
-        disabled={props.isSaving || props.formHasErrors}
+        disabled={isSaving || formHasErrors}
         style={{ width: 250 }}
-      >{props.isSaving ? 'Speichern...' : 'Passwort ändern'}</Button>
+      >
+        {isSaving ? 'Speichern...' : 'Passwort ändern'}
+      </Button>
     </div>
   </div>
 );
@@ -89,10 +96,12 @@ class ChangePasswordForm extends Component {
   }
 
   async handleSubmit(e) {
+    const { newPassword, oldPassword } = this.state;
+
     e.preventDefault();
     this.setState({ saving: true, savingSuccess: false, savingError: false });
 
-    AuthService.changePassword(this.state.oldPassword, this.state.newPassword)
+    AuthService.changePassword(oldPassword, newPassword)
       .then(() => this.setState({ ...ChangePasswordForm.getInitialState(), savingSuccess: true }))
       .catch(errorJson => this.setState({ saving: false, savingError: true, ...errorJson }));
   }
@@ -109,37 +118,50 @@ class ChangePasswordForm extends Component {
   }
 
   render() {
+    const {
+      fieldErrors,
+      formHasErrors,
+      newPassword,
+      nonFieldError,
+      oldPassword,
+      saving,
+      savingError,
+      savingSuccess,
+    } = this.state;
+
     return (
       <form className="ChangePasswordForm__form" onSubmit={this.handleSubmit} noValidate>
         <ChangePasswordFormDisplay
-          oldPassword={this.state.oldPassword}
-          newPassword={this.state.newPassword}
+          oldPassword={oldPassword}
+          newPassword={newPassword}
 
-          oldPasswordError={this.state.fieldErrors.oldPassword}
-          newPasswordError={this.state.fieldErrors.newPassword}
+          oldPasswordError={fieldErrors.oldPassword}
+          newPasswordError={fieldErrors.newPassword}
 
-          isSaving={this.state.saving}
-          formHasErrors={this.state.formHasErrors}
+          isSaving={saving}
+          formHasErrors={formHasErrors}
 
           onFieldChange={this.handleFormFieldUpdate}
         />
 
-        {(this.state.savingError && !this.state.formHasErrors) &&
+        {(savingError && !formHasErrors) && (
           <div className="ChangePasswordForm__save-feedback">
             <Notification
               type={NotificationType.ERROR}
               title="Das hat leider nicht geklappt"
-              subtitle={this.state.nonFieldError || 'Bitte versuche es erneut.'}
+              subtitle={nonFieldError || 'Bitte versuche es erneut.'}
             />
-          </div>}
-        {this.state.savingSuccess &&
+          </div>
+        )}
+        {savingSuccess && (
           <div className="ChangePasswordForm__save-feedback">
             <Notification
               type={NotificationType.SUCCESS}
               title="Passwort erfolgreich geändert!"
               disappearAfterMs={5000}
             />
-          </div>}
+          </div>
+        )}
       </form>
     );
   }
