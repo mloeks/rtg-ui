@@ -165,11 +165,7 @@ class Post extends Component {
     const dateCreated = new Date(post.date_created);
 
     return (
-      <Card
-        className="Post__card"
-        expanded={expanded}
-        containerStyle={{ paddingBottom: 0 }}
-      >
+      <Card className="Post__card">
         <CardHeader
           className="Post__card-title"
           classes={{ title: classes.headline }}

@@ -80,7 +80,6 @@ class AddComment extends Component {
         >
           <TextField
             autoFocus={focusOnMount}
-            dense
             error={Boolean(contentError)}
             fullWidth
             label={label}
