@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import ExtraBetCard from './ExtraBetCard';
@@ -23,9 +24,7 @@ export default class ExtraBetsTab extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = ExtraBetsTab.initialState();
-
     this.fetchData = this.fetchData.bind(this);
   }
 
@@ -33,25 +32,16 @@ export default class ExtraBetsTab extends Component {
     this.updateData();
   }
 
-  // TODO P3 replace by getDerivedStateFromProps, as this will be deprecated
-  // that method is static though and my first attempt was unsuccessful in
-  // achieving the same behaviour
-  // Cf. https://github.com/reactjs/reactjs.org/issues/721
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.active && nextProps.active) {
-      this.setState(ExtraBetsTab.initialState(), () => {
-        this.updateData();
-      });
-    }
-  }
-
   async updateData() {
+    const { bets, bettables } = this.state;
+    const { onOpenBetsUpdate } = this.props;
+
     await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
     await this.fetchData(`${API_BASE_URL}/rtg/extras/`, 'extras');
     await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets');
 
-    this.props.onOpenBetsUpdate(countOpenBets(this.state.bettables
-      .filter(bettable => bettable.type === BettableTypes.EXTRA), this.state.bets));
+    onOpenBetsUpdate(countOpenBets(bettables
+      .filter(bettable => bettable.type === BettableTypes.EXTRA), bets));
 
     this.setState({ loading: false });
   }
@@ -68,45 +58,57 @@ export default class ExtraBetsTab extends Component {
   }
 
   render() {
+    const {
+      extras,
+      extraIdWithBetStatsOpen,
+      loading,
+      loadingError,
+    } = this.state;
+    const { onOpenBetsUpdate } = this.props;
+
     return (
       <div className="ExtraBetsTab">
         <div style={{ padding: '0 10px' }}>
-          <p>Bitte gib alle Zusatztipps <b>vor Beginn der WM</b> ab.</p>
+          <p>
+            Bitte gib alle Zusatztipps&nbsp;
+            <b>vor Beginn der WM</b>
+            &nbsp;ab.
+          </p>
         </div>
 
         <section
           className="ExtraBetsTab__extra-bets-container"
           style={{ paddingBottom: 30 }}
         >
-          {this.state.loading &&
+          {loading && (
             <CircularProgress
               className="ExtraBetsTab__loadingSpinner"
               style={{ display: 'block', margin: '30px auto' }}
-            />}
+            />
+          )}
 
-          {(!this.state.loading && !this.state.loadingError) && this.state.extras
+          {(!loading && !loadingError) && extras
             .map(extraBet => (
               <Fragment key={`extra-bet-card-${extraBet.id}`}>
                 <ExtraBetCard
-                  onBetAdded={() => this.props.onOpenBetsUpdate(-1, true)}
-                  onBetRemoved={() => this.props.onOpenBetsUpdate(1, true)}
+                  onBetAdded={() => onOpenBetsUpdate(-1, true)}
+                  onBetRemoved={() => onOpenBetsUpdate(1, true)}
                   {...extraBet}
                 />
-                {(extraBet && !extraBet.open) &&
+                {(extraBet && !extraBet.open) && (
                   <BetStatsPanel
                     bettableId={extraBet.id}
-                    open={extraBet.id === this.state.extraIdWithBetStatsOpen}
+                    open={extraBet.id === extraIdWithBetStatsOpen}
                     onClose={() => this.setState({ extraIdWithBetStatsOpen: -1 })}
                     onOpen={() => this.setState({ extraIdWithBetStatsOpen: extraBet.id })}
                     style={{ marginTop: -20, maxWidth: 620, textAlign: 'center' }}
                     standingsBetColumnStyle={{ width: '80px' }}
-                  />}
+                  />
+                )}
               </Fragment>
             ))
           }
-          {this.state.loadingError &&
-            <div className="ExtraBetsTab__loadingError">Fehler beim Laden.</div>
-          }
+          {loadingError && <div className="ExtraBetsTab__loadingError">Fehler beim Laden.</div>}
         </section>
       </div>
     );
@@ -114,6 +116,5 @@ export default class ExtraBetsTab extends Component {
 }
 
 ExtraBetsTab.propTypes = {
-  active: PropTypes.bool.isRequired,
   onOpenBetsUpdate: PropTypes.func.isRequired,
 };

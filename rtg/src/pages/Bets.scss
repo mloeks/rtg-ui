@@ -5,34 +5,16 @@
 
 .BetsPage {
   &__tabs {
-    // tabs wrapper, unfortunately Material UI does not allow to set a class name for this
-    > div:first-child {
-      background-color: $white;
-      position: sticky;
-      top: 0;
+    background-color: $white;
+    position: sticky;
+    top: 0;
 
-      transition: top 200ms $mdEasingDecelerate;
-      box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
-      z-index: $zBetsTabs;
-    }
-
-    // ink bar wrapper, unfortunately Material UI does not allow to set a class name for this
-    > div:nth-child(2) {
-      position: sticky;
-      top: 60px - 2px; // height of tabs minus height of ink bar
-
-      transition: top 200ms $mdEasingDecelerate;
-      z-index: $zBetsTabs + 1;
-    }
+    transition: top 200ms $mdEasingDecelerate;
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    z-index: $zBetsTabs;
 
     &.header-offset {
-      > div:first-child {
-        top: $headerHeight;
-      }
-
-      > div:nth-child(2) {
-        top: 60px - 2px + $headerHeight;
-      }
+      top: $headerHeight;
     }
   }
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -62,19 +63,14 @@ class GameBetsTab extends Component {
     this.updateData();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.active && nextProps.active) {
-      this.setState(GameBetsTab.initialState(), () => {
-        this.updateData();
-      });
-    }
-  }
-
   async updateData() {
+    const { bets, gamesWithOpenBets } = this.state;
+    const { onOpenBetsUpdate } = this.props;
+
     await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999&bets_open=true&ordering=deadline,kickoff`, 'gamesWithOpenBets', true);
     await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets', false);
 
-    this.props.onOpenBetsUpdate(countOpenBets(this.state.gamesWithOpenBets, this.state.bets));
+    onOpenBetsUpdate(countOpenBets(gamesWithOpenBets, bets));
 
     this.setState({ loading: false });
   }
@@ -85,14 +81,16 @@ class GameBetsTab extends Component {
     }).then(FetchHelper.parseJson)
       .then((response) => {
         this.setState(() => (
-          response.ok ?
-            { [targetStateField]: isPaginated ? response.json.results : response.json } :
-            { loadingError: true }
+          response.ok
+            ? { [targetStateField]: isPaginated ? response.json.results : response.json }
+            : { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
   }
 
   createGameCardsWithDeadlineSubheadings(games, betsStatusContext) {
+    const { bets, gamesWithSavingIssues, shouldSave } = this.state;
+
     const gameCardsWithDeadlineSubheadings = [];
     let lastFormattedDeadline = null;
     games.forEach((game) => {
@@ -120,18 +118,20 @@ class GameBetsTab extends Component {
           );
         lastFormattedDeadline = formattedDeadline;
       }
+
       const gameCardWithBet = (
-        <GameCard key={game.id} style={{ marginBottom: 25 }} {...game} >
+        <GameCard key={game.id} style={{ marginBottom: 25 }} {...game}>
           <GameCardBet
             gameId={game.id}
-            hadSaveIssues={this.state.gamesWithSavingIssues
+            hadSaveIssues={gamesWithSavingIssues
               .some(failedGame => game.id === failedGame.id)}
-            shouldSave={this.state.shouldSave}
-            userBet={this.state.bets.find(bet => bet.bettable === game.id) || {}}
-            onSaveFailure={(id, attemptedBet, type, detail) =>
-              this.handleBetSaveDone(id, attemptedBet, type, detail, betsStatusContext)}
-            onSaveSuccess={(id, savedBet, type, detail) => this.handleBetSaveDone(
-              id, savedBet ? savedBet.result_bet : null, type, detail, betsStatusContext)}
+            shouldSave={shouldSave}
+            userBet={bets.find(bet => bet.bettable === game.id) || {}}
+            onSaveFailure={(id, attemptedBet, type, detail) => this
+              .handleBetSaveDone(id, attemptedBet, type, detail, betsStatusContext)}
+            onSaveSuccess={(id, savedBet, type, detail) => this
+              .handleBetSaveDone(id, savedBet ? savedBet.result_bet : null, type,
+                detail, betsStatusContext)}
           />
         </GameCard>
       );
@@ -142,11 +142,12 @@ class GameBetsTab extends Component {
   }
 
   createDeadlineWithIcon(deadlineDate, readableDeadlineText) {
+    const { theme } = this.props;
     return (
       <div className="GameBetsTab__deadline-separator">
         <AlarmIcon
           className="GameBetsTab__deadline-separator-icon"
-          color={this.props.theme.palette.error.main}
+          color={theme.palette.error.main}
           style={{ width: 24, height: 24, marginRight: 5 }}
         />
         <span className="GameBetsTab__deadline-separator-text">{readableDeadlineText}</span>
@@ -168,6 +169,8 @@ class GameBetsTab extends Component {
 
   // TODO P3 refactor this method
   handleBetSaveDone(gameId, newBetString, saveType, responseDetail, betsStatusContext) {
+    const { onOpenBetsUpdate } = this.props;
+
     const updatedGameWithSaveDetails = {
       ...this.gamesWithSaveType.get(gameId), newBet: newBetString, saveType, responseDetail,
     };
@@ -178,7 +181,7 @@ class GameBetsTab extends Component {
     if (allBetsDone) {
       const gamesWithSavingIssues = gamesWithSaveTypeValueArray
         .filter(game => game.saveType && Object.values(SavingErrorType).includes(game.saveType));
-      this.props.onOpenBetsUpdate(GameBetsTab
+      onOpenBetsUpdate(GameBetsTab
         .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray), true);
 
       this.setState({
@@ -198,15 +201,28 @@ class GameBetsTab extends Component {
   }
 
   render() {
-    const gameCount = this.state.gamesWithOpenBets.length;
+    const {
+      gamesWithOpenBets,
+      gamesWithSavingIssues,
+      loading,
+      loadingError,
+      shouldSave,
+      showSavingSuccess,
+    } = this.state;
+
+    const gameCount = gamesWithOpenBets.length;
 
     return (
       <div className="GameBetsTab">
         <div style={{ padding: '0 10px' }}>
           <p>
-            Bitte tippe zunächst <b>vor Beginn der WM</b> sämtliche Vorrundenspiele. Die
+            Bitte tippe zunächst&nbsp;
+            <b>vor Beginn der WM</b>
+            &nbsp;sämtliche Vorrundenspiele. Die
             Partien der K.O.-Runde werden hier auftauchen, sobald sie feststehen.
-            <br /><br />Bitte beachte insbesondere die Deadlines zur Abgabe Deiner Tipps
+            <br />
+            <br />
+            Bitte beachte insbesondere die Deadlines zur Abgabe Deiner Tipps
             für die jeweiligen Spiele.
           </p>
         </div>
@@ -214,40 +230,46 @@ class GameBetsTab extends Component {
         <BetsStatusContext.Consumer>
           {betsStatusContext => (
             <section className="GameBetsTab__game-bets-container">
-              {this.state.loading &&
+              {loading && (
                 <Fragment>
                   <RtgSeparator content="..." />
                   {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
-                </Fragment>}
+                </Fragment>
+              )}
 
               <SavingIssuesDialog
-                open={this.state.gamesWithSavingIssues.length > 0}
-                games={this.state.gamesWithSavingIssues}
+                open={gamesWithSavingIssues.length > 0}
+                games={gamesWithSavingIssues}
                 onClose={() => this.setState({ gamesWithSavingIssues: [] })}
               />
 
-              {(!this.state.loading && !this.state.loadingError && gameCount > 0) &&
-                this.createGameCardsWithDeadlineSubheadings(this.state.gamesWithOpenBets, betsStatusContext)}
+              {(!loading && !loadingError && gameCount > 0) && (
+                this.createGameCardsWithDeadlineSubheadings(gamesWithOpenBets, betsStatusContext)
+              )}
 
-              {(!this.state.loading && !this.state.loadingError && gameCount === 0) &&
+              {(!loading && !loadingError && gameCount === 0) && (
                 <div className="GameBetsTab__empty-state" style={{ color: lightGrey }}>
                   <NotInterestedIcon
                     color={lightGrey}
                     style={{ height: 80, width: 80, marginBottom: 10 }}
-                  /><br />Keine offenen Tipps vorhanden.
-                </div>}
+                  />
+                  <br />
+                  Keine offenen Tipps vorhanden.
+                </div>
+              )}
 
-              {this.state.loadingError &&
+              {loadingError && (
                 <Notification title="Fehler beim Laden" type={NotificationType.ERROR} />
-              }
+              )}
 
-              {(this.props.active && !this.state.loading && gameCount > 0) &&
+              {(!loading && gameCount > 0) && (
                 <BetsStatusPanel
                   hasChanges={betsStatusContext.betsHaveChanges}
-                  saving={this.state.shouldSave}
-                  success={this.state.showSavingSuccess}
+                  saving={shouldSave}
+                  success={showSavingSuccess}
                   onSave={this.handleSaveRequest}
-                />}
+                />
+              )}
             </section>
           )}
         </BetsStatusContext.Consumer>
@@ -257,7 +279,6 @@ class GameBetsTab extends Component {
 }
 
 GameBetsTab.propTypes = {
-  active: PropTypes.bool.isRequired,
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onOpenBetsUpdate: PropTypes.func.isRequired,
 };

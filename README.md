@@ -4,8 +4,11 @@
 
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
-    * Find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
-    * STYLES
+    * Schedule page: find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
+    * Bets page: bets input
+    * Password reset page
+    * UserDetailsPopover
+    * Never use colours exported from RtgTheme directly, favour withTheme, remove exports
 
 ### Follow-up Material UI upgrade
 
