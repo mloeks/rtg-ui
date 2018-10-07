@@ -239,7 +239,11 @@ class Schedule extends Component {
         </BigPicture>
 
         <section className="SchedulePage__content" ref={this.gamesSectionRef}>
-          <section id="schedule-toolbar" className="SchedulePage__toolbar">
+          <section
+            id="schedule-toolbar"
+            className="SchedulePage__toolbar"
+            style={{ backgroundColor: theme.palette.common.white }}
+          >
             <div className="SchedulePage__toolbar-title">Spiele wählen:</div>
             <FormControl style={{ margin: 8 }}>
               <InputLabel htmlFor="round">Runde</InputLabel>
