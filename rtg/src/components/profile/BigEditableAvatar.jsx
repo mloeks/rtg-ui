@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
 import Slider from '@material-ui/lab/Slider';
-import teal from '@material-ui/core/colors/teal';
+
 import PersonIcon from '@material-ui/icons/Person';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
+import teal from '@material-ui/core/colors/teal';
+
 import AvatarEditor from 'react-avatar-editor';
 import Notification, { NotificationType } from '../Notification';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
-import { purple } from '../../theme/RtgTheme';
 
 import './BigEditableAvatar.css';
 
@@ -20,38 +22,44 @@ const MIN_AVATAR_ZOOM = 1;
 const MAX_AVATAR_ZOOM = 5;
 const AVATAR_ZOOM_INCREMENT = 0.2;
 
-const EditingActions = props => (
+const EditingActions = ({
+  maxSliderValue, minSliderValue, onCancel, onRotateLeft, onRotateRight, onSave,
+  onZoomChange, onZoomIn, onZoomOut, sliderValue, style,
+}) => (
   <form
     className="BigEditableAvatar__edit-actions"
-    style={props.style}
-    onSubmit={(e) => { e.preventDefault(); props.onSave(); }}
+    style={style}
+    onSubmit={(e) => { e.preventDefault(); onSave(); }}
     noValidate
   >
     <div className="BigEditableAvatar__rotation-wrapper">
-      <RotateRightIcon color={purple} onClick={props.onRotateRight} />
-      <RotateLeftIcon color={purple} onClick={props.onRotateLeft} />
+      <IconButton>
+        <RotateRightIcon color="primary" onClick={onRotateRight} />
+      </IconButton>
+      <IconButton>
+        <RotateLeftIcon color="primary" onClick={onRotateLeft} />
+      </IconButton>
     </div>
     <div className="BigEditableAvatar__slider-wrapper">
-      <Button color="primary" style={{ minWidth: '10px' }} onClick={props.onZoomOut}>
+      <Button color="primary" style={{ minWidth: 15, padding: 0 }} onClick={onZoomOut}>
         –
       </Button>
 
       <Slider
         className="BigEditableAvatar__slider"
-        min={props.minSliderValue}
-        max={props.maxSliderValue}
-        value={props.sliderValue}
-        sliderStyle={{ margin: '0 10px', width: 'auto' }}
-        onChange={props.onZoomChange}
+        min={minSliderValue}
+        max={maxSliderValue}
+        value={sliderValue}
+        onChange={onZoomChange}
       />
 
-      <Button color="primary" style={{ minWidth: '10px' }} onClick={props.onZoomIn}>
+      <Button color="primary" style={{ minWidth: 15, padding: 0 }} onClick={onZoomIn}>
         +
       </Button>
     </div>
 
+    <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
     <Button type="submit" color="primary">Speichern</Button>
-    <Button onClick={props.onCancel}>Abbrechen</Button>
   </form>
 );
 
@@ -76,7 +84,6 @@ EditingActions.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-// TODO P3 display progress indicator while image is loading client-side (if callbacks are offered)
 class BigEditableAvatar extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!prevState.avatarUrl && nextProps.avatarUrl) {
@@ -85,7 +92,7 @@ class BigEditableAvatar extends Component {
     return null;
   }
 
-  static getInitialState(props) {
+  static getInitialState() {
     return {
       chosenFile: null,
       editing: false,
@@ -105,7 +112,7 @@ class BigEditableAvatar extends Component {
 
     this.state = {
       avatarUrl: null,
-      ...BigEditableAvatar.getInitialState(props),
+      ...BigEditableAvatar.getInitialState(),
     };
 
     this.editor = null;
@@ -175,7 +182,10 @@ class BigEditableAvatar extends Component {
   }
 
   handleAvatarRotate(increment) {
-    this.setState(prevState => ({ avatarRotation: (prevState.avatarRotation += increment) }));
+    this.setState((prevState) => {
+      const avatarRotation = prevState.avatarRotation + increment;
+      return { avatarRotation };
+    });
   }
 
   handleEditSave() {
@@ -183,13 +193,14 @@ class BigEditableAvatar extends Component {
       this.setState(
         { uploadInProgress: true, uploadSuccess: false, uploadError: '' },
         () => {
+          const { userId } = this.props;
           const canvasScaled = this.editor.getImageScaledToCanvas();
 
           canvasScaled.toBlob((blob) => {
-            const formData = new FormData();
+            const formData = new FormData(); // eslint-disable-line no-undef
             formData.append('upload', blob, 'avatar.jpg');
 
-            fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/avatar/`, {
+            fetch(`${API_BASE_URL}/rtg/users/${userId}/avatar/`, {
               method: 'POST',
               body: formData,
               headers: { Authorization: `Token ${AuthService.getToken()}` },
@@ -201,7 +212,8 @@ class BigEditableAvatar extends Component {
                     avatarUrl: response.json.avatar,
                     uploadSuccess: true,
                   }, () => {
-                    this.props.onAvatarChanged(response.json.avatar);
+                    const { onAvatarChanged } = this.props;
+                    onAvatarChanged(response.json.avatar);
                   });
                 } else {
                   this.setState({
@@ -250,12 +262,12 @@ class BigEditableAvatar extends Component {
         style={{
           display: 'flex',
           flexDirection: 'column',
+          margin: this.avatarSize / 4.5,
           width: 'auto',
           height: 'auto',
         }}
       >
         <PersonIcon
-          color="white"
           style={{ pointerEvents: 'none', width: '100%', height: '100%' }}
         />
         <span style={{ fontSize: '14px', opacity: 0.8 }}>Klicken zum Ändern</span>
@@ -364,8 +376,12 @@ BigEditableAvatar.propTypes = {
   username: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
 
+  // TODO P3 display progress indicator while image is loading client-side
+  // (if callbacks are offered)
+  /* eslint-disable react/no-unused-prop-types */
   loading: PropTypes.bool.isRequired,
   loadingError: PropTypes.bool.isRequired,
+  /* eslint-enable react/no-unused-prop-types */
 
   onAvatarChanged: PropTypes.func.isRequired,
 };
