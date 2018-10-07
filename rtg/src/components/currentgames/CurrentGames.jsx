@@ -67,8 +67,8 @@ class CurrentGames extends Component {
   static getContainerLeftValueForOffset(offset, windowRange, displayedGamesCount) {
     const gamesToDisplay = displayedGamesCount || CurrentGames.getGamesToDisplay();
     const containerWidthDecimal = windowRange.length / gamesToDisplay;
-    const containerOffsetDecimal = containerWidthDecimal *
-      ((offset - windowRange[0]) / windowRange.length);
+    const containerOffsetDecimal = containerWidthDecimal
+      * ((offset - windowRange[0]) / windowRange.length);
 
     return -containerOffsetDecimal;
   }
@@ -144,41 +144,6 @@ class CurrentGames extends Component {
     this.unregisterEvents();
   }
 
-  registerEvents() {
-    window.addEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
-    this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
-
-    this.gamesContainer = this.currentGamesContainerRef.current;
-    if (this.gamesContainer) {
-      this.gamesContainer.addEventListener('touchstart', this.onTouchStart, false);
-      this.gamesContainer.addEventListener('touchend', this.onTouchEnd, false);
-      this.gamesContainer.addEventListener('touchmove', this.throttledOnTouchMove, false);
-      this.gamesContainer.addEventListener('touchcancel', this.onTouchCancel, false);
-      this.gamesContainer.addEventListener('transitionend', this.onTransitionEnd, false);
-    }
-  }
-
-  unregisterEvents() {
-    window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
-    this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
-
-    if (this.gamesContainer) {
-      this.gamesContainer.removeEventListener('touchstart', this.onTouchStart);
-      this.gamesContainer.removeEventListener('touchend', this.onTouchEnd);
-      this.gamesContainer.removeEventListener('touchmove', this.throttledOnTouchMove);
-      this.gamesContainer.removeEventListener('touchcancel', this.onTouchCancel);
-      this.gamesContainer.removeEventListener('transitionend', this.onTransitionEnd);
-    }
-  }
-
-  confirmNavigationWithUnsavedChanges(e) {
-    if (this.state.editingBet) {
-      e.returnValue = unsavedChangesConfirmText;
-      return unsavedChangesConfirmText;
-    }
-    return undefined;
-  }
-
   onBreakpointChange() {
     this.setState((prevState) => {
       const gamesToDisplay = CurrentGames.getGamesToDisplay();
@@ -225,12 +190,13 @@ class CurrentGames extends Component {
   }
 
   onTransitionEnd() {
-    if (this.newOffsetAfterTransition !== null && this.state.scrolling) {
+    const { scrolling } = this.state;
+    if (this.newOffsetAfterTransition !== null && scrolling) {
       this.setState(prevState => ({
         scrolling: false,
         currentOffset: this.newOffsetAfterTransition,
-        gamesToDisplayWindow:
-          CurrentGames.getGamesToDisplayWindowState(this.newOffsetAfterTransition, prevState.games.length),
+        gamesToDisplayWindow: CurrentGames
+          .getGamesToDisplayWindowState(this.newOffsetAfterTransition, prevState.games.length),
       }), () => {
         this.fetchMoreGamesIfRequired();
         this.newOffsetAfterTransition = null;
@@ -239,33 +205,77 @@ class CurrentGames extends Component {
     }
   }
 
-  horizontalMove(x, animate = true) {
-    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
-      const currentGamesClasses = this.currentGamesContainerRef.current.classList;
-      if (animate) { currentGamesClasses.remove('no-animate'); }
-      else { currentGamesClasses.add('no-animate'); }
-      this.currentGamesContainerRef.current.style.transform = `translateX(${x}px)`;
-    }
-  }
-
   getInitialOffsetBasedOnDate(kickoffs) {
+    const { gamesToDisplay } = this.state;
     let offsetBasedOnDate = getClosestGameIndex(kickoffs);
 
-    if (this.state.gamesToDisplay > 2) {
+    if (gamesToDisplay > 2) {
       // on wider screens, show the current game in the middle,
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - this.state.gamesToDisplay));
+    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - gamesToDisplay));
+  }
+
+  registerEvents() {
+    window.addEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
+    this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
+
+    this.gamesContainer = this.currentGamesContainerRef.current;
+    if (this.gamesContainer) {
+      this.gamesContainer.addEventListener('touchstart', this.onTouchStart, false);
+      this.gamesContainer.addEventListener('touchend', this.onTouchEnd, false);
+      this.gamesContainer.addEventListener('touchmove', this.throttledOnTouchMove, false);
+      this.gamesContainer.addEventListener('touchcancel', this.onTouchCancel, false);
+      this.gamesContainer.addEventListener('transitionend', this.onTransitionEnd, false);
+    }
+  }
+
+  unregisterEvents() {
+    window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
+    this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
+
+    if (this.gamesContainer) {
+      this.gamesContainer.removeEventListener('touchstart', this.onTouchStart);
+      this.gamesContainer.removeEventListener('touchend', this.onTouchEnd);
+      this.gamesContainer.removeEventListener('touchmove', this.throttledOnTouchMove);
+      this.gamesContainer.removeEventListener('touchcancel', this.onTouchCancel);
+      this.gamesContainer.removeEventListener('transitionend', this.onTransitionEnd);
+    }
+  }
+
+  confirmNavigationWithUnsavedChanges(e) {
+    const { editingBet } = this.state;
+    if (editingBet) {
+      e.returnValue = unsavedChangesConfirmText;
+      return unsavedChangesConfirmText;
+    }
+    return undefined;
+  }
+
+  horizontalMove(x, animate = true) {
+    if (this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+      const currentGamesClasses = this.currentGamesContainerRef.current.classList;
+      if (animate) {
+        currentGamesClasses.remove('no-animate');
+      } else {
+        currentGamesClasses.add('no-animate');
+      }
+      this.currentGamesContainerRef.current.style.transform = `translateX(${x}px)`;
+    }
   }
 
   fetchData(url, targetStateField, isPaginated, responseToStateMapper) {
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson).then((response) => {
-      this.setState(prevState => (response.ok ?
-        { ...responseToStateMapper(prevState, isPaginated ? response.json.results : response.json) }
-        : { loadingError: true }
+      this.setState(prevState => (response.ok
+        ? {
+          ...responseToStateMapper(
+            prevState,
+            isPaginated ? response.json.results : response.json,
+          ),
+        } : { loadingError: true }
       ));
     }).catch(() => this.setState({ loadingError: true }));
   }
@@ -290,21 +300,21 @@ class CurrentGames extends Component {
   }
 
   fetchMoreGamesIfRequired() {
+    const { currentOffset, games, gamesToDisplay } = this.state;
+
     // check if we can scroll once more with loaded ames available
-    const couldScrollBackwardOnceMore = this.state.games[
-      Math.max(0, this.state.currentOffset - this.state.gamesToDisplay)] !== null;
-    const couldScrollForwardOnceMore = this.state.games[Math.min(
-      this.state.games.length - 1,
-      this.state.currentOffset + ((2 * this.state.gamesToDisplay) - 1),
-    )] !== null;
+    const couldScrollBackwardOnceMore = games[
+      Math.max(0, currentOffset - gamesToDisplay)] !== null;
+    const couldScrollForwardOnceMore = games[
+      Math.min(games.length - 1, currentOffset + ((2 * gamesToDisplay) - 1))] !== null;
 
     // calculate required window of games to be available
     // increase it, if there would be unavailable games on next scroll
-    let desiredOffset = this.state.currentOffset;
-    let desiredLimit = this.state.gamesToDisplay;
+    let desiredOffset = currentOffset;
+    let desiredLimit = gamesToDisplay;
     if (!couldScrollBackwardOnceMore || !couldScrollForwardOnceMore) {
-      desiredOffset = Math.max(0, this.state.currentOffset - this.preLoadGamesAroundView);
-      desiredLimit = this.state.gamesToDisplay + (2 * this.preLoadGamesAroundView);
+      desiredOffset = Math.max(0, currentOffset - this.preLoadGamesAroundView);
+      desiredLimit = gamesToDisplay + (2 * this.preLoadGamesAroundView);
     }
 
     // check available games for desired window
@@ -314,7 +324,7 @@ class CurrentGames extends Component {
     let minUnknownGame = -1;
     let maxUnknownGame = -1;
     for (let i = desiredOffset; i < (desiredOffset + desiredLimit); i += 1) {
-      if (this.state.games[i] === null) {
+      if (games[i] === null) {
         if (minUnknownGame === -1) { minUnknownGame = i; }
         maxUnknownGame = i;
       }
@@ -325,33 +335,47 @@ class CurrentGames extends Component {
       const offset = minUnknownGame;
       const limit = (maxUnknownGame - minUnknownGame) + 1;
       const gamesUrl = `${API_BASE_URL}/rtg/games/?offset=${offset}&limit=${limit}`;
-      this.fetchData(gamesUrl, 'games', true, (prevState, games) =>
-        CurrentGames.gamesExcerptResponseToState(prevState, games, offset));
+      this.fetchData(gamesUrl, 'games', true, (prevState, fetchedGames) => CurrentGames
+        .gamesExcerptResponseToState(prevState, fetchedGames, offset));
     }
   }
 
   mayScrollForward() {
-    return !this.state.editingBet &&
-      this.state.currentOffset + this.state.gamesToDisplay < this.state.games.length;
+    const {
+      currentOffset,
+      editingBet,
+      games,
+      gamesToDisplay,
+    } = this.state;
+
+    return !editingBet && currentOffset + gamesToDisplay < games.length;
   }
 
   mayScrollBackward() {
-    return !this.state.editingBet && this.state.currentOffset > 0;
+    const { currentOffset, editingBet } = this.state;
+    return !editingBet && currentOffset > 0;
   }
 
   scrollForward() {
-    if (this.mayScrollForward() &&
-      this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    if (this.mayScrollForward() && this.currentGamesContainerRef
+      && this.currentGamesContainerRef.current) {
       this.setState({ scrolling: true, offsetWithBetStatsOpen: -1 }, () => {
-        const nextOffset = this.state.currentOffset + this.state.gamesToDisplay;
-        const maxOffset = this.state.games.length - this.state.gamesToDisplay;
+        const {
+          currentOffset,
+          games,
+          gamesToDisplay,
+          gamesToDisplayWindow,
+        } = this.state;
+
+        const nextOffset = currentOffset + gamesToDisplay;
+        const maxOffset = games.length - gamesToDisplay;
         this.newOffsetAfterTransition = Math.min(nextOffset, maxOffset);
 
-        const windowRange = this.state.gamesToDisplayWindow.range;
+        const windowRange = gamesToDisplayWindow.range;
         const numberOfGamesToTheRight = windowRange[windowRange.length - 1] - (nextOffset - 1);
         const relativeTranslateForForwardScroll = -numberOfGamesToTheRight / windowRange.length;
-        this.currentGamesContainerRef.current.style.transform =
-          `translateX(${100.0 * relativeTranslateForForwardScroll}%)`;
+        this.currentGamesContainerRef.current
+          .style.transform = `translateX(${100.0 * relativeTranslateForForwardScroll}%)`;
       });
     } else {
       this.horizontalMove(0);
@@ -359,17 +383,17 @@ class CurrentGames extends Component {
   }
 
   scrollBackward() {
-    if (this.mayScrollBackward() &&
-      this.currentGamesContainerRef && this.currentGamesContainerRef.current) {
+    if (this.mayScrollBackward() && this.currentGamesContainerRef
+      && this.currentGamesContainerRef.current) {
       this.setState({ scrolling: true, offsetWithBetStatsOpen: -1 }, () => {
-        this.newOffsetAfterTransition =
-          Math.max(this.state.currentOffset - this.state.gamesToDisplay, 0);
+        const { currentOffset, gamesToDisplay, gamesToDisplayWindow } = this.state;
+        this.newOffsetAfterTransition = Math.max(currentOffset - gamesToDisplay, 0);
 
-        const windowRange = this.state.gamesToDisplayWindow.range;
-        const numberOfGamesToTheLeft = this.state.currentOffset - windowRange[0];
+        const windowRange = gamesToDisplayWindow.range;
+        const numberOfGamesToTheLeft = currentOffset - windowRange[0];
         const relativeTranslateForBackwardScroll = numberOfGamesToTheLeft / windowRange.length;
-        this.currentGamesContainerRef.current.style.transform =
-          `translateX(${100.0 * relativeTranslateForBackwardScroll}%)`;
+        this.currentGamesContainerRef.current
+          .style.transform = `translateX(${100.0 * relativeTranslateForBackwardScroll}%)`;
       });
     } else {
       this.horizontalMove(0);
