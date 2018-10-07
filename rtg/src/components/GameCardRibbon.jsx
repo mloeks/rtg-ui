@@ -3,16 +3,12 @@ import PropTypes from 'prop-types';
 
 import './GameCardRibbon.css';
 
-const GameCardRibbon = (props) => {
-  return (
-    <div className={`GameCardRibbon ${props.stateCssClass}`}>
-      <div className="GameCardRibbon__content">
-        {props.children}
-      </div>
-      <div className="GameCardRibbon__right" />
-    </div>
-  );
-};
+const GameCardRibbon = ({ children, stateCssClass }) => (
+  <div className={`GameCardRibbon ${stateCssClass}`}>
+    <div className="GameCardRibbon__content">{children}</div>
+    <div className="GameCardRibbon__right" />
+  </div>
+);
 
 GameCardRibbon.defaultProps = {
   children: null,
