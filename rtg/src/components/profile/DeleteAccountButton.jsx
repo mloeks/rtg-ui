@@ -1,30 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification, { NotificationType } from '../Notification';
 
-const DeleteConfirmationModal = (props) => {
-  const actions = [
-    <Button onClick={props.onCancel}>Abbrechen</Button>,
-    <Button color="primary" onClick={props.onConfirm}>Account löschen</Button>,
-  ];
-
-  return (
-    <Dialog
-      actions={actions}
-      modal
-      open={props.open}
-      title="Löschen bestätigen"
-    >
-      Alle deine Daten werden unwiderruflich gelöscht.<br /><br />
+const DeleteConfirmationModal = ({
+  fullScreen, onCancel, onConfirm, open,
+}) => (
+  <Dialog
+    fullScreen={fullScreen}
+    open={open}
+    aria-labelledby="DeleteConfirmationModal__title"
+    onClose={onCancel}
+  >
+    <DialogTitle id="DeleteConfirmationModal__title">Löschen bestätigen</DialogTitle>
+    <DialogContent>
+      Alle deine Daten werden unwiderruflich gelöscht.
+      <br />
+      <br />
       Dies kann nicht rückgängig gemacht werden!
-    </Dialog>
-  );
-};
+    </DialogContent>
+    <DialogActions>
+      <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
+      <Button color="primary" onClick={onConfirm}>Account löschen</Button>
+    </DialogActions>
+  </Dialog>
+);
 
 DeleteConfirmationModal.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
@@ -58,13 +69,14 @@ class DeleteAccountButton extends Component {
       savingIssues: false,
       deleteConfirmationModalOpen: false,
     }, () => {
-      fetch(`${API_BASE_URL}/rtg/users/${this.props.userId}/`, {
+      const { onDelete, userId } = this.props;
+      fetch(`${API_BASE_URL}/rtg/users/${userId}/`, {
         method: 'DELETE',
         headers: { Authorization: `Token ${AuthService.getToken()}` },
       }).then((response) => {
         if (response.ok) {
           this.setState({ saving: false });
-          this.props.onDelete(this.props.userId);
+          onDelete(userId);
         } else {
           this.setState({ saving: false, savingIssues: true });
         }
@@ -73,10 +85,14 @@ class DeleteAccountButton extends Component {
   }
 
   render() {
+    const { deleteConfirmationModalOpen, saving, savingIssues } = this.state;
+    const { fullScreen } = this.props;
+
     return (
       <div className="DeleteAccountButton" style={{ margin: '20px 0' }}>
         <DeleteConfirmationModal
-          open={this.state.deleteConfirmationModalOpen}
+          open={deleteConfirmationModalOpen}
+          fullScreen={fullScreen}
           onCancel={this.handleDeleteRequestCancelled}
           onConfirm={this.handleDelete}
         />
@@ -90,15 +106,14 @@ class DeleteAccountButton extends Component {
         <Button
           variant="raised"
           color="primary"
-          disabled={this.state.saving}
+          disabled={saving}
           style={{ width: 250 }}
           onClick={this.handleDeleteRequest}
         >
           Löschen
         </Button>
 
-        {this.state.savingIssues
-        && (
+        {savingIssues && (
           <Notification
             type={NotificationType.ERROR}
             title="Problem beim Löschen"
@@ -114,6 +129,8 @@ class DeleteAccountButton extends Component {
 DeleteAccountButton.propTypes = {
   userId: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
+
+  fullScreen: PropTypes.bool.isRequired,
 };
 
-export default DeleteAccountButton;
+export default withMobileDialog()(DeleteAccountButton);

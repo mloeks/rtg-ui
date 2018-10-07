@@ -117,7 +117,6 @@ class RegisterDialog extends Component {
     const { fullScreen, onCancel, open } = this.props;
     const {
       password,
-
       fieldErrors,
       formError,
       formHasErrors,
