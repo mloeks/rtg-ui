@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    padding: 15px 5px;
+    padding: 5px;
 
     box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
 
@@ -26,21 +26,15 @@
   }
 
   &__toolbar-title {
-    margin-left: 20px;
+    margin: 0;
+    padding: 10px 5px;
     text-align: left;
     width: 100%;
 
     @media only screen and (min-width : 480px) {
+      margin: 0 20px 0 10px;
+      padding: 0;
       width: auto;
-    }
-  }
-
-  &__toolbar-dropdown {
-    top: -8px;
-    margin-top: 5px;
-
-    @media only screen and (min-width : 480px) {
-      margin-top: 0;
     }
   }
 

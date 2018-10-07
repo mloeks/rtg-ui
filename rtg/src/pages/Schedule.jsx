@@ -2,14 +2,21 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+
 import AddIcon from '@material-ui/icons/Add';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { format, isSameDay, parse } from 'date-fns';
 import de from 'date-fns/locale/de';
+
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import GameCard from '../components/GameCard';
@@ -23,7 +30,6 @@ import { isEnter } from '../service/KeyHelper';
 import { getClosestGameIndex } from '../service/GamesHelper';
 import BetStatsPanel from '../components/bets/BetStatsPanel';
 import AddGameForm from '../components/schedule/AddGameForm';
-import { darkGrey, lightGrey, white } from '../theme/RtgTheme';
 
 import './Schedule.css';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
@@ -99,27 +105,28 @@ class Schedule extends Component {
   }
 
   selectCurrentRound() {
-    const closestGameIndex = getClosestGameIndex(this.state.games.map(g => g.kickoff));
+    const { games } = this.state;
+    const closestGameIndex = getClosestGameIndex(games.map(g => g.kickoff));
     this.setState({
-      selectedRoundIndex: closestGameIndex !== -1 ?
-        this.state.games[closestGameIndex].round_details.abbreviation :
-        DEFAULT_ROUND_INDEX,
+      selectedRoundIndex: closestGameIndex !== -1
+        ? games[closestGameIndex].round_details.abbreviation
+        : DEFAULT_ROUND_INDEX,
     });
   }
 
-  handleSelectedRoundChange(event, index, value) {
-    this.setState({ selectedRoundIndex: value });
+  handleSelectedRoundChange(e) {
+    this.setState({ selectedRoundIndex: e.target.value });
   }
 
-  handleGroupFilterChanged(event, index, value) {
-    this.setState({ selectedGroupFilter: value });
+  handleGroupFilterChanged(e) {
+    this.setState({ selectedGroupFilter: e.target.value });
   }
 
   handleAddGame() {
     // TODO P3 animated scroll (lib?)
     this.setState({ addingGame: true, addGameSuccess: false }, () => {
-      const addGameTopYPos = (window.pageYOffset +
-        this.gamesSectionRef.current.getBoundingClientRect().top) - 150;
+      const addGameTopYPos = (window.pageYOffset
+        + this.gamesSectionRef.current.getBoundingClientRect().top) - 150;
       window.scrollTo(0, addGameTopYPos);
     });
   }
@@ -143,13 +150,17 @@ class Schedule extends Component {
   }
 
   gamesFilter(game) {
-    if (this.state.selectedRoundIndex === 'VOR' && this.state.selectedGroupFilter !== 'all') {
-      return game.group && game.group.abbreviation === this.state.selectedGroupFilter;
+    const { selectedGroupFilter, selectedRoundIndex } = this.state;
+    if (selectedRoundIndex === 'VOR' && selectedGroupFilter !== 'all') {
+      return game.group && game.group.abbreviation === selectedGroupFilter;
     }
-    return game.round_details.abbreviation === this.state.selectedRoundIndex;
+    return game.round_details.abbreviation === selectedRoundIndex;
   }
 
   createGameCardsWithDateSubheadings(games, bets) {
+    const { gameIdWithBetStatsOpen } = this.state;
+    const { history, theme } = this.props;
+
     const gameCardsWithDateSubheadings = [];
     let lastGameDay = null;
     games.forEach((game) => {
@@ -169,8 +180,8 @@ class Schedule extends Component {
             role="button"
             className="GameCard__click-wrapper"
             tabIndex={0}
-            onClick={() => this.props.history.push('/bets')}
-            onKeyPress={e => (isEnter(e) && this.props.history.push('/bets'))}
+            onClick={() => history.push('/bets')}
+            onKeyPress={e => (isEnter(e) && history.push('/bets'))}
           >
             <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
               <GameCardGameInfo
@@ -183,15 +194,16 @@ class Schedule extends Component {
               />
             </GameCard>
           </div>
-          {(game && !game.bets_open) &&
+          {(game && !game.bets_open) && (
             <BetStatsPanel
               bettableId={game.id}
-              open={game.id === this.state.gameIdWithBetStatsOpen}
+              open={game.id === gameIdWithBetStatsOpen}
               onClose={() => this.setState({ gameIdWithBetStatsOpen: -1 })}
               onOpen={() => this.setState({ gameIdWithBetStatsOpen: game.id })}
               style={{ marginTop: -30, maxWidth: 580 }}
-              buttonStyle={{ color: lightGrey }}
-            />}
+              buttonStyle={{ color: theme.palette.grey['500'] }}
+            />
+          )}
         </Fragment>,
       );
     });
@@ -199,13 +211,26 @@ class Schedule extends Component {
   }
 
   render() {
+    const {
+      addGameSuccess,
+      addingGame,
+      bets,
+      loading,
+      loadingError,
+      games,
+      groups,
+      rounds,
+      selectedGroupFilter,
+      selectedRoundIndex,
+    } = this.state;
+    const { theme } = this.props;
+
     if (this.stickybitsInstance) {
       this.stickybitsInstance.update();
     }
 
-    const gamesToDisplay = this.state.games.filter(this.gamesFilter);
-    const gameContainerItems =
-      this.createGameCardsWithDateSubheadings(gamesToDisplay, this.state.bets);
+    const gamesToDisplay = games.filter(this.gamesFilter);
+    const gameContainerItems = this.createGameCardsWithDateSubheadings(gamesToDisplay, bets);
 
     return (
       <Page className="SchedulePage">
@@ -214,102 +239,93 @@ class Schedule extends Component {
         </BigPicture>
 
         <section className="SchedulePage__content" ref={this.gamesSectionRef}>
-          <section
-            id="schedule-toolbar"
-            className="SchedulePage__toolbar"
-            style={{ color: white, backgroundColor: darkGrey }}
-          >
-            <div className="SchedulePage__toolbar-title">Spiele wählen</div>
-            <Select
-              className="SchedulePage__toolbar-dropdown"
-              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-              value={this.state.selectedRoundIndex}
-              onChange={this.handleSelectedRoundChange}
-              labelStyle={{ color: white }}
-            >
-              {this.state.rounds.map(round => (
-                <MenuItem
-                  key={round.id}
-                  checked={this.state.selectedRoundIndex === round.abbreviation}
-                  insetChildren
-                  value={round.abbreviation}
-                  primaryText={round.name}
-                  style={{ textAlign: 'left' }}
-                />))
-              }
-            </Select>
-            {this.state.selectedRoundIndex === 'VOR' &&
-            <Select
-              className="SchedulePage__toolbar-dropdown"
-              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-              value={this.state.selectedGroupFilter}
-              onChange={this.handleGroupFilterChanged}
-              labelStyle={{ color: white }}
-            >
-              <MenuItem
-                checked={this.state.selectedGroupFilter === 'all'}
-                insetChildren
-                primaryText="Alle Gruppen"
-                value="all"
-                style={{ textAlign: 'left' }}
-              />
-              <Divider />
-              {this.state.groups.map(group => (
-                <MenuItem
-                  key={group.abbreviation}
-                  checked={this.state.selectedGroupFilter === group.abbreviation}
-                  insetChildren
-                  primaryText={group.name}
-                  value={group.abbreviation}
-                  style={{ textAlign: 'left' }}
-                />))
-              }
-            </Select>}
+          <section id="schedule-toolbar" className="SchedulePage__toolbar">
+            <div className="SchedulePage__toolbar-title">Spiele wählen:</div>
+            <FormControl style={{ margin: 8 }}>
+              <InputLabel htmlFor="round">Runde</InputLabel>
+              <Select
+                value={selectedRoundIndex}
+                onChange={this.handleSelectedRoundChange}
+                input={<Input name="round" id="round" />}
+              >
+                {rounds.map(round => (
+                  <MenuItem key={round.id} value={round.abbreviation}>{round.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {selectedRoundIndex === 'VOR' && (
+              <FormControl style={{ margin: 8 }}>
+                <InputLabel htmlFor="group">Gruppe</InputLabel>
+                <Select
+                  value={selectedGroupFilter}
+                  onChange={this.handleGroupFilterChanged}
+                  input={<Input name="group" id="group" />}
+                >
+                  <MenuItem value="all">Alle</MenuItem>
+                  <Divider />
+                  {groups.map(group => (
+                    <MenuItem key={group.abbreviation} value={group.abbreviation}>
+                      {group.name}
+                    </MenuItem>))
+                  }
+                </Select>
+              </FormControl>
+            )}
           </section>
 
-          {(AuthService.isAdmin() && this.state.addingGame) &&
+          {(AuthService.isAdmin() && addingGame) && (
             <AddGameForm
               onSaved={this.handleGameSaved}
               onCancelled={this.handleAddGameCancelled}
-            />}
-          {(AuthService.isAdmin() && this.state.addGameSuccess) &&
+            />
+          )}
+          {(AuthService.isAdmin() && addGameSuccess) && (
             <Notification
               type={NotificationType.SUCCESS}
               title="Spiel erfolgreich hinzugefügt"
               disappearAfterMs={3000}
-            />}
+            />
+          )}
 
           <section className="SchedulePage__game-container">
-            {(!this.state.loading && !this.state.loadingError) && gameContainerItems}
-
-            {(!this.state.loading && !this.state.loadingError && gamesToDisplay.length === 0) &&
-              <div className="SchedulePage__empty-state" style={{ color: lightGrey }}>
+            {(!loading && !loadingError) && gameContainerItems}
+            {(!loading && !loadingError && gamesToDisplay.length === 0) && (
+              <div
+                className="SchedulePage__empty-state"
+                style={{ color: theme.palette.grey['500'] }}
+              >
                 <NotInterestedIcon
-                  color={lightGrey}
+                  color="inherit"
                   style={{ height: 80, width: 80, marginBottom: 10 }}
-                /><br />Keine Spiele vorhanden.
-              </div>}
+                />
+                <br />
+                Keine Spiele vorhanden.
+              </div>
+            )}
 
-            {this.state.loading &&
+            {loading && (
               <Fragment>
                 <RtgSeparator content="..." />
                 {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
-              </Fragment>}
+              </Fragment>
+            )}
 
-            {this.state.loadingError &&
+            {loadingError && (
               <Notification
                 type={NotificationType.ERROR}
                 title="Fehler beim Laden"
                 subtitle="Bitte versuche es erneut."
               />
-            }
+            )}
 
-            {(AuthService.isAdmin() && !this.state.addingGame) &&
+            {(AuthService.isAdmin() && !addingGame) && (
               <div className="SchedulePage__add-game-button">
-                <Button variant="fab" onClick={this.handleAddGame}>
+                <Button variant="fab" color="primary" onClick={this.handleAddGame}>
                   <AddIcon />
                 </Button>
-              </div>}
+              </div>
+            )}
           </section>
         </section>
       </Page>);
@@ -317,8 +333,10 @@ class Schedule extends Component {
 }
 
 Schedule.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
+  /* eslint-disable react/forbid-prop-types */
   history: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
-export default withRouter(Schedule);
+export default withRouter(withTheme()(Schedule));
