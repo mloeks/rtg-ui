@@ -23,8 +23,8 @@ const InstagramIcon = props => (
 );
 /* eslint-enable max-len */
 
-const Footer = (props) => (
-  <footer className="Footer" style={{ backgroundColor: props.theme.palette.footerColor }}>
+const Footer = ({ theme }) => (
+  <footer className="Footer" style={{ backgroundColor: theme.palette.custom.footer.main }}>
     <Link to="/" className="Footer__title">
       <img alt="logo" className="Footer__logo" src={logo} />
       <h4 className="Footer__title--full">Royale Tippgemeinschaft 2018</h4>

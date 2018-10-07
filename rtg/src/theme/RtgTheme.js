@@ -84,11 +84,12 @@ export default {
       paper: '#fff',
       default: white,
     },
-    errorColor: error,
-    successColor: success,
-    footerColor: darkGrey,
-    footerSocialIconColor: lightGrey,
-    scheduleToolbarColor: darkGrey,
+    custom: {
+      footer: {
+        main: darkGrey,
+        contrastText: lightGold,
+      },
+    },
   },
   overrides: {
     MuiAppBar: {
