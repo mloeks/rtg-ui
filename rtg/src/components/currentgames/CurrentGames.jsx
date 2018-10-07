@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Prompt } from 'react-router-dom';
+import { withTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -430,12 +432,15 @@ class CurrentGames extends Component {
       offsetWithBetStatsOpen,
       scrolling,
     } = this.state;
+    const { theme } = this.props;
 
     const scrollButtonStyle = {
       position: 'absolute',
       padding: 0,
       width: SCROLL_BUTTON_SIZE,
       height: SCROLL_BUTTON_SIZE,
+      fontSize: SCROLL_BUTTON_SIZE,
+      color: theme.palette.grey['400'],
     };
 
     if (loadingError) {
@@ -463,7 +468,7 @@ class CurrentGames extends Component {
               onClick={this.scrollBackward}
               style={{ left: 0, margin: '4px 0 0 -5px', ...scrollButtonStyle }}
             >
-              <KeyboardArrowLeftIcon color="primary" />
+              <KeyboardArrowLeftIcon color="inherit" fontSize="inherit" />
             </IconButton>
           )}
           {this.mayScrollForward() && (
@@ -473,7 +478,7 @@ class CurrentGames extends Component {
               onClick={this.scrollForward}
               style={{ right: 0, margin: '4px -5px 0 0', ...scrollButtonStyle }}
             >
-              <KeyboardArrowRightIcon color="primary" />
+              <KeyboardArrowRightIcon color="inherit" fontSize="inherit" />
             </IconButton>
           )}
 
@@ -519,6 +524,8 @@ class CurrentGames extends Component {
   }
 }
 
-CurrentGames.propTypes = {};
+CurrentGames.propTypes = {
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
 
-export default CurrentGames;
+export default withTheme()(CurrentGames);
