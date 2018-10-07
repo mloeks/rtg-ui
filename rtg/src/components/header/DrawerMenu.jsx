@@ -20,39 +20,30 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
-import { error, white } from '../../theme/RtgTheme';
 
 import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.css';
 
 // TODO P3 the width is only once calculated on page load, not on re-open
-const drawerStyles = {
+const drawerStyles = theme => ({
+  badge: {
+    margin: '2px -14px 0',
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.common.white,
+  },
   paper: {
     width: window.matchMedia('(min-width: 480px)').matches ? 400 : '80%',
   },
-};
+});
 
 const DrawerMenu = ({
   classes, onLogout, onClose, open, openBetsCount,
 }) => {
-  const openBetsBadge = (title, count) => {
-    if (count > 0) {
-      return (
-        <Badge
-          badgeContent={count}
-          style={{ padding: '0' }}
-          badgeStyle={{
-            backgroundColor: error,
-            color: white,
-            top: '3px',
-            right: '-25px',
-          }}
-        >
-          {title}
-        </Badge>);
-    }
-    return title;
-  };
+  const openBetsBadge = (title, count) => (
+    count > 0
+      ? <Badge badgeContent={count} classes={{ badge: classes.badge }}>{title}</Badge>
+      : title
+  );
 
   return (
     <Drawer
