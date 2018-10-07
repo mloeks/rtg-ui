@@ -59,16 +59,19 @@ class ProfileForm extends Component {
   }
 
   stateToUserPatchPayload() {
+    const { user } = this.state;
+    const { userId } = this.props;
+
     return {
-      pk: this.props.userId,
-      email: this.state.user.email || '',
-      email2: this.state.user.email2 || '',
-      first_name: this.state.user.firstName || '',
-      last_name: this.state.user.lastName || '',
-      about: this.state.user.about || '',
-      location: this.state.user.location || '',
-      reminder_emails: this.state.user.reminderEmails,
-      daily_emails: this.state.user.dailyEmails,
+      pk: userId,
+      email: user.email || '',
+      email2: user.email2 || '',
+      first_name: user.firstName || '',
+      last_name: user.lastName || '',
+      about: user.about || '',
+      location: user.location || '',
+      reminder_emails: user.reminderEmails,
+      daily_emails: user.dailyEmails,
     };
   }
 
@@ -91,13 +94,15 @@ class ProfileForm extends Component {
   }
 
   async handleSubmit(e) {
+    const { onUserUpdate, userId } = this.props;
+
     e.preventDefault();
     this.setState({ saving: true, savingSuccess: false, savingError: false });
 
     await this.patchData(
-      `${API_BASE_URL}/rtg/users/${this.props.userId}/`,
+      `${API_BASE_URL}/rtg/users/${userId}/`,
       this.stateToUserPatchPayload(),
-      this.props.onUserUpdate,
+      onUserUpdate,
       ProfileForm.userErrorResponseToState,
     );
 
@@ -120,62 +125,80 @@ class ProfileForm extends Component {
   }
 
   render() {
-    return (
-      <form className="ProfileForm__container" onSubmit={this.handleSubmit} noValidate>
-        {this.props.loading && <CircularProgress className="ProfileForm__loading-spinner" />}
+    const {
+      fieldErrors,
+      formHasErrors,
+      saving,
+      savingError,
+      savingSuccess,
+      user,
+    } = this.state;
+    const { loading, loadingError } = this.props;
 
-        {this.props.loadingError &&
+    return (
+      <form
+        className="ProfileForm__container"
+        onSubmit={this.handleSubmit}
+        autoComplete="off"
+        noValidate
+      >
+        {loading && <CircularProgress className="ProfileForm__loading-spinner" />}
+
+        {loadingError && (
           <div className="ProfileForm__loading-error">
             <Notification
               type={NotificationType.ERROR}
               title="Fehler beim Laden."
               subtitle="Bitte versuche es später erneut."
             />
-          </div>}
+          </div>
+        )}
 
-        {(!this.props.loading && !this.props.loadingError && this.state.user) &&
+        {(!loading && !loadingError && user) && (
           <ProfileFormDisplay
-            about={this.state.user.about}
-            dailyEmails={this.state.user.dailyEmails}
-            email={this.state.user.email}
-            email2={this.state.user.email2}
-            firstName={this.state.user.firstName}
-            lastName={this.state.user.lastName}
-            location={this.state.user.location}
-            reminderEmails={this.state.user.reminderEmails}
+            about={user.about}
+            dailyEmails={user.dailyEmails}
+            email={user.email}
+            email2={user.email2}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            location={user.location}
+            reminderEmails={user.reminderEmails}
 
-            aboutError={this.state.fieldErrors.about}
-            dailyEmailsError={this.state.fieldErrors.dailyEmails}
-            emailError={this.state.fieldErrors.email}
-            email2Error={this.state.fieldErrors.email2}
-            firstNameError={this.state.fieldErrors.firstName}
-            lastNameError={this.state.fieldErrors.lastName}
-            locationError={this.state.fieldErrors.location}
-            reminderEmailsError={this.state.fieldErrors.reminderEmails}
+            aboutError={fieldErrors.about}
+            dailyEmailsError={fieldErrors.dailyEmails}
+            emailError={fieldErrors.email}
+            email2Error={fieldErrors.email2}
+            firstNameError={fieldErrors.firstName}
+            lastNameError={fieldErrors.lastName}
+            locationError={fieldErrors.location}
+            reminderEmailsError={fieldErrors.reminderEmails}
 
-            isSaving={this.state.saving}
-            formHasErrors={this.state.formHasErrors}
+            isSaving={saving}
+            formHasErrors={formHasErrors}
 
             onFieldChange={this.handleFormFieldUpdate}
           />
-        }
+        )}
 
-        {this.state.savingError &&
+        {savingError && (
           <div className="ProfileForm__save-feedback ProfileForm__saving-error">
             <Notification
               type={NotificationType.ERROR}
               title="Das hat leider nicht geklappt"
               subtitle="Bitte prüfe Deine Eingaben oder versuche es später erneut."
             />
-          </div>}
-        {this.state.savingSuccess &&
+          </div>
+        )}
+        {savingSuccess && (
           <div className="ProfileForm__save-feedback ProfileForm__saving-success">
             <Notification
               type={NotificationType.SUCCESS}
               title="Änderungen erfolgreich gespeichert!"
               disappearAfterMs={5000}
             />
-          </div>}
+          </div>
+        )}
       </form>
     );
   }

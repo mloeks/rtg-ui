@@ -1,91 +1,114 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 
 import './ProfileForm.css';
 
-const ProfileFormDisplay = props => (
+const ProfileFormDisplay = ({
+  about, aboutError, dailyEmails, email, emailError, email2, email2Error, isSaving, firstName,
+  firstNameError, formHasErrors, lastName, lastNameError, location, locationError,
+  onFieldChange, reminderEmails,
+}) => (
   <div className="ProfileForm">
     <div className="ProfileForm__name-row">
       <TextField
-        floatingLabelText="Vorname"
-        value={props.firstName}
-        errorText={props.firstNameError}
+        error={Boolean(firstNameError)}
+        label="Vorname"
+        value={firstName}
+        helperText={firstNameError || false}
         style={{ width: '50%', marginRight: '10px' }}
-        onChange={(e, v) => props.onFieldChange('firstName', v)}
+        onChange={e => onFieldChange('firstName', e.target.value)}
       />
       <TextField
-        floatingLabelText="Nachname"
-        value={props.lastName}
+        error={Boolean(lastNameError)}
+        label="Nachname"
+        value={lastName}
         fullWidth
-        errorText={props.lastNameError}
+        helperText={lastNameError || false}
         style={{ width: '50%', marginLeft: '10px' }}
-        onChange={(e, v) => props.onFieldChange('lastName', v)}
+        onChange={e => onFieldChange('lastName', e.target.value)}
       />
     </div>
-
-    <TextField
-      floatingLabelText="E-Mail"
-      fullWidth
-      value={props.email}
-      errorText={props.emailError}
-      onChange={(e, v) => props.onFieldChange('email', v)}
-    />
-    <br />
-    <TextField
-      floatingLabelText="Weitere E-Mail (nur für News)"
-      fullWidth
-      value={props.email2}
-      errorText={props.email2Error}
-      onChange={(e, v) => props.onFieldChange('email2', v)}
-    />
-    <br />
-    <TextField
-      floatingLabelText="Ein Satz über Dich / Euch"
-      fullWidth
-      multiLine
-      value={props.about}
-      errorText={props.aboutError}
-      onChange={(e, v) => props.onFieldChange('about', v)}
-    />
-    <br />
-    <TextField
-      floatingLabelText="Wohnort"
-      fullWidth
-      value={props.location}
-      errorText={props.locationError}
-      onChange={(e, v) => props.onFieldChange('location', v)}
-    />
-    <br />
     <br />
 
-    <Switch
+    <TextField
+      error={Boolean(emailError)}
+      fullWidth
+      helperText={emailError || false}
+      label="E-Mail"
+      value={email}
+      onChange={e => onFieldChange('email', e.target.value)}
+    />
+    <br />
+    <br />
+    <TextField
+      label="Weitere E-Mail (nur für News)"
+      fullWidth
+      value={email2}
+      error={Boolean(email2Error)}
+      helperText={email2Error || false}
+      onChange={e => onFieldChange('email2', e.target.value)}
+    />
+    <br />
+    <br />
+    <TextField
+      label="Ein Satz über Dich / Euch"
+      fullWidth
+      multiline
+      value={about}
+      error={Boolean(aboutError)}
+      helperText={aboutError || false}
+      onChange={e => onFieldChange('about', e.target.value)}
+    />
+    <br />
+    <br />
+    <TextField
+      label="Wohnort"
+      fullWidth
+      value={location}
+      error={Boolean(locationError)}
+      helperText={locationError || false}
+      onChange={e => onFieldChange('location', e.target.value)}
+    />
+    <br />
+    <br />
+
+    <FormControlLabel
+      control={(
+        <Switch
+          checked={dailyEmails}
+          color="primary"
+          onChange={(e, v) => onFieldChange('dailyEmails', v)}
+        />
+      )}
       label="Tägliche News per E-Mail"
-      labelPosition="right"
-      toggled={props.dailyEmails}
-      onToggle={(e, v) => props.onFieldChange('dailyEmails', v)}
     />
     <br />
-    <Switch
+    <FormControlLabel
+      control={(
+        <Switch
+          checked={reminderEmails}
+          color="primary"
+          onChange={(e, v) => onFieldChange('reminderEmails', v)}
+        />
+      )}
       label="Tipperinnerungen per E-Mail"
-      labelPosition="right"
-      toggled={props.reminderEmails}
-      onToggle={(e, v) => props.onFieldChange('reminderEmails', v)}
     />
     <br />
     <br />
 
     <div className="ProfileForm__button-wrapper">
       <Button
+        color="primary"
         variant="raised"
         type="submit"
-        color="primary"
-        disabled={props.isSaving || props.formHasErrors}
+        disabled={isSaving || formHasErrors}
         style={{ width: 250 }}
       >
-        {props.isSaving ? 'Speichern...' : 'Änderungen speichern'}
+        {isSaving ? 'Speichern...' : 'Änderungen speichern'}
       </Button>
     </div>
   </div>
@@ -102,8 +125,6 @@ ProfileFormDisplay.defaultProps = {
   email2Error: null,
   aboutError: null,
   locationError: null,
-
-  formHasErrors: false,
 };
 
 ProfileFormDisplay.propTypes = {
