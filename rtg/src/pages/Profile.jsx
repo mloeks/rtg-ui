@@ -61,31 +61,38 @@ class Profile extends Component {
   }
 
   render() {
+    const {
+      loading,
+      loadingError,
+      user,
+      userId,
+    } = this.state;
+
     return (
       <Page className="ProfilePage">
         <BigPicture className="ProfilePage__heading" img={headingImg} positionY={75} />
         <section className="ProfilePage__content" style={{ position: 'relative', padding: '10px' }}>
 
-          {this.state.user &&
+          {user && (
             <UserDetailsContext.Consumer>
               {userContext => (
                 <Fragment>
                   <BigEditableAvatar
-                    userId={this.state.userId}
-                    username={this.state.user.username || ''}
-                    avatarUrl={this.state.user.avatar || ''}
+                    userId={userId}
+                    username={user.username || ''}
+                    avatarUrl={user.avatar || ''}
 
-                    loading={this.state.loading}
-                    loadingError={this.state.loadingError}
+                    loading={loading}
+                    loadingError={loadingError}
 
                     onAvatarChanged={avatar => Profile.handleAvatarChanged(avatar, userContext)}
                   />
 
                   <ProfileForm
-                    userId={this.state.userId}
-                    user={this.state.user}
-                    loading={this.state.loading}
-                    loadingError={this.state.loadingError}
+                    userId={userId}
+                    user={user}
+                    loading={loading}
+                    loadingError={loadingError}
                   />
 
                   <RtgSeparator style={{ maxWidth: '500px' }} />
@@ -93,13 +100,13 @@ class Profile extends Component {
 
                   <RtgSeparator style={{ maxWidth: '500px' }} />
                   <DeleteAccountButton
-                    userId={this.state.userId}
+                    userId={userId}
                     onDelete={() => userContext.doLogout(LogoutReason.ACCOUNT_DELETED)}
                   />
                 </Fragment>
               )}
             </UserDetailsContext.Consumer>
-          }
+          )}
         </section>
       </Page>
     );
