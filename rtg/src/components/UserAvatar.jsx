@@ -40,6 +40,7 @@ class UserAvatar extends Component {
           backgroundColor: randomHueHexColor(45, 80),
           width: size,
           height: size,
+          fontSize: 0.5 * size,
           ...style,
         }}
         onClick={onClick}
