@@ -13,6 +13,7 @@ import Notification, { NotificationType } from '../Notification';
 
 import './BetStatsPanel.css';
 
+// TODO P2 implement empty state (no bets placed)
 // TODO P3 switch between result stats and 2/0/1 stats (for games only)
 // TODO P3 how to display abbreviations for extra bets? (width on small devices...)
 class BetStatsPanel extends Component {
@@ -36,8 +37,9 @@ class BetStatsPanel extends Component {
   }
 
   fetchBets() {
+    const { bettableId } = this.props;
     fetch(
-      `${API_BASE_URL}/rtg/bets/?bettable=${this.props.bettableId}`,
+      `${API_BASE_URL}/rtg/bets/?bettable=${bettableId}`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } },
     ).then(FetchHelper.parseJson).then((response) => {
       this.setState(() => {
@@ -54,10 +56,11 @@ class BetStatsPanel extends Component {
   }
 
   toggleOpen() {
-    if (this.props.open) {
-      this.props.onClose();
+    const { open, onClose, onOpen } = this.props;
+    if (open) {
+      onClose();
     } else {
-      this.props.onOpen();
+      onOpen();
     }
   }
 
@@ -102,44 +105,60 @@ class BetStatsPanel extends Component {
   }
 
   render() {
+    const {
+      bets,
+      chartData,
+      loading,
+      loadingError,
+    } = this.state;
+    const {
+      bettableId,
+      buttonStyle,
+      open,
+      standingsBetColumnStyle,
+      style,
+    } = this.props;
+
     const legendRowHeight = 25;
-    const legendHeight = Math.max(legendRowHeight, this.state.chartData.length * legendRowHeight);
+    const legendHeight = Math.max(legendRowHeight, chartData.length * legendRowHeight);
 
     return (
-      <section className={`BetStatsPanel ${this.props.open ? 'open' : ''}`} style={this.props.style}>
+      <section className={`BetStatsPanel ${open ? 'open' : ''}`} style={style}>
         <Button
           color="primary"
-          icon={<KeyboardArrowDownIcon
-            style={{
-              width: 22,
-              height: 22,
-              transform: `rotate(${this.props.open ? '180deg' : '0'})`,
-              transition: 'transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
-            }}
-          />}
-          style={{ marginBottom: 10, ...this.props.buttonStyle }}
+          style={{ marginBottom: 10, ...buttonStyle }}
           onClick={this.toggleOpen}
         >
-          {this.props.open ? 'Zuklappen' : 'Alle Tipps ansehen'}
+          <KeyboardArrowDownIcon
+            style={{
+              marginRight: 8,
+              width: 22,
+              height: 22,
+              transform: `rotate(${open ? '180deg' : '0'})`,
+              transition: 'transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+            }}
+          />
+          {open ? 'Zuklappen' : 'Alle Tipps ansehen'}
         </Button>
 
-        {this.props.open &&
+        {open && (
           <div className="BetStatsPanel__inner">
             <p style={{ marginTop: 0 }}>So hat die Gemeinschaft getippt:</p>
 
-            {this.state.loading && <CircularProgress />}
-            {this.state.loadingError &&
-            <Notification
-              type={NotificationType.ERROR}
-              title="Fehler beim Laden"
-              subtitle="Bitte versuche es erneut."
-            />}
+            {loading && <CircularProgress />}
+            {loadingError && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Fehler beim Laden"
+                subtitle="Bitte versuche es erneut."
+              />
+            )}
 
-            {!this.state.loading && !this.state.loadingError && this.state.chartData &&
+            {!loading && !loadingError && chartData && (
               <Fragment>
                 <div className="BetStatsPanel__chart-wrapper" style={{ pointerEvents: 'none' }}>
                   <PieChart
-                    data={this.state.chartData}
+                    data={chartData}
                     animate
                     animationDuration={375}
                     animationEasing="cubic-bezier(0.0, 0.0, 0.2, 1) 300ms"
@@ -149,7 +168,7 @@ class BetStatsPanel extends Component {
                     style={{ margin: '10px auto', height: 250 }}
                   />
                   <PieChartLegend
-                    data={this.state.chartData}
+                    data={chartData}
                     rowHeight={25}
                     style={{ pointerEvents: 'none' }}
                     containerStyle={{
@@ -172,13 +191,14 @@ class BetStatsPanel extends Component {
                   userExcerptRows={10}
                   rowHeight={35}
 
-                  showBetColumnForBettable={this.props.bettableId}
-                  bets={this.state.bets}
-                  betColumnStyle={this.props.standingsBetColumnStyle}
+                  showBetColumnForBettable={bettableId}
+                  bets={bets}
+                  betColumnStyle={standingsBetColumnStyle}
                 />
               </Fragment>
-            }
-          </div>}
+            )}
+          </div>
+        )}
       </section>
     );
   }
