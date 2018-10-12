@@ -34,13 +34,17 @@ class GameCardBet extends Component {
     const previousValueNumber = Number(previousValue);
     if (Number.isNaN(previousValue) || (previousValue === NO_GOALS_STRING && inc === 1)) {
       return 0;
-    } else if (previousValue === NO_GOALS_STRING && inc === -1) {
+    }
+    if (previousValue === NO_GOALS_STRING && inc === -1) {
       return previousValue;
-    } else if (previousValueNumber === MAX_GOALS_INPUT && inc === 1) {
+    }
+    if (previousValueNumber === MAX_GOALS_INPUT && inc === 1) {
       return previousValueNumber;
-    } else if (previousValueNumber === 0 && inc === -1) {
+    }
+    if (previousValueNumber === 0 && inc === -1) {
       return NO_GOALS_STRING;
     }
+
     return previousValueNumber + inc;
   }
 
@@ -61,9 +65,11 @@ class GameCardBet extends Component {
   constructor(props) {
     super(props);
 
+    const { userBet } = this.props;
+
     this.state = {
-      userBet: this.props.userBet !== null ? Object.assign({}, this.props.userBet) : null,
-      ...GameCardBet.goalsStateFromUserBet(this.props.userBet),
+      userBet: userBet !== null ? Object.assign({}, userBet) : null,
+      ...GameCardBet.goalsStateFromUserBet(userBet),
       hasChanges: false,
       isSaving: false,
     };
@@ -77,29 +83,31 @@ class GameCardBet extends Component {
   }
 
   componentDidMount() {
-    if (this.props.userBet === null || typeof this.props.userBet === 'undefined') {
+    const { userBet } = this.props;
+    if (userBet === null || typeof userBet === 'undefined') {
       this.fetchUserBet();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.shouldSave && nextProps.shouldSave) {
-      if (this.state.hasChanges) {
+    const { awaygoalsInput, hasChanges, homegoalsInput } = this.state;
+    const { gameId, onSaveSuccess, shouldSave } = this.props;
+
+    if (!shouldSave && nextProps.shouldSave) {
+      if (hasChanges) {
         this.save();
       } else {
-        this.props.onSaveSuccess(
-          this.props.gameId,
-          toResultString(this.state.homegoalsInput, this.state.awaygoalsInput),
-          SavingSuccessType.UNCHANGED,
-        );
+        onSaveSuccess(gameId, toResultString(homegoalsInput, awaygoalsInput),
+          SavingSuccessType.UNCHANGED);
       }
-    } else if (this.props.shouldSave && !nextProps.shouldSave) {
+    } else if (shouldSave && !nextProps.shouldSave) {
       this.setState({ hasChanges: nextProps.hadSaveIssues, isSaving: false });
     }
   }
 
   fetchUserBet() {
-    fetch(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${this.props.gameId}`, {
+    const { gameId } = this.props;
+    fetch(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${gameId}`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson).then((response) => {
       if (response.ok) {
@@ -112,19 +120,27 @@ class GameCardBet extends Component {
   // TODO P3 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
-    if (!this.state.isSaving) {
+    const {
+      awaygoalsInput,
+      homegoalsInput,
+      isSaving,
+      userBet,
+    } = this.state;
+    const { gameId, onSaveFailure, onSaveSuccess } = this.props;
+
+    if (!isSaving) {
       this.setState({ isSaving: true });
 
-      const newBet = toResultString(this.state.homegoalsInput, this.state.awaygoalsInput);
+      const newBet = toResultString(homegoalsInput, awaygoalsInput);
       const emptyResult = isEmptyResult(newBet);
 
       if (!emptyResult && !isCompleteResult(newBet)) {
-        this.props.onSaveFailure(this.props.gameId, newBet, SavingErrorType.INCOMPLETE);
+        onSaveFailure(gameId, newBet, SavingErrorType.INCOMPLETE);
         return;
       }
 
-      const body = emptyResult ? null : { bettable: this.props.gameId, result_bet: newBet };
-      const betId = this.state.userBet ? this.state.userBet.id : null;
+      const body = emptyResult ? null : { bettable: gameId, result_bet: newBet };
+      const betId = userBet ? userBet.id : null;
 
       let method;
       let url = `${API_BASE_URL}/rtg/bets/`;
@@ -134,7 +150,7 @@ class GameCardBet extends Component {
       } else {
         if (emptyResult) {
           // no previously saved bet and bet is also empty --> return
-          this.props.onSaveSuccess(this.props.gameId, null, SavingSuccessType.UNCHANGED);
+          onSaveSuccess(gameId, null, SavingSuccessType.UNCHANGED);
           return;
         }
         method = 'POST';
@@ -157,28 +173,29 @@ class GameCardBet extends Component {
               ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
               if (method === 'POST') {
-                this.props.onSaveSuccess(this.props.gameId, this.state.userBet, SavingSuccessType.ADDED);
+                onSaveSuccess(gameId, userBet, SavingSuccessType.ADDED);
               } else if (method === 'PUT') {
-                this.props.onSaveSuccess(this.props.gameId, this.state.userBet, SavingSuccessType.UPDATED);
+                onSaveSuccess(gameId, userBet, SavingSuccessType.UPDATED);
               } else if (method === 'DELETE') {
-                this.props.onSaveSuccess(this.props.gameId, null, SavingSuccessType.DELETED);
+                onSaveSuccess(gameId, null, SavingSuccessType.DELETED);
               }
             });
           } else {
             this.setState({ isSaving: false }, () => {
-              const responseDetail = response.json ? response.json.detail ||
-                (response.json.non_field_errors ? response.json.non_field_errors[0] : null) : null;
-              const reasonDeadlinePassed = response.json && response.json.code &&
-                response.json.code[0] === 'DEADLINE_PASSED';
+              const responseDetail = response.json
+                ? response.json.detail || (response.json.non_field_errors
+                  ? response.json.non_field_errors[0]
+                  : null) : null;
+              const reasonDeadlinePassed = response.json && response.json.code
+                && response.json.code[0] === 'DEADLINE_PASSED';
 
-              this.props.onSaveFailure(
-                this.props.gameId, newBet,
-                reasonDeadlinePassed ? SavingErrorType.DEADLINE_PASSED : SavingErrorType.FAILED, responseDetail,
-              );
+              onSaveFailure(gameId, newBet, reasonDeadlinePassed
+                ? SavingErrorType.DEADLINE_PASSED
+                : SavingErrorType.FAILED, responseDetail);
             });
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
-          this.props.onSaveFailure(this.props.gameId, newBet, SavingErrorType.FAILED);
+          onSaveFailure(gameId, newBet, SavingErrorType.FAILED);
         }));
     }
   }
@@ -218,19 +235,24 @@ class GameCardBet extends Component {
   }
 
   render() {
+    const { awaygoalsInput, homegoalsInput } = this.state;
+    const { gameId } = this.props;
+
     return (
       <BetsStatusContext.Consumer>
         {betsStatusContext => (
           <GameCardBetPresentational
-            id={this.props.gameId}
-            homegoals={this.state.homegoalsInput}
-            awaygoals={this.state.awaygoalsInput}
+            id={gameId}
+            homegoals={homegoalsInput}
+            awaygoals={awaygoalsInput}
 
             onBlur={this.sanitizeBet}
             onHomegoalsChange={(e, val) => this.handleHomegoalsChange(val, betsStatusContext)}
             onAwaygoalsChange={(e, val) => this.handleAwaygoalsChange(val, betsStatusContext)}
-            onHomegoalsIncrementalChange={(inc) => this.handleHomegoalsIncrementalChange(inc, betsStatusContext)}
-            onAwaygoalsIncrementalChange={(inc) => this.handleAwaygoalsIncrementalChange(inc, betsStatusContext)}
+            onHomegoalsIncrementalChange={inc => this
+              .handleHomegoalsIncrementalChange(inc, betsStatusContext)}
+            onAwaygoalsIncrementalChange={inc => this
+              .handleAwaygoalsIncrementalChange(inc, betsStatusContext)}
           />
         )}
       </BetsStatusContext.Consumer>
