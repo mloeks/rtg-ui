@@ -5,16 +5,31 @@
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
     * Schedule page: find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
-    * Bets page: bets input
-    * Password reset page
+    * Bets page:
+        * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
+        * bet saving issue popup
+        * extra bets input
     * UserDetailsPopover
+    * Password reset page
     * Never use colours exported from RtgTheme directly, favour withTheme, remove exports
-
+    * Check remaining linter complaints
+    
 ### Follow-up Material UI upgrade
 
 * Is Webpack able to correctly tree shake multi-component imports of material-ui?
     * For now, I changed it to use individual imports for each component
     * Maybe analyze bundle size with webpack bundle analyzer
+    
+### Testing
+
+#### Explorative
+
+* Do some more intensive explorative testing after the Material UI upgrade
+
+#### Automated
+
+* Start writing some basic "money path" Browser tests in a separate repo using Geb
+
 
 ## Toolchain
 
