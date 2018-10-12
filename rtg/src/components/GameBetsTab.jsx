@@ -147,8 +147,12 @@ class GameBetsTab extends Component {
       <div className="GameBetsTab__deadline-separator">
         <AlarmIcon
           className="GameBetsTab__deadline-separator-icon"
-          color={theme.palette.error.main}
-          style={{ width: 24, height: 24, marginRight: 5 }}
+          style={{
+            color: theme.palette.error.main,
+            width: 24,
+            height: 24,
+            marginRight: 5,
+          }}
         />
         <span className="GameBetsTab__deadline-separator-text">{readableDeadlineText}</span>
       </div>

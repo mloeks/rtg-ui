@@ -247,8 +247,8 @@ class GameCardBet extends Component {
             awaygoals={awaygoalsInput}
 
             onBlur={this.sanitizeBet}
-            onHomegoalsChange={(e, val) => this.handleHomegoalsChange(val, betsStatusContext)}
-            onAwaygoalsChange={(e, val) => this.handleAwaygoalsChange(val, betsStatusContext)}
+            onHomegoalsChange={val => this.handleHomegoalsChange(val, betsStatusContext)}
+            onAwaygoalsChange={val => this.handleAwaygoalsChange(val, betsStatusContext)}
             onHomegoalsIncrementalChange={inc => this
               .handleHomegoalsIncrementalChange(inc, betsStatusContext)}
             onAwaygoalsIncrementalChange={inc => this

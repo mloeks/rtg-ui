@@ -1,39 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+
 import GameCardRibbon from './GameCardRibbon';
 import { RESULT_SEPARATOR, VALID_GOAL_INPUT_REGEX } from '../service/ResultStringHelper';
 
 import './GameCardBet.css';
 
-// TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
-const GoalInput = ({ id, goals, onChange, onBlur }) => {
-  let textInputRef;
+const styles = {
+  goalInput: {
+    color: '#F2CE00',
+    fontFamily: '"Oswald", sans-serif',
+    fontSize: 26,
+    textAlign: 'center',
+  },
+};
 
-  const validateAndNotifyChange = (e, val) => {
+// TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
+const GoalInput = ({
+  classes, id, goals, onChange, onBlur,
+}) => {
+  let textInputRef = React.createRef(); // eslint-disable-line prefer-const
+
+  const validateAndNotifyChange = (val) => {
     if (val.length === 0 || VALID_GOAL_INPUT_REGEX.test(val)) {
-      onChange(e, val);
+      onChange(val);
     }
   };
 
   return (
     <TextField
-      ref={(input) => { textInputRef = input; }}
       className="GoalInput__text-field"
+      classes={{}}
       id={id}
+      inputRef={textInputRef}
       value={goals}
-      underlineShow={false}
       onBlur={onBlur}
-      onChange={validateAndNotifyChange}
-      onFocus={() => { textInputRef.select(); }}
+      onChange={e => validateAndNotifyChange(e.target.value)}
+      onFocus={() => {
+        if (textInputRef && textInputRef.current) textInputRef.current.select();
+      }}
       style={{ height: '100%', width: '40%' }}
-      inputStyle={{
-        color: '#F2CE00',
-        fontFamily: '"Oswald", sans-serif',
-        fontSize: '26px',
-        textAlign: 'center',
+      InputProps={{
+        disableUnderline: true,
+        classes: { input: classes.goalInput },
       }}
     />);
 };
@@ -43,24 +57,21 @@ GoalInput.propTypes = {
   goals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 
 const ARROW_SIZE = 26;
-const GoalChangeArrow = (props) => {
+const GoalChangeArrow = ({ direction, onClick }) => {
   const arrowStyle = {
-    height: `${ARROW_SIZE}px`,
-    width: `${ARROW_SIZE}px`,
+    height: ARROW_SIZE,
+    width: ARROW_SIZE,
     color: 'white',
     opacity: 0.8,
   };
-  return (props.direction === 'up' ?
-    <KeyboardArrowUpIcon className="GameCardBet__arrow" style={arrowStyle} onClick={props.onClick} /> :
-    <KeyboardArrowDownIcon
-      className="GameCardBet__arrow"
-      style={arrowStyle}
-      onClick={props.onClick}
-    />);
+  return (direction === 'up'
+    ? <KeyboardArrowUpIcon className="GameCardBet__arrow" style={arrowStyle} onClick={onClick} />
+    : <KeyboardArrowDownIcon className="GameCardBet__arrow" style={arrowStyle} onClick={onClick} />);
 };
 
 GoalChangeArrow.propTypes = {
@@ -69,7 +80,7 @@ GoalChangeArrow.propTypes = {
 };
 
 const GameCardBetPresentational = ({
-  id, homegoals, awaygoals, onBlur, onHomegoalsChange, onAwaygoalsChange,
+  id, homegoals, awaygoals, classes, onBlur, onHomegoalsChange, onAwaygoalsChange,
   onHomegoalsIncrementalChange, onAwaygoalsIncrementalChange,
 }) => (
   <GameCardRibbon stateCssClass="bet">
@@ -86,6 +97,7 @@ const GameCardBetPresentational = ({
           type="home"
           onChange={onHomegoalsChange}
           onBlur={onBlur}
+          classes={classes}
         />
         <span>{RESULT_SEPARATOR}</span>
         <GoalInput
@@ -95,6 +107,7 @@ const GameCardBetPresentational = ({
           type="away"
           onChange={onAwaygoalsChange}
           onBlur={onBlur}
+          classes={classes}
         />
       </div>
       <div className="GameCardBet__down-arrow-row">
@@ -115,6 +128,8 @@ GameCardBetPresentational.propTypes = {
   onAwaygoalsChange: PropTypes.func.isRequired,
   onHomegoalsIncrementalChange: PropTypes.func.isRequired,
   onAwaygoalsIncrementalChange: PropTypes.func.isRequired,
+
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default GameCardBetPresentational;
+export default withStyles(styles)(GameCardBetPresentational);
