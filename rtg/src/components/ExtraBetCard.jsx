@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+
 import StarIcon from '@material-ui/icons/Star';
 import AlarmIcon from '@material-ui/icons/Alarm';
+
 import { distanceInWordsToNow, format } from 'date-fns';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import Notification, { NotificationType } from './Notification';
 import { BetsStatusContext } from '../pages/Bets';
-import { error, grey } from '../theme/RtgTheme';
 
 import './ExtraBetCard.css';
 
 // TODO P3 display country flags in drop down
-export default class ExtraBetCard extends Component {
+class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
     const absoluteDateTime = format(deadline, 'dd. DD. MMM, HH:mm [Uhr]', { locale: de });
     const relativeDistance = distanceInWordsToNow(deadline, { locale: de });
@@ -52,17 +58,19 @@ export default class ExtraBetCard extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.deadlineCountdownIntervalId);
+    const { deadlineCountdownIntervalId } = this.state;
+    clearInterval(deadlineCountdownIntervalId);
   }
 
   fetchUserBet() {
+    const { id } = this.props;
     return fetch(
-      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${this.props.id}`,
+      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${id}`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } },
     ).then(FetchHelper.parseJson).then((response) => {
       this.setState(() => (
-        response.ok ?
-          { userBet: response.json.length > 0 ? response.json[0] : null }
+        response.ok
+          ? { userBet: response.json.length > 0 ? response.json[0] : null }
           : { loadingError: true }
       ));
     }).catch(() => this.setState({ loadingError: true }));
@@ -90,16 +98,19 @@ export default class ExtraBetCard extends Component {
   }
 
   handleSave(betsStatusContext) {
-    if (this.state.userBet && !this.state.isSaving) {
+    const { isSaving, userBet } = this.state;
+    const { id, onBetAdded, onBetRemoved } = this.props;
+
+    if (userBet && !isSaving) {
       this.setState({ isSaving: true, savingSuccess: false, savingError: false });
 
-      const newBet = this.state.userBet.result_bet;
-      const body = newBet !== null ? { bettable: this.props.id, result_bet: newBet } : null;
+      const newBet = userBet.result_bet;
+      const body = newBet !== null ? { bettable: id, result_bet: newBet } : null;
 
       let method;
       let url = `${API_BASE_URL}/rtg/bets/`;
-      if (this.state.userBet.id) {
-        url += `${this.state.userBet.id}/`;
+      if (userBet.id) {
+        url += `${userBet.id}/`;
         method = newBet !== null ? 'PUT' : 'DELETE';
       } else {
         method = 'POST';
@@ -123,9 +134,9 @@ export default class ExtraBetCard extends Component {
             }, () => {
               betsStatusContext.updateBetsHaveChanges(false);
               if (method === 'POST') {
-                this.props.onBetAdded();
+                onBetAdded();
               } else if (method === 'DELETE') {
-                this.props.onBetRemoved();
+                onBetRemoved();
               }
             });
           } else {
@@ -136,99 +147,129 @@ export default class ExtraBetCard extends Component {
   }
 
   createSubtitleDiv() {
-    const iconStyle = {
-      height: '20px',
-      marginRight: '5px',
-    };
+    const { open, points, theme } = this.props;
+    const { remainingTime } = this.state;
+
+    const iconStyle = { height: 20, marginRight: 5 };
 
     return (
       <div className="ExtraBetCard__subtitle">
-        <span className="ExtraBetCard__subtitle-points">
-          <StarIcon style={iconStyle} color={grey} />{this.props.points} Punkte
+        <span className="ExtraBetCard__subtitle-points" style={{ color: theme.palette.grey['500'] }}>
+          <StarIcon color="inherit" style={iconStyle} />
+          {points}
+          &nbsp;Punkte
         </span>
-        {this.props.open &&
-          <span className="ExtraBetCard__subtitle-deadline">
-            <br /><AlarmIcon style={iconStyle} color={error} />Noch {this.state.remainingTime}
-          </span>}
+        {open && (
+          <span className="ExtraBetCard__subtitle-deadline" style={{ color: theme.palette.error.main }}>
+            <br />
+            <AlarmIcon color="inherit" style={iconStyle} />
+            Noch&nbsp;
+            {remainingTime}
+          </span>
+        )}
       </div>
     );
   }
 
   render() {
-    const userResultBet = this.state.userBet ? this.state.userBet.result_bet : null;
-    const isUserBetCorrect = this.props.result && userResultBet === this.props.result;
-    const resultInfo = this.props.result ? (
+    const {
+      hasChanges,
+      isSaving,
+      loadingError,
+      savingError,
+      savingSuccess,
+      userBet,
+    } = this.state;
+    const {
+      choices,
+      name,
+      open,
+      points,
+      result,
+    } = this.props;
+
+    const userResultBet = userBet ? userBet.result_bet : '';
+    const isUserBetCorrect = result && userResultBet === result;
+    const resultInfo = result ? (
       <div className={`ExtraBetCard__result-info ExtraBetCard__result-info--finished ${isUserBetCorrect ? 'volltreffer' : ''}`}>
-        Ergebnis: {this.props.result} –&nbsp;<b>{isUserBetCorrect ? `${this.props.points} Punkte!` : 'Keine Punkte.'}</b>
+        Ergebnis:&nbsp;
+        {result}
+        &nbsp;–&nbsp;
+        <b>{isUserBetCorrect ? `${points} Punkte!` : 'Keine Punkte.'}</b>
       </div>)
       : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
 
     return (
-      <Card className="ExtraBetCard">
-        <CardHeader
-          title={this.props.name}
-          subtitle={this.createSubtitleDiv()}
-        />
-
-        {(!this.state.loadingError && !this.props.open) &&
-        <div className="ExtraBetCard__bet-info">Dein Tipp:&nbsp;
-          <span className="ExtraBetCard__bet-info-bet">
-            {(this.state.userBet && this.state.userBet.result_bet) ? this.state.userBet.result_bet : '---'}
-          </span>
-        </div>}
-
-        {!this.props.open && <CardContent style={{ padding: 0 }}>{resultInfo}</CardContent>}
-
-        {this.state.loadingError &&
-          <div className="ExtraBetCard__loading-error">Fehler beim Laden.</div>}
-
-        {(!this.state.loadingError && this.props.open) &&
-        <BetsStatusContext.Consumer>
-          {betsStatusContext => (
-            <CardActions
-              className="ExtraBetCard__actions"
-              style={{ padding: '0 20px 10px' }}
-            >
-              <Select
-                floatingLabelText="Dein Tipp"
-                maxHeight={300}
-                value={userResultBet}
-                onChange={(e, i, val) => this.handleChange(val, betsStatusContext)}
-                menuItemStyle={{ textAlign: 'left' }}
-                style={{ marginBottom: '20px' }}
-              >
-                <MenuItem value={null} primaryText="" />
-                {this.props.choices
-                  .map(choice => <MenuItem key={choice} value={choice} primaryText={choice} />)}
-              </Select>
-              <div>
-                <Button
-                  variant="raised"
-                  color="primary"
-                  onClick={() => this.handleSave(betsStatusContext)}
-                  disabled={this.state.isSaving || !this.state.hasChanges}
-                  style={{ margin: '0 15px' }}
-                >
-                  Speichern
-                </Button>
-              </div>
-            </CardActions>
+      <Card className="ExtraBetCard" style={{ textAlign: 'left' }}>
+        <CardHeader title={name} subheader={this.createSubtitleDiv()} />
+        <CardContent style={{ padding: 0 }}>
+          {(!loadingError && !open) && (
+            <div className="ExtraBetCard__bet-info">
+              Dein Tipp:&nbsp;
+              <span className="ExtraBetCard__bet-info-bet">
+                {(userBet && userBet.result_bet) ? userBet.result_bet : '---'}
+              </span>
+            </div>
           )}
-        </BetsStatusContext.Consumer>}
+
+          {!open && resultInfo}
+
+          {loadingError && <div className="ExtraBetCard__loading-error">Fehler beim Laden.</div>}
+        </CardContent>
+
+        {(!loadingError && open) && (
+          <BetsStatusContext.Consumer>
+            {betsStatusContext => (
+              <CardActions
+                className="ExtraBetCard__actions"
+                style={{ padding: '0 20px 10px' }}
+              >
+                <FormControl style={{ minWidth: 200 }}>
+                  <InputLabel htmlFor="extra-bet-select">Dein Tipp</InputLabel>
+                  <Select
+                    value={userResultBet}
+                    onChange={e => this.handleChange(e.target.value, betsStatusContext)}
+                    input={<Input name="extra-bet-select" id="extra-bet-select" />}
+                    style={{ marginBottom: '20px' }}
+                    inputProps={{ id: 'extra-bet-select' }}
+                    MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
+                  >
+                    <MenuItem value="" />
+                    {choices
+                      .map(choice => <MenuItem key={choice} value={choice}>{choice}</MenuItem>)}
+                  </Select>
+                </FormControl>
+                <div>
+                  <Button
+                    variant="raised"
+                    color="primary"
+                    onClick={() => this.handleSave(betsStatusContext)}
+                    disabled={isSaving || !hasChanges}
+                    style={{ margin: '0 15px' }}
+                  >
+                    Speichern
+                  </Button>
+                </div>
+              </CardActions>
+            )}
+          </BetsStatusContext.Consumer>
+        )}
 
         <div>
-          {this.state.savingSuccess &&
+          {savingSuccess && (
             <Notification
               type={NotificationType.SUCCESS}
               title="Gespeichert!"
               disappearAfterMs={3000}
-            />}
-          {this.state.savingError &&
+            />
+          )}
+          {savingError && (
             <Notification
               type={NotificationType.ERROR}
               title="Fehler beim Speichern"
               subtitle="Bitte versuche es später erneut."
-            />}
+            />
+          )}
         </div>
       </Card>);
   }
@@ -249,4 +290,8 @@ ExtraBetCard.propTypes = {
 
   onBetAdded: PropTypes.func.isRequired,
   onBetRemoved: PropTypes.func.isRequired,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
+
+export default withTheme()(ExtraBetCard);
