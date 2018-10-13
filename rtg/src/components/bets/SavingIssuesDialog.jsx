@@ -1,14 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import ErrorIcon from '@material-ui/icons/Error';
-import { SavingErrorType } from '../GameCardBet';
-import { error } from '../../theme/RtgTheme';
 
-const SavingIssuesDialog = (props) => {
+import { SavingErrorType } from '../GameCardBet';
+
+const SavingIssuesDialog = ({
+  fullScreen, games, onClose, open, theme,
+}) => {
   const errorTextBySaveType = (saveType, detail) => {
     if (saveType === SavingErrorType.INCOMPLETE) {
       return 'Der Tipp ist unvollständig.';
@@ -18,33 +29,38 @@ const SavingIssuesDialog = (props) => {
     }
     return detail || 'Ein Fehler ist aufgetreten.';
   };
-  const gamesCount = props.games.length;
+  const gamesCount = games.length;
 
   return (
     <Dialog
-      actions={[<Button onClick={props.onClose}>Schließen</Button>]}
-      autoScrollBodyContent
-      modal
-      open={props.open}
+      aria-labelledby="SavingIssuesDialog__title"
+      fullScreen={fullScreen}
+      open={open}
       title={<h2 style={{ textAlign: 'center' }}>Probleme beim Speichern</h2>}
-      style={{ textAlign: 'left' }}
-      contentStyle={{ width: '95%' }}
+      onClose={onClose}
     >
-      <div>
+      <DialogTitle id="SavingIssuesDialog__title">
+        Probleme beim Speichern
+      </DialogTitle>
+      <DialogContent>
         <p>
           {gamesCount === 1 ? 'Einer Deiner Tipps konnte ' : 'Einige Deiner Tipps konnten '}
           leider nicht gespeichert werden:
         </p>
         <Divider />
-        {props.games.map(game => (
-          <ListItem
-            key={game.id}
-            leftIcon={<ErrorIcon color={error} />}
-            primaryText={`${game.hometeam_name} ${game.newBet} ${game.awayteam_name}`}
-            secondaryText={errorTextBySaveType(game.saveType, game.responseDetail)}
-          />
+        {games.map(game => (
+          <ListItem key={game.id}>
+            <ListItemIcon><ErrorIcon style={{ color: theme.palette.error.main }} /></ListItemIcon>
+            <ListItemText
+              primary={`${game.hometeam_name} ${game.newBet} ${game.awayteam_name}`}
+              secondary={errorTextBySaveType(game.saveType, game.responseDetail)}
+            />
+          </ListItem>
         ))}
-      </div>
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={onClose}>Schließen</Button>
+      </DialogActions>
     </Dialog>
   );
 };
@@ -53,6 +69,9 @@ SavingIssuesDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   games: PropTypes.array.isRequired,
   onClose: PropTypes.func.isRequired,
+
+  fullScreen: PropTypes.bool.isRequired,
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default SavingIssuesDialog;
+export default withMobileDialog()(withTheme()(SavingIssuesDialog));
