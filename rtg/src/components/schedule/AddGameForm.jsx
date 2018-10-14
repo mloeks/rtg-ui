@@ -27,7 +27,7 @@ class AddGameForm extends Component {
       savingError: true,
       nonFieldError: responseJson.non_field_errors ? responseJson.non_field_errors[0] : '',
       fieldErrors: {
-        round: responseJson.tournament_round ? responseJson.tournament_round[0] : '',
+        round: responseJson.round ? responseJson.round[0] : '',
         group: responseJson.tournament_group ? responseJson.tournament_group[0] : '',
         team1: responseJson.hometeam ? responseJson.hometeam[0] : '',
         team2: responseJson.awayteam ? responseJson.awayteam[0] : '',
