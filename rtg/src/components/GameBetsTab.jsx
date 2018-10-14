@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+
 import { withTheme } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -7,6 +8,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import format from 'date-fns/format';
 import formatDistance from 'date-fns/formatDistance';
 import de from 'date-fns/locale/de';
+
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
@@ -17,7 +19,6 @@ import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
-import { lightGrey } from '../theme/RtgTheme';
 
 import './GameBetsTab.css';
 
@@ -214,6 +215,7 @@ class GameBetsTab extends Component {
       shouldSave,
       showSavingSuccess,
     } = this.state;
+    const { theme } = this.props;
 
     const gameCount = gamesWithOpenBets.length;
 
@@ -253,9 +255,9 @@ class GameBetsTab extends Component {
               )}
 
               {(!loading && !loadingError && gameCount === 0) && (
-                <div className="GameBetsTab__empty-state" style={{ color: lightGrey }}>
+                <div className="GameBetsTab__empty-state" style={{ color: theme.palette.grey['300'] }}>
                   <NotInterestedIcon
-                    color={lightGrey}
+                    color="inherit"
                     style={{ height: 80, width: 80, marginBottom: 10 }}
                   />
                   <br />

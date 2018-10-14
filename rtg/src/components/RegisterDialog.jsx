@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,10 +10,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
-import { lightGrey } from '../theme/RtgTheme';
 
 // TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
@@ -114,7 +116,12 @@ class RegisterDialog extends Component {
   }
 
   render() {
-    const { fullScreen, onCancel, open } = this.props;
+    const {
+      fullScreen,
+      onCancel,
+      open,
+      theme,
+    } = this.props;
     const {
       password,
       fieldErrors,
@@ -191,7 +198,7 @@ class RegisterDialog extends Component {
             />
           </div>
           <br />
-          <p style={{ margin: 0, color: lightGrey }}>
+          <p style={{ margin: 0, color: theme.palette.grey['300'] }}>
             Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
             Dein Name ist nicht für andere Mitspieler sichtbar.
           </p>
@@ -209,9 +216,11 @@ class RegisterDialog extends Component {
 }
 
 RegisterDialog.propTypes = {
-  fullScreen: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
+
+  fullScreen: PropTypes.bool.isRequired,
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withMobileDialog()(RegisterDialog);
+export default withMobileDialog()(withTheme()(RegisterDialog));

@@ -2,17 +2,20 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { addDays, format, isSameDay, subDays, toDate, } from 'date-fns';
 import de from 'date-fns/locale/de';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+
 import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
 import GameCardBet, { SavingErrorType } from '../GameCardBet';
 import Notification, { NotificationType } from '../Notification';
-import { lightGrey } from '../../theme/RtgTheme';
 
 import './CurrentGameCard.css';
 
@@ -97,17 +100,23 @@ class CurrentGameCard extends Component {
     return (
       <div className="CurrentGameCard">
         <RtgSeparator
-          content={this.props.game ?
-            <div>
-              {CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff)}<br />
-              <span style={{
-                fontSize: '12px',
-                color: lightGrey,
-                textTransform: 'initial',
-                letterSpacing: 0
-              }}>{formattedRoundInfo(this.props.game)}
-              </span>
-            </div> : '...'}
+          content={this.props.game
+            ? (
+              <div>
+                {CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff)}
+                <br />
+                <span
+                  style={{
+                    fontSize: '12px',
+                    color: this.props.theme.palette.grey['400'],
+                    textTransform: 'initial',
+                    letterSpacing: 0,
+                  }}
+                >
+                  {formattedRoundInfo(this.props.game)}
+                </span>
+              </div>)
+            : '...'}
           contentStyle={{ margin: 0 }}
           style={{ marginBottom: 10 }}
         />
@@ -208,6 +217,8 @@ CurrentGameCard.propTypes = {
   onBetEditStart: PropTypes.func,
   onBetEditCancel: PropTypes.func,
   onBetEditDone: PropTypes.func.isRequired,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default CurrentGameCard;
+export default withTheme()(CurrentGameCard);

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { baseBetStatColumnStyle, basePointsColumnStyle, baseRankColumnStyle, } from './StandingsTable';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
 import { isEnter } from '../../service/KeyHelper';
@@ -35,12 +34,16 @@ class StandingsTableRow extends Component {
     const {
       bet,
       betColumnStyle,
+      betStatColumnStyle,
       noDifferenz,
       noNiete,
       noRemisTendenz,
       noTendenz,
+      noVolltreffer,
       points,
+      pointsColumnStyle,
       rank,
+      rankColumnStyle,
       rowHeight,
       self,
       showBetColumn,
@@ -68,7 +71,7 @@ class StandingsTableRow extends Component {
           style={{ height: rowHeight }}
           className={`StandingsTableRow ${self ? 'StandingsTableRow--self' : null}`}
         >
-          <TableCell style={{ ...baseRankColumnStyle, height: rowHeight }}>
+          <TableCell style={{ ...rankColumnStyle, height: rowHeight }}>
             {rank}
           </TableCell>
           <TableCell style={{ height: rowHeight, padding: 0 }}>
@@ -115,35 +118,35 @@ class StandingsTableRow extends Component {
 
           {showStatsColumns && (
             <Fragment>
-              <TableCell style={baseBetStatColumnStyle}>{this.props.noVolltreffer}</TableCell>
+              <TableCell style={betStatColumnStyle}>{noVolltreffer}</TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
-                style={baseBetStatColumnStyle}
+                style={betStatColumnStyle}
               >
                 {noDifferenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
-                style={baseBetStatColumnStyle}
+                style={betStatColumnStyle}
               >
                 {noRemisTendenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
-                style={baseBetStatColumnStyle}
+                style={betStatColumnStyle}
               >
                 {noTendenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
-                style={baseBetStatColumnStyle}
+                style={betStatColumnStyle}
               >
                 {noNiete}
               </TableCell>
             </Fragment>
           )}
 
-          <TableCell style={{ ...basePointsColumnStyle, height: rowHeight }}>{points}</TableCell>
+          <TableCell style={{ ...pointsColumnStyle, height: rowHeight }}>{points}</TableCell>
         </TableRow>
       </Fragment>
     );
@@ -159,7 +162,11 @@ StandingsTableRow.defaultProps = {
   showStatsColumns: true,
   showUserAvatar: true,
   showUserInfoOnClick: true,
+
   betColumnStyle: {},
+  betStatColumnStyle: {},
+  pointsColumnStyle: {},
+  rankColumnStyle: {},
 };
 
 StandingsTableRow.propTypes = {
@@ -181,7 +188,13 @@ StandingsTableRow.propTypes = {
   showStatsColumns: PropTypes.bool,
   showUserAvatar: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
+
+  /* eslint-disable react/forbid-prop-types */
   betColumnStyle: PropTypes.object,
+  betStatColumnStyle: PropTypes.object,
+  pointsColumnStyle: PropTypes.object,
+  rankColumnStyle: PropTypes.object,
+  /* eslint-enable react/forbid-prop-types */
 };
 
 export default StandingsTableRow;

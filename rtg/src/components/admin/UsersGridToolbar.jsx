@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
+
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import teal from '@material-ui/core/colors/teal';
-import { darkGrey, grey } from '../../theme/RtgTheme';
 
-const UsersGridToolbar = props => (
+const UsersGridToolbar = ({
+  filterActive, filterHasNotPaid, onFilterHasNotPaidToggled, filterInactive,
+  onFilterActiveToggled, onFilterInactiveToggled, onSearchTermUpdated, searchTerm, theme,
+}) => (
   <Toolbar
     className="UsersGridToolbar"
     style={{
@@ -28,32 +33,32 @@ const UsersGridToolbar = props => (
     <Menu
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       clickCloseDelay={0}
-      iconButtonElement={
+      iconButtonElement={(
         <IconButton>
-          <FilterListIcon color={grey} hoverColor={darkGrey} />
+          <FilterListIcon style={{ color: theme.palette.grey['700'] }} />
         </IconButton>
-      }
+      )}
     >
       <MenuItem
         primaryText="Nur aktive User"
-        checked={props.filterActive}
+        checked={filterActive}
         insetChildren
-        onClick={props.onFilterActiveToggled}
+        onClick={onFilterActiveToggled}
         style={{ textAlign: 'left' }}
       />
       <MenuItem
         primaryText="Nur inaktive User"
-        checked={props.filterInactive}
+        checked={filterInactive}
         insetChildren
-        onClick={props.onFilterInactiveToggled}
+        onClick={onFilterInactiveToggled}
         style={{ textAlign: 'left' }}
       />
       <Divider />
       <MenuItem
         primaryText="Tippeinsatz unbezahlt"
-        checked={props.filterHasNotPaid}
+        checked={filterHasNotPaid}
         insetChildren
-        onClick={props.onFilterHasNotPaidToggled}
+        onClick={onFilterHasNotPaidToggled}
         style={{ textAlign: 'left' }}
       />
     </Menu>
@@ -63,22 +68,22 @@ const UsersGridToolbar = props => (
       bottom: '20px',
       width: 20,
       height: 20,
-      color: grey,
+      color: theme.palette.grey['500'],
     }}
     />
     <TextField
       hintText="User suchen"
-      value={props.searchTerm}
-      onChange={(e, v) => props.onSearchTermUpdated(v)}
+      value={searchTerm}
+      onChange={(e, v) => onSearchTermUpdated(v)}
       hintStyle={{ padding: '0 25px' }}
       inputStyle={{ padding: '0 25px', width: 'auto' }}
     />
     <IconButton
       iconStyle={{ width: 20, height: 20 }}
       style={{ position: 'absolute', right: 0, bottom: '6px' }}
-      onClick={() => props.onSearchTermUpdated('')}
+      onClick={() => onSearchTermUpdated('')}
     >
-      <BackspaceIcon color={grey} hoverColor={darkGrey} />
+      <BackspaceIcon style={{ color: theme.palette.grey['700'] }} />
     </IconButton>
   </Toolbar>
 );
@@ -100,6 +105,8 @@ UsersGridToolbar.propTypes = {
   onFilterInactiveToggled: PropTypes.func.isRequired,
   onFilterHasNotPaidToggled: PropTypes.func.isRequired,
   onSearchTermUpdated: PropTypes.func.isRequired,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default UsersGridToolbar;
+export default withTheme()(UsersGridToolbar);

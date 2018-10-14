@@ -1,15 +1,18 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+
 import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import RtgSeparator from '../RtgSeparator';
-import { purple } from '../../theme/RtgTheme';
 import Notification, { NotificationType } from '../Notification';
 
-const BetsOverview = () => {
+const BetsOverview = ({ theme }) => {
   const openBetsCountStyle = {
     margin: '0 5px',
-    color: purple,
+    color: theme.palette.primary.main,
     fontFamily: '"Lobster Two", sans-serif',
     fontSize: '32px',
   };
@@ -17,13 +20,19 @@ const BetsOverview = () => {
   return (
     <section style={{ padding: '15px', margin: '20px auto', maxWidth: 640 }}>
       <p>
-        In der RTG werden traditionell <b>alle Spiele</b> der Fußball-Weltmeisterschaft getippt.
+        In der RTG werden traditionell&nbsp;
+        <b>alle Spiele</b>
+        &nbsp;der Fußball-Weltmeisterschaft getippt.
         Bitte gib deine Tipps für sämtliche Vorrundenspiele rechtzeitig bis zum Beginn des
-        Eröffnungspiels am <b>Donnerstag, 14. Juni, 17:00 Uhr (MESZ)</b> ab.
-        <br /><br />
+        Eröffnungspiels am&nbsp;
+        <b>Donnerstag, 14. Juni, 17:00 Uhr (MESZ)</b>
+        &nbsp;ab.
+        <br />
+        <br />
         Anschließend werden auch die Spiele der K.O.-Runde getippt,
         sobald die Paarungen feststehen.
-        <br /><br />
+        <br />
+        <br />
         Die ausführlichen Regeln kannst du dir hier noch einmal genauer durchlesen:
         <br />
         <Link to="/rules">
@@ -36,31 +45,37 @@ const BetsOverview = () => {
       <UserDetailsContext.Consumer>
         {({ openBetsCount }) => (
           <Fragment>
-            {openBetsCount > 0 &&
-            <p>
-              Du hast aktuell noch&nbsp;
-              <span style={openBetsCountStyle}>{openBetsCount}</span>&nbsp;
-              {openBetsCount === 1 ? 'offenen Tipp' : 'offene Tipps'}.
-              <br />
-              <Link to="/bets">
-                <Button color="primary" style={{ margin: '10px 0' }}>
-                  {`Jetzt ${openBetsCount === 1 ? 'Tipp' : 'Tipps'} abgeben`}
-                </Button>
-              </Link>
-            </p>}
-            {openBetsCount === 0 &&
-            <Notification
-              type={NotificationType.SUCCESS}
-              title="Alles getippt!"
-              subtitle="Du hast aktuell keine offenen Tipps."
-            />
-              }
+            {openBetsCount > 0 && (
+              <p>
+                Du hast aktuell noch&nbsp;
+                <span style={openBetsCountStyle}>{openBetsCount}</span>
+                &nbsp;
+                {openBetsCount === 1 ? 'offenen Tipp.' : 'offene Tipps.'}
+                <br />
+                <Link to="/bets">
+                  <Button color="primary" style={{ margin: '10px 0' }}>
+                    {`Jetzt ${openBetsCount === 1 ? 'Tipp' : 'Tipps'} abgeben`}
+                  </Button>
+                </Link>
+              </p>
+            )}
+            {openBetsCount === 0 && (
+              <Notification
+                type={NotificationType.SUCCESS}
+                title="Alles getippt!"
+                subtitle="Du hast aktuell keine offenen Tipps."
+              />
+            )}
           </Fragment>
-          )}
+        )}
       </UserDetailsContext.Consumer>
 
     </section>
   );
 };
 
-export default BetsOverview;
+BetsOverview.propTypes = {
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+export default withTheme()(BetsOverview);

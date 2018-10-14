@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import UserCard from './UserCard';
 import Notification, { NotificationType } from '../Notification';
 import UsersGridToolbar from './UsersGridToolbar';
-import { grey } from '../../theme/RtgTheme';
 
 class UsersGrid extends Component {
   constructor(props) {
@@ -105,10 +108,17 @@ class UsersGrid extends Component {
           containerStyle={{ margin: '20px auto', maxWidth: '640px' }}
         />}
 
-        {(!this.state.loading && !this.state.loadingError) &&
-          <div style={{ margin: '20px 0', fontSize: '14px', color: grey }}>
+        {(!this.state.loading && !this.state.loadingError) && (
+          <div
+            style={{
+              margin: '20px 0',
+              fontSize: '14px',
+              color: this.props.theme.palette.grey['500'],
+            }}
+          >
             {filteredUsers.length === 0 ? 'Keine' : filteredUsers.length} User gefunden.
-          </div>}
+          </div>
+        )}
 
         <div
           className="UsersGrid__grid"
@@ -133,6 +143,8 @@ class UsersGrid extends Component {
   }
 }
 
-UsersGrid.propTypes = {};
+UsersGrid.propTypes = {
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
 
-export default UsersGrid;
+export default withTheme()(UsersGrid);

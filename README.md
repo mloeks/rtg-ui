@@ -7,7 +7,6 @@
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
     * User management page
-    * Never use colours exported from RtgTheme directly, favour withTheme, remove exports
     * Check remaining linter complaints
 
 * Material UI v3.x

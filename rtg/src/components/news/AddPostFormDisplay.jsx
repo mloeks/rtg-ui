@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -12,14 +14,13 @@ import TextField from '@material-ui/core/TextField';
 import ErrorIcon from '@material-ui/icons/Error';
 import CheckIcon from '@material-ui/icons/Check';
 import Notification, { NotificationType } from '../Notification';
-import { error, success } from '../../theme/RtgTheme';
 
 import './AddPostForm.css';
 
 const AddPostFormDisplay = ({
   appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
   onCancel, onFieldChange, onSubmit, Quill, savingError, savingInProgress,
-  sendMail, sendMailOption, titleError,
+  sendMail, sendMailOption, theme, titleError,
 }) => {
   const getSuitableSavingErrorSubtitle = () => {
     if (titleError || contentError) {
@@ -73,14 +74,14 @@ const AddPostFormDisplay = ({
         <div className="AddPostForm__draft-info">
           {draftSaved && (
             <span className="AddPostForm__draft-info--success">
-              <CheckIcon style={{ height: 20, width: 20, color: success }} />
+              <CheckIcon style={{ height: 20, width: 20, color: theme.palette.success.main }} />
               &nbsp;Entwurf gespeichert.
             </span>
           )}
           {draftSaving && 'Speichern...'}
           {draftSavingError && (
             <span className="AddPostForm__draft-info--error">
-              <ErrorIcon style={{ height: 20, width: 20, color: error }} />
+              <ErrorIcon style={{ height: 20, width: 20, color: theme.palette.error.main }} />
               &nbsp;Fehler beim Zwischenspeichern!
             </span>
           )}
@@ -202,6 +203,8 @@ AddPostFormDisplay.propTypes = {
   onFieldChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default AddPostFormDisplay;
+export default withTheme()(AddPostFormDisplay);

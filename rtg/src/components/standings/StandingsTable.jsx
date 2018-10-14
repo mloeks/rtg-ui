@@ -1,46 +1,47 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
-import { lightGrey, purple } from '../../theme/RtgTheme';
 import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.css';
 
-export const baseRankColumnStyle = {
-  width: '23px',
-  textAlign: 'center',
-  padding: '0 5px',
-};
-
-export const baseBetStatColumnStyle = {
-  width: '20px',
-  textAlign: 'center',
-  padding: '0 5px',
-  color: lightGrey,
-};
-
-export const baseBetColumnStyle = {
-  width: '50px',
-  textAlign: 'right',
-  padding: '0 5px',
-  color: purple,
-};
-
-export const basePointsColumnStyle = {
-  width: '30px',
-  textAlign: 'right',
-  padding: '0 15px 0 5px',
-  fontSize: '16px',
-  fontWeight: 'bold',
-};
+const styles = theme => ({
+  rank: {
+    width: '23px',
+    textAlign: 'center',
+    padding: '0 5px',
+  },
+  bet: {
+    width: '50px',
+    textAlign: 'right',
+    padding: '0 5px',
+    color: theme.palette.primary.main,
+  },
+  betStat: {
+    width: '20px',
+    textAlign: 'center',
+    padding: '0 5px',
+    color: theme.palette.grey['400'],
+  },
+  points: {
+    width: '30px',
+    textAlign: 'right',
+    padding: '0 15px 0 5px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+  },
+});
 
 // TODO P3 check loading state (often takes longer and does not show progress indicator)
 // TODO P3 add scroll listener if scrollable and remove fading top/bottom when
@@ -243,6 +244,7 @@ class StandingsTable extends Component {
 
     const {
       betColumnStyle,
+      classes,
       rowHeight,
       scrollable,
       showBetColumnForBettable,
@@ -251,6 +253,7 @@ class StandingsTable extends Component {
       showTableHeader,
       showUserAvatar,
       showUserInfoOnClick,
+      theme,
       userExcerptRows,
     } = this.props;
 
@@ -286,47 +289,49 @@ class StandingsTable extends Component {
               {showTableHeader && (
                 <TableHead>
                   <TableRow>
-                    <TableCell style={baseRankColumnStyle}>Pl.</TableCell>
+                    <TableCell style={{ ...styles(theme).rank }}>Pl.</TableCell>
                     <TableCell style={{ paddingLeft: '5px' }}>Username</TableCell>
                     {showBetColumnForBettable !== -1 && (
                       <TableCell
                         className="StandingsTable__bet-col"
-                        style={{ ...baseBetColumnStyle, ...betColumnStyle }}
+                        classes={{ root: classes.bet }}
+                        style={betColumnStyle}
                       >
                         Tipp
                       </TableCell>
                     )}
                     {showStatsColumns && (
                       <Fragment>
-                        <TableCell style={baseBetStatColumnStyle}>V</TableCell>
+                        <TableCell classes={{ root: classes.betStat }}>V</TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={baseBetStatColumnStyle}
+                          classes={{ root: classes.betStat }}
                         >
                           D
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={baseBetStatColumnStyle}
+                          classes={{ root: classes.betStat }}
                         >
                           RT
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={baseBetStatColumnStyle}
+                          classes={{ root: classes.betStat }}
                         >
                           T
                         </TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
-                          style={baseBetStatColumnStyle}
+                          classes={{ root: classes.betStat }}
                         >
                           N
                         </TableCell>
                       </Fragment>
                     )}
                     <TableCell
-                      style={{ ...basePointsColumnStyle, fontWeight: 'normal', fontSize: '13px' }}
+                      classes={{ root: classes.points }}
+                      style={{ fontWeight: 'normal', fontSize: 13 }}
                     >
                       Pkt.
                     </TableCell>
@@ -345,7 +350,11 @@ class StandingsTable extends Component {
                     showStatsColumns={showStatsColumns}
                     showUserAvatar={showUserAvatar}
                     showUserInfoOnClick={showUserInfoOnClick}
-                    betColumnStyle={{ ...baseBetColumnStyle, betColumnStyle }}
+
+                    betColumnStyle={{ ...styles(theme).bet, betColumnStyle }}
+                    betStatColumnStyle={{ ...styles(theme).betStat }}
+                    pointsColumnStyle={{ ...styles(theme).points }}
+                    rankColumnStyle={{ ...styles(theme).rank }}
                     {...row}
                   />
                 ))}
@@ -390,6 +399,11 @@ StandingsTable.propTypes = {
   // if it is empty, the bets are fetched by this component
   bets: PropTypes.array,
   betColumnStyle: PropTypes.object,
+
+  /* eslint-disable react/forbid-prop-types */
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 };
 
-export default StandingsTable;
+export default withStyles(styles)(withTheme()(StandingsTable));

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,14 +11,14 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import WarningIcon from '@material-ui/icons/Warning';
 import PersonIcon from '@material-ui/icons/Person';
 import teal from '@material-ui/core/colors/teal';
+
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
-import { darkGold, darkGrey, error, gold, grey, lightGrey } from '../../theme/RtgTheme';
-import { lightenDarkenColor } from '../../service/ColorHelper';
 
 const CARD_SIZE = 140;
 
@@ -121,9 +123,10 @@ class UserCard extends Component {
     };
     const paidSymbol = (
       <EuroSymbolIcon
-        color={this.props.has_paid ?
-          gold : lightenDarkenColor(lightGrey, 40)}
-        hoverColor={this.props.has_paid ? darkGold : lightGrey}
+        color={this.props.has_paid
+          ? this.props.theme.palette.secondary.main
+          : this.props.theme.palette.grey['200']}
+        hoverColor={this.props.has_paid ? this.props.theme.palette.secondary.dark : this.props.theme.palette.grey['300']}
         onClick={this.toggleHasPaid}
       />);
 
@@ -189,7 +192,7 @@ class UserCard extends Component {
               {`${this.props.first_name} ${this.props.last_name}`}
             </span><br />
             <div style={{
-              color: grey,
+              color: this.props.theme.palette.grey['500'],
               fontSize: '12px',
               fontWeight: 400,
               wordBreak: 'break-word',
@@ -213,20 +216,23 @@ class UserCard extends Component {
               </IconButton>}
 
             {this.state.savingInProgress && <CircularProgress size={20} thickness={2} />}
-            {this.state.savingIssues &&
+            {this.state.savingIssues && (
               <IconButton
                 title="Fehler beim Speichern, bitte neu laden."
                 style={iconButtonStyle}
                 iconStyle={{ margin: 0 }}
-              ><WarningIcon color={error} />
-              </IconButton>}
+              >
+                <WarningIcon style={{ color: this.props.theme.palette.error.main }} />
+              </IconButton>
+            )}
 
             <IconButton
               title="Benutzer löschen"
               onClick={this.handleDeleteRequest}
               style={iconButtonStyle}
               iconStyle={{ margin: 0 }}
-            ><DeleteIcon color={grey} hoverColor={darkGrey} />
+            >
+              <DeleteIcon style={{ color: this.props.theme.palette.grey['500'] }} />
             </IconButton>
           </CardActions>
         </Card>
@@ -254,6 +260,8 @@ UserCard.propTypes = {
 
   onHasPaidUpdated: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default UserCard;
+export default withTheme()(UserCard);

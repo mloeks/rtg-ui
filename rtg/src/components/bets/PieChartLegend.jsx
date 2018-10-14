@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { darkGrey, lightGold } from '../../theme/RtgTheme';
+import { withTheme } from '@material-ui/core/styles';
 
 const PieChartLegend = (props) => {
   const rowPadding = 3;
@@ -16,8 +16,8 @@ const PieChartLegend = (props) => {
             height: props.entryRowHeight - (2 * rowPadding) - 1,
             alignItems: 'center',
             padding: `${rowPadding}px 0`,
-            borderBottom: `1px solid ${lightGold}`,
-            color: darkGrey,
+            borderBottom: `1px solid ${props.theme.palette.secondary.light}`,
+            color: props.theme.palette.grey['700'],
             textAlign: 'left',
             fontSize: '14px',
             ...props.entryStyle,
@@ -67,6 +67,8 @@ PieChartLegend.propTypes = {
   entryRowHeight: PropTypes.number,
   containerStyle: PropTypes.object,
   entryStyle: PropTypes.object,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default PieChartLegend;
+export default withTheme()(PieChartLegend);

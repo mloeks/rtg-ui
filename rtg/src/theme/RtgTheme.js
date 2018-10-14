@@ -1,26 +1,12 @@
-import hsl from 'hsl-to-hex';
-// Sometimes helpful template:
-// https://v1-5-0.material-ui.com/customization/default-theme/
+// See https://v1-5-0.material-ui.com/customization/default-theme/
+// Keep in sync with _colors.scss
 
 /* eslint-disable no-unused-vars */
-// Keep in sync with _colors.scss
-export const black = '#372D2D';
-export const white = '#FCFCFC';
-export const grey = '#808080';
-export const lightGrey = '#B4B4B4';
-export const darkGrey = '#292929';
-export const purple = '#974578';
-export const gold = '#CD9B1D';
-export const darkGold = '#8B6914';
-export const lightGold = '#EDD69C';
-export const success = '#58ce38';
-export const error = '#ce3838';
-
-export const betResultNiete = hsl(18, 85, 40);
-export const betResultTendenz = hsl(45, 85, 40);
-export const betResultRemisTendenz = hsl(65, 85, 40);
-export const betResultDifferenz = hsl(180, 85, 40);
-export const betResultVolltreffer = hsl(138, 85, 40);
+const black = '#372D2D';
+const white = '#FCFCFC';
+const gold = '#CD9B1D';
+const darkGold = '#8B6914';
+const lightGold = '#EDD69C';
 /* eslint-enable no-unused-vars */
 
 export default {
@@ -45,7 +31,7 @@ export default {
       white,
     },
     primary: {
-      main: purple,
+      main: '#974578',
       contrastText: white,
     },
     secondary: {
@@ -71,14 +57,14 @@ export default {
       A700: '#616161',
     },
     error: {
-      main: error,
+      main: '#ce3838',
     },
     success: {
-      main: success,
+      main: '#58ce38',
     },
     text: {
       primary: black,
-      secondary: lightGrey,
+      secondary: '#B4B4B4',
     },
     background: {
       paper: '#fff',
@@ -86,7 +72,7 @@ export default {
     },
     custom: {
       footer: {
-        main: darkGrey,
+        main: '#292929',
         contrastText: lightGold,
       },
     },

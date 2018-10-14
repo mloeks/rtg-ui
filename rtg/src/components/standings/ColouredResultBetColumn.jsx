@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import { grey, lightGold, lightGrey } from '../../theme/RtgTheme';
+
 import { StateEnum } from '../GameCardGameInfo';
 
 const ColouredResultBetColumn = (props) => {
@@ -11,14 +13,22 @@ const ColouredResultBetColumn = (props) => {
     <TableCell
       style={{
         ...props.style,
-        backgroundColor: isVolltreffer ? lightGold : 'transparent',
+        backgroundColor: isVolltreffer ? props.theme.palette.secondary.light : 'transparent',
         fontWeight: isVolltreffer ? 'bold' : 'normal',
         textAlign: 'center',
       }}
     >
       {props.bet ? props.bet.result_bet : '---'}
-      {props.bet && props.bet.result_bet_type &&
-        <sup style={{ fontWeight: 'normal', color: isVolltreffer ? grey : lightGrey }}> {props.bet.points}</sup>}
+      {props.bet && props.bet.result_bet_type && (
+        <sup
+          style={{
+            fontWeight: 'normal',
+            color: isVolltreffer ? props.theme.palette.grey['500'] : props.theme.palette.grey['300'],
+          }}
+        >
+          &nbsp;{props.bet.points}
+        </sup>
+      )}
     </TableCell>
   );
 };
@@ -33,6 +43,8 @@ ColouredResultBetColumn.propTypes = {
     result_bet: PropTypes.string,
   }),
   style: PropTypes.object,
+
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default ColouredResultBetColumn;
+export default withTheme()(ColouredResultBetColumn);
