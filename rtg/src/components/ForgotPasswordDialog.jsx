@@ -132,6 +132,7 @@ class ForgotPasswordDialog extends Component {
               fullWidth
               value={email}
               onChange={this.updateEmail}
+              style={{ marginTop: 8 }}
             />
           )}
           {requestInProgress && <CircularProgress />}
