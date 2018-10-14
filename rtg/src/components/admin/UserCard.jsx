@@ -1,3 +1,7 @@
+// Disable camelcase linting as long as snake-cased fields from backend response
+// are directly used for props
+/* eslint-disable camelcase */
+
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
@@ -22,20 +26,23 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
 const CARD_SIZE = 140;
 
-const DeleteConfirmationModal = (props) => {
+const DeleteConfirmationModal = ({
+  onCancel, onConfirm, open, username,
+}) => {
   const actions = [
-    <Button onClick={props.onCancel}>Abbrechen</Button>,
-    <Button color="primary" onClick={props.onConfirm}>User löschen</Button>,
+    <Button onClick={onCancel}>Abbrechen</Button>,
+    <Button color="primary" onClick={onConfirm}>User löschen</Button>,
   ];
 
   return (
     <Dialog
       actions={actions}
       modal
-      open={props.open}
+      open={open}
       title="Löschen bestätigen"
     >
-      &quot;{props.username}&quot; endgültig löschen?<br />
+      {`"${username}" endgültig löschen?`}
+      <br />
       Dies kann nicht rückgängig gemacht werden!
     </Dialog>
   );
@@ -64,10 +71,12 @@ class UserCard extends Component {
   }
 
   toggleHasPaid() {
-    this.setState({ savingInProgress: true, savingIssues: false }, () => {
-      const newHasPaid = !this.props.has_paid;
+    const { has_paid, onHasPaidUpdated, pk } = this.props;
 
-      fetch(`${API_BASE_URL}/rtg/users_admin/${this.props.pk}/`, {
+    this.setState({ savingInProgress: true, savingIssues: false }, () => {
+      const newHasPaid = !has_paid;
+
+      fetch(`${API_BASE_URL}/rtg/users_admin/${pk}/`, {
         method: 'PATCH',
         body: JSON.stringify({ has_paid: newHasPaid }),
         headers: {
@@ -77,7 +86,7 @@ class UserCard extends Component {
       }).then((response) => {
         if (response.ok) {
           this.setState({ savingInProgress: false });
-          this.props.onHasPaidUpdated(this.props.pk, newHasPaid);
+          onHasPaidUpdated(pk, newHasPaid);
         } else {
           this.setState({ savingInProgress: false, savingIssues: true });
         }
@@ -94,18 +103,19 @@ class UserCard extends Component {
   }
 
   handleDelete() {
+    const { onDelete, pk } = this.props;
     this.setState({
       savingInProgress: true,
       savingIssues: false,
       deleteConfirmationModalOpen: false,
     }, () => {
-      fetch(`${API_BASE_URL}/rtg/users/${this.props.pk}/`, {
+      fetch(`${API_BASE_URL}/rtg/users/${pk}/`, {
         method: 'DELETE',
         headers: { Authorization: `Token ${AuthService.getToken()}` },
       }).then((response) => {
         if (response.ok) {
           this.setState({ savingInProgress: false });
-          this.props.onDelete(this.props.pk);
+          onDelete(pk);
         } else {
           this.setState({ savingInProgress: false, savingIssues: true });
         }
@@ -114,7 +124,20 @@ class UserCard extends Component {
   }
 
   render() {
-    const isInactive = this.props.last_login === null;
+    const { deleteConfirmationModalOpen, savingInProgress, savingIssues } = this.state;
+    const {
+      avatar,
+      email,
+      email2,
+      first_name,
+      has_paid,
+      last_login,
+      last_name,
+      theme,
+      username,
+    } = this.props;
+
+    const isInactive = last_login === null;
     const iconButtonStyle = {
       width: 24,
       height: 24,
@@ -123,10 +146,10 @@ class UserCard extends Component {
     };
     const paidSymbol = (
       <EuroSymbolIcon
-        color={this.props.has_paid
-          ? this.props.theme.palette.secondary.main
-          : this.props.theme.palette.grey['200']}
-        hoverColor={this.props.has_paid ? this.props.theme.palette.secondary.dark : this.props.theme.palette.grey['300']}
+        color={has_paid
+          ? theme.palette.secondary.main
+          : theme.palette.grey['200']}
+        hoverColor={has_paid ? theme.palette.secondary.dark : theme.palette.grey['300']}
         onClick={this.toggleHasPaid}
       />);
 
@@ -139,15 +162,16 @@ class UserCard extends Component {
           height: '100%',
           backgroundColor: teal['400'],
         }}
-      ><PersonIcon color="white" style={{ width: '90%', height: '90%' }} />
+      >
+        <PersonIcon style={{ color: theme.palette.common.white, width: '90%', height: '90%' }} />
       </div>
     );
 
     return (
       <Fragment>
         <DeleteConfirmationModal
-          open={this.state.deleteConfirmationModalOpen}
-          username={this.props.username}
+          open={deleteConfirmationModalOpen}
+          username={username}
           onCancel={this.handleDeleteRequestCancelled}
           onConfirm={this.handleDelete}
         />
@@ -160,25 +184,25 @@ class UserCard extends Component {
           containerStyle={{ display: 'flex', flexDirection: 'column', height: '100%' }}
         >
           <CardMedia
-            overlay={
+            overlay={(
               <CardHeader
-                title={this.props.username}
-                style={{ padding: '10px'}}
+                title={username}
+                style={{ padding: 10 }}
                 titleStyle={{
                   color: 'white',
                   textShadow: 'black 1px 1px 4px',
                   fontFamily: '"Lobster Two", sans-serif',
-                  fontSize: '18px',
-                  lineHeight: '18px',
+                  fontSize: 18,
+                  lineHeight: 18,
                 }}
               />
-            }
+            )}
             style={{ height: 0.8 * CARD_SIZE, overflow: 'hidden', opacity: isInactive ? 0.3 : 1 }}
-            mediaStyle={{ height: '100%', marginTop: this.props.avatar ? '-10%' : '0' }}
+            mediaStyle={{ height: '100%', marginTop: avatar ? '-10%' : '0' }}
             overlayContentStyle={{ paddingTop: 0, background: 'rgba(0, 0, 0, 0.35)' }}
           >
-            {this.props.avatar && <img src={`${API_BASE_URL}/media/${this.props.avatar}`} alt="User avatar" />}
-            {!this.props.avatar && noAvatarPlaceholder}
+            {avatar && <img src={`${API_BASE_URL}/media/${avatar}`} alt="User avatar" />}
+            {!avatar && noAvatarPlaceholder}
           </CardMedia>
           <CardContent
             style={{
@@ -189,40 +213,45 @@ class UserCard extends Component {
             }}
           >
             <span style={{ fontWeight: 500, wordBreak: 'break-word' }}>
-              {`${this.props.first_name} ${this.props.last_name}`}
-            </span><br />
+              {`${first_name} ${last_name}`}
+            </span>
+            <br />
             <div style={{
-              color: this.props.theme.palette.grey['500'],
+              color: theme.palette.grey['500'],
               fontSize: '12px',
               fontWeight: 400,
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
             }}
-            ><span>{this.props.email}</span><br />
-              {this.props.email2 && <span>{this.props.email2}</span>}
+            >
+              <span>{email}</span>
+              <br />
+              {email2 && <span>{email2}</span>}
             </div>
           </CardContent>
 
           <CardActions
             style={{ display: 'flex', justifyContent: isInactive ? 'flex-end' : 'space-between' }}
           >
-            {!isInactive &&
+            {!isInactive && (
               <IconButton
-                title={`Als ${this.props.has_paid ? 'unbezahlt' : 'bezahlt'} markieren`}
+                title={`Als ${has_paid ? 'unbezahlt' : 'bezahlt'} markieren`}
                 onClick={this.toggleHasPaid}
                 style={iconButtonStyle}
                 iconStyle={{ margin: 0 }}
-              >{paidSymbol}
-              </IconButton>}
+              >
+                {paidSymbol}
+              </IconButton>
+            )}
 
-            {this.state.savingInProgress && <CircularProgress size={20} thickness={2} />}
-            {this.state.savingIssues && (
+            {savingInProgress && <CircularProgress size={20} thickness={2} />}
+            {savingIssues && (
               <IconButton
                 title="Fehler beim Speichern, bitte neu laden."
                 style={iconButtonStyle}
                 iconStyle={{ margin: 0 }}
               >
-                <WarningIcon style={{ color: this.props.theme.palette.error.main }} />
+                <WarningIcon style={{ color: theme.palette.error.main }} />
               </IconButton>
             )}
 
@@ -232,7 +261,7 @@ class UserCard extends Component {
               style={iconButtonStyle}
               iconStyle={{ margin: 0 }}
             >
-              <DeleteIcon style={{ color: this.props.theme.palette.grey['500'] }} />
+              <DeleteIcon style={{ color: theme.palette.grey['500'] }} />
             </IconButton>
           </CardActions>
         </Card>

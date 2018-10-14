@@ -7,13 +7,11 @@ import BackToTopButton from '../components/BackToTopButton';
 
 import './Page.css';
 
-const Page = props => (
+const Page = ({ children }) => (
   <main className="Page">
     <UserDetailsProvider>
       <Header />
-      <section className="Page__content">
-        {props.children}
-      </section>
+      <section className="Page__content">{children}</section>
       <BackToTopButton />
       <Footer />
     </UserDetailsProvider>

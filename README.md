@@ -7,9 +7,11 @@
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
     * User management page
-    * Check remaining linter complaints
 
 * Material UI v3.x
+
+* Prepare for React 17
+    * Replace deprecated lifecycle methods
     
 ### Follow-up Material UI upgrade
 

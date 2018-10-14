@@ -69,8 +69,8 @@ export class ThrottledScrollPositionListener {
 
   _listener() {
     // Note that IE does not support scrollY
-    this.lastKnownScrollPosition =
-      typeof window.scrollY === 'undefined' ? window.pageYOffset : window.scrollY;
+    this.lastKnownScrollPosition = typeof window.scrollY === 'undefined'
+      ? window.pageYOffset : window.scrollY;
 
     if (!this.ticking) {
       window.requestAnimationFrame(this._runCallbacks);

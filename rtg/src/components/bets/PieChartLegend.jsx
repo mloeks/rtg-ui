@@ -2,25 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
 
-const PieChartLegend = (props) => {
+const PieChartLegend = ({
+  className, containerStyle, data, entryRowHeight, entryStyle, theme,
+}) => {
   const rowPadding = 3;
   return (
-    <div className={props.className} style={props.containerStyle}>
-      {props.data.map(dataEntry => (
+    <div className={className} style={containerStyle}>
+      {data.map(dataEntry => (
         <div
           key={`chart-legend-entry-${dataEntry.caption}`}
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
-            height: props.entryRowHeight - (2 * rowPadding) - 1,
+            height: entryRowHeight - (2 * rowPadding) - 1,
             alignItems: 'center',
             padding: `${rowPadding}px 0`,
-            borderBottom: `1px solid ${props.theme.palette.secondary.light}`,
-            color: props.theme.palette.grey['700'],
+            borderBottom: `1px solid ${theme.palette.secondary.light}`,
+            color: theme.palette.grey['700'],
             textAlign: 'left',
             fontSize: '14px',
-            ...props.entryStyle,
+            ...entryStyle,
           }}
         >
           <span
@@ -41,9 +43,12 @@ const PieChartLegend = (props) => {
               textOverflow: 'ellipsis',
               textAlign: 'left',
             }}
-          >{dataEntry.caption}
+          >
+            {dataEntry.caption}
           </span>
-          <span style={{ minWidth: '30px', textAlign: 'right' }}>{dataEntry.value.toFixed(0)} %</span>
+          <span style={{ minWidth: '30px', textAlign: 'right' }}>
+            {`${dataEntry.value.toFixed(0)} %`}
+          </span>
         </div>
       ))}
     </div>

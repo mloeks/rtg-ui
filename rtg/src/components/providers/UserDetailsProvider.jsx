@@ -51,8 +51,8 @@ class UserDetailsProvider extends Component {
   }
 
   handleLogout(reason) {
-    AuthService.logout().then(() =>
-      this.props.history.push(`/login${reason ? `/${reason}` : ''}`));
+    const { history } = this.props;
+    AuthService.logout().then(() => history.push(`/login${reason ? `/${reason}` : ''}`));
   }
 
   handleUpdateAvatar(avatar) {
@@ -66,9 +66,10 @@ class UserDetailsProvider extends Component {
   }
 
   render() {
+    const { children } = this.props;
     return (
       <UserDetailsContext.Provider value={this.state}>
-        {this.props.children}
+        {children}
       </UserDetailsContext.Provider>
     );
   }

@@ -5,8 +5,9 @@ export const VALID_GOAL_INPUT_REGEX = /^([0-9]{1,2})$/;
 
 export const isCompleteResult = resultString => new RegExp(`^\\d{1,2}${RESULT_SEPARATOR}\\d{1,2}$`).test(resultString);
 
-export const isEmptyResult = resultString =>
-  `${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}` === resultString;
+export const isEmptyResult = resultString => (
+  `${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}` === resultString
+);
 
 export const toResultString = (homegoals, awaygoals) => {
   const homegoalsString = (!homegoals && Number(homegoals) !== 0) ? NO_GOALS_STRING : homegoals;
@@ -34,7 +35,7 @@ export const getAwaygoals = (resultString) => {
 };
 
 export const getGoalsString = (goals) => {
-  if (Number.isNaN(goals) || goals === '') { return NO_GOALS_STRING }
+  if (Number.isNaN(goals) || goals === '') { return NO_GOALS_STRING; }
   const goalsNumber = Number(goals);
   if (goalsNumber < 0 || goalsNumber > MAX_GOALS_INPUT) { return NO_GOALS_STRING; }
   return goals;

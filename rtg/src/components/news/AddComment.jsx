@@ -23,13 +23,12 @@ class AddComment extends Component {
   }
 
   async postComment(e) {
+    const { content } = this.state;
+    const { onAdded, postId, replyTo } = this.props;
+
     e.preventDefault();
 
-    const newComment = {
-      content: this.state.content,
-      post: this.props.postId,
-      reply_to: this.props.replyTo,
-    };
+    const newComment = { content, post: postId, reply_to: replyTo };
 
     return fetch(`${API_BASE_URL}/rtg/comments/`, {
       method: 'POST',
@@ -43,7 +42,7 @@ class AddComment extends Component {
       .then((response) => {
         if (response.ok) {
           this.setState({ saving: false, content: '' }, () => {
-            this.props.onAdded(response.json);
+            onAdded(response.json);
           });
         } else {
           this.setState({

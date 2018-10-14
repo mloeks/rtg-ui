@@ -93,7 +93,7 @@ class ForgotPasswordDialog extends Component {
       fullScreen,
       onClose,
       open,
-      theme
+      theme,
     } = this.props;
 
     const {

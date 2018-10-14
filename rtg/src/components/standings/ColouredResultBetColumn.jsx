@@ -6,27 +6,28 @@ import TableCell from '@material-ui/core/TableCell';
 
 import { StateEnum } from '../GameCardGameInfo';
 
-const ColouredResultBetColumn = (props) => {
-  const isVolltreffer = props.bet && props.bet.result_bet_type === StateEnum.VOLLTREFFER;
+const ColouredResultBetColumn = ({ bet, style, theme }) => {
+  const isVolltreffer = bet && bet.result_bet_type === StateEnum.VOLLTREFFER;
 
   return (
     <TableCell
       style={{
-        ...props.style,
-        backgroundColor: isVolltreffer ? props.theme.palette.secondary.light : 'transparent',
+        ...style,
+        backgroundColor: isVolltreffer ? theme.palette.secondary.light : 'transparent',
         fontWeight: isVolltreffer ? 'bold' : 'normal',
         textAlign: 'center',
       }}
     >
-      {props.bet ? props.bet.result_bet : '---'}
-      {props.bet && props.bet.result_bet_type && (
+      {bet ? bet.result_bet : '---'}
+      {bet && bet.result_bet_type && (
         <sup
           style={{
             fontWeight: 'normal',
-            color: isVolltreffer ? props.theme.palette.grey['500'] : props.theme.palette.grey['300'],
+            color: isVolltreffer ? theme.palette.grey['500'] : theme.palette.grey['300'],
           }}
         >
-          &nbsp;{props.bet.points}
+          &nbsp;
+          {bet.points}
         </sup>
       )}
     </TableCell>

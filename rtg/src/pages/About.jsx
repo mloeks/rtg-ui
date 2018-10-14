@@ -8,7 +8,7 @@ import BigPicture from '../components/BigPicture';
 import headingImg from '../theme/img/headings/silvia_zlatan.jpg';
 import './About.css';
 
-const About = props => (
+const About = ({ history }) => (
   <Page className="AboutPage">
     <BigPicture className="AboutPage__heading" img={headingImg} positionY={21}>
       <h1 className="BigPicture__heading">Über die RTG</h1>
@@ -28,7 +28,7 @@ const About = props => (
         an diesem wunderbaren und hochroyalen Spaß teilzuhaben!
       </p>
       <br />
-      <Button color="primary" onClick={() => props.history.push('/')}>
+      <Button color="primary" onClick={() => history.push('/')}>
         Jetzt mitmachen!
       </Button>
     </section>

@@ -66,57 +66,70 @@ class UsersGrid extends Component {
   }
 
   render() {
-    let filteredUsers = this.state.users;
-    if (this.state.filterActive) {
+    const {
+      filterActive,
+      filterHasNotPaid,
+      filterInactive,
+      loading,
+      loadingError,
+      searchTerm,
+      users,
+    } = this.state;
+    const { theme } = this.props;
+
+    let filteredUsers = users;
+    if (filterActive) {
       filteredUsers = filteredUsers.filter(user => user.last_login !== null);
     }
-    if (this.state.filterInactive) {
+    if (filterInactive) {
       filteredUsers = filteredUsers.filter(user => user.last_login === null);
     }
-    if (this.state.filterHasNotPaid) {
+    if (filterHasNotPaid) {
       filteredUsers = filteredUsers.filter(user => !user.has_paid);
     }
-    if (this.state.searchTerm) {
+    if (searchTerm) {
       filteredUsers = filteredUsers.filter(user => (
         `${user.username} ${user.first_name} ${user.last_name}`.toLowerCase()
-          .indexOf(this.state.searchTerm.toLowerCase()) !== -1));
+          .indexOf(searchTerm.toLowerCase()) !== -1));
     }
 
     return (
       <section style={{ margin: '20px auto', maxWidth: 1024 }}>
         <UsersGridToolbar
-          searchTerm={this.state.searchTerm}
-          filterActive={this.state.filterActive}
-          filterInactive={this.state.filterInactive}
-          filterHasNotPaid={this.state.filterHasNotPaid}
+          searchTerm={searchTerm}
+          filterActive={filterActive}
+          filterInactive={filterInactive}
+          filterHasNotPaid={filterHasNotPaid}
 
-          onFilterActiveToggled={() =>
-            this.setState(prevState => ({ filterActive: !prevState.filterActive }))}
-          onFilterInactiveToggled={() =>
-            this.setState(prevState => ({ filterInactive: !prevState.filterInactive }))}
-          onFilterHasNotPaidToggled={() =>
-            this.setState(prevState => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
+          onFilterActiveToggled={() => this
+            .setState(prevState => ({ filterActive: !prevState.filterActive }))}
+          onFilterInactiveToggled={() => this
+            .setState(prevState => ({ filterInactive: !prevState.filterInactive }))}
+          onFilterHasNotPaidToggled={() => this
+            .setState(prevState => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
           onSearchTermUpdated={this.handleSearchTermUpdated}
         />
 
-        {this.state.loading && <CircularProgress />}
-        {this.state.loadingError &&
-        <Notification
-          type={NotificationType.ERROR}
-          title="Fehler beim Laden"
-          subtitle="Bitte versuche es erneut."
-          containerStyle={{ margin: '20px auto', maxWidth: '640px' }}
-        />}
+        {loading && <CircularProgress />}
+        {loadingError && (
+          <Notification
+            type={NotificationType.ERROR}
+            title="Fehler beim Laden"
+            subtitle="Bitte versuche es erneut."
+            containerStyle={{ margin: '20px auto', maxWidth: '640px' }}
+          />
+        )}
 
-        {(!this.state.loading && !this.state.loadingError) && (
+        {(!loading && !loadingError) && (
           <div
             style={{
               margin: '20px 0',
               fontSize: '14px',
-              color: this.props.theme.palette.grey['500'],
+              color: theme.palette.grey['500'],
             }}
           >
-            {filteredUsers.length === 0 ? 'Keine' : filteredUsers.length} User gefunden.
+            {filteredUsers.length === 0 ? 'Keine' : filteredUsers.length}
+            &nbsp;User gefunden.
           </div>
         )}
 

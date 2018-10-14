@@ -8,7 +8,7 @@ import OpenBetsIndicator from './OpenBetsIndicator';
 
 import './HeaderMenuItems.css';
 
-const HeaderMenuItems = props => (
+const HeaderMenuItems = ({ openBetsCount }) => (
   <div className="HeaderMenuItems" style={{ display: 'flex', alignItems: 'center', margin: 0 }}>
     <Link to="/standings" title="Spielstand">
       <Button variant="flat" color="primary" style={{ minWidth: 0, padding: 8 }}>
@@ -23,7 +23,7 @@ const HeaderMenuItems = props => (
         <span className="HeaderMenuItems__item-label">Tipps</span>
       </Button>
     </Link>
-    <OpenBetsIndicator number={props.openBetsCount} />
+    <OpenBetsIndicator number={openBetsCount} />
   </div>
 );
 

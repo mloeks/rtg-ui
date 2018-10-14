@@ -87,11 +87,13 @@ class Header extends Component {
   }
 
   handleMenuToggle() {
-    this.setState({ menuOpen: !this.state.menuOpen });
+    const { menuOpen } = this.state;
+    this.setState({ menuOpen: !menuOpen });
   }
 
   render() {
     const { menuOpen } = this.state;
+    const { history } = this.props;
 
     const createTitleVariant = (className, title, loggedIn) => (
       <Typography
@@ -99,7 +101,7 @@ class Header extends Component {
         variant="title"
         color="primary"
         style={{ margin: loggedIn ? '0' : '0 auto', flexGrow: loggedIn ? 1 : 0 }}
-        onClick={() => { this.props.history.push('/'); }}
+        onClick={() => { history.push('/'); }}
       >
         {title}
       </Typography>

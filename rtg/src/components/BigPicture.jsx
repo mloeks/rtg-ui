@@ -10,11 +10,11 @@ class BigPicture extends Component {
     super(props);
 
     this.state = {
-      showImg: !this.props.lazyLoadWhenInViewport,
+      showImg: !props.lazyLoadWhenInViewport,
     };
 
     this.ref = React.createRef();
-    if (this.props.lazyLoadWhenInViewport) {
+    if (props.lazyLoadWhenInViewport) {
       this.scrollListener = new ThrottledScrollPositionListener();
       this.resizeListener = new ThrottledEventListener('resize');
     }
@@ -22,7 +22,8 @@ class BigPicture extends Component {
   }
 
   componentDidMount() {
-    if (this.props.lazyLoadWhenInViewport) {
+    const { lazyLoadWhenInViewport } = this.props;
+    if (lazyLoadWhenInViewport) {
       this.displayIfLazyLoadAndInView();
 
       this.scrollListener.addCallback(this.displayIfLazyLoadAndInView);
@@ -36,20 +37,26 @@ class BigPicture extends Component {
   }
 
   displayIfLazyLoadAndInView() {
-    if (this.props.lazyLoadWhenInViewport && inViewport(this.ref.current, 50)) {
+    const { lazyLoadWhenInViewport } = this.props;
+    if (lazyLoadWhenInViewport && inViewport(this.ref.current, 50)) {
       this.setState({ showImg: true });
     }
   }
 
   render() {
-    const style = this.state.showImg ? {
-      backgroundImage: `url(${this.props.img})`,
-      backgroundPositionY: `${this.props.positionY}%`,
-    } : {};
+    const { showImg } = this.state;
+    const { children, img, positionY } = this.props;
+
+    const style = showImg
+      ? { backgroundImage: `url(${img})`, backgroundPositionY: `${positionY}%` } : {};
 
     return (
-      <section ref={this.ref} className={`BigPicture ${!this.state.showImg ? 'BigPicture--skeleton' : ''}`} style={style}>
-        {this.props.children}
+      <section
+        ref={this.ref}
+        className={`BigPicture ${!showImg ? 'BigPicture--skeleton' : ''}`}
+        style={style}
+      >
+        {children}
       </section>
     );
   }

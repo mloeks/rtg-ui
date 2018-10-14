@@ -15,6 +15,24 @@ class AddPostForm extends Component {
     };
   }
 
+  static savePost(post, successCallback, errorCallback) {
+    fetch(`${API_BASE_URL}/rtg/posts/${post.id ? `${post.id}/` : ''}`, {
+      method: post.id ? 'PATCH' : 'POST',
+      body: JSON.stringify(post),
+      headers: {
+        Authorization: `Token ${AuthService.getToken()}`,
+        'content-type': 'application/json',
+      },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        if (response.ok) {
+          successCallback(response.json);
+        } else {
+          errorCallback(response.json);
+        }
+      }).catch(() => errorCallback());
+  }
+
   static errorResponseToStateMapper(responseJson) {
     if (!responseJson) {
       return { savingError: true };
@@ -58,7 +76,6 @@ class AddPostForm extends Component {
       fieldErrors: AddPostForm.resetFieldErrors(),
     };
 
-    this.savePost = this.savePost.bind(this);
     this.handleFieldUpdate = this.handleFieldUpdate.bind(this);
     this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
@@ -94,24 +111,6 @@ class AddPostForm extends Component {
     };
   }
 
-  savePost(post, successCallback, errorCallback) {
-    fetch(`${API_BASE_URL}/rtg/posts/${post.id ? `${post.id}/` : ''}`, {
-      method: post.id ? 'PATCH' : 'POST',
-      body: JSON.stringify(post),
-      headers: {
-        Authorization: `Token ${AuthService.getToken()}`,
-        'content-type': 'application/json',
-      },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        if (response.ok) {
-          successCallback(response.json);
-        } else {
-          errorCallback(response.json);
-        }
-      }).catch(() => errorCallback());
-  }
-
   handleFieldUpdate(fieldName, value) {
     this.setState(
       { [fieldName]: value, draftSaving: true, draftSaved: false },
@@ -124,7 +123,7 @@ class AddPostForm extends Component {
     // always save drafts with news_appear = true (regardless of the actual checkbox value)
     // otherwise drafts currently won't be loaded after page reload
     const postToSave = { ...this.getPostBodyFromState(), finished: false, news_appear: true };
-    this.savePost(postToSave, (responseJson) => {
+    AddPostForm.savePost(postToSave, (responseJson) => {
       this.setState({
         draftSaving: false,
         draftSaved: true,
@@ -141,7 +140,7 @@ class AddPostForm extends Component {
     this.setState({ savingInProgress: true });
     const postToSave = { ...this.getPostBodyFromState(), finished: true };
 
-    this.savePost(postToSave, (responseJson) => {
+    AddPostForm.savePost(postToSave, (responseJson) => {
       const { onSaved } = this.props;
       this.setState({ savingInProgress: false });
       onSaved(responseJson);

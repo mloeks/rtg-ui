@@ -7,11 +7,11 @@ import FetchHelper from './FetchHelper';
 // Instead, I defined all three different API URLs in one .env file
 
 // eslint-disable-next-line no-nested-ternary
-export const API_BASE_URL = process.env.NODE_ENV === 'production' ?
-  (process.env.REACT_APP_ENV === 'production' ?
-    process.env.REACT_APP_PROD_API_URL :
-    process.env.REACT_APP_DEMO_API_URL
-  ) : process.env.REACT_APP_DEV_API_URL;
+export const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? (process.env.REACT_APP_ENV === 'production'
+    ? process.env.REACT_APP_PROD_API_URL
+    : process.env.REACT_APP_DEMO_API_URL)
+  : process.env.REACT_APP_DEV_API_URL;
 
 const LocalStorageWrapper = {
   get: key => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef
@@ -239,8 +239,8 @@ class AuthService {
               formHasErrors: true,
               fieldErrors: {
                 oldPassword: responseJson.old_password && responseJson.old_password[0],
-                newPassword: (responseJson.new_password1 && responseJson.new_password1[0]) ||
-                (responseJson.new_password2 && responseJson.new_password2[0]),
+                newPassword: (responseJson.new_password1 && responseJson.new_password1[0])
+                || (responseJson.new_password2 && responseJson.new_password2[0]),
               },
               nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
             });

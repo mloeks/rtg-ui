@@ -14,14 +14,17 @@ import './Reception.css';
 class Reception extends Component {
   static getReasonNotification(reason) {
     if (reason === LogoutReason.ACCOUNT_DELETED) {
-      return (<Notification
-        dismissable
-        type={NotificationType.SUCCESS}
-        title="Dein Account wurde gelöscht"
-        subtitle="Auf Wiedersehen und alles Gute!"
-        containerStyle={{ maxWidth: 400, margin: '20px auto'}}
-      />);
+      return (
+        <Notification
+          dismissable
+          type={NotificationType.SUCCESS}
+          title="Dein Account wurde gelöscht"
+          subtitle="Auf Wiedersehen und alles Gute!"
+          containerStyle={{ maxWidth: 400, margin: '20px auto' }}
+        />
+      );
     }
+    return null;
   }
 
   constructor(props) {
@@ -50,13 +53,16 @@ class Reception extends Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/foyer' } };
+    const { redirectToReferrer } = this.state;
+    const { location, match } = this.props;
 
-    if (this.state.redirectToReferrer || AuthService.isAuthenticated()) {
+    const { from } = location.state || { from: { pathname: '/foyer' } };
+
+    if (redirectToReferrer || AuthService.isAuthenticated()) {
       return (<Redirect to={from} />);
     }
 
-    const reasonToReLogin = this.props.match.params.reason;
+    const reasonToReLogin = match.params.reason;
     const userNotificationIfReasonPresent = Reception.getReasonNotification(reasonToReLogin);
 
     return (

@@ -21,7 +21,7 @@ import './CurrentGameCard.css';
 
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {
-    if (isSameDay(kickoff, subDays(new Date(), 1))) { return "Gestern"; }
+    if (isSameDay(kickoff, subDays(new Date(), 1))) { return 'Gestern'; }
     if (isSameDay(new Date(), kickoff)) { return 'Heute'; }
     if (isSameDay(kickoff, addDays(new Date(), 1))) { return 'Morgen'; }
 
@@ -47,14 +47,14 @@ class CurrentGameCard extends Component {
   }
 
   handleBetEdit() {
+    const { onBetEditStart } = this.props;
     this.setState({ betSaveFailed: false, editingBet: true, editingBetSuccessful: false });
-    this.props.onBetEditStart();
+    onBetEditStart();
   }
 
   handleBetEditCancel() {
-    this.setState({ editingBet: false }, () => {
-      this.props.onBetEditCancel();
-    })
+    const { onBetEditCancel } = this.props;
+    this.setState({ editingBet: false }, () => { onBetEditCancel(); });
   }
 
   handleBetSave() {
@@ -66,9 +66,10 @@ class CurrentGameCard extends Component {
   }
 
   handleBetSaveSuccess(gameId, newBet) {
+    const { onBetEditDone, userBet } = this.props;
     this.setState({ editingBet: false, editingBetSuccessful: true, shouldSaveBet: false });
-    const updatedBetId = this.props.userBet ? this.props.userBet.id : null;
-    this.props.onBetEditDone(updatedBetId, newBet);
+    const updatedBetId = userBet ? userBet.id : null;
+    onBetEditDone(updatedBetId, newBet);
   }
 
   handleBetSaveErrorInfoDialogClosed() {
@@ -82,16 +83,25 @@ class CurrentGameCard extends Component {
         editingBet: !cancelEdit,
         betSaveFailed: false,
         betSaveFailedType: null,
-        shouldSaveBet: false
+        shouldSaveBet: false,
       };
     });
   }
 
   render() {
-    const formattedRoundInfo = (game) => {
-      if (!game) return '...';
-      const roundName = game.round_details.name;
-      const groupName = game.group ? game.group.name : null;
+    const {
+      betSaveFailed,
+      betSaveFailedType,
+      editingBet,
+      editingBetSuccessful,
+      shouldSaveBet,
+    } = this.state;
+    const { game, theme, userBet } = this.props;
+
+    const formattedRoundInfo = (_game) => {
+      if (!_game) return '...';
+      const roundName = _game.round_details.name;
+      const groupName = _game.group ? _game.group.name : null;
       if (groupName) {
         return `${roundName} - ${groupName}`;
       }
@@ -100,20 +110,20 @@ class CurrentGameCard extends Component {
     return (
       <div className="CurrentGameCard">
         <RtgSeparator
-          content={this.props.game
+          content={game
             ? (
               <div>
-                {CurrentGameCard.getFormattedKickoffDate(this.props.game.kickoff)}
+                {CurrentGameCard.getFormattedKickoffDate(game.kickoff)}
                 <br />
                 <span
                   style={{
                     fontSize: '12px',
-                    color: this.props.theme.palette.grey['400'],
+                    color: theme.palette.grey['400'],
                     textTransform: 'initial',
                     letterSpacing: 0,
                   }}
                 >
-                  {formattedRoundInfo(this.props.game)}
+                  {formattedRoundInfo(game)}
                 </span>
               </div>)
             : '...'}
@@ -121,38 +131,38 @@ class CurrentGameCard extends Component {
           style={{ marginBottom: 10 }}
         />
 
-        {this.props.game ? (
-          <GameCard displayTeamNames="small" {...this.props.game}>
-            {this.state.editingBet ? (
+        {game ? (
+          <GameCard displayTeamNames="small" {...game}>
+            {editingBet ? (
               <GameCardBet
-                gameId={this.props.game.id}
-                hadSaveIssues={this.state.editingBet && this.state.betSaveFailed}
-                shouldSave={this.state.shouldSaveBet}
-                userBet={this.props.userBet}
+                gameId={game.id}
+                hadSaveIssues={editingBet && betSaveFailed}
+                shouldSave={shouldSaveBet}
+                userBet={userBet}
                 onSaveFailure={this.handleBetSaveFailure}
                 onSaveSuccess={this.handleBetSaveSuccess}
               />
             ) : (
               <GameCardGameInfo
-                city={this.props.game.city}
-                kickoff={toDate(this.props.game.kickoff)}
-                result={this.props.game.homegoals !== -1 && this.props.game.awaygoals !== -1 ? `${this.props.game.homegoals} : ${this.props.game.awaygoals}` : null}
-                resultBetType={this.props.userBet ? this.props.userBet.result_bet_type : null}
-                points={this.props.userBet ? this.props.userBet.points : null}
-                userBet={this.props.userBet ? this.props.userBet.result_bet : null}
+                city={game.city}
+                kickoff={toDate(game.kickoff)}
+                result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
+                resultBetType={userBet ? userBet.result_bet_type : null}
+                points={userBet ? userBet.points : null}
+                userBet={userBet ? userBet.result_bet : null}
               />
             )}
           </GameCard>
         ) : <NullGameCard />}
 
-        {this.props.game && this.props.game.bets_open && (
+        {game && game.bets_open && (
           <div className="CurrentGameCard__actions">
-            {this.state.editingBet && (
+            {editingBet && (
               <Fragment>
                 <Button
                   color="primary"
                   icon={<SaveIcon style={{ width: 20, height: 20 }} />}
-                  disabled={this.state.shouldSaveBet}
+                  disabled={shouldSaveBet}
                   onClick={this.handleBetSave}
                 >
                   Speichern
@@ -161,18 +171,18 @@ class CurrentGameCard extends Component {
                 <Button onClick={this.handleBetEditCancel}>Abbrechen</Button>
               </Fragment>)}
 
-            {(!this.state.editingBet && !this.state.editingBetSuccessful)
+            {(!editingBet && !editingBetSuccessful)
             && (
               <Button
                 color="primary"
                 icon={<EditIcon style={{ width: 20, height: 20 }} />}
                 onClick={this.handleBetEdit}
               >
-                {this.props.userBet ? 'Tipp ändern' : 'Tipp abgeben'}
+                {userBet ? 'Tipp ändern' : 'Tipp abgeben'}
               </Button>
             )}
 
-            {this.state.editingBetSuccessful && (
+            {editingBetSuccessful && (
               <Notification
                 type={NotificationType.SUCCESS}
                 title="Gespeichert"
@@ -190,15 +200,15 @@ class CurrentGameCard extends Component {
             <Button color="primary" onClick={this.handleBetSaveErrorInfoDialogClosed}>
               Ok
             </Button>]}
-          open={this.state.betSaveFailed}
+          open={betSaveFailed}
           onRequestClose={this.handleBetSaveErrorInfoDialogClosed}
         >
-          {this.state.betSaveFailedType === SavingErrorType.INCOMPLETE &&
-            'Bitte gib einen vollständigen Tipp ein.'}
-          {this.state.betSaveFailedType === SavingErrorType.DEADLINE_PASSED &&
-            'Die Deadline für diesen Tipp ist abgelaufen. Eine Tippabgabe ist daher leider nicht mehr möglich.'}
-          {this.state.betSaveFailedType === SavingErrorType.FAILED &&
-            'Das Speichern des Tipps ist leider fehlgeschlagen. Bitte versuche es erneut.'}
+          {betSaveFailedType === SavingErrorType.INCOMPLETE
+            && 'Bitte gib einen vollständigen Tipp ein.'}
+          {betSaveFailedType === SavingErrorType.DEADLINE_PASSED
+            && 'Die Deadline für diesen Tipp ist abgelaufen. Eine Tippabgabe ist daher leider nicht mehr möglich.'}
+          {betSaveFailedType === SavingErrorType.FAILED
+            && 'Das Speichern des Tipps ist leider fehlgeschlagen. Bitte versuche es erneut.'}
         </Dialog>
       </div>
     );
@@ -209,6 +219,7 @@ CurrentGameCard.defaultProps = {
   game: null,
   userBet: null,
   onBetEditStart: () => {},
+  onBetEditCancel: () => {},
 };
 
 CurrentGameCard.propTypes = {
