@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import differenceInSeconds from 'date-fns/difference_in_seconds';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
 import FetchHelper from './FetchHelper';
 
 // Unfortunately this does not work as elegantly as described here:

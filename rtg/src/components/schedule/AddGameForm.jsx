@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { format, startOfMinute } from 'date-fns';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddGameFormDisplay from './AddGameFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
-import { format, startOfMinute } from 'date-fns';
 
 class AddGameForm extends Component {
   static resetFieldErrors() {
@@ -39,7 +39,7 @@ class AddGameForm extends Component {
   }
 
   static isoDateStringFromDateAndTime(dateString, timeString) {
-    const datePart = format(dateString, 'YYYY-MM-DD');
+    const datePart = format(dateString, 'YYYY-MM-dd');
     const timePart = format(startOfMinute(timeString), 'THH:mm:ss');
     return datePart + timePart;
   }

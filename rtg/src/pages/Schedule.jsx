@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 
 import AddIcon from '@material-ui/icons/Add';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import { format, isSameDay, parse } from 'date-fns';
+import { format, isSameDay, toDate } from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import Page from './Page';
@@ -168,7 +168,7 @@ class Schedule extends Component {
         gameCardsWithDateSubheadings
           .push(<RtgSeparator
             key={game.kickoff}
-            content={format(parse(game.kickoff), 'dddd D. MMMM', { locale: de })}
+            content={format(toDate(game.kickoff), 'EEEE d. MMMM', { locale: de })}
             style={{ margin: '15px auto' }}
           />);
         lastGameDay = game.kickoff;
@@ -186,7 +186,7 @@ class Schedule extends Component {
             <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
               <GameCardGameInfo
                 city={game.city}
-                kickoff={parse(game.kickoff)}
+                kickoff={toDate(game.kickoff)}
                 result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
                 resultBetType={userBet.result_bet_type}
                 points={userBet.points}

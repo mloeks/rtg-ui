@@ -11,14 +11,7 @@ import Collapse from '@material-ui/core/Collapse';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
 
-import {
-  differenceInMinutes,
-  differenceInSeconds,
-  distanceInWordsStrict,
-  format,
-  isToday,
-  isYesterday,
-} from 'date-fns';
+import { differenceInMinutes, differenceInSeconds, format, formatDistanceStrict, isSameDay, subDays, } from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import UserAvatar from '../UserAvatar';
@@ -48,14 +41,14 @@ export const getFormattedPostDate = (date) => {
     return 'Gerade eben';
   }
   if (differenceInMinutes(now, date) < 60) {
-    return distanceInWordsStrict(now, date, { locale: de, addSuffix: true, unit: 'm' });
+    return formatDistanceStrict(now, date, { locale: de, addSuffix: true, unit: 'm' });
   }
 
-  const formattedTime = format(date, 'HH:mm [Uhr]');
-  if (isToday(date)) { return `Heute, ${formattedTime}`; }
-  if (isYesterday(date)) { return `Gestern, ${formattedTime}`; }
+  const formattedTime = format(date, 'HH:mm \'Uhr\'');
+  if (isSameDay(date, new Date())) { return `Heute, ${formattedTime}`; }
+  if (isSameDay(date, subDays(new Date(), 1))) { return `Gestern, ${formattedTime}`; }
 
-  return `${format(date, 'dd. D. MMMM', { locale: de })}, ${formattedTime}`;
+  return `${format(date, 'EEEEEE. d. MMMM', { locale: de })}, ${formattedTime}`;
 };
 
 class Post extends Component {

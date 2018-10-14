@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { format, isToday, isTomorrow, isYesterday, parse } from 'date-fns';
+import { addDays, format, isSameDay, subDays, toDate, } from 'date-fns';
 import de from 'date-fns/locale/de';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,12 +18,12 @@ import './CurrentGameCard.css';
 
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {
-    if (isYesterday(kickoff)) { return "Gestern"; }
-    if (isToday(kickoff)) { return 'Heute'; }
-    if (isTomorrow(kickoff)) { return 'Morgen'; }
+    if (isSameDay(kickoff, subDays(new Date(), 1))) { return "Gestern"; }
+    if (isSameDay(new Date(), kickoff)) { return 'Heute'; }
+    if (isSameDay(kickoff, addDays(new Date(), 1))) { return 'Morgen'; }
 
-    return format(kickoff, 'dd. D. MMMM', { locale: de });
-  };
+    return format(kickoff, 'EEEEEE. d. LLLL', { locale: de });
+  }
 
   constructor(props) {
     super(props);
@@ -126,7 +126,7 @@ class CurrentGameCard extends Component {
             ) : (
               <GameCardGameInfo
                 city={this.props.game.city}
-                kickoff={parse(this.props.game.kickoff)}
+                kickoff={toDate(this.props.game.kickoff)}
                 result={this.props.game.homegoals !== -1 && this.props.game.awaygoals !== -1 ? `${this.props.game.homegoals} : ${this.props.game.awaygoals}` : null}
                 resultBetType={this.props.userBet ? this.props.userBet.result_bet_type : null}
                 points={this.props.userBet ? this.props.userBet.points : null}

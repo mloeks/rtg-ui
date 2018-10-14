@@ -4,7 +4,8 @@ import { withTheme } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
-import { distanceInWordsToNow, format } from 'date-fns';
+import format from 'date-fns/format';
+import formatDistance from 'date-fns/formatDistance';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
@@ -94,9 +95,9 @@ class GameBetsTab extends Component {
     const gameCardsWithDeadlineSubheadings = [];
     let lastFormattedDeadline = null;
     games.forEach((game) => {
-      const formattedDeadline = format(game.deadline, 'dd. DD.MM. - HH:mm [Uhr]', { locale: de });
+      const formattedDeadline = format(game.deadline, 'EEEEEE. dd.MM. - HH:mm \'Uhr\'', { locale: de });
       if (lastFormattedDeadline === null || formattedDeadline !== lastFormattedDeadline) {
-        const relativeDeadlineText = `Noch ${distanceInWordsToNow(game.deadline, { locale: de })}`;
+        const relativeDeadlineText = `Noch ${formatDistance(game.deadline, Date.now(), { locale: de })}`;
         gameCardsWithDeadlineSubheadings
           .push(
             <div

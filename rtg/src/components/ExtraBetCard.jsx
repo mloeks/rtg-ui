@@ -16,7 +16,8 @@ import Select from '@material-ui/core/Select';
 import StarIcon from '@material-ui/icons/Star';
 import AlarmIcon from '@material-ui/icons/Alarm';
 
-import { distanceInWordsToNow, format } from 'date-fns';
+import format from 'date-fns/format';
+import formatDistance from 'date-fns/formatDistance';
 import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
@@ -28,8 +29,8 @@ import './ExtraBetCard.css';
 // TODO P3 display country flags in drop down
 class ExtraBetCard extends Component {
   static getRemainingTime(deadline) {
-    const absoluteDateTime = format(deadline, 'dd. DD. MMM, HH:mm [Uhr]', { locale: de });
-    const relativeDistance = distanceInWordsToNow(deadline, { locale: de });
+    const absoluteDateTime = format(deadline, 'EEEEEE. dd. MMM, HH:mm \'Uhr\'', { locale: de });
+    const relativeDistance = formatDistance(deadline, Date.now(), { locale: de });
     return `${relativeDistance} – ${absoluteDateTime}`;
   }
 

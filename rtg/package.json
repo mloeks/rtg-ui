@@ -10,7 +10,7 @@
     "babel-polyfill": "^6.26.0",
     "blob-polyfill": "^3.0.20180112",
     "canvas-toBlob": "^1.0.0",
-    "date-fns": "^1.29.0",
+    "date-fns": "^2.0.0-alpha.16",
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
