@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import ReactRouterProptypes from 'react-router-prop-types';
+import { Link } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import { Link } from 'react-router-dom';
-import { withTheme } from '@material-ui/core/styles';
+
 import Page from './Page';
 import AuthService from '../service/AuthService';
 import BigPicture from '../components/BigPicture';
+import Notification, { NotificationType } from '../components/Notification';
 import VisiblePasswordField from '../components/VisiblePasswordField';
 
 import headingImg from '../theme/img/headings/gate_head_emblem.jpg';
@@ -19,17 +20,17 @@ class PasswordReset extends Component {
 
     this.getInitialState = this.getInitialState.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-    this.updatePasswordRepeat = this.updatePasswordRepeat.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = this.getInitialState();
   }
 
   getInitialState() {
+    const { match } = this.props;
     return {
       password: '',
-      uid: this.props.match.params.uid,
-      token: this.props.match.params.token,
+      uid: match.params.uid,
+      token: match.params.token,
 
       requestInProgress: false,
       resetSuccessful: false,
@@ -47,13 +48,13 @@ class PasswordReset extends Component {
     this.setState(newState);
   }
 
-  updatePassword(event, newValue) { this.updateFormField('password', newValue); }
-
-  updatePasswordRepeat(event, newValue) { this.updateFormField('passwordRepeat', newValue); }
+  updatePassword(e) { this.updateFormField('password', e.target.value); }
 
   handleSubmit(e) {
+    const { password, token, uid } = this.state;
+
     this.setState({ requestInProgress: true });
-    AuthService.confirmPasswordReset(this.state.password, this.state.uid, this.state.token)
+    AuthService.confirmPasswordReset(password, uid, token)
       .then(() => {
         this.setState({
           ...this.getInitialState(), resetSuccessful: true, requestInProgress: false,
@@ -71,54 +72,79 @@ class PasswordReset extends Component {
   }
 
   render() {
-    const formSuccessStyle = { color: this.props.theme.palette.success, marginTop: '20px', textAlign: 'center' };
-    const formErrorStyle = { color: this.props.theme.palette.error.main, marginTop: '20px', textAlign: 'center' };
+    const {
+      fieldErrors,
+      formError,
+      formHasErrors,
+      password,
+      resetSuccessful,
+    } = this.state;
 
     return (
       <Page className="PasswordResetPage">
         <BigPicture className="RulesPage__heading" img={headingImg}>
           <h1 className="BigPicture__heading">Neues Passwort vergeben</h1>
         </BigPicture>
-        <Paper className="PasswordResetForm" zDepth={1}>
-          <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort ein:</p>
-          <form className="PasswordResetForm__form" onSubmit={this.handleSubmit}>
-            <VisiblePasswordField
-              errorText={this.state.fieldErrors.password || false}
-              floatingLabelText="Passwort"
-              fullWidth
-              value={this.state.password}
-              onChange={this.updatePassword}
-            /><br /><br />
+        <Paper className="PasswordResetForm" elevation={6}>
+          {!resetSuccessful && (
+            <Fragment>
+              <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort ein:</p>
+              <form className="PasswordResetForm__form" onSubmit={this.handleSubmit}>
+                <VisiblePasswordField
+                  error={Boolean(fieldErrors.password)}
+                  label="Passwort"
+                  helperText={fieldErrors.password ? fieldErrors.password[0] : null}
+                  fullWidth
+                  value={password}
+                  onChange={this.updatePassword}
+                />
+                <br />
+                <br />
 
-            <Button
-              variant="raised"
-              className="PasswordReset__submit"
-              fullWidth
-              color="primary"
-              type="submit"
-            >
-              Abschicken
-            </Button>
-          </form>
+                <Button
+                  className="PasswordReset__submit"
+                  color="primary"
+                  fullWidth
+                  variant="raised"
+                  type="submit"
+                >
+                  Abschicken
+                </Button>
+              </form>
+            </Fragment>
+          )}
 
-          {this.state.resetSuccessful === true &&
-          <div className="PasswordReset__resetSuccess" style={formSuccessStyle}>
-            Vielen Dank, du kannst dich nun mit deinem neuen Passwort einloggen.<br />
-            <Link to="/">
-              <Button style={{ marginTop: '20px' }}>Zum Login</Button>
-            </Link>
-          </div>}
+          {resetSuccessful === true && (
+            <Fragment>
+              <Notification
+                type={NotificationType.SUCCESS}
+                title="Neues Passwort erfolgreich festgelegt"
+                subtitle="Du kannst dich nun mit deinem neuen Passwort einloggen."
+              />
+              <br />
+              <Link to="/">
+                <Button color="primary">Zum Login</Button>
+              </Link>
+            </Fragment>
+          )}
 
-          {this.state.formHasErrors &&
-          <div className="PasswordReset__formError" style={formErrorStyle}>
-            {this.state.formError}
-          </div>}
+          {formHasErrors && (
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle={formError}
+              containerStyle={{ marginTop: 20 }}
+            />
+          )}
 
-          {(this.state.fieldErrors.uid || this.state.fieldErrors.token) &&
-          <div className="PasswordReset__tokenError" style={formErrorStyle}>
-            Es tut uns Leid, aber der Link wurde bereits verwendet,
-            ist anderweitig ungültig oder abgelaufen.
-          </div>}
+          {(fieldErrors.uid || fieldErrors.token) && (
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle="Der Link wurde bereits verwendet, ist anderweitig ungültig oder abgelaufen."
+              containerStyle={{ marginTop: 20 }}
+            />
+          )}
         </Paper>
       </Page>);
   }
@@ -127,8 +153,6 @@ class PasswordReset extends Component {
 PasswordReset.propTypes = {
   // eslint-disable-next-line react/no-typos
   match: ReactRouterProptypes.match.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  theme: PropTypes.object.isRequired,
 };
 
-export default withTheme()(PasswordReset);
+export default PasswordReset;

@@ -6,9 +6,11 @@
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
-    * Password reset page
+    * User management page
     * Never use colours exported from RtgTheme directly, favour withTheme, remove exports
     * Check remaining linter complaints
+
+* Material UI v3.x
     
 ### Follow-up Material UI upgrade
 
