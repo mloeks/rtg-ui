@@ -27,7 +27,7 @@ class StandingsTableRow extends Component {
   }
 
   hideUserDetailsPopover() {
-    this.setState({ userDetailsPopoverOpen: false });
+    this.setState({ userDetailsPopoverOpen: false, userDetailsPopoverAnchorEl: null });
   }
 
   render() {
@@ -54,6 +54,15 @@ class StandingsTableRow extends Component {
 
     return (
       <Fragment>
+        <UserDetailsPopover
+          anchorEl={userDetailsPopoverAnchorEl}
+          avatar={userAvatar}
+          userId={userId}
+          username={username}
+          open={userDetailsPopoverOpen}
+          onClose={this.hideUserDetailsPopover}
+        />
+
         <TableRow
           hover
           style={{ height: rowHeight }}
@@ -76,15 +85,6 @@ class StandingsTableRow extends Component {
                 paddingLeft: 0,
               }}
             >
-              <UserDetailsPopover
-                anchorEl={userDetailsPopoverAnchorEl}
-                avatar={userAvatar}
-                userId={userId}
-                username={username}
-                open={userDetailsPopoverOpen}
-                onClose={this.hideUserDetailsPopover}
-              />
-
               {showUserAvatar && (
                 <UserAvatar
                   img={userAvatar}

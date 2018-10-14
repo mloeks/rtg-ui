@@ -7,7 +7,6 @@
     * Schedule page: find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
-    * UserDetailsPopover: bottom margin; click away and close button not closing properly
     * Password reset page
     * Never use colours exported from RtgTheme directly, favour withTheme, remove exports
     * Check remaining linter complaints

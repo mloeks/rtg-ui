@@ -258,7 +258,7 @@ class Post extends Component {
         </CardActions>
 
         <Collapse in={expanded} unmountOnExit>
-          <CardContent className="Post__comments" expandable style={{ paddingBottom: 8 }}>
+          <CardContent className="Post__comments" style={{ paddingBottom: 8 }}>
             <CommentsList
               hierarchyLevel={0}
               postId={post.id}
