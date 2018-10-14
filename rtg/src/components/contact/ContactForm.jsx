@@ -88,42 +88,56 @@ class ContactForm extends Component {
   }
 
   render() {
+    const {
+      author,
+      content,
+      email,
+      fieldErrors,
+      formHasErrors,
+      isSaving,
+      savingError,
+      savingSuccess,
+    } = this.state;
+
     return (
-      <Paper className="ContactForm" zDepth={4}>
+      <Paper className="ContactForm" elevation={6}>
         <h2>Kontakt zum Königshaus</h2>
         <p>Hier könnt ihr Fragen oder Anmerkungen an das Royale Paar übermitteln:</p>
 
         <form onSubmit={this.handleSubmit} noValidate>
           <ContactFormPresentational
-            author={this.state.author}
-            email={this.state.email}
-            content={this.state.content}
+            author={author}
+            email={email}
+            content={content}
 
-            authorError={this.state.fieldErrors.author}
-            emailError={this.state.fieldErrors.email}
-            contentError={this.state.fieldErrors.content}
+            authorError={fieldErrors.author}
+            emailError={fieldErrors.email}
+            contentError={fieldErrors.content}
 
-            isSaving={this.state.isSaving}
-            formHasErrors={this.state.formHasErrors}
+            isSaving={isSaving}
+            formHasErrors={formHasErrors}
 
-            onFieldChange={(field, value) =>
-              this.setState({ [field]: value, formHasErrors: false })}
-          /><br />
+            onFieldChange={(field, value) => this
+              .setState({ [field]: value, formHasErrors: false })}
+          />
+          <br />
 
-          {this.state.savingError &&
+          {savingError && (
             <Notification
               type={NotificationType.ERROR}
               title="Das hat leider nicht geklappt"
-              subtitle={this.state.formHasErrors ? 'Bitte überprüfe Deine Angaben.' : 'Bitte versuche es erneut.'}
-            />}
+              subtitle={formHasErrors ? 'Bitte überprüfe Deine Angaben.' : 'Bitte versuche es erneut.'}
+            />
+          )}
 
-          {this.state.savingSuccess &&
+          {savingSuccess && (
             <Notification
               type={NotificationType.SUCCESS}
               title="Danke für Dein Feedback"
               subtitle="Deine Nachricht wurde an die Poststelle des Königshauses übermittelt."
               disappearAfterMs={5000}
-            />}
+            />
+          )}
         </form>
       </Paper>
     );

@@ -3,38 +3,46 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-const ContactFormPresentational = props => (
+const ContactFormPresentational = ({
+  author, authorError, content, contentError, email, emailError, formHasErrors,
+  isSaving, onFieldChange,
+}) => (
   <Fragment>
     <TextField
+      error={Boolean(authorError)}
       name="author"
-      floatingLabelText="Dein Name"
+      label="Dein Name"
       fullWidth
-      value={props.author}
-      errorText={props.authorError}
+      value={author}
+      helperText={authorError}
       style={{ textAlign: 'left' }}
-      onChange={(e, v) => props.onFieldChange('author', v)}
+      onChange={e => onFieldChange('author', e.target.value)}
     />
     <br />
+    <br />
     <TextField
+      error={Boolean(emailError)}
       name="email"
-      floatingLabelText="Deine E-Mail Adresse"
+      label="Deine E-Mail Adresse"
       fullWidth
-      value={props.email}
-      errorText={props.emailError}
+      value={email}
+      helperText={emailError}
       style={{ textAlign: 'left' }}
-      onChange={(e, v) => props.onFieldChange('email', v)}
+      onChange={e => onFieldChange('email', e.target.value)}
     />
     <br />
+    <br />
     <TextField
+      error={Boolean(contentError)}
       name="content"
-      floatingLabelText="Nachricht an das Königshaus"
+      label="Nachricht an das Königshaus"
       fullWidth
-      multiLine
+      multiline
       rows={5}
-      value={props.content}
-      errorText={props.contentError}
+      value={content}
+      helperText={contentError}
       style={{ textAlign: 'left' }}
-      onChange={(e, v) => props.onFieldChange('content', v)}
+      onChange={e => onFieldChange('content', e.target.value)}
     />
     <br />
 
@@ -42,10 +50,10 @@ const ContactFormPresentational = props => (
       variant="raised"
       color="primary"
       type="submit"
-      disabled={props.isSaving || props.formHasErrors}
-      style={{ width: 200, margin: '30px auto' }}
+      disabled={isSaving || formHasErrors}
+      style={{ width: 200, margin: '30px auto 10px' }}
     >
-      {props.isSaving ? 'Unterwegs...' : 'Zur Post geben'}
+      {isSaving ? 'Unterwegs...' : 'Zur Post geben'}
     </Button>
   </Fragment>
 );
@@ -54,6 +62,10 @@ ContactFormPresentational.defaultProps = {
   author: '',
   email: '',
   content: '',
+
+  authorError: null,
+  emailError: null,
+  contentError: null,
 };
 
 ContactFormPresentational.propTypes = {
