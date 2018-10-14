@@ -27,18 +27,22 @@ if (areIntlLocalesSupported(['de'])) {
   require('intl/locale-data/jsonp/de');
 }
 
-const AddGameFormDisplay = (props) => {
-  const selectedRound = props.rounds.find(round => round.id === props.round);
+const AddGameFormDisplay = ({
+  deadlineDate, deadlineTime, group, groups, groupError, kickoffDate, kickoffTime, nonFieldError,
+  onCancel, onFieldChange, onSubmit, round, rounds, roundError, savingError, savingInProgress,
+  teams, team1, team1Error, team2, team2Error, venue, venues, venueError,
+}) => {
+  const selectedRound = rounds.find(r => r.id === round);
   return (
     <form
       noValidate
-      onSubmit={props.onSubmit}
+      onSubmit={onSubmit}
       style={{
         margin: '0 auto',
         padding: 20,
         textAlign: 'left',
         maxWidth: 1024,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
       }}
     >
       <Paper zDepth={3} style={{ padding: 15 }}>
@@ -47,55 +51,53 @@ const AddGameFormDisplay = (props) => {
         <Select
           floatingLabelText="Runde"
           fullWidth
-          value={props.round}
-          errorText={props.roundError}
-          onChange={(e, i, val) => props.onFieldChange('round', val)}
+          value={round}
+          errorText={roundError}
+          onChange={(e, i, val) => onFieldChange('round', val)}
           menuItemStyle={{ textAlign: 'left' }}
         >
           <MenuItem value={null} primaryText="" />
-          {props.rounds.map(round =>
-            <MenuItem key={`round-${round.id}`} value={round.id} primaryText={round.name} />)}
+          {rounds.map(r => <MenuItem key={`round-${r.id}`} value={r.id} primaryText={r.name} />)}
         </Select>
         <br />
 
-        {selectedRound && !selectedRound.is_knock_out && <Select
-          floatingLabelText="Gruppe"
-          fullWidth
-          value={props.group}
-          errorText={props.groupError}
-          onChange={(e, i, val) => props.onFieldChange('group', val)}
-          menuItemStyle={{ textAlign: 'left' }}
-        >
-          <MenuItem value={null} primaryText="" />
-          {props.groups.map(group =>
-            <MenuItem key={`group-${group.id}`} value={group.id} primaryText={group.name} />)}
-        </Select>}
+        {selectedRound && !selectedRound.is_knock_out && (
+          <Select
+            floatingLabelText="Gruppe"
+            fullWidth
+            value={group}
+            errorText={groupError}
+            onChange={(e, i, val) => onFieldChange('group', val)}
+            menuItemStyle={{ textAlign: 'left' }}
+          >
+            <MenuItem value={null} primaryText="" />
+            {groups.map(g => <MenuItem key={`group-${g.id}`} value={g.id} primaryText={g.name} />)}
+          </Select>
+        )}
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Select
             floatingLabelText="Team 1"
-            value={props.team1}
-            errorText={props.team1Error}
+            value={team1}
+            errorText={team1Error}
             maxHeight={300}
-            onChange={(e, i, val) => props.onFieldChange('team1', val)}
+            onChange={(e, i, val) => onFieldChange('team1', val)}
             menuItemStyle={{ textAlign: 'left' }}
           >
             <MenuItem value={null} primaryText="" />
-            {props.teams.map(team =>
-              <MenuItem key={`team1-${team.id}`} value={team.id} primaryText={team.name} />)}
+            {teams.map(t => <MenuItem key={`team1-${t.id}`} value={t.id} primaryText={t.name} />)}
           </Select>
           <span style={{ margin: '25px 10px 0' }}>vs.</span>
           <Select
             floatingLabelText="Team 2"
-            value={props.team2}
-            errorText={props.team2Error}
+            value={team2}
+            errorText={team2Error}
             maxHeight={300}
-            onChange={(e, i, val) => props.onFieldChange('team2', val)}
+            onChange={(e, i, val) => onFieldChange('team2', val)}
             menuItemStyle={{ textAlign: 'left' }}
           >
             <MenuItem value={null} primaryText="" />
-            {props.teams.map(team =>
-              <MenuItem key={`team2-${team.id}`} value={team.id} primaryText={team.name} />)}
+            {teams.map(t => <MenuItem key={`team2-${t.id}`} value={t.id} primaryText={t.name} />)}
           </Select>
         </div>
         <br />
@@ -104,15 +106,15 @@ const AddGameFormDisplay = (props) => {
         <div style={{ display: 'flex' }}>
           <TextField
             label="Datum"
-            value={props.kickoffDate}
-            onChange={(e, v) => props.onFieldChange('kickoffDate', v)}
+            value={kickoffDate}
+            onChange={(e, v) => onFieldChange('kickoffDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
           <TextField
             label="Uhrzeit (MESZ)"
-            value={props.kickoffTime}
-            onChange={(e, v) => props.onFieldChange('kickoffTime', v)}
+            value={kickoffTime}
+            onChange={(e, v) => onFieldChange('kickoffTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
@@ -122,15 +124,15 @@ const AddGameFormDisplay = (props) => {
         <div style={{ display: 'flex' }}>
           <TextField
             label="Datum"
-            value={props.deadlineDate}
-            onChange={(e, v) => props.onFieldChange('deadlineDate', v)}
+            value={deadlineDate}
+            onChange={(e, v) => onFieldChange('deadlineDate', v)}
             style={{ marginRight: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
           <TextField
             label="Uhrzeit (MESZ)"
-            value={props.deadlineTime}
-            onChange={(e, v) => props.onFieldChange('deadlineTime', v)}
+            value={deadlineTime}
+            onChange={(e, v) => onFieldChange('deadlineTime', v)}
             style={{ marginLeft: 5, width: '50%' }}
             textFieldStyle={{ width: '100%' }}
           />
@@ -139,34 +141,32 @@ const AddGameFormDisplay = (props) => {
         <Select
           floatingLabelText="Austragungsort"
           fullWidth
-          value={props.venue}
-          errorText={props.venueError}
+          value={venue}
+          errorText={venueError}
           maxHeight={300}
-          onChange={(e, i, val) => props.onFieldChange('venue', val)}
+          onChange={(e, i, val) => onFieldChange('venue', val)}
           menuItemStyle={{ textAlign: 'left' }}
         >
           <MenuItem value={null} primaryText="" />
-          {props.venues.map(venue => <MenuItem key={`round-${venue.id}`} value={venue.id} primaryText={venue.city} />)}
+          {venues.map(v => <MenuItem key={`round-${v.id}`} value={v.id} primaryText={v.city} />)}
         </Select>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button color="secondary" onClick={props.onCancel}>Abbrechen</Button>
-          <Button color="primary" type="submit" disabled={props.savingInProgress}>
+          <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
+          <Button color="primary" type="submit" disabled={savingInProgress}>
             Spiel anlegen
           </Button>
         </div>
 
         <div style={{ marginTop: 10, textAlign: 'center' }}>
-          {props.savingInProgress &&
-            <CircularProgress size={30} thickness={2.5} />}
-          {props.savingError === true
-            && (
-              <Notification
-                type={NotificationType.ERROR}
-                title="Das hat leider nicht geklappt"
-                subtitle={props.nonFieldError || 'Bitte überprüfe Deine Angaben.'}
-              />
-            )}
+          {savingInProgress && <CircularProgress size={30} thickness={2.5} />}
+          {savingError === true && (
+            <Notification
+              type={NotificationType.ERROR}
+              title="Das hat leider nicht geklappt"
+              subtitle={nonFieldError || 'Bitte überprüfe Deine Angaben.'}
+            />
+          )}
         </div>
       </Paper>
     </form>
@@ -198,10 +198,12 @@ AddGameFormDisplay.defaultProps = {
 };
 
 AddGameFormDisplay.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   rounds: PropTypes.array.isRequired,
   groups: PropTypes.array.isRequired,
   teams: PropTypes.array.isRequired,
   venues: PropTypes.array.isRequired,
+  /* eslint-enable react/forbid-prop-types */
 
   round: PropTypes.number,
   group: PropTypes.number,

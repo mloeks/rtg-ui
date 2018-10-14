@@ -25,7 +25,7 @@ class AddGameForm extends Component {
 
     return {
       savingError: true,
-      nonFieldError: responseJson.non_field_errors ? responseJson.non_field_errors[0] :  '',
+      nonFieldError: responseJson.non_field_errors ? responseJson.non_field_errors[0] : '',
       fieldErrors: {
         round: responseJson.tournament_round ? responseJson.tournament_round[0] : '',
         group: responseJson.tournament_group ? responseJson.tournament_group[0] : '',
@@ -42,6 +42,24 @@ class AddGameForm extends Component {
     const datePart = format(dateString, 'YYYY-MM-DD');
     const timePart = format(startOfMinute(timeString), 'THH:mm:ss');
     return datePart + timePart;
+  }
+
+  static saveGame(game, successCallback, errorCallback) {
+    fetch(`${API_BASE_URL}/rtg/games/`, {
+      method: 'POST',
+      body: JSON.stringify(game),
+      headers: {
+        Authorization: `Token ${AuthService.getToken()}`,
+        'content-type': 'application/json',
+      },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        if (response.ok) {
+          successCallback(response.json);
+        } else {
+          errorCallback(response.json);
+        }
+      }).catch(() => errorCallback());
   }
 
   constructor(props) {
@@ -71,7 +89,6 @@ class AddGameForm extends Component {
       fieldErrors: AddGameForm.resetFieldErrors(),
     };
 
-    this.saveGame = this.saveGame.bind(this);
     this.handleFieldUpdate = this.handleFieldUpdate.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
@@ -83,56 +100,49 @@ class AddGameForm extends Component {
     this.fetchData(`${API_BASE_URL}/rtg/venues/`, 'venues', false);
   }
 
+  getPostBodyFromState() {
+    const {
+      deadlineDate,
+      deadlineTime,
+      group,
+      kickoffDate,
+      kickoffTime,
+      round,
+      team1,
+      team2,
+      venue,
+    } = this.state;
+
+    return {
+      round,
+      group,
+      kickoff: AddGameForm.isoDateStringFromDateAndTime(kickoffDate, kickoffTime),
+      deadline: AddGameForm.isoDateStringFromDateAndTime(deadlineDate, deadlineTime),
+      hometeam: team1,
+      awayteam: team2,
+      venue,
+    };
+  }
+
   fetchData(url, targetStateField) {
     fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
         this.setState(() => (
-          response.ok ?
-            { [targetStateField]: response.json } : { loadingError: true }
+          response.ok ? { [targetStateField]: response.json } : { loadingError: true }
         ));
       }).catch(() => this.setState({ loadingError: true }));
   }
 
-  getPostBodyFromState() {
-    return {
-      round: this.state.round,
-      group: this.state.group,
-      kickoff: AddGameForm.isoDateStringFromDateAndTime(this.state.kickoffDate, this.state.kickoffTime),
-      deadline: AddGameForm.isoDateStringFromDateAndTime(this.state.deadlineDate, this.state.deadlineTime),
-      hometeam: this.state.team1,
-      awayteam: this.state.team2,
-      venue: this.state.venue,
-    };
-  }
-
-  saveGame(game, successCallback, errorCallback) {
-    fetch(`${API_BASE_URL}/rtg/games/`, {
-      method: 'POST',
-      body: JSON.stringify(game),
-      headers: {
-        Authorization: `Token ${AuthService.getToken()}`,
-        'content-type': 'application/json',
-      },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        if (response.ok) {
-          successCallback(response.json);
-        } else {
-          errorCallback(response.json);
-        }
-      }).catch(() => errorCallback());
-  }
-
   handleFieldUpdate(fieldName, value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const updatedState = { [fieldName]: value };
       if (fieldName === 'kickoffDate' && !prevState.deadlineDate) {
-        updatedState['deadlineDate'] = value;
+        updatedState.deadlineDate = value;
       }
       if (fieldName === 'kickoffTime' && !prevState.deadlineTime) {
-        updatedState['deadlineTime'] = value;
+        updatedState.deadlineTime = value;
       }
       return updatedState;
     });
@@ -142,9 +152,10 @@ class AddGameForm extends Component {
     e.preventDefault();
     this.setState({ savingInProgress: true });
 
-    this.saveGame(this.getPostBodyFromState(), (responseJson) => {
+    AddGameForm.saveGame(this.getPostBodyFromState(), (responseJson) => {
+      const { onSaved } = this.props;
       this.setState({ savingInProgress: false });
-      this.props.onSaved(responseJson);
+      onSaved(responseJson);
     }, (responseJson) => {
       this.setState({
         savingInProgress: false,
@@ -154,38 +165,61 @@ class AddGameForm extends Component {
   }
 
   render() {
-    return (<AddGameFormDisplay
-      rounds={this.state.rounds}
-      groups={this.state.groups}
-      teams={this.state.teams}
-      venues={this.state.venues}
+    const {
+      deadlineDate,
+      deadlineTime,
+      fieldErrors,
+      group,
+      groups,
+      kickoffDate,
+      kickoffTime,
+      nonFieldError,
+      round,
+      rounds,
+      savingError,
+      savingInProgress,
+      team1,
+      team2,
+      teams,
+      venue,
+      venues,
+    } = this.state;
+    const { onCancelled } = this.props;
 
-      round={this.state.round}
-      group={this.state.group}
-      team1={this.state.team1}
-      team2={this.state.team2}
-      kickoffDate={this.state.kickoffDate}
-      kickoffTime={this.state.kickoffTime}
-      deadlineDate={this.state.deadlineDate}
-      deadlineTime={this.state.deadlineTime}
-      venue={this.state.venue}
+    return (
+      <AddGameFormDisplay
+        rounds={rounds}
+        groups={groups}
+        teams={teams}
+        venues={venues}
 
-      roundError={this.state.fieldErrors.round}
-      groupError={this.state.fieldErrors.group}
-      team1Error={this.state.fieldErrors.team1}
-      team2Error={this.state.fieldErrors.team2}
-      kickoffError={this.state.fieldErrors.kickoff}
-      deadlineError={this.state.fieldErrors.deadline}
-      venueError={this.state.fieldErrors.venue}
+        round={round}
+        group={group}
+        team1={team1}
+        team2={team2}
+        kickoffDate={kickoffDate}
+        kickoffTime={kickoffTime}
+        deadlineDate={deadlineDate}
+        deadlineTime={deadlineTime}
+        venue={venue}
 
-      savingInProgress={this.state.savingInProgress}
-      savingError={this.state.savingError}
-      nonFieldError={this.state.nonFieldError}
+        roundError={fieldErrors.round}
+        groupError={fieldErrors.group}
+        team1Error={fieldErrors.team1}
+        team2Error={fieldErrors.team2}
+        kickoffError={fieldErrors.kickoff}
+        deadlineError={fieldErrors.deadline}
+        venueError={fieldErrors.venue}
 
-      onFieldChange={this.handleFieldUpdate}
-      onSubmit={this.handleSave}
-      onCancel={this.props.onCancelled}
-    />);
+        savingInProgress={savingInProgress}
+        savingError={savingError}
+        nonFieldError={nonFieldError}
+
+        onFieldChange={this.handleFieldUpdate}
+        onSubmit={this.handleSave}
+        onCancel={onCancelled}
+      />
+    );
   }
 }
 
