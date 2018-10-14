@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 // TODO find replacement for DatePicker
 // import DatePicker from '@material-ui/core/DatePicker';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
@@ -36,6 +41,7 @@ const AddGameFormDisplay = ({
   return (
     <form
       noValidate
+      autoComplete="off"
       onSubmit={onSubmit}
       style={{
         margin: '0 auto',
@@ -45,60 +51,66 @@ const AddGameFormDisplay = ({
         boxSizing: 'border-box',
       }}
     >
-      <Paper zDepth={3} style={{ padding: 15 }}>
+      <Paper elevation={8} style={{ padding: 15 }}>
         <h3 style={{ margin: 0 }}>Neues Spiel hinzufügen</h3>
 
-        <Select
-          floatingLabelText="Runde"
-          fullWidth
-          value={round}
-          errorText={roundError}
-          onChange={(e, i, val) => onFieldChange('round', val)}
-          menuItemStyle={{ textAlign: 'left' }}
-        >
-          <MenuItem value={null} primaryText="" />
-          {rounds.map(r => <MenuItem key={`round-${r.id}`} value={r.id} primaryText={r.name} />)}
-        </Select>
+        <FormControl fullWidth error={Boolean(roundError)} style={{ margin: '8px 0' }}>
+          <InputLabel htmlFor="AddGameForm__round">Runde</InputLabel>
+          <Select
+            input={<Input id="AddGameForm__round" />}
+            value={round || ''}
+            onChange={e => onFieldChange('round', e.target.value)}
+          >
+            <MenuItem value="" />
+            {rounds.map(r => <MenuItem key={`round-${r.id}`} value={r.id}>{r.name}</MenuItem>)}
+          </Select>
+          {Boolean(roundError) && <FormHelperText>{roundError}</FormHelperText>}
+        </FormControl>
         <br />
 
         {selectedRound && !selectedRound.is_knock_out && (
-          <Select
-            floatingLabelText="Gruppe"
-            fullWidth
-            value={group}
-            errorText={groupError}
-            onChange={(e, i, val) => onFieldChange('group', val)}
-            menuItemStyle={{ textAlign: 'left' }}
-          >
-            <MenuItem value={null} primaryText="" />
-            {groups.map(g => <MenuItem key={`group-${g.id}`} value={g.id} primaryText={g.name} />)}
-          </Select>
+          <FormControl fullWidth error={Boolean(groupError)} style={{ margin: '8px 0' }}>
+            <InputLabel htmlFor="AddGameForm__group">Gruppe</InputLabel>
+            <Select
+              input={<Input id="AddGameForm__group" />}
+              value={group || ''}
+              onChange={e => onFieldChange('group', e.target.value)}
+            >
+              <MenuItem value="" />
+              {groups.map(g => <MenuItem key={`group-${g.id}`} value={g.id}>{g.name}</MenuItem>)}
+            </Select>
+            {Boolean(groupError) && <FormHelperText>{groupError}</FormHelperText>}
+          </FormControl>
         )}
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Select
-            floatingLabelText="Team 1"
-            value={team1}
-            errorText={team1Error}
-            maxHeight={300}
-            onChange={(e, i, val) => onFieldChange('team1', val)}
-            menuItemStyle={{ textAlign: 'left' }}
-          >
-            <MenuItem value={null} primaryText="" />
-            {teams.map(t => <MenuItem key={`team1-${t.id}`} value={t.id} primaryText={t.name} />)}
-          </Select>
+          <FormControl error={Boolean(team1Error)} style={{ margin: '8px 0', flexGrow: 1 }}>
+            <InputLabel htmlFor="AddGameForm__team1">Team 1</InputLabel>
+            <Select
+              input={<Input id="AddGameForm__team1" />}
+              value={team1 || ''}
+              MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
+              onChange={e => onFieldChange('team1', e.target.value)}
+            >
+              <MenuItem value="" />
+              {teams.map(t => <MenuItem key={`team1-${t.id}`} value={t.id}>{t.name}</MenuItem>)}
+            </Select>
+            {Boolean(team1Error) && <FormHelperText>{team1Error}</FormHelperText>}
+          </FormControl>
           <span style={{ margin: '25px 10px 0' }}>vs.</span>
-          <Select
-            floatingLabelText="Team 2"
-            value={team2}
-            errorText={team2Error}
-            maxHeight={300}
-            onChange={(e, i, val) => onFieldChange('team2', val)}
-            menuItemStyle={{ textAlign: 'left' }}
-          >
-            <MenuItem value={null} primaryText="" />
-            {teams.map(t => <MenuItem key={`team2-${t.id}`} value={t.id} primaryText={t.name} />)}
-          </Select>
+          <FormControl error={Boolean(team2Error)} style={{ margin: '8px 0', flexGrow: 1 }}>
+            <InputLabel htmlFor="AddGameForm__team2">Team 2</InputLabel>
+            <Select
+              input={<Input id="AddGameForm__team2" />}
+              value={team2 || ''}
+              MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
+              onChange={e => onFieldChange('team2', e.target.value)}
+            >
+              <MenuItem value="" />
+              {teams.map(t => <MenuItem key={`team2-${t.id}`} value={t.id}>{t.name}</MenuItem>)}
+            </Select>
+            {Boolean(team2Error) && <FormHelperText>{team2Error}</FormHelperText>}
+          </FormControl>
         </div>
         <br />
 
@@ -138,18 +150,19 @@ const AddGameFormDisplay = ({
           />
         </div>
 
-        <Select
-          floatingLabelText="Austragungsort"
-          fullWidth
-          value={venue}
-          errorText={venueError}
-          maxHeight={300}
-          onChange={(e, i, val) => onFieldChange('venue', val)}
-          menuItemStyle={{ textAlign: 'left' }}
-        >
-          <MenuItem value={null} primaryText="" />
-          {venues.map(v => <MenuItem key={`round-${v.id}`} value={v.id} primaryText={v.city} />)}
-        </Select>
+        <FormControl fullWidth error={Boolean(venueError)} style={{ margin: '8px 0' }}>
+          <InputLabel htmlFor="AddGameForm__venue">Austragungsort</InputLabel>
+          <Select
+            input={<Input id="AddGameForm__venue" />}
+            value={venue || ''}
+            MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
+            onChange={e => onFieldChange('venue', e.target.value)}
+          >
+            <MenuItem value="" />
+            {venues.map(v => <MenuItem key={`round-${v.id}`} value={v.id}>{v.city}</MenuItem>)}
+          </Select>
+          {Boolean(venueError) && <FormHelperText>{venueError}</FormHelperText>}
+        </FormControl>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
