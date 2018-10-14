@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-// TODO find replacement for DatePicker
-// import DatePicker from '@material-ui/core/DatePicker';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -13,24 +11,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import TextField from '@material-ui/core/TextField';
-// TODO find replacement for TimePicker
-// import TimePicker from '@material-ui/core/TimePicker';
-import areIntlLocalesSupported from 'intl-locales-supported';
+
+import DatePicker from 'material-ui-pickers/DatePicker';
+import TimePicker from 'material-ui-pickers/TimePicker';
+
 import Notification, { NotificationType } from '../Notification';
-
-let DateTimeFormat;
-
-/**
- * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
- */
-if (areIntlLocalesSupported(['de'])) {
-  DateTimeFormat = global.Intl.DateTimeFormat;
-} else {
-  const IntlPolyfill = require('intl');
-  DateTimeFormat = IntlPolyfill.DateTimeFormat;
-  require('intl/locale-data/jsonp/de');
-}
 
 const AddGameFormDisplay = ({
   deadlineDate, deadlineTime, group, groups, groupError, kickoffDate, kickoffTime, nonFieldError,
@@ -116,37 +101,43 @@ const AddGameFormDisplay = ({
 
         <ListSubheader style={{ paddingLeft: 0 }}>Anstoß</ListSubheader>
         <div style={{ display: 'flex' }}>
-          <TextField
+          <DatePicker
+            autoOk
+            disablePast
+            format="dd.MM.yyyy"
             label="Datum"
             value={kickoffDate}
-            onChange={(e, v) => onFieldChange('kickoffDate', v)}
+            onChange={date => onFieldChange('kickoffDate', date)}
             style={{ marginRight: 5, width: '50%' }}
-            textFieldStyle={{ width: '100%' }}
           />
-          <TextField
+          <TimePicker
+            ampm={false}
             label="Uhrzeit (MESZ)"
+            format="HH:mm 'Uhr'"
             value={kickoffTime}
-            onChange={(e, v) => onFieldChange('kickoffTime', v)}
+            onChange={time => onFieldChange('kickoffTime', time)}
             style={{ marginLeft: 5, width: '50%' }}
-            textFieldStyle={{ width: '100%' }}
           />
         </div>
 
         <ListSubheader style={{ paddingLeft: 0 }}>Deadline</ListSubheader>
         <div style={{ display: 'flex' }}>
-          <TextField
+          <DatePicker
+            autoOk
+            disablePast
+            format="dd.MM.yyyy"
             label="Datum"
             value={deadlineDate}
-            onChange={(e, v) => onFieldChange('deadlineDate', v)}
+            onChange={date => onFieldChange('deadlineDate', date)}
             style={{ marginRight: 5, width: '50%' }}
-            textFieldStyle={{ width: '100%' }}
           />
-          <TextField
+          <TimePicker
+            ampm={false}
             label="Uhrzeit (MESZ)"
+            format="HH:mm 'Uhr'"
             value={deadlineTime}
-            onChange={(e, v) => onFieldChange('deadlineTime', v)}
+            onChange={time => onFieldChange('deadlineTime', time)}
             style={{ marginLeft: 5, width: '50%' }}
-            textFieldStyle={{ width: '100%' }}
           />
         </div>
 
@@ -164,7 +155,7 @@ const AddGameFormDisplay = ({
           {Boolean(venueError) && <FormHelperText>{venueError}</FormHelperText>}
         </FormControl>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
           <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
           <Button color="primary" type="submit" disabled={savingInProgress}>
             Spiel anlegen

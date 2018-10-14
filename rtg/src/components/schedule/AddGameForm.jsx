@@ -38,9 +38,9 @@ class AddGameForm extends Component {
     };
   }
 
-  static isoDateStringFromDateAndTime(dateString, timeString) {
-    const datePart = format(dateString, 'YYYY-MM-dd');
-    const timePart = format(startOfMinute(timeString), 'THH:mm:ss');
+  static isoDateStringFromDateAndTime(date, timeAsDate) {
+    const datePart = format(date, 'yyyy-MM-dd');
+    const timePart = format(startOfMinute(timeAsDate), '\'T\'HH:mm:ss');
     return datePart + timePart;
   }
 

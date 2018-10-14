@@ -4,7 +4,6 @@
 
 * Material UI v1.x
     * [Migration Guide](https://material-ui.com/guides/migration-v0x/)
-    * Schedule page: find replacements for Date and TimePicker (AddGameFormDisplay.jsx)
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
     * Password reset page

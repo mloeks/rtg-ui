@@ -1,6 +1,9 @@
 import React from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Route, Switch } from 'react-router-dom';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import de from 'date-fns/locale/de';
 
 import Rules from './pages/Rules';
 import Contact from './pages/Contact';
@@ -33,35 +36,37 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={createMuiTheme(rtg)}>
-      <div className="App">
-        {(isDemo || isLocal)
-          && <div className="App__demo-indicator">{isDemo ? 'DEMO' : 'LOCAL'}</div>}
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={de}>
+        <div className="App">
+          {(isDemo || isLocal)
+            && <div className="App__demo-indicator">{isDemo ? 'DEMO' : 'LOCAL'}</div>}
 
-        <Switch>
-          <Route exact path="/" component={Reception} />
-          <Route exact path="/login/:reason?" component={Reception} />
-          <Route exact path="/403" component={PermissionDenied} />
+          <Switch>
+            <Route exact path="/" component={Reception} />
+            <Route exact path="/login/:reason?" component={Reception} />
+            <Route exact path="/403" component={PermissionDenied} />
 
-          {/* Static, public pages */}
-          <Route exact path="/rules" component={Rules} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/imprint" component={Imprint} />
-          <Route exact path="/donate" component={Donate} />
+            {/* Static, public pages */}
+            <Route exact path="/rules" component={Rules} />
+            <Route exact path="/contact" component={Contact} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/imprint" component={Imprint} />
+            <Route exact path="/donate" component={Donate} />
 
-          {/* Password reset - protected by token in URL */}
-          <Route exact path="/passwordreset/:uid/:token" component={PasswordReset} />
+            {/* Password reset - protected by token in URL */}
+            <Route exact path="/passwordreset/:uid/:token" component={PasswordReset} />
 
-          {/* Login Area */}
-          <AuthRoute exact path="/foyer" component={Foyer} />
-          <AuthRoute exact path="/bets" component={Bets} />
-          <AuthRoute exact path="/schedule" component={Schedule} />
-          <AuthRoute exact path="/standings" component={Standings} />
-          <AuthRoute exact path="/profile" component={Profile} />
+            {/* Login Area */}
+            <AuthRoute exact path="/foyer" component={Foyer} />
+            <AuthRoute exact path="/bets" component={Bets} />
+            <AuthRoute exact path="/schedule" component={Schedule} />
+            <AuthRoute exact path="/standings" component={Standings} />
+            <AuthRoute exact path="/profile" component={Profile} />
 
-          <AdminRoute exact path="/admin/users" component={AdminUsers} />
-        </Switch>
-      </div>
+            <AdminRoute exact path="/admin/users" component={AdminUsers} />
+          </Switch>
+        </div>
+      </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   );
 };
