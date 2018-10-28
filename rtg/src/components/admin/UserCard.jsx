@@ -9,9 +9,7 @@ import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -146,10 +144,7 @@ class UserCard extends Component {
     };
     const paidSymbol = (
       <EuroSymbolIcon
-        color={has_paid
-          ? theme.palette.secondary.main
-          : theme.palette.grey['200']}
-        hoverColor={has_paid ? theme.palette.secondary.dark : theme.palette.grey['300']}
+        style={{ color: has_paid ? theme.palette.secondary.main : theme.palette.grey['300'] }}
         onClick={this.toggleHasPaid}
       />);
 
@@ -167,6 +162,25 @@ class UserCard extends Component {
       </div>
     );
 
+    const usernameOverlay = (
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        padding: 10,
+        background: 'rgba(0, 0, 0, 0.35)',
+        color: 'white',
+        textShadow: 'black 1px 1px 4px',
+        fontFamily: '"Lobster Two", sans-serif',
+        fontSize: '18px',
+        lineHeight: '18px',
+      }}
+      >
+        {username}
+      </div>
+    );
+
     return (
       <Fragment>
         <DeleteConfirmationModal
@@ -177,33 +191,32 @@ class UserCard extends Component {
         />
         <Card
           style={{
+            display: 'flex',
+            flexDirection: 'column',
             width: CARD_SIZE,
             textAlign: 'left',
             margin: '0 5px 10px',
           }}
-          containerStyle={{ display: 'flex', flexDirection: 'column', height: '100%' }}
         >
-          <CardMedia
-            overlay={(
-              <CardHeader
-                title={username}
-                style={{ padding: 10 }}
-                titleStyle={{
-                  color: 'white',
-                  textShadow: 'black 1px 1px 4px',
-                  fontFamily: '"Lobster Two", sans-serif',
-                  fontSize: 18,
-                  lineHeight: 18,
-                }}
+          <CardContent
+            style={{
+              position: 'relative',
+              height: 0.8 * CARD_SIZE,
+              padding: 0,
+              overflow: 'hidden',
+              opacity: isInactive ? 0.3 : 1,
+            }}
+          >
+            {avatar && (
+              <img
+                src={`${API_BASE_URL}/media/${avatar}`}
+                alt="User avatar"
+                style={{ marginTop: '-10%', width: '100%' }}
               />
             )}
-            style={{ height: 0.8 * CARD_SIZE, overflow: 'hidden', opacity: isInactive ? 0.3 : 1 }}
-            mediaStyle={{ height: '100%', marginTop: avatar ? '-10%' : '0' }}
-            overlayContentStyle={{ paddingTop: 0, background: 'rgba(0, 0, 0, 0.35)' }}
-          >
-            {avatar && <img src={`${API_BASE_URL}/media/${avatar}`} alt="User avatar" />}
             {!avatar && noAvatarPlaceholder}
-          </CardMedia>
+            {usernameOverlay}
+          </CardContent>
           <CardContent
             style={{
               fontSize: '14px',
@@ -230,15 +243,17 @@ class UserCard extends Component {
             </div>
           </CardContent>
 
-          <CardActions
-            style={{ display: 'flex', justifyContent: isInactive ? 'flex-end' : 'space-between' }}
+          <CardActions style={{
+            display: 'flex',
+            justifyContent: isInactive ? 'flex-end' : 'space-between',
+            padding: 8,
+          }}
           >
             {!isInactive && (
               <IconButton
                 title={`Als ${has_paid ? 'unbezahlt' : 'bezahlt'} markieren`}
                 onClick={this.toggleHasPaid}
                 style={iconButtonStyle}
-                iconStyle={{ margin: 0 }}
               >
                 {paidSymbol}
               </IconButton>
@@ -249,7 +264,6 @@ class UserCard extends Component {
               <IconButton
                 title="Fehler beim Speichern, bitte neu laden."
                 style={iconButtonStyle}
-                iconStyle={{ margin: 0 }}
               >
                 <WarningIcon style={{ color: theme.palette.error.main }} />
               </IconButton>
@@ -259,7 +273,6 @@ class UserCard extends Component {
               title="Benutzer löschen"
               onClick={this.handleDeleteRequest}
               style={iconButtonStyle}
-              iconStyle={{ margin: 0 }}
             >
               <DeleteIcon style={{ color: theme.palette.grey['500'] }} />
             </IconButton>
