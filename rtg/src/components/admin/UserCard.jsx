@@ -6,12 +6,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,38 +18,11 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PersonIcon from '@material-ui/icons/Person';
 import teal from '@material-ui/core/colors/teal';
 
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
 const CARD_SIZE = 140;
-
-const DeleteConfirmationModal = ({
-  onCancel, onConfirm, open, username,
-}) => {
-  const actions = [
-    <Button onClick={onCancel}>Abbrechen</Button>,
-    <Button color="primary" onClick={onConfirm}>User löschen</Button>,
-  ];
-
-  return (
-    <Dialog
-      actions={actions}
-      modal
-      open={open}
-      title="Löschen bestätigen"
-    >
-      {`"${username}" endgültig löschen?`}
-      <br />
-      Dies kann nicht rückgängig gemacht werden!
-    </Dialog>
-  );
-};
-
-DeleteConfirmationModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  username: PropTypes.string.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-};
 
 // TODO P3 add possibility to change username inline
 class UserCard extends Component {
