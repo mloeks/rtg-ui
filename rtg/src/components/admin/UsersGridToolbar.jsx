@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -95,9 +94,9 @@ class UsersGridToolbar extends Component {
         </Menu>
 
         <FormControl>
-          <InputLabel>User suchen</InputLabel>
           <Input
             value={searchTerm}
+            placeholder="User suchen"
             onChange={e => onSearchTermUpdated(e.target.value)}
             startAdornment={(
               <InputAdornment position="start">

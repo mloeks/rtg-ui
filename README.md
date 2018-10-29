@@ -5,8 +5,6 @@
 * Material UI v1.x
     * Bets page:
         * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
-    * User management page:
-        * Search box positioning and colours, otherwise DONE.
 
 * Material UI v3.x
 
