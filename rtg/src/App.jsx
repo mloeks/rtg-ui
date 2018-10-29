@@ -2,7 +2,7 @@ import React from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Route, Switch } from 'react-router-dom';
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider';
 import de from 'date-fns/locale/de';
 
 import Rules from './pages/Rules';
