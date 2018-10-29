@@ -2,10 +2,6 @@
 
 ## Current upgrades & TODOs
 
-* Material UI v1.x
-    * Bets page:
-        * bets input: DONE except for select on focus (ref is null after 2-3 clicks?)
-
 * Material UI v3.x
 
 * Prepare for React 17
