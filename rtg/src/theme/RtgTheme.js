@@ -83,5 +83,10 @@ export default {
         backgroundColor: white,
       },
     },
+    MuiTab: {
+      textColorPrimary: {
+        color: '#616161',
+      },
+    },
   },
 };
