@@ -47,7 +47,7 @@ const ContactFormPresentational = ({
     <br />
 
     <Button
-      variant="raised"
+      variant="contained"
       color="primary"
       type="submit"
       disabled={isSaving || formHasErrors}

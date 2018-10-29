@@ -35,7 +35,7 @@ const ChangePasswordFormDisplay = ({
 
     <div className="ChangePasswordForm__button-wrapper">
       <Button
-        variant="raised"
+        variant="contained"
         color="primary"
         type="submit"
         disabled={isSaving || formHasErrors}

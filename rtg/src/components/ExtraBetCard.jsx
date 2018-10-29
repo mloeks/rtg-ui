@@ -242,7 +242,7 @@ class ExtraBetCard extends Component {
                 </FormControl>
                 <div>
                   <Button
-                    variant="raised"
+                    variant="contained"
                     color="primary"
                     onClick={() => this.handleSave(betsStatusContext)}
                     disabled={isSaving || !hasChanges}

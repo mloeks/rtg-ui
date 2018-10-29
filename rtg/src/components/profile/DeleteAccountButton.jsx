@@ -104,7 +104,7 @@ class DeleteAccountButton extends Component {
         </p>
 
         <Button
-          variant="raised"
+          variant="contained"
           color="primary"
           disabled={saving}
           style={{ width: 250 }}

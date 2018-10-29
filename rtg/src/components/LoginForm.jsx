@@ -111,7 +111,7 @@ class LoginForm extends Component {
           <br />
 
           <Button
-            variant="raised"
+            variant="contained"
             className="LoginForm__button"
             fullWidth
             color="primary"

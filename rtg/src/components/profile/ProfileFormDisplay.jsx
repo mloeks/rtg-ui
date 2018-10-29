@@ -103,7 +103,7 @@ const ProfileFormDisplay = ({
     <div className="ProfileForm__button-wrapper">
       <Button
         color="primary"
-        variant="raised"
+        variant="contained"
         type="submit"
         disabled={isSaving || formHasErrors}
         style={{ width: 250 }}

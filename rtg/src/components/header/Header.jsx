@@ -98,7 +98,7 @@ class Header extends Component {
     const createTitleVariant = (className, title, loggedIn) => (
       <Typography
         className={`Header__title ${className}`}
-        variant="title"
+        variant="h6"
         color="primary"
         style={{ margin: loggedIn ? '0' : '0 auto', flexGrow: loggedIn ? 1 : 0 }}
         onClick={() => { history.push('/'); }}

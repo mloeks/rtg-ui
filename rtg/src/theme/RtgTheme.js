@@ -11,14 +11,15 @@ const lightGold = '#EDD69C';
 
 export default {
   typography: {
+    useNextVariants: true,
     fontFamily: 'Roboto, sans-serif',
-    headline: {
+    h5: {
       fontFamily: 'Lobster Two, cursive',
       fontWeight: 'normal',
       fontSize: 32,
       fontStyle: 'normal',
     },
-    title: {
+    h6: {
       fontFamily: 'Lobster Two, cursive',
       fontWeight: 'normal',
       fontSize: 24,

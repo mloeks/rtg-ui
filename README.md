@@ -2,16 +2,8 @@
 
 ## Current upgrades & TODOs
 
-* Material UI v3.x
-
 * Prepare for React 17
     * Replace deprecated lifecycle methods
-    
-### Follow-up Material UI upgrade
-
-* Is Webpack able to correctly tree shake multi-component imports of material-ui?
-    * For now, I changed it to use individual imports for each component
-    * Maybe analyze bundle size with webpack bundle analyzer
     
 ### Testing
 

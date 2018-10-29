@@ -105,7 +105,7 @@ class PasswordReset extends Component {
                   className="PasswordReset__submit"
                   color="primary"
                   fullWidth
-                  variant="raised"
+                  variant="contained"
                   type="submit"
                 >
                   Abschicken
