@@ -45,8 +45,10 @@ class BackToTopButton extends Component {
           position: 'fixed',
           bottom: show ? bottomOffset : -70,
           right: rightOffset,
-          zIndex: 9999,
           transition: 'bottom 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+
+          // sync with _z-indexes.scss, make sure it stays below 1300 (MUI mobile dialog)
+          zIndex: 1200,
         }}
         onClick={() => { window.scrollTo(0, 0); }}
       >
