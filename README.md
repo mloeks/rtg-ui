@@ -2,6 +2,8 @@
 
 ## Current upgrades & TODOs
 
+* create-react-app v2.x
+    * https://github.com/facebook/create-react-app/releases
 * Prepare for React 17
     * Replace deprecated lifecycle methods
     
