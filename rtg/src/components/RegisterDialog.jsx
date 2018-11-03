@@ -92,7 +92,9 @@ class RegisterDialog extends Component {
 
   updateEmail(e) { this.updateFormField('email', e.target.value); }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
+
     const {
       email,
       firstName,
@@ -143,83 +145,85 @@ class RegisterDialog extends Component {
         aria-labelledby="RegisterDialog__title"
         onClose={onCancel}
       >
-        <DialogTitle id="RegisterDialog__title">Werde Teil der RTG</DialogTitle>
-        <DialogContent>
-          {formHasErrors && (
-            <Notification
-              type={NotificationType.ERROR}
-              title="Das hat leider nicht geklappt"
-              subtitle={formError}
-              containerStyle={{ marginBottom: 20 }}
-            />
-          )}
+        <form className="RegisterDialog__form" onSubmit={this.handleSubmit} noValidate>
+          <DialogTitle id="RegisterDialog__title">Werde Teil der RTG</DialogTitle>
+          <DialogContent>
+            {formHasErrors && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Das hat leider nicht geklappt"
+                subtitle={formError}
+                containerStyle={{ marginBottom: 20 }}
+              />
+            )}
 
-          <TextField
-            className="RegisterDialog__username"
-            autoFocus
-            error={Boolean(fieldErrors.username)}
-            helperText={fieldErrors.username || false}
-            label="Username"
-            fullWidth
-            onChange={this.updateUsername}
-          />
-          <br />
-          <br />
-          <TextField
-            className="RegisterDialog__email"
-            error={Boolean(fieldErrors.email)}
-            helperText={fieldErrors.email || false}
-            label="E-Mail"
-            fullWidth
-            onChange={this.updateEmail}
-          />
-          <br />
-          <br />
-          <VisiblePasswordField
-            className="RegisterDialog__password"
-            error={Boolean(fieldErrors.password)}
-            helperText={fieldErrors.password || ''}
-            fullWidth
-            value={password || ''}
-            onChange={this.updatePassword}
-          />
-          <br />
-          <div style={{ display: 'flex' }}>
             <TextField
-              className="RegisterDialog__first-name"
-              error={Boolean(fieldErrors.firstName)}
-              helperText={fieldErrors.firstName || false}
-              label="Vorname"
-              style={{ marginRight: '10px', width: '50%' }}
-              onChange={this.updateFirstName}
+              name="username"
+              autoFocus
+              error={Boolean(fieldErrors.username)}
+              helperText={fieldErrors.username || false}
+              label="Username"
+              fullWidth
+              onChange={this.updateUsername}
             />
+            <br />
+            <br />
             <TextField
-              className="RegisterDialog__last-name"
-              error={Boolean(fieldErrors.lastName)}
-              helperText={fieldErrors.lastName || false}
-              label="Nachname"
-              style={{ marginLeft: '10px', width: '50%' }}
-              onChange={this.updateLastName}
+              name="email"
+              error={Boolean(fieldErrors.email)}
+              helperText={fieldErrors.email || false}
+              label="E-Mail"
+              fullWidth
+              onChange={this.updateEmail}
             />
-          </div>
-          <br />
-          <p style={{ margin: 0, color: theme.palette.grey['300'] }}>
-            Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
-            Dein Name ist nicht für andere Mitspieler sichtbar.
-          </p>
-        </DialogContent>
+            <br />
+            <br />
+            <VisiblePasswordField
+              name="password"
+              error={Boolean(fieldErrors.password)}
+              helperText={fieldErrors.password || ''}
+              fullWidth
+              value={password || ''}
+              onChange={this.updatePassword}
+            />
+            <br />
+            <div style={{ display: 'flex' }}>
+              <TextField
+                name="firstName"
+                error={Boolean(fieldErrors.firstName)}
+                helperText={fieldErrors.firstName || false}
+                label="Vorname"
+                style={{ marginRight: '10px', width: '50%' }}
+                onChange={this.updateFirstName}
+              />
+              <TextField
+                name="lastName"
+                error={Boolean(fieldErrors.lastName)}
+                helperText={fieldErrors.lastName || false}
+                label="Nachname"
+                style={{ marginLeft: '10px', width: '50%' }}
+                onChange={this.updateLastName}
+              />
+            </div>
+            <br />
+            <p style={{ margin: 0, color: theme.palette.grey['300'] }}>
+              Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
+              Dein Name ist nicht für andere Mitspieler sichtbar.
+            </p>
+          </DialogContent>
 
-        <DialogActions>
-          <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
-          <Button
-            className="RegisterDialog__submit"
-            color="primary"
-            disabled={!hasChanges}
-            onClick={this.handleSubmit}
-          >
-            Registrieren
-          </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
+            <Button
+              className="RegisterDialog__submit"
+              color="primary"
+              disabled={!hasChanges}
+              type="submit"
+            >
+              Registrieren
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     );
   }

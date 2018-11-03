@@ -26,6 +26,7 @@ class VisiblePasswordField extends Component {
       fullWidth,
       helperText,
       label,
+      name,
       onChange,
       value,
     } = this.props;
@@ -36,6 +37,7 @@ class VisiblePasswordField extends Component {
         <InputLabel>{label}</InputLabel>
         <Input
           type={visible ? 'text' : 'password'}
+          name={name}
           value={value}
           onChange={onChange}
           endAdornment={(
@@ -61,6 +63,7 @@ VisiblePasswordField.propTypes = {
   fullWidth: PropTypes.bool,
   helperText: PropTypes.string,
   label: PropTypes.string,
+  name: PropTypes.string,
   value: PropTypes.string,
 
   onChange: PropTypes.func.isRequired,
@@ -71,6 +74,7 @@ VisiblePasswordField.defaultProps = {
   fullWidth: false,
   helperText: null,
   label: 'Passwort',
+  name: '',
   value: '',
 };
 
