@@ -155,6 +155,7 @@ class RegisterDialog extends Component {
           )}
 
           <TextField
+            className="RegisterDialog__username"
             autoFocus
             error={Boolean(fieldErrors.username)}
             helperText={fieldErrors.username || false}
@@ -165,6 +166,7 @@ class RegisterDialog extends Component {
           <br />
           <br />
           <TextField
+            className="RegisterDialog__email"
             error={Boolean(fieldErrors.email)}
             helperText={fieldErrors.email || false}
             label="E-Mail"
@@ -174,6 +176,7 @@ class RegisterDialog extends Component {
           <br />
           <br />
           <VisiblePasswordField
+            className="RegisterDialog__password"
             error={Boolean(fieldErrors.password)}
             helperText={fieldErrors.password || ''}
             fullWidth
@@ -183,6 +186,7 @@ class RegisterDialog extends Component {
           <br />
           <div style={{ display: 'flex' }}>
             <TextField
+              className="RegisterDialog__first-name"
               error={Boolean(fieldErrors.firstName)}
               helperText={fieldErrors.firstName || false}
               label="Vorname"
@@ -190,6 +194,7 @@ class RegisterDialog extends Component {
               onChange={this.updateFirstName}
             />
             <TextField
+              className="RegisterDialog__last-name"
               error={Boolean(fieldErrors.lastName)}
               helperText={fieldErrors.lastName || false}
               label="Nachname"
@@ -206,7 +211,12 @@ class RegisterDialog extends Component {
 
         <DialogActions>
           <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
-          <Button color="primary" disabled={!hasChanges} onClick={this.handleSubmit}>
+          <Button
+            className="RegisterDialog__submit"
+            color="primary"
+            disabled={!hasChanges}
+            onClick={this.handleSubmit}
+          >
             Registrieren
           </Button>
         </DialogActions>
