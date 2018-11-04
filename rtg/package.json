@@ -31,6 +31,7 @@
     "verge": "^1.10.2"
   },
   "scripts": {
+    "clean": "rm -rf build",
     "start": "react-scripts start",
     "build": "REACT_APP_ENV=production react-scripts build",
     "build:demo": "REACT_APP_ENV=demo react-scripts build",
