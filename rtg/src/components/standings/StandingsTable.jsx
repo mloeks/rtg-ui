@@ -14,7 +14,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import Notification from '../Notification';
 import StandingsTableRow from './StandingsTableRow';
 
-import './StandingsTable.css';
+import './StandingsTable.scss';
 
 const styles = theme => ({
   rank: {

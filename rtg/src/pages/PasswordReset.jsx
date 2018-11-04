@@ -12,7 +12,7 @@ import Notification, { NotificationType } from '../components/Notification';
 import VisiblePasswordField from '../components/VisiblePasswordField';
 
 import headingImg from '../theme/img/headings/gate_head_emblem.jpg';
-import './PasswordReset.css';
+import './PasswordReset.scss';
 
 class PasswordReset extends Component {
   constructor(props) {

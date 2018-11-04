@@ -13,7 +13,7 @@ import DrawerMenu from './DrawerMenu';
 import HeaderMenuItems from './HeaderMenuItems';
 import { throttle, ThrottledScrollPositionListener } from '../../service/EventsHelper';
 
-import './Header.css';
+import './Header.scss';
 
 const HEADER_HEIGHT = 64; // sync with $headerHeight in _globals.scss
 

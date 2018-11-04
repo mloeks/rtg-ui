@@ -22,7 +22,7 @@ import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';
 
 import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
-import './DrawerMenu.css';
+import './DrawerMenu.scss';
 
 // TODO P3 the width is only once calculated on page load, not on re-open
 const drawerStyles = theme => ({

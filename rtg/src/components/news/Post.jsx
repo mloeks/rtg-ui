@@ -20,7 +20,7 @@ import { randomHueHexColor } from '../../service/ColorHelper';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
 
-import './Post.css';
+import './Post.scss';
 
 const styles = {
   headline: {

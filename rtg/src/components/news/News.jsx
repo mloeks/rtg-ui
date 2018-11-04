@@ -12,7 +12,7 @@ import Post from './Post';
 import Notification, { NotificationType } from '../Notification';
 import AddPostForm from './AddPostForm';
 
-import './News.css';
+import './News.scss';
 
 // TODO P3 Allow deletion of news if admin
 // TODO P3 load potential draft in a separate request and filter

@@ -9,7 +9,7 @@ import reactLogo from '../theme/img/libs/react.svg';
 import postgresLogo from '../theme/img/libs/postgresql.svg';
 import nginxLogo from '../theme/img/libs/nginx.svg';
 
-import './Imprint.css';
+import './Imprint.scss';
 
 const Imprint = () => (
   <Page className="ImprintPage">

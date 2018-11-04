@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './RtgSeparator.css';
+import './RtgSeparator.scss';
 
 const RtgSeparator = ({
   content, contentStyle, style, ...rest

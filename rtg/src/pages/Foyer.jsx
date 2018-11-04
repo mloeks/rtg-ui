@@ -16,7 +16,7 @@ import newsHeadingImg from '../theme/img/headings/courtyard_2.jpg';
 import betsHeadingImg from '../theme/img/headings/royals_stadium.jpg';
 import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
 import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
-import './Foyer.css';
+import './Foyer.scss';
 
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (

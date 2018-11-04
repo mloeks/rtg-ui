@@ -17,7 +17,7 @@ import GameCardGameInfo from '../GameCardGameInfo';
 import GameCardBet, { SavingErrorType } from '../GameCardBet';
 import Notification, { NotificationType } from '../Notification';
 
-import './CurrentGameCard.css';
+import './CurrentGameCard.scss';
 
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {

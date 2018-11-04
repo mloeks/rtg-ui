@@ -15,7 +15,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import CheckIcon from '@material-ui/icons/Check';
 import Notification, { NotificationType } from '../Notification';
 
-import './AddPostForm.css';
+import './AddPostForm.scss';
 
 const AddPostFormDisplay = ({
   appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,

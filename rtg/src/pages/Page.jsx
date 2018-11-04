@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import UserDetailsProvider from '../components/providers/UserDetailsProvider';
 import BackToTopButton from '../components/BackToTopButton';
 
-import './Page.css';
+import './Page.scss';
 
 const Page = ({ children }) => (
   <main className="Page">

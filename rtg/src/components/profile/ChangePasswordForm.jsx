@@ -5,7 +5,7 @@ import VisiblePasswordField from '../VisiblePasswordField';
 import Notification, { NotificationType } from '../Notification';
 import AuthService from '../../service/AuthService';
 
-import './ChangePasswordForm.css';
+import './ChangePasswordForm.scss';
 
 const ChangePasswordFormDisplay = ({
   formHasErrors, isSaving, newPassword, newPasswordError,

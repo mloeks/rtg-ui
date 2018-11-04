@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './CountryFlag.css';
+import './CountryFlag.scss';
 import countryFlags from '../theme/CountryFlagImporter';
 
 // TODO P3 add context menu with links to team portraits

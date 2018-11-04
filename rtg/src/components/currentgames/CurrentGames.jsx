@@ -16,7 +16,7 @@ import Notification, { NotificationType } from '../Notification';
 import { unsavedChangesConfirmText } from '../../pages/Bets';
 import BetStatsPanel from '../bets/BetStatsPanel';
 
-import './CurrentGames.css';
+import './CurrentGames.scss';
 
 const SCROLL_BUTTON_SIZE = 50;
 const MIN_X_OFFSET_TOUCHMOVE = 10;

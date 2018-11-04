@@ -16,7 +16,7 @@ import Notification, { NotificationType } from '../Notification';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 
-import './BigEditableAvatar.css';
+import './BigEditableAvatar.scss';
 
 const MIN_AVATAR_ZOOM = 1;
 const MAX_AVATAR_ZOOM = 5;

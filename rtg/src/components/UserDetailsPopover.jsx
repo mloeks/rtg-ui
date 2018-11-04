@@ -12,7 +12,7 @@ import UserAvatar from './UserAvatar';
 import FetchHelper from '../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 
-import './UserDetailsPopover.css';
+import './UserDetailsPopover.scss';
 
 const styles = {
   paper: {

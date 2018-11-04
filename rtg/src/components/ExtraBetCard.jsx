@@ -24,7 +24,7 @@ import FetchHelper from '../service/FetchHelper';
 import Notification, { NotificationType } from './Notification';
 import { BetsStatusContext } from '../pages/Bets';
 
-import './ExtraBetCard.css';
+import './ExtraBetCard.scss';
 
 // TODO P3 display country flags in drop down
 class ExtraBetCard extends Component {

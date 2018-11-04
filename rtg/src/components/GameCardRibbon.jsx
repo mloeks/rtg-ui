@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './GameCardRibbon.css';
+import './GameCardRibbon.scss';
 
 const GameCardRibbon = ({ children, stateCssClass }) => (
   <div className={`GameCardRibbon ${stateCssClass}`}>

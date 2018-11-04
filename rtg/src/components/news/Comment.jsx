@@ -6,7 +6,7 @@ import UserAvatar from '../UserAvatar';
 import { getFormattedPostDate } from './Post';
 import UserDetailsPopover from '../UserDetailsPopover';
 
-import './Comment.css';
+import './Comment.scss';
 
 export const MAX_REPLY_DEPTH = 4;
 

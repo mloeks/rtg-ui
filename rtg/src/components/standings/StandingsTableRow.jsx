@@ -7,7 +7,7 @@ import UserDetailsPopover from '../UserDetailsPopover';
 import { isEnter } from '../../service/KeyHelper';
 import ColouredResultBetColumn from './ColouredResultBetColumn';
 
-import './StandingsTableRow.css';
+import './StandingsTableRow.scss';
 
 class StandingsTableRow extends Component {
   constructor(props) {

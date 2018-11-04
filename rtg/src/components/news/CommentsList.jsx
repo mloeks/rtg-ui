@@ -9,7 +9,7 @@ import Notification, { NotificationType } from '../Notification';
 import Comment from './Comment';
 import AddComment from './AddComment';
 
-import './CommentsList.css';
+import './CommentsList.scss';
 
 const styles = theme => ({
   loadMoreRepliesButton: {

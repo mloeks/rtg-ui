@@ -11,7 +11,7 @@ import PieChartLegend from './PieChartLegend';
 import { lightenDarkenColor, randomHueHexColor } from '../../service/ColorHelper';
 import Notification, { NotificationType } from '../Notification';
 
-import './BetStatsPanel.css';
+import './BetStatsPanel.scss';
 
 // TODO P2 implement empty state (no bets placed)
 // TODO P3 switch between result stats and 2/0/1 stats (for games only)

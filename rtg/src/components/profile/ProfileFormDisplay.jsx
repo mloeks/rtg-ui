@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 
-import './ProfileForm.css';
+import './ProfileForm.scss';
 
 const ProfileFormDisplay = ({
   about, aboutError, dailyEmails, email, emailError, email2, email2Error, isSaving, firstName,

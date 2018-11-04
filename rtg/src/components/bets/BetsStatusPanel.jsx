@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import DoneIcon from '@material-ui/icons/Done';
 
-import './BetsStatusPanel.css';
+import './BetsStatusPanel.scss';
 
 class BetsStatusPanel extends Component {
   constructor(props) {

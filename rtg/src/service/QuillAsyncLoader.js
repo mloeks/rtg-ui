@@ -1,8 +1,6 @@
 export default () => (
   new Promise((resolve) => {
-    require.ensure([], () => {
-      require('react-quill/dist/quill.snow.css');
-      resolve(require('react-quill'));
-    });
+    Promise.all([import('react-quill/dist/quill.snow.css'), import('react-quill')])
+      .then(([a, b]) => { resolve(b.default); });
   })
 );

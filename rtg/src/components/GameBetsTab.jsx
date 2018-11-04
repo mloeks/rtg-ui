@@ -20,7 +20,7 @@ import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
-import './GameBetsTab.css';
+import './GameBetsTab.scss';
 
 // TODO P3 introduce interval to update deadline countdowns, or better all games without reload...
 // TODO P3 takes pretty long to load if there are many bets

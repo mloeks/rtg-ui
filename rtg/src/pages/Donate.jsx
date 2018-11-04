@@ -6,7 +6,7 @@ import BigPicture from '../components/BigPicture';
 
 import headingImg from '../theme/img/headings/room_flowers.jpg';
 import payPalLogo from '../theme/img/paypal/de-pp-logo-100px.png';
-import './Donate.css';
+import './Donate.scss';
 
 const Donate = () => (
   <Page className="DonatePage">

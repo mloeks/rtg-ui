@@ -8,7 +8,7 @@ import VisiblePasswordField from './VisiblePasswordField';
 import RegisterDialog from './RegisterDialog';
 import ForgotPasswordDialog from './ForgotPasswordDialog';
 
-import './LoginForm.css';
+import './LoginForm.scss';
 
 class LoginForm extends Component {
   constructor(props) {

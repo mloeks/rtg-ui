@@ -8,7 +8,7 @@ import GameCardRibbon from './GameCardRibbon';
 import GoalInput from './bets/GoalInput';
 import { RESULT_SEPARATOR } from '../service/ResultStringHelper';
 
-import './GameCardBet.css';
+import './GameCardBet.scss';
 
 const ARROW_SIZE = 26;
 const GoalChangeArrow = ({ direction, onClick }) => {

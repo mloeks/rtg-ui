@@ -6,7 +6,7 @@ import BigPicture from '../components/BigPicture';
 import RtgSeparator from '../components/RtgSeparator';
 
 import headingImg from '../theme/img/headings/queens_guard.jpg';
-import './Rules.css';
+import './Rules.scss';
 
 const Rules = () => (
   <Page className="RulesPage">

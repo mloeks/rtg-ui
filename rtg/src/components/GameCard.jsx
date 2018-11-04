@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CountryFlag from './CountryFlag';
 
-import './GameCard.css';
+import './GameCard.scss';
 
 // TODO P3 make props camelcase and map backend objects fields beforehand
 // TODO P3 move team name from CountryFlag in here and clean up name mode foo

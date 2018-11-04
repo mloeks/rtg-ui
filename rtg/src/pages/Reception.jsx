@@ -9,7 +9,7 @@ import { LogoutReason } from '../components/providers/UserDetailsProvider';
 import Notification, { NotificationType } from '../components/Notification';
 
 import headingImg from '../theme/img/headings/gate.jpg';
-import './Reception.css';
+import './Reception.scss';
 
 class Reception extends Component {
   static getReasonNotification(reason) {

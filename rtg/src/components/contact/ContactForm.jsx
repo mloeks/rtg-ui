@@ -5,7 +5,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 
-import './ContactForm.css';
+import './ContactForm.scss';
 
 // TODO P3 Handle CSRF by reading the token from the Cookie of the first GET
 // response to the backend and sending it with AJAX requests

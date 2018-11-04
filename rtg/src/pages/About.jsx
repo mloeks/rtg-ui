@@ -6,7 +6,7 @@ import Page from './Page';
 import BigPicture from '../components/BigPicture';
 
 import headingImg from '../theme/img/headings/silvia_zlatan.jpg';
-import './About.css';
+import './About.scss';
 
 const About = ({ history }) => (
   <Page className="AboutPage">

@@ -3,7 +3,7 @@ import { inViewport } from 'verge';
 import PropTypes from 'prop-types';
 import { ThrottledEventListener, ThrottledScrollPositionListener } from '../service/EventsHelper';
 
-import './BigPicture.css';
+import './BigPicture.scss';
 
 class BigPicture extends Component {
   constructor(props) {

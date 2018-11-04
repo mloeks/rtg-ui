@@ -8,7 +8,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import GameCardRibbon from './GameCardRibbon';
 
 import crown from '../theme/img/crown.svg';
-import './GameCardGameInfo.css';
+import './GameCardGameInfo.scss';
 
 export const StateEnum = {
   NEUTRAL: 'neutral',

@@ -1,8 +1,8 @@
 import React from 'react';
 import GameCardRibbon from './GameCardRibbon';
 
-import './GameCard.css';
-import './CountryFlag.css';
+import './GameCard.scss';
+import './CountryFlag.scss';
 
 const NullGameCard = () => (
   <section className="GameCard">

@@ -31,7 +31,7 @@ import { getClosestGameIndex } from '../service/GamesHelper';
 import BetStatsPanel from '../components/bets/BetStatsPanel';
 import AddGameForm from '../components/schedule/AddGameForm';
 
-import './Schedule.css';
+import './Schedule.scss';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
 const DEFAULT_ROUND_INDEX = 'VOR';

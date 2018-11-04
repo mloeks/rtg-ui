@@ -15,7 +15,7 @@ import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
-import './Bets.css';
+import './Bets.scss';
 
 export const BetsStatusContext = React.createContext();
 

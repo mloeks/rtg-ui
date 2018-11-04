@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import UserAvatar from '../UserAvatar';
 
 import profileBgImage from '../../theme/img/headings/french_windows.jpg';
-import './ProfileCard.css';
+import './ProfileCard.scss';
 
 const ProfileCard = ({ avatar, username }) => (
   <div

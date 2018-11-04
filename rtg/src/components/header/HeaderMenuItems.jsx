@@ -6,7 +6,7 @@ import ListIcon from '@material-ui/icons/List';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import OpenBetsIndicator from './OpenBetsIndicator';
 
-import './HeaderMenuItems.css';
+import './HeaderMenuItems.scss';
 
 const HeaderMenuItems = ({ openBetsCount }) => (
   <div className="HeaderMenuItems" style={{ display: 'flex', alignItems: 'center', margin: 0 }}>

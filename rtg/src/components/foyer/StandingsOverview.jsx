@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import StandingsTable from '../standings/StandingsTable';
 
-import './StandingsOverview.css';
+import './StandingsOverview.scss';
 
 // TODO P3 lazy load standings when scrolled into view
 const StandingsOverview = () => (

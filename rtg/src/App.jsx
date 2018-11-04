@@ -26,7 +26,7 @@ import AuthRoute from './components/auth/AuthRoute';
 import AdminRoute from './components/auth/AdminRoute';
 
 import rtg from './theme/RtgTheme';
-import './App.css';
+import './App.scss';
 
 // TODO P3 Datenschutz page
 // TODO P3 Implement bottom navigation for mobile breakpoints
