@@ -3,7 +3,8 @@
 ## Current upgrades & TODOs
 
 * Prepare for React 17
-    * Replace deprecated lifecycle methods
+    * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
+    * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
     
