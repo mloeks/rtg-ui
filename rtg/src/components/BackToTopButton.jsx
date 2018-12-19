@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scrollY } from 'verge';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelper';
 
@@ -37,9 +37,8 @@ class BackToTopButton extends Component {
     const { bottomOffset, rightOffset } = this.props;
 
     return (
-      <Button
+      <Fab
         color="primary"
-        variant="fab"
         title="Nach oben"
         style={{
           position: 'fixed',
@@ -53,7 +52,7 @@ class BackToTopButton extends Component {
         onClick={() => { window.scrollTo(0, 0); }}
       >
         <ArrowUpwardIcon />
-      </Button>
+      </Fab>
     );
   }
 }

@@ -4,6 +4,8 @@
 
 * Prepare for React 17
     * Replace deprecated lifecycle methods
+* [Optional] Try out new styling approach coming with Material UI 3.5.1
+    * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
     
 ### Testing
 

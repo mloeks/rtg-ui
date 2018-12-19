@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
 
 import { withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -325,9 +325,9 @@ class Schedule extends Component {
 
             {(AuthService.isAdmin() && !addingGame) && (
               <div className="SchedulePage__add-game-button">
-                <Button variant="fab" color="primary" onClick={this.handleAddGame}>
+                <Fab color="primary" onClick={this.handleAddGame}>
                   <AddIcon />
-                </Button>
+                </Fab>
               </div>
             )}
           </section>

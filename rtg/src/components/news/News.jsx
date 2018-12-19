@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -182,7 +183,7 @@ class News extends Component {
 
         {(AuthService.isAdmin() && !addingPost) && (
           <div className="News__add-button">
-            <Button variant="fab" color="primary" onClick={this.handleAddNews}><AddIcon /></Button>
+            <Fab color="primary" onClick={this.handleAddNews}><AddIcon /></Fab>
           </div>
         )}
       </section>
