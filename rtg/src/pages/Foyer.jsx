@@ -21,18 +21,18 @@ import './Foyer.scss';
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
-    <section className="Foyer__welcome">
+    <section className="Foyer__welcome qa-foyer-welcome">
       <UserDetailsContext.Consumer>
         {userContext => (
           <Fragment>
             <img className="Foyer__top-logo" src={logo} alt="RTG Logo" />
             <h3 className="Foyer__greeting">Herzlich Willkommen,<br />
-              <span className="Foyer__logged-in-username">{userContext.username}</span>!
+              <span className="Foyer__logged-in-username qa-logged-in-username">{userContext.username}</span>!
             </h3>
 
             {!AuthService.getLastLogin() &&
               <Notification
-                className="Foyer__first-visit"
+                className="Foyer__first-visit qa-first-visit-notification"
                 dismissable
                 type={NotificationType.SUCCESS}
                 title="Anmeldung erfolgreich"

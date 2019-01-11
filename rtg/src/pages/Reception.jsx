@@ -69,7 +69,7 @@ class Reception extends Component {
       <Page className="ReceptionPage">
         {reasonToReLogin && userNotificationIfReasonPresent}
         <BigPicture className="ReceptionPage__heading" img={headingImg}>
-          <h1 className="BigPicture__heading">Willkommen</h1>
+          <h1 className="BigPicture__heading qa-reception-greeting">Willkommen</h1>
         </BigPicture>
         <section className="ReceptionPage__content">
           <LoginForm onLogin={this.login} />

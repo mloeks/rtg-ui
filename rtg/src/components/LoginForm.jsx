@@ -133,7 +133,7 @@ class LoginForm extends Component {
 
         <br />
         <div className="LoginForm__second-button-row">
-          <Button className="LoginForm__register" onClick={() => { this.setState({ registerModalOpen: true }); }}>
+          <Button className="LoginForm__register qa-register-button" onClick={() => { this.setState({ registerModalOpen: true }); }}>
             Registrieren
           </Button>
           <RegisterDialog

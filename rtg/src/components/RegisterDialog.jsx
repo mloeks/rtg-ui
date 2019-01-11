@@ -139,13 +139,13 @@ class RegisterDialog extends Component {
 
     return (
       <Dialog
-        className="RegisterDialog"
+        className="RegisterDialog qa-register-dialog"
         fullScreen={fullScreen}
         open={open}
         aria-labelledby="RegisterDialog__title"
         onClose={onCancel}
       >
-        <form className="RegisterDialog__form" onSubmit={this.handleSubmit} noValidate>
+        <form className="RegisterDialog__form qa-register-form" onSubmit={this.handleSubmit} noValidate>
           <DialogTitle id="RegisterDialog__title">Werde Teil der RTG</DialogTitle>
           <DialogContent>
             {formHasErrors && (
@@ -215,7 +215,7 @@ class RegisterDialog extends Component {
           <DialogActions>
             <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
             <Button
-              className="RegisterDialog__submit"
+              className="RegisterDialog__submit qa-register-submit"
               color="primary"
               disabled={!hasChanges}
               type="submit"
