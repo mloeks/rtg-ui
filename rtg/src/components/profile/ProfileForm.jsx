@@ -191,7 +191,7 @@ class ProfileForm extends Component {
           </div>
         )}
         {savingSuccess && (
-          <div className="ProfileForm__save-feedback ProfileForm__saving-success">
+          <div className="ProfileForm__save-feedback ProfileForm__saving-success qa-profile-save-success">
             <Notification
               type={NotificationType.SUCCESS}
               title="Änderungen erfolgreich gespeichert!"

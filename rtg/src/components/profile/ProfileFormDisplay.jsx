@@ -17,6 +17,7 @@ const ProfileFormDisplay = ({
       <TextField
         error={Boolean(firstNameError)}
         label="Vorname"
+        name="firstname"
         value={firstName}
         helperText={firstNameError || false}
         style={{ width: '50%', marginRight: '10px' }}
@@ -25,6 +26,7 @@ const ProfileFormDisplay = ({
       <TextField
         error={Boolean(lastNameError)}
         label="Nachname"
+        name="lastname"
         value={lastName}
         fullWidth
         helperText={lastNameError || false}
@@ -39,6 +41,7 @@ const ProfileFormDisplay = ({
       fullWidth
       helperText={emailError || false}
       label="E-Mail"
+      name="email"
       value={email}
       onChange={e => onFieldChange('email', e.target.value)}
     />
@@ -46,6 +49,7 @@ const ProfileFormDisplay = ({
     <br />
     <TextField
       label="Weitere E-Mail (nur für News)"
+      name="email2"
       fullWidth
       value={email2}
       error={Boolean(email2Error)}
@@ -56,6 +60,7 @@ const ProfileFormDisplay = ({
     <br />
     <TextField
       label="Ein Satz über Dich / Euch"
+      name="about"
       fullWidth
       multiline
       value={about}
@@ -67,6 +72,7 @@ const ProfileFormDisplay = ({
     <br />
     <TextField
       label="Wohnort"
+      name="location"
       fullWidth
       value={location}
       error={Boolean(locationError)}
