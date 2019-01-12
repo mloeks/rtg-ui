@@ -7,7 +7,7 @@ import './ProfileCard.scss';
 
 const ProfileCard = ({ avatar, username }) => (
   <div
-    className="ProfileCard"
+    className="ProfileCard qa-user-panel"
     style={{ backgroundImage: `url(${profileBgImage})` }}
   >
     <UserAvatar

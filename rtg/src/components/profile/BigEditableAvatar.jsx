@@ -359,7 +359,7 @@ class BigEditableAvatar extends Component {
             )}
         </div>
 
-        <h2 className="BigEditableAvatar__username" style={{ margin: '15px 0 0' }}>
+        <h2 className="BigEditableAvatar__username qa-avatar-username" style={{ margin: '15px 0 0' }}>
           {username}
         </h2>
       </div>

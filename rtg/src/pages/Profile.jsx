@@ -89,6 +89,7 @@ class Profile extends Component {
                   />
 
                   <ProfileForm
+                    className="qa-profile-form"
                     userId={userId}
                     user={user}
                     loading={loading}

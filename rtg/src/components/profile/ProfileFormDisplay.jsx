@@ -102,6 +102,7 @@ const ProfileFormDisplay = ({
 
     <div className="ProfileForm__button-wrapper">
       <Button
+        className="qa-profile-form-submit"
         color="primary"
         variant="contained"
         type="submit"

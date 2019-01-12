@@ -47,7 +47,7 @@ const DrawerMenu = ({
 
   return (
     <Drawer
-      className="DrawerMenu"
+      className="DrawerMenu qa-main-menu"
       classes={{ paper: classes.paper }}
       open={open}
       onClose={onClose}

@@ -137,7 +137,7 @@ class ProfileForm extends Component {
 
     return (
       <form
-        className="ProfileForm__container"
+        className="ProfileForm__container qa-profile-form"
         onSubmit={this.handleSubmit}
         autoComplete="off"
         noValidate

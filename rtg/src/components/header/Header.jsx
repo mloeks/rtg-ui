@@ -115,10 +115,11 @@ class Header extends Component {
             <Fragment>
               <div className="Header__fixed-placeholder" style={{ height: HEADER_HEIGHT }} />
               <RootRef rootRef={this.headerRef}>
-                <AppBar className="Header" color="secondary" style={{ height: HEADER_HEIGHT }}>
+                <AppBar className="Header qa-header" color="secondary" style={{ height: HEADER_HEIGHT }}>
                   <Toolbar style={{ height: '100%' }}>
                     {loggedIn && (
                       <IconButton
+                        className="qa-main-menu-button"
                         color="primary"
                         onClick={this.handleMenuToggle}
                         aria-label="Menu"
