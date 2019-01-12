@@ -158,9 +158,9 @@ class Post extends Component {
     const dateCreated = new Date(post.date_created);
 
     return (
-      <Card className="Post__card">
+      <Card className="Post__card qa-post">
         <CardHeader
-          className="Post__card-title"
+          className="Post__card-title qa-post-title"
           classes={{ title: classes.headline }}
           title={post.title}
           titleTypographyProps={{ color: 'textPrimary', component: 'h2', variant: 'headline' }}
@@ -176,6 +176,7 @@ class Post extends Component {
             }}
           >
             <div
+              className="qa-post-content"
               dangerouslySetInnerHTML={{ __html: post.content }}
               ref={this.contentRef}
               style={{
