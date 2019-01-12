@@ -117,7 +117,7 @@ const DrawerMenu = ({
             </Link>
           )}
 
-        <ListItem button onClick={onLogout}>
+        <ListItem className="qa-logout-button" button onClick={onLogout}>
           <ListItemIcon><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Ausloggen" />
         </ListItem>
