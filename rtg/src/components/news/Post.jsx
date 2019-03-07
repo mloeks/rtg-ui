@@ -41,7 +41,7 @@ export const getFormattedPostDate = (date) => {
     return 'Gerade eben';
   }
   if (differenceInMinutes(now, date) < 60) {
-    return formatDistanceStrict(now, date, { locale: de, addSuffix: true, unit: 'minute' });
+    return formatDistanceStrict(date, now, { locale: de, addSuffix: true, unit: 'minute' });
   }
 
   const formattedTime = format(date, 'HH:mm \'Uhr\'');
