@@ -1,22 +1,21 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
-import format from 'date-fns/format';
-import formatDistance from 'date-fns/formatDistance';
+import {format, formatDistance, parseISO} from 'date-fns';
 import de from 'date-fns/locale/de';
 
-import AuthService, { API_BASE_URL } from '../service/AuthService';
+import AuthService, {API_BASE_URL} from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
-import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
+import GameCardBet, {SavingErrorType, SavingSuccessType} from './GameCardBet';
 import NullGameCard from './NullGameCard';
 import RtgSeparator from './RtgSeparator';
-import { BetsStatusContext, countOpenBets } from '../pages/Bets';
-import Notification, { NotificationType } from './Notification';
+import {BetsStatusContext, countOpenBets} from '../pages/Bets';
+import Notification, {NotificationType} from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
@@ -96,9 +95,10 @@ class GameBetsTab extends Component {
     const gameCardsWithDeadlineSubheadings = [];
     let lastFormattedDeadline = null;
     games.forEach((game) => {
-      const formattedDeadline = format(game.deadline, 'EEEEEE. dd.MM. - HH:mm \'Uhr\'', { locale: de });
+      const gameDeadlineDate = parseISO(game.deadline);
+      const formattedDeadline = format(gameDeadlineDate, 'EEEEEE. dd.MM. - HH:mm \'Uhr\'', { locale: de });
       if (lastFormattedDeadline === null || formattedDeadline !== lastFormattedDeadline) {
-        const relativeDeadlineText = `Noch ${formatDistance(game.deadline, Date.now(), { locale: de })}`;
+        const relativeDeadlineText = `Noch ${formatDistance(gameDeadlineDate, Date.now(), { locale: de })}`;
         gameCardsWithDeadlineSubheadings
           .push(
             <div
@@ -108,11 +108,11 @@ class GameBetsTab extends Component {
             >
               <div className="GameBetsTab__deadline-headings">
                 <RtgSeparator
-                  content={this.createDeadlineWithIcon(game.deadline, relativeDeadlineText)}
+                  content={this.createDeadlineWithIcon(gameDeadlineDate, relativeDeadlineText)}
                   contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
                 />
                 <RtgSeparator
-                  content={this.createDeadlineWithIcon(game.deadline, formattedDeadline)}
+                  content={this.createDeadlineWithIcon(gameDeadlineDate, formattedDeadline)}
                   contentStyle={{ margin: '3px 0', height: 28, lineHeight: '28px' }}
                 />
               </div>

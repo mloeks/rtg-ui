@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import stickybits from 'stickybits';
 
-import { withTheme } from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 
 import AddIcon from '@material-ui/icons/Add';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import { format, isSameDay, toDate } from 'date-fns';
+import {format, isSameDay, parseISO} from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import Page from './Page';
@@ -23,11 +23,11 @@ import GameCard from '../components/GameCard';
 import NullGameCard from '../components/NullGameCard';
 import RtgSeparator from '../components/RtgSeparator';
 import FetchHelper from '../service/FetchHelper';
-import AuthService, { API_BASE_URL } from '../service/AuthService';
-import Notification, { NotificationType } from '../components/Notification';
+import AuthService, {API_BASE_URL} from '../service/AuthService';
+import Notification, {NotificationType} from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
-import { isEnter } from '../service/KeyHelper';
-import { getClosestGameIndex } from '../service/GamesHelper';
+import {isEnter} from '../service/KeyHelper';
+import {getClosestGameIndex} from '../service/GamesHelper';
 import BetStatsPanel from '../components/bets/BetStatsPanel';
 import AddGameForm from '../components/schedule/AddGameForm';
 
@@ -106,7 +106,7 @@ class Schedule extends Component {
 
   selectCurrentRound() {
     const { games } = this.state;
-    const closestGameIndex = getClosestGameIndex(games.map(g => g.kickoff));
+    const closestGameIndex = getClosestGameIndex(games.map(g => parseISO(g.kickoff)));
     this.setState({
       selectedRoundIndex: closestGameIndex !== -1
         ? games[closestGameIndex].round_details.abbreviation
@@ -164,14 +164,15 @@ class Schedule extends Component {
     const gameCardsWithDateSubheadings = [];
     let lastGameDay = null;
     games.forEach((game) => {
-      if (lastGameDay === null || !isSameDay(game.kickoff, lastGameDay)) {
+      const gameKickoffDate = parseISO(game.kickoff);
+      if (lastGameDay === null || !isSameDay(gameKickoffDate, lastGameDay)) {
         gameCardsWithDateSubheadings
           .push(<RtgSeparator
             key={game.kickoff}
-            content={format(toDate(game.kickoff), 'EEEE d. MMMM', { locale: de })}
+            content={format(gameKickoffDate, 'EEEE d. MMMM', { locale: de })}
             style={{ margin: '15px auto' }}
           />);
-        lastGameDay = game.kickoff;
+        lastGameDay = gameKickoffDate;
       }
       const userBet = bets.find(bet => bet.bettable === game.id) || {};
       gameCardsWithDateSubheadings.push(
@@ -186,7 +187,7 @@ class Schedule extends Component {
             <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
               <GameCardGameInfo
                 city={game.city}
-                kickoff={toDate(game.kickoff)}
+                kickoff={gameKickoffDate}
                 result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
                 resultBetType={userBet.result_bet_type}
                 points={userBet.points}

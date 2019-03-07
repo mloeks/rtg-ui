@@ -1,15 +1,15 @@
-import { differenceInMinutes, toDate } from 'date-fns';
+import {differenceInMinutes, toDate} from 'date-fns';
 
 // input is an array of game kickoffs only
 // kickoffs can be in any format that date-fns's parse method supports:
 // https://date-fns.org/v1.29.0/docs/parse
-export const getClosestGameIndex = (gameKickoffs, referenceDate = new Date()) => {
-  if (!gameKickoffs.length) return -1;
+export const getClosestGameIndex = (gameKickoffDates, referenceDate = new Date()) => {
+  if (!gameKickoffDates.length) return -1;
 
   let closestIndex = 0;
   let closestKickoffAbsDifference = Number.MAX_SAFE_INTEGER;
-  for (let i = 0; i < gameKickoffs.length; i += 1) {
-    const distance = differenceInMinutes(toDate(gameKickoffs[i]), referenceDate);
+  for (let i = 0; i < gameKickoffDates.length; i += 1) {
+    const distance = differenceInMinutes(toDate(gameKickoffDates[i]), referenceDate);
 
     if (distance < 0 && distance > -135) {
       // If there is a currently running game or a game which has just finished, use this

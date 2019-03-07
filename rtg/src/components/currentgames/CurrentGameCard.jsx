@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { addDays, format, isSameDay, subDays, toDate, } from 'date-fns';
+import {addDays, format, isSameDay, parseISO, subDays, toDate,} from 'date-fns';
 import de from 'date-fns/locale/de';
 
-import { withTheme } from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
@@ -14,8 +14,8 @@ import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
-import GameCardBet, { SavingErrorType } from '../GameCardBet';
-import Notification, { NotificationType } from '../Notification';
+import GameCardBet, {SavingErrorType} from '../GameCardBet';
+import Notification, {NotificationType} from '../Notification';
 
 import './CurrentGameCard.scss';
 
@@ -113,7 +113,7 @@ class CurrentGameCard extends Component {
           content={game
             ? (
               <div>
-                {CurrentGameCard.getFormattedKickoffDate(game.kickoff)}
+                {CurrentGameCard.getFormattedKickoffDate(parseISO(game.kickoff))}
                 <br />
                 <span
                   style={{
@@ -145,7 +145,7 @@ class CurrentGameCard extends Component {
             ) : (
               <GameCardGameInfo
                 city={game.city}
-                kickoff={toDate(game.kickoff)}
+                kickoff={toDate(parseISO(game.kickoff))}
                 result={game.homegoals !== -1 && game.awaygoals !== -1 ? `${game.homegoals} : ${game.awaygoals}` : null}
                 resultBetType={userBet ? userBet.result_bet_type : null}
                 points={userBet ? userBet.points : null}

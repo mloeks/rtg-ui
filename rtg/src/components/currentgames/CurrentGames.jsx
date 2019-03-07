@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Prompt } from 'react-router-dom';
-import { withTheme } from '@material-ui/core/styles';
+import {Prompt} from 'react-router-dom';
+import {parseISO} from 'date-fns';
+
+import {withTheme} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import { viewportW } from 'verge';
+import {viewportW} from 'verge';
 import FetchHelper from '../../service/FetchHelper';
-import AuthService, { API_BASE_URL } from '../../service/AuthService';
-import { UserDetailsContext } from '../providers/UserDetailsProvider';
+import AuthService, {API_BASE_URL} from '../../service/AuthService';
+import {UserDetailsContext} from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
-import { throttle } from '../../service/EventsHelper';
-import { getClosestGameIndex } from '../../service/GamesHelper';
-import Notification, { NotificationType } from '../Notification';
-import { unsavedChangesConfirmText } from '../../pages/Bets';
+import {throttle} from '../../service/EventsHelper';
+import {getClosestGameIndex} from '../../service/GamesHelper';
+import Notification, {NotificationType} from '../Notification';
+import {unsavedChangesConfirmText} from '../../pages/Bets';
 import BetStatsPanel from '../bets/BetStatsPanel';
 
 import './CurrentGames.scss';
@@ -207,16 +209,16 @@ class CurrentGames extends Component {
     }
   }
 
-  getInitialOffsetBasedOnDate(kickoffs) {
+  getInitialOffsetBasedOnDate(kickoffDates) {
     const { gamesToDisplay } = this.state;
-    let offsetBasedOnDate = getClosestGameIndex(kickoffs);
+    let offsetBasedOnDate = getClosestGameIndex(kickoffDates);
 
     if (gamesToDisplay > 2) {
       // on wider screens, show the current game in the middle,
       // so the previous game is still shown on the left
       offsetBasedOnDate -= 1;
     }
-    return Math.max(0, Math.min(offsetBasedOnDate, kickoffs.length - gamesToDisplay));
+    return Math.max(0, Math.min(offsetBasedOnDate, kickoffDates.length - gamesToDisplay));
   }
 
   registerEvents() {
@@ -287,13 +289,13 @@ class CurrentGames extends Component {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson).then((response) => {
       if (response.ok) {
-        const kickoffs = response.json;
-        const initialOffset = this.getInitialOffsetBasedOnDate(kickoffs);
+        const kickoffDates = response.json.map(parseISO);
+        const initialOffset = this.getInitialOffsetBasedOnDate(kickoffDates);
         this.setState(() => ({
-          games: Array(kickoffs.length).fill(null),
+          games: Array(kickoffDates.length).fill(null),
           currentOffset: initialOffset,
           gamesToDisplayWindow:
-            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffs.length),
+            CurrentGames.getGamesToDisplayWindowState(initialOffset, kickoffDates.length),
         }), () => this.fetchMoreGamesIfRequired());
       } else {
         this.setState(() => ({ loadingError: true }));

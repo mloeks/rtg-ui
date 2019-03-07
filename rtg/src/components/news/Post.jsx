@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import {withStyles, withTheme} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,12 +11,12 @@ import Collapse from '@material-ui/core/Collapse';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
 
-import { differenceInMinutes, differenceInSeconds, format, formatDistanceStrict, isSameDay, subDays, } from 'date-fns';
+import {differenceInMinutes, differenceInSeconds, format, formatDistanceStrict, isSameDay, subDays,} from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
-import { randomHueHexColor } from '../../service/ColorHelper';
+import {randomHueHexColor} from '../../service/ColorHelper';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
 
@@ -41,7 +41,7 @@ export const getFormattedPostDate = (date) => {
     return 'Gerade eben';
   }
   if (differenceInMinutes(now, date) < 60) {
-    return formatDistanceStrict(now, date, { locale: de, addSuffix: true, unit: 'm' });
+    return formatDistanceStrict(now, date, { locale: de, addSuffix: true, unit: 'minute' });
   }
 
   const formattedTime = format(date, 'HH:mm \'Uhr\'');
