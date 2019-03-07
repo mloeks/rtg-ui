@@ -1,15 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { Prompt } from 'react-router-dom';
+import {Prompt} from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Badge from '@material-ui/core/Badge';
 
 import Page from './Page';
-import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
+import {UserDetailsContext} from '../components/providers/UserDetailsProvider';
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
@@ -146,10 +146,10 @@ class Bets extends Component {
                 <Fragment>
                   <Tabs
                     className="BetsPage__tabs"
-                    fullWidth
                     indicatorColor="secondary"
                     textColor="primary"
                     value={activeTab}
+                    variant="fullWidth"
                     onChange={this.handleTabActive}
                   >
                     <Tab label={this.openBetsBadge('Spiele', openGameBetsCt)} />
