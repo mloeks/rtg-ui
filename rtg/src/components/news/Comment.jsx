@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {parseISO} from 'date-fns';
+
 import Button from '@material-ui/core/Button';
 import CommentsList from './CommentsList';
 import UserAvatar from '../UserAvatar';
-import { getFormattedPostDate } from './Post';
+import {getFormattedPostDate} from './Post';
 import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Comment.scss';
@@ -78,7 +80,7 @@ class Comment extends Component {
               <span className="Comment__author">
                 {comment.author_details.username}&nbsp;–&nbsp;
               </span>
-              <span>{getFormattedPostDate(comment.date_created)}</span>
+              <span>{getFormattedPostDate(parseISO(comment.date_created))}</span>
             </div>
             <pre className="Comment__content">{comment.content}</pre>
           </div>
