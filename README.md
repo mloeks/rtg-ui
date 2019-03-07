@@ -2,6 +2,9 @@
 
 ## Current upgrades & TODOs
 
+* Thoroughly test recent module upgrades
+    * Various breaking changes in date-fns --> maybe not fully fixed on every page yet
+    * Are there other breaking changes in updated libs?
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
