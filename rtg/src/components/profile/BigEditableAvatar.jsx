@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,8 +12,8 @@ import RotateRightIcon from '@material-ui/icons/RotateRight';
 import teal from '@material-ui/core/colors/teal';
 
 import AvatarEditor from 'react-avatar-editor';
-import Notification, { NotificationType } from '../Notification';
-import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import Notification, {NotificationType} from '../Notification';
+import AuthService, {API_BASE_URL} from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.scss';
@@ -33,11 +33,11 @@ const EditingActions = ({
     noValidate
   >
     <div className="BigEditableAvatar__rotation-wrapper">
-      <IconButton>
-        <RotateRightIcon color="primary" onClick={onRotateRight} />
+      <IconButton onClick={onRotateRight}>
+        <RotateRightIcon color="primary" />
       </IconButton>
-      <IconButton>
-        <RotateLeftIcon color="primary" onClick={onRotateLeft} />
+      <IconButton onClick={onRotateLeft}>
+        <RotateLeftIcon color="primary" />
       </IconButton>
     </div>
     <div className="BigEditableAvatar__slider-wrapper">

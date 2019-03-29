@@ -2,7 +2,6 @@
 
 ## Current upgrades & TODOs
 
-* Bug: Profile images cannot be rotated
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
