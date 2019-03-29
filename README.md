@@ -7,6 +7,12 @@
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
+* Find replacements for some apparently unmaintained NPM modules
+    * blob-polyfill
+    * canvas-toBlob
+    * hsl-to-hex
+    * jwt-decode
+    * verge
     
 ### Testing
 
