@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -16,21 +16,21 @@ import Select from '@material-ui/core/Select';
 import StarIcon from '@material-ui/icons/Star';
 import AlarmIcon from '@material-ui/icons/Alarm';
 
-import format from 'date-fns/format';
-import formatDistance from 'date-fns/formatDistance';
+import {format, formatDistance, parseISO} from 'date-fns';
 import de from 'date-fns/locale/de';
-import AuthService, { API_BASE_URL } from '../service/AuthService';
+import AuthService, {API_BASE_URL} from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
-import Notification, { NotificationType } from './Notification';
-import { BetsStatusContext } from '../pages/Bets';
+import Notification, {NotificationType} from './Notification';
+import {BetsStatusContext} from '../pages/Bets';
 
 import './ExtraBetCard.scss';
 
 // TODO P3 display country flags in drop down
 class ExtraBetCard extends Component {
-  static getRemainingTime(deadline) {
-    const absoluteDateTime = format(deadline, 'EEEEEE. dd. MMM, HH:mm \'Uhr\'', { locale: de });
-    const relativeDistance = formatDistance(deadline, Date.now(), { locale: de });
+  static getRemainingTime(deadlineString) {
+    const deadlineDate = parseISO(deadlineString);
+    const absoluteDateTime = format(deadlineDate, 'EEEEEE. dd. MMM, HH:mm \'Uhr\'', { locale: de });
+    const relativeDistance = formatDistance(deadlineDate, Date.now(), { locale: de });
     return `${relativeDistance} – ${absoluteDateTime}`;
   }
 
