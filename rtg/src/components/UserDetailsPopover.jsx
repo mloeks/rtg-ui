@@ -30,7 +30,7 @@ class UserDetailsPopover extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.open) {
       this.loadDetails();
     }

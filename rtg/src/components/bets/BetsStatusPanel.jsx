@@ -21,7 +21,7 @@ class BetsStatusPanel extends Component {
     this.stickybitsInstance = stickybits('.BetsStatusPanel', { verticalPosition: 'bottom' });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.saving) {
       this.savingIndicatorTimeout = setTimeout(() => {
         this.setState({ showSavingIndicator: true });

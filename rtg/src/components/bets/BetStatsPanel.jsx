@@ -30,7 +30,7 @@ class BetStatsPanel extends Component {
     this.toggleOpen = this.toggleOpen.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.open) {
       this.fetchBets();
     }

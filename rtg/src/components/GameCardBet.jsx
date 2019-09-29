@@ -89,7 +89,7 @@ class GameCardBet extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { awaygoalsInput, hasChanges, homegoalsInput } = this.state;
     const { gameId, onSaveSuccess, shouldSave } = this.props;
 

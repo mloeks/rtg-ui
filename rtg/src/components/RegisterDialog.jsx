@@ -57,7 +57,7 @@ class RegisterDialog extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // reset my state on open
     if (nextProps.open === true) {
       window.addEventListener('keyup', this.handleKeyUpEvent, false);
