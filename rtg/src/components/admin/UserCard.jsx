@@ -116,7 +116,6 @@ class UserCard extends Component {
     const paidSymbol = (
       <EuroSymbolIcon
         style={{ color: has_paid ? theme.palette.secondary.main : theme.palette.grey['300'] }}
-        onClick={this.toggleHasPaid}
       />);
 
     const noAvatarPlaceholder = (
