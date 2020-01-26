@@ -2,13 +2,16 @@
 
 ## Current upgrades & TODOs
 
+* Library upgrades
+    * Fix linter issues and get vscode eslint plugin to work properly
+    * date-fns update
+    * other updates
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
 * Find replacements for some apparently unmaintained NPM modules
-    * blob-polyfill
     * canvas-toBlob
     * hsl-to-hex
     * jwt-decode
@@ -30,7 +33,7 @@ Material UI has been added as CSS Framework as described [here](https://stackove
 
 ### Sass
 
-Sass support has been configured as described [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc).
+Sass support has been configured as described [here](https://create-react-app.dev/docs/adding-a-sass-stylesheet).
 
 ## Current Issues / Outstanding TODOs
 
