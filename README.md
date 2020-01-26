@@ -3,9 +3,9 @@
 ## Current upgrades & TODOs
 
 * Library upgrades
-    * Fix linter issues and get vscode eslint plugin to work properly
-    * date-fns update
-    * other updates
+* Material UI v4 major upgrade
+    * Also use new pickers now available from @material-ui/pickers
+    * Then update to most recent @date-io v2 libs
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
