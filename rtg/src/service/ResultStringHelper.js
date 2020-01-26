@@ -3,9 +3,9 @@ export const NO_GOALS_STRING = '-';
 export const MAX_GOALS_INPUT = 99;
 export const VALID_GOAL_INPUT_REGEX = /^([0-9]{1,2})$/;
 
-export const isCompleteResult = resultString => new RegExp(`^\\d{1,2}${RESULT_SEPARATOR}\\d{1,2}$`).test(resultString);
+export const isCompleteResult = (resultString) => new RegExp(`^\\d{1,2}${RESULT_SEPARATOR}\\d{1,2}$`).test(resultString);
 
-export const isEmptyResult = resultString => (
+export const isEmptyResult = (resultString) => (
   `${NO_GOALS_STRING}${RESULT_SEPARATOR}${NO_GOALS_STRING}` === resultString
 );
 

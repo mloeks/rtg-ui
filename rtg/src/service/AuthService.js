@@ -14,9 +14,9 @@ export const API_BASE_URL = process.env.NODE_ENV === 'production'
   : process.env.REACT_APP_DEV_API_URL;
 
 const LocalStorageWrapper = {
-  get: key => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef
+  get: (key) => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef
   set: (key, value) => localStorage.setItem(`rtg-${key}`, value), // eslint-disable-line no-undef
-  remove: key => localStorage.removeItem(`rtg-${key}`), // eslint-disable-line no-undef
+  remove: (key) => localStorage.removeItem(`rtg-${key}`), // eslint-disable-line no-undef
 };
 
 const REFRESH_IF_EXPIRY_IN_SECONDS = 5 * 60;

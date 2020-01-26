@@ -4,7 +4,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import UserAvatar from '../UserAvatar';
 import UserDetailsPopover from '../UserDetailsPopover';
-import { isEnter } from '../../service/KeyHelper';
+import isEnter from '../../service/KeyHelper';
 import ColouredResultBetColumn from './ColouredResultBetColumn';
 
 import './StandingsTableRow.scss';

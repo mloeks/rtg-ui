@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { rectangle, viewportH } from 'verge';
 
 // throttle event listeners using requestAnimationFrames
@@ -103,7 +104,6 @@ export const hasScrolledBehind = elem => rectangle(elem).bottom < viewportH();
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 // Source: https://davidwalsh.name/javascript-debounce-function
-/* eslint-disable */
 export function debounce(func, wait, immediate) {
   var timeout;
   return function() {
@@ -162,4 +162,3 @@ export function throttle(func, wait, options) {
 
   return throttled;
 }
-/* eslint-enable */

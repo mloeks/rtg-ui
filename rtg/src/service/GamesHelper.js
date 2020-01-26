@@ -1,9 +1,8 @@
-import {differenceInMinutes, toDate} from 'date-fns';
+import { differenceInMinutes, toDate } from 'date-fns';
 
 // input is an array of game kickoffs only
 // kickoffs can be in any format that date-fns's parse method supports:
-// https://date-fns.org/v1.29.0/docs/parse
-export const getClosestGameIndex = (gameKickoffDates, referenceDate = new Date()) => {
+const getClosestGameIndex = (gameKickoffDates, referenceDate = new Date()) => {
   if (!gameKickoffDates.length) return -1;
 
   let closestIndex = 0;
@@ -29,3 +28,5 @@ export const getClosestGameIndex = (gameKickoffDates, referenceDate = new Date()
 
   return closestIndex;
 };
+
+export default getClosestGameIndex;

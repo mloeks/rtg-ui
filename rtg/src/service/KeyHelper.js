@@ -1,1 +1,2 @@
-export const isEnter = keyEvent => keyEvent.charCode === 13;
+const isEnter = (keyEvent) => keyEvent.charCode === 13;
+export default isEnter;

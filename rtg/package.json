@@ -13,6 +13,7 @@
     "canvas-toBlob": "^1.0.0",
     "date-fns": "^2.4.1",
     "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "hsl-to-hex": "^1.0.0",
     "jwt-decode": "^2.2.0",
     "material-ui-pickers": "^2.2.4",
@@ -35,6 +36,7 @@
     "start": "react-scripts start",
     "build": "REACT_APP_ENV=production react-scripts build",
     "build:demo": "REACT_APP_ENV=demo react-scripts build",
+    "lint": "eslint src",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

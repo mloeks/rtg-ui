@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 
 import AddIcon from '@material-ui/icons/Add';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import {format, isSameDay, parseISO} from 'date-fns';
+import { format, isSameDay, parseISO } from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import Page from './Page';
@@ -26,8 +26,8 @@ import FetchHelper from '../service/FetchHelper';
 import AuthService, {API_BASE_URL} from '../service/AuthService';
 import Notification, {NotificationType} from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
-import {isEnter} from '../service/KeyHelper';
-import {getClosestGameIndex} from '../service/GamesHelper';
+import isEnter from '../service/KeyHelper';
+import getClosestGameIndex from '../service/GamesHelper';
 import BetStatsPanel from '../components/bets/BetStatsPanel';
 import AddGameForm from '../components/schedule/AddGameForm';
 

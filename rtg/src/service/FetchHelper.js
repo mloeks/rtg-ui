@@ -8,16 +8,16 @@ class FetchHelper {
     }
 
     if (contentType && contentType.indexOf('application/json') !== -1) {
-      return new Promise(resolve => response.json()
-        .then(json => resolve({
+      return new Promise((resolve) => response.json()
+        .then((json) => resolve({
           status: response.status,
           ok: response.ok,
           json,
         })));
     }
 
-    return new Promise(resolve => response.text()
-      .then(text => resolve({
+    return new Promise((resolve) => response.text()
+      .then((text) => resolve({
         status: response.status,
         ok: response.ok,
         text,
