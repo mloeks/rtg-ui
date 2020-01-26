@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
+# DEMO or PROD
 ENV=$1
 SSH=muden@s17.wservices.ch
 
-NODE_VERSION=v10.15.3
+NODE_VERSION=v12.14.1
 
 cd ../rtg
 
