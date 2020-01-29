@@ -2,9 +2,10 @@
 
 ## Current upgrades & TODOs
 
-* Library upgrades
+* is @date-io/core really needed?
 * Adjust wording to RTG 2020
     * Also PayPal Link (alias "rtg2018")
+* Manual testing, also in IE11!
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
