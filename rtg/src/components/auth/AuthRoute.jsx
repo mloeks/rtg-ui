@@ -5,9 +5,10 @@ import AuthService from '../../service/AuthService';
 
 // TODO P3 sometimes I landed in an infinite loop between / and /foyer
 // when restarting the backend? Could not reproduce...
-const AuthRoute = ({ component: Component, ...rest }) => (
+const AuthRoute = ({ component: Component, exact, path }) => (
   <Route
-    {...rest}
+    exact={exact}
+    path={path}
     render={(props) => {
       if (!AuthService.isAuthenticated()) {
         // eslint-disable-next-line react/prop-types
@@ -15,15 +16,21 @@ const AuthRoute = ({ component: Component, ...rest }) => (
       }
 
       AuthService.refreshTokenIfNecessary();
-      return <Component {...props} />;
+      return <Component />;
     }}
   />
 );
 
+AuthRoute.defaultProps = {
+  exact: false,
+};
+
 AuthRoute.propTypes = {
   component: PropTypes.oneOfType([
-    PropTypes.func, PropTypes.element,
+    PropTypes.func, PropTypes.element, PropTypes.node, PropTypes.object,
   ]).isRequired,
+  exact: PropTypes.bool,
+  path: PropTypes.string.isRequired,
 };
 
 export default AuthRoute;

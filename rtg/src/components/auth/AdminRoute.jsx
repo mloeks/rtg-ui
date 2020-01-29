@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
-const AuthRoute = ({ component: Component, ...rest }) => {
+const AdminRoute = ({ component: Component, exact, path }) => {
   const componentToRender = (props) => {
     if (!AuthService.isAuthenticated()) {
       // eslint-disable-next-line react/prop-types
@@ -16,17 +16,23 @@ const AuthRoute = ({ component: Component, ...rest }) => {
     }
 
     AuthService.refreshTokenIfNecessary();
-    return <Component {...props} />;
+    return <Component exact={exact} path={path} />;
   };
 
   return (
-    <Route {...rest} render={componentToRender} />);
+    <Route exact={exact} path={path} render={componentToRender} />);
 };
 
-AuthRoute.propTypes = {
+AdminRoute.defaultProps = {
+  exact: false,
+};
+
+AdminRoute.propTypes = {
   component: PropTypes.oneOfType([
-    PropTypes.func, PropTypes.element,
+    PropTypes.func, PropTypes.element, PropTypes.node, PropTypes.object,
   ]).isRequired,
+  exact: PropTypes.bool,
+  path: PropTypes.string.isRequired,
 };
 
-export default AuthRoute;
+export default AdminRoute;
