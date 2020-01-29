@@ -163,7 +163,7 @@ class Post extends Component {
           className="Post__card-title qa-post-title"
           classes={{ title: classes.headline }}
           title={post.title}
-          titleTypographyProps={{ color: 'textPrimary', component: 'h2', variant: 'headline' }}
+          titleTypographyProps={{ color: 'textPrimary', component: 'h2', variant: 'h5' }}
           style={{ backgroundColor: this.randomPostColour }}
         />
 
@@ -288,4 +288,4 @@ Post.propTypes = {
   /* eslint-enable react/forbid-prop-types */
 };
 
-export default withStyles(styles)(withTheme()(Post));
+export default withStyles(styles)(withTheme(Post));

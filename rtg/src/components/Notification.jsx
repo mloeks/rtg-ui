@@ -140,4 +140,4 @@ Notification.propTypes = {
   /* eslint-enable react/forbid-prop-types */
 };
 
-export default withStyles(styles)(withTheme()(Notification));
+export default withStyles(styles)(withTheme(Notification));

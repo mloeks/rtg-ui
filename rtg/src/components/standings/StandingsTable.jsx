@@ -406,4 +406,4 @@ StandingsTable.propTypes = {
   /* eslint-enable react/forbid-prop-types */
 };
 
-export default withStyles(styles)(withTheme()(StandingsTable));
+export default withStyles(styles)(withTheme(StandingsTable));

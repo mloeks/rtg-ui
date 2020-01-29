@@ -25,7 +25,7 @@ import payPalLogo from '../../theme/img/paypal/de-pp-logo-100px.png';
 import './DrawerMenu.scss';
 
 // TODO P3 the width is only once calculated on page load, not on re-open
-const drawerStyles = theme => ({
+const drawerStyles = (theme) => ({
   badge: {
     margin: '2px -14px 0',
     backgroundColor: theme.palette.error.main,
@@ -74,7 +74,8 @@ const DrawerMenu = ({
               />
             </a>
             <p className="DrawerMenu__bank-account">oder: DE64 5001 0517 5413 9735 33</p>
-          </div>)}
+          </div>
+        )}
       {!AuthService.getHasPaid() && <Divider />}
 
       <List>
@@ -87,7 +88,7 @@ const DrawerMenu = ({
         <Link to="/schedule">
           <ListItem button>
             <ListItemIcon><TodayIcon /></ListItemIcon>
-          <ListItemText primary="Spielplan" />
+            <ListItemText primary="Spielplan" />
           </ListItem>
         </Link>
         <Link to="/standings">
@@ -122,7 +123,8 @@ const DrawerMenu = ({
           <ListItemText primary="Ausloggen" />
         </ListItem>
       </List>
-    </Drawer>);
+    </Drawer>
+  );
 };
 
 DrawerMenu.propTypes = {

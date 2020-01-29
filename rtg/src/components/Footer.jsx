@@ -79,4 +79,4 @@ Footer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withTheme()(Footer);
+export default withTheme(Footer);

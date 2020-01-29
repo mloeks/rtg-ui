@@ -159,4 +159,4 @@ LoginForm.propTypes = {
   onLogin: PropTypes.func.isRequired,
 };
 
-export default withTheme()(LoginForm);
+export default withTheme(LoginForm);

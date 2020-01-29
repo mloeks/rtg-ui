@@ -76,4 +76,4 @@ PieChartLegend.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(PieChartLegend);
+export default withTheme(PieChartLegend);

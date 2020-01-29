@@ -207,4 +207,4 @@ AddPostFormDisplay.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(AddPostFormDisplay);
+export default withTheme(AddPostFormDisplay);

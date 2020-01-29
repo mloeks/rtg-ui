@@ -237,4 +237,4 @@ RegisterDialog.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withMobileDialog()(withTheme()(RegisterDialog));
+export default withMobileDialog()(withTheme(RegisterDialog));

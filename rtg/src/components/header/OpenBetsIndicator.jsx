@@ -29,4 +29,4 @@ OpenBetsIndicator.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(OpenBetsIndicator);
+export default withTheme(OpenBetsIndicator);

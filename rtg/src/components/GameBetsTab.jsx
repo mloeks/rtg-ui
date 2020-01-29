@@ -290,4 +290,4 @@ GameBetsTab.propTypes = {
   onOpenBetsUpdate: PropTypes.func.isRequired,
 };
 
-export default withTheme()(GameBetsTab);
+export default withTheme(GameBetsTab);

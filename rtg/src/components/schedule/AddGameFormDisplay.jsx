@@ -12,8 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
-import DatePicker from 'material-ui-pickers/DatePicker';
-import TimePicker from 'material-ui-pickers/TimePicker';
+import { DatePicker, TimePicker } from '@material-ui/pickers';
 
 import Notification, { NotificationType } from '../Notification';
 

@@ -530,4 +530,4 @@ CurrentGames.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(CurrentGames);
+export default withTheme(CurrentGames);

@@ -3,12 +3,12 @@
 ## Current upgrades & TODOs
 
 * Library upgrades
-* Material UI v4 major upgrade
-    * Also use new pickers now available from @material-ui/pickers
-    * Then update to most recent @date-io v2 libs
+* Adjust wording to RTG 2020
+    * Also PayPal Link (alias "rtg2018")
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
+* Fix minor (but numerous) linter complaints
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
 * Find replacements for some apparently unmaintained NPM modules

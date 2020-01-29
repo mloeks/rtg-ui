@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
 
 import {withTheme} from '@material-ui/core/styles';
@@ -34,14 +34,12 @@ import AddGameForm from '../components/schedule/AddGameForm';
 import './Schedule.scss';
 import headingImg from '../theme/img/headings/cup_and_ball.jpg';
 
-const DEFAULT_ROUND_INDEX = 'VOR';
-
 class Schedule extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedRoundIndex: DEFAULT_ROUND_INDEX,
+      selectedRoundIndex: '',
       selectedGroupFilter: 'all',
       games: [],
       rounds: [],
@@ -110,7 +108,7 @@ class Schedule extends Component {
     this.setState({
       selectedRoundIndex: closestGameIndex !== -1
         ? games[closestGameIndex].round_details.abbreviation
-        : DEFAULT_ROUND_INDEX,
+        : 'VOR',
     });
   }
 
@@ -176,7 +174,7 @@ class Schedule extends Component {
       }
       const userBet = bets.find(bet => bet.bettable === game.id) || {};
       gameCardsWithDateSubheadings.push(
-        <Fragment key={`game-card-${game.id}`}>
+        <React.Fragment key={`game-card-${game.id}`}>
           <div
             role="button"
             className="GameCard__click-wrapper"
@@ -205,7 +203,7 @@ class Schedule extends Component {
               buttonStyle={{ color: theme.palette.grey['500'] }}
             />
           )}
-        </Fragment>,
+        </React.Fragment>,
       );
     });
     return gameCardsWithDateSubheadings;
@@ -310,10 +308,10 @@ class Schedule extends Component {
             )}
 
             {loading && (
-              <Fragment>
+              <>
                 <RtgSeparator content="..." />
-                {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
-              </Fragment>
+                {Array(3).fill('').map((_v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
+              </>
             )}
 
             {loadingError && (
@@ -333,7 +331,8 @@ class Schedule extends Component {
             )}
           </section>
         </section>
-      </Page>);
+      </Page>
+    );
   }
 }
 
@@ -344,4 +343,4 @@ Schedule.propTypes = {
   /* eslint-enable react/forbid-prop-types */
 };
 
-export default withRouter(withTheme()(Schedule));
+export default withRouter(withTheme(Schedule));

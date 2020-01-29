@@ -232,4 +232,4 @@ CurrentGameCard.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(CurrentGameCard);
+export default withTheme(CurrentGameCard);

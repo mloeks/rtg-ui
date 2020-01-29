@@ -197,8 +197,8 @@ class ExtraBetCard extends Component {
         {result}
         &nbsp;–&nbsp;
         <b>{isUserBetCorrect ? `${points} Punkte!` : 'Keine Punkte.'}</b>
-      </div>)
-      : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
+      </div>
+    ) : <div className="ExtraBetCard__result-info">Noch kein Ergebnis.</div>;
 
     return (
       <Card className="ExtraBetCard" style={{ textAlign: 'left' }}>
@@ -220,7 +220,7 @@ class ExtraBetCard extends Component {
 
         {(!loadingError && open) && (
           <BetsStatusContext.Consumer>
-            {betsStatusContext => (
+            {(betsStatusContext) => (
               <CardActions
                 className="ExtraBetCard__actions"
                 style={{ padding: '0 20px 10px' }}
@@ -237,7 +237,7 @@ class ExtraBetCard extends Component {
                   >
                     <MenuItem value="" />
                     {choices
-                      .map(choice => <MenuItem key={choice} value={choice}>{choice}</MenuItem>)}
+                      .map((choice) => <MenuItem key={choice} value={choice}>{choice}</MenuItem>)}
                   </Select>
                 </FormControl>
                 <div>
@@ -272,7 +272,8 @@ class ExtraBetCard extends Component {
             />
           )}
         </div>
-      </Card>);
+      </Card>
+    );
   }
 }
 
@@ -295,4 +296,4 @@ ExtraBetCard.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(ExtraBetCard);
+export default withTheme(ExtraBetCard);

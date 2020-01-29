@@ -155,4 +155,4 @@ UserDetailsPopover.propTypes = {
   /* eslint-enable react/forbid-prop-types */
 };
 
-export default withStyles(styles)(withTheme()(UserDetailsPopover));
+export default withStyles(styles)(withTheme(UserDetailsPopover));

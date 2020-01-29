@@ -276,4 +276,4 @@ UserCard.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withTheme()(UserCard);
+export default withTheme(UserCard);

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import News from '../components/news/News';
@@ -23,22 +23,26 @@ const Foyer = () => (
   <Page className="Foyer">
     <section className="Foyer__welcome qa-foyer-welcome">
       <UserDetailsContext.Consumer>
-        {userContext => (
-          <Fragment>
+        {(userContext) => (
+          <>
             <img className="Foyer__top-logo" src={logo} alt="RTG Logo" />
-            <h3 className="Foyer__greeting">Herzlich Willkommen,<br />
-              <span className="Foyer__logged-in-username qa-logged-in-username">{userContext.username}</span>!
+            <h3 className="Foyer__greeting">
+              Herzlich Willkommen,
+              <br />
+              <span className="Foyer__logged-in-username qa-logged-in-username">{userContext.username}</span>
+              !
             </h3>
 
-            {!AuthService.getLastLogin() &&
+            {!AuthService.getLastLogin() && (
               <Notification
                 className="Foyer__first-visit qa-first-visit-notification"
                 dismissable
                 type={NotificationType.SUCCESS}
                 title="Anmeldung erfolgreich"
                 subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
-              />}
-          </Fragment>
+              />
+            )}
+          </>
         )}
       </UserDetailsContext.Consumer>
     </section>
@@ -52,7 +56,8 @@ const Foyer = () => (
       className="Foyer__news"
       img={newsHeadingImg}
       lazyLoadWhenInViewport
-    ><h1 className="BigPicture__heading">Neuigkeiten</h1>
+    >
+      <h1 className="BigPicture__heading">Neuigkeiten</h1>
     </BigPicture>
     <News />
 
@@ -61,7 +66,8 @@ const Foyer = () => (
       img={betsHeadingImg}
       positionY={25}
       lazyLoadWhenInViewport
-    ><h1 className="BigPicture__heading">Tippabgabe</h1>
+    >
+      <h1 className="BigPicture__heading">Tippabgabe</h1>
     </BigPicture>
     <BetsOverview />
 
@@ -69,7 +75,8 @@ const Foyer = () => (
       className="Foyer__schedule-overview"
       img={scheduleHeadingImg}
       lazyLoadWhenInViewport
-    ><h1 className="BigPicture__heading">Spielplan</h1>
+    >
+      <h1 className="BigPicture__heading">Spielplan</h1>
     </BigPicture>
     <ScheduleOverview />
 
@@ -77,7 +84,8 @@ const Foyer = () => (
       className="Foyer__standings-overview"
       img={standingsHeadingImg}
       lazyLoadWhenInViewport
-    ><h1 className="BigPicture__heading">Aktueller Spielstand</h1>
+    >
+      <h1 className="BigPicture__heading">Aktueller Spielstand</h1>
     </BigPicture>
     <StandingsOverview />
   </Page>

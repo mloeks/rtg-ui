@@ -171,4 +171,4 @@ ForgotPasswordDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default withMobileDialog()(withTheme()(ForgotPasswordDialog));
+export default withMobileDialog()(withTheme(ForgotPasswordDialog));

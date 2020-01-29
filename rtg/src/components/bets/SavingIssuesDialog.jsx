@@ -74,4 +74,4 @@ SavingIssuesDialog.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withMobileDialog()(withTheme()(SavingIssuesDialog));
+export default withMobileDialog()(withTheme(SavingIssuesDialog));
