@@ -2,7 +2,6 @@
 
 ## Current upgrades & TODOs
 
-* is @date-io/core really needed?
 * Adjust wording to RTG 2020
     * Also PayPal Link (alias "rtg2018")
 * Manual testing, also in IE11!

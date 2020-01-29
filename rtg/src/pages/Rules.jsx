@@ -16,8 +16,8 @@ const Rules = () => (
     <section className="RulesPage__content">
       <h4>Tipps Vorrunde</h4>
       <p>
-        Sämtliche Vorrundenspiele werden vor Beginn der WM getippt. Ihr könnt Eure Tipps bis zum
-        Anstoß des Eröffnungsspiels am <b>14.06.2018 um 17 Uhr (MESZ)</b> ändern. Danach könnt ihr
+        Sämtliche Vorrundenspiele werden vor Beginn der EURO getippt. Ihr könnt Eure Tipps bis zum
+        Anstoß des Eröffnungsspiels am <b>12.06.2020 um 21 Uhr (MESZ)</b> ändern. Danach könnt ihr
         nichts verändern. Geht also sicher, dass ihr JEDES Spiel getippt habt und ALLES
         ausgefüllt ist!
       </p>
@@ -26,7 +26,7 @@ const Rules = () => (
 
       <h4>Tipps K.O.-Runde</h4>
       <p>
-        Ab dem Achtelfinale (Nach der Vorrunde, letztes Spiel Gruppe H) wird wieder losgetippt.
+        Ab dem Achtelfinale (Nach der Vorrunde, letztes Spiel Gruppe F) wird wieder losgetippt.
         Das bedeutet: vergesst nicht zu tippen! Die anstehenden Paarungen und fehlenden Tipps
         werden euch natürlich hier in der RTG angezeigt. Das Königshaus bietet euch überdies
         den Service einer Tipperinnerung an. Ab jetzt könnt ihr also jedes K.O.-Spiel&nbsp;
@@ -41,7 +41,7 @@ const Rules = () => (
       <h4>Wetteinsatz</h4>
       <p>
         Der Wetteinsatz beträgt 5 €. Bitte übermittelt den Betrag bis spätestens&nbsp;
-        <b>Donnerstag, 21.06.2018</b> an das Royale Paar, via&nbsp;
+        <b>Freitag, 19.06.2020</b> an das Royale Paar, via&nbsp;
         <a href="https://paypal.me/rtg2018/5" target="_blank" rel="noopener noreferrer">
           PayPal
         </a>,&nbsp;
