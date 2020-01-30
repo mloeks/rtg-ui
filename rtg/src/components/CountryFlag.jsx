@@ -12,13 +12,13 @@ const CountryFlag = ({ country, countryCode, displayTeamName }) => {
   return (
     <div className="CountryFlag">
       <img
-        src={countryFlags[countryCode.toUpperCase()]}
+        src={countryFlags[countryCode.toUpperCase()] || countryFlags['XXX']}
         alt={countryCode.toUpperCase()}
         className="CountryFlag__flag"
       />
       <div className={`CountryFlag__name ${displayTeamName === 'auto' ? 'auto-hide' : ''}`}>
         {sanitizedCountry}
-        </div>
+      </div>
     </div>
   );
 };
