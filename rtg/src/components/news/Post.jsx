@@ -48,7 +48,7 @@ export const getFormattedPostDate = (date) => {
   if (isSameDay(date, new Date())) { return `Heute, ${formattedTime}`; }
   if (isSameDay(date, subDays(new Date(), 1))) { return `Gestern, ${formattedTime}`; }
 
-  return `${format(date, 'EEEEEE. d. MMMM', { locale: de })}, ${formattedTime}`;
+  return `${format(date, 'EEEEEE. d. MMM yyyy', { locale: de })}, ${formattedTime}`;
 };
 
 class Post extends Component {
