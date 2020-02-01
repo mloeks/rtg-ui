@@ -224,7 +224,7 @@ class GameBetsTab extends Component {
         <div style={{ padding: '0 10px' }}>
           <p>
             Bitte tippe zunächst&nbsp;
-            <b>vor Beginn der WM</b>
+            <b>vor Beginn des Turniers</b>
             &nbsp;sämtliche Vorrundenspiele. Die
             Partien der K.O.-Runde werden hier auftauchen, sobald sie feststehen.
             <br />

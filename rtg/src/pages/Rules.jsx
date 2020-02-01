@@ -52,7 +52,7 @@ const Rules = () => (
 
       <h4>Gewinn</h4>
       <p>
-        Die Gewinnausschüttung hängt von der Teilnehmerzahl ab. Wenn wir am 14. Juni sehen, wie
+        Die Gewinnausschüttung hängt von der Teilnehmerzahl ab. Wenn wir bei Turnierstart sehen, wie
         viele Teilnehmer es geworden sind, werden wir alle gemeinsam demokratisch (Demokratie
         trotz Monarchie!) abstimmen, wie der Gewinn ausgeschüttet wird. Dann können wir auch
         eine genaue Angabe zu den Gewinnsummen geben.<br /><br />
@@ -64,13 +64,13 @@ const Rules = () => (
 
       <h4>Punktevergabe</h4>
       <p>
-        Für einen komplett richtigen Tipp gibt es <b>5 Punkte</b> (z.B. Deutschland - Mexiko
+        Für einen komplett richtigen Tipp gibt es <b>5 Punkte</b> (z.B. Deutschland - Portgual
         geht 5:0 aus und ihr tippt 5:0).<br /><br />
 
-        Für einen richtigen Differenztipp (z.B. Deutschland - Mexiko geht 5:0 aus und ihr
+        Für einen richtigen Differenztipp (z.B. Deutschland - Portgual geht 5:0 aus und ihr
         tippt 6:1) gibt es <b>3 Punkte</b>.<br /><br />
 
-        Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Mexiko
+        Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Portgual
         gewinnt, Deutschland gewinnt auch, aber nur mit 1:0) dann bekommt&nbsp;
         ihr <b>1 Punkt</b>.<br /><br />
 

@@ -22,10 +22,10 @@ const BetsOverview = ({ theme }) => {
       <p>
         In der RTG werden traditionell&nbsp;
         <b>alle Spiele</b>
-        &nbsp;der Fußball-Weltmeisterschaft getippt.
+        &nbsp;der Fußball-Europameisterschaft getippt.
         Bitte gib deine Tipps für sämtliche Vorrundenspiele rechtzeitig bis zum Beginn des
         Eröffnungspiels am&nbsp;
-        <b>Donnerstag, 14. Juni, 17:00 Uhr (MESZ)</b>
+        <b>Freitag, 12. Juni, 21:00 Uhr (MESZ)</b>
         &nbsp;ab.
         <br />
         <br />

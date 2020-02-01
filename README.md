@@ -2,8 +2,9 @@
 
 ## Current upgrades & TODOs
 
-* Adjust wording to RTG 2020
-    * Also PayPal Link (alias "rtg2018")
+* Minor facelift
+    * Exchange headline font (e.g. Rochester?)
+    * Exchange some pictures (preferably with own pictures)
 * Manual testing, also in IE11!
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)

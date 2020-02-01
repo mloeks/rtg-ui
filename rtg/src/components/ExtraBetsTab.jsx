@@ -71,7 +71,7 @@ export default class ExtraBetsTab extends Component {
         <div style={{ padding: '0 10px' }}>
           <p>
             Bitte gib alle Zusatztipps&nbsp;
-            <b>vor Beginn der WM</b>
+            <b>vor Beginn des Turniers</b>
             &nbsp;ab.
           </p>
         </div>
