@@ -8,8 +8,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+
+import CloseIcon from '@material-ui/icons/Close';
 
 import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
@@ -55,6 +58,7 @@ class RegisterDialog extends Component {
     this.updateEmail = this.updateEmail.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -69,10 +73,8 @@ class RegisterDialog extends Component {
 
   handleKeyUpEvent(e) {
     const { hasChanges } = this.state;
-    if (e.keyCode === 13) {
-      if (hasChanges) {
-        this.handleSubmit();
-      }
+    if (e.keyCode === 13 && hasChanges) {
+      this.handleSubmit(e);
     }
   }
 
@@ -117,13 +119,15 @@ class RegisterDialog extends Component {
       });
   }
 
+  handleCancel(e) {
+    const { onCancel } = this.props;
+    this.setState(RegisterDialog.getInitialState, () => {
+      onCancel(e);
+    });
+  }
+
   render() {
-    const {
-      fullScreen,
-      onCancel,
-      open,
-      theme,
-    } = this.props;
+    const { fullScreen, open, theme } = this.props;
     const {
       password,
       fieldErrors,
@@ -143,10 +147,20 @@ class RegisterDialog extends Component {
         fullScreen={fullScreen}
         open={open}
         aria-labelledby="RegisterDialog__title"
-        onClose={onCancel}
+        onClose={this.handleCancel}
       >
         <form className="RegisterDialog__form qa-register-form" onSubmit={this.handleSubmit} noValidate>
-          <DialogTitle id="RegisterDialog__title">Werde Teil der RTG</DialogTitle>
+          <DialogTitle id="RegisterDialog__title">
+            Werde Teil der RTG
+            <IconButton
+              aria-label="close"
+              className="RegisterDialog__close"
+              style={{ position: 'absolute', right: 10, top: 10 }}
+              onClick={this.handleCancel}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent>
             {formHasErrors && (
               <Notification
@@ -206,14 +220,14 @@ class RegisterDialog extends Component {
               />
             </div>
             <br />
-            <p style={{ margin: 0, color: theme.palette.grey['300'] }}>
+            <p style={{ margin: 0, color: theme.palette.grey['600'], fontSize: 14 }}>
               Wir benötigen deinen echten Namen nur, um deine royale Identität zu prüfen.
-              Dein Name ist nicht für andere Mitspieler sichtbar.
+              Dein Name ist nicht für andere Mitspieler sichtbar!
             </p>
           </DialogContent>
 
           <DialogActions>
-            <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
+            <Button color="secondary" onClick={this.handleCancel}>Abbrechen</Button>
             <Button
               className="RegisterDialog__submit qa-register-submit"
               color="primary"

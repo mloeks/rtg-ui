@@ -1,5 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { withTheme } from '@material-ui/core/styles';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,9 +11,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import { withTheme } from '@material-ui/core/styles';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
+
+import CloseIcon from '@material-ui/icons/Close';
+
 import AuthService from '../service/AuthService';
 
 class ForgotPasswordDialog extends Component {
@@ -36,6 +42,7 @@ class ForgotPasswordDialog extends Component {
     this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -88,13 +95,15 @@ class ForgotPasswordDialog extends Component {
       });
   }
 
+  handleCancel(e) {
+    const { onClose } = this.props;
+    this.setState(ForgotPasswordDialog.getInitialState, () => {
+      onClose(e);
+    });
+  }
+
   render() {
-    const {
-      fullScreen,
-      onClose,
-      open,
-      theme,
-    } = this.props;
+    const { fullScreen, open, theme } = this.props;
 
     const {
       email,
@@ -111,9 +120,19 @@ class ForgotPasswordDialog extends Component {
         fullScreen={fullScreen}
         open={open}
         aria-labelledby="ForgotPasswordDialog__title"
-        onClose={onClose}
+        onClose={this.handleCancel}
       >
-        <DialogTitle id="ForgotPasswordDialog__title">Passwort vergessen</DialogTitle>
+        <DialogTitle id="ForgotPasswordDialog__title">
+          Passwort vergessen
+          <IconButton
+            aria-label="close"
+            className="RegisterDialog__close"
+            style={{ position: 'absolute', right: 10, top: 10 }}
+            onClick={this.handleCancel}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
@@ -144,10 +163,10 @@ class ForgotPasswordDialog extends Component {
           )}
         </DialogContent>
         <DialogActions>
-          {passwordReminderSuccessful && <Button color="primary" onClick={onClose}>Schließen</Button>}
+          {passwordReminderSuccessful && <Button color="primary" onClick={this.handleCancel}>Schließen</Button>}
           {!passwordReminderSuccessful && (
-            <Fragment>
-              <Button color="secondary" onClick={onClose}>Abbrechen</Button>
+            <>
+              <Button color="secondary" onClick={this.handleCancel}>Abbrechen</Button>
               <Button
                 color="primary"
                 disabled={!email || email.length === 0 || requestInProgress}
@@ -155,7 +174,7 @@ class ForgotPasswordDialog extends Component {
               >
                 Abschicken
               </Button>
-            </Fragment>
+            </>
           )}
         </DialogActions>
       </Dialog>
