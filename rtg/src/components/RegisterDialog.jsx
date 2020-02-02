@@ -18,17 +18,16 @@ import AuthService from '../service/AuthService';
 import VisiblePasswordField from './VisiblePasswordField';
 import Notification, { NotificationType } from './Notification';
 
-// TODO P3 fix error messages "darf nicht null sein"
 class RegisterDialog extends Component {
   static getInitialState() {
     return {
       registerSuccessful: false,
 
-      username: null,
-      password: null,
-      firstName: null,
-      lastName: null,
-      email: null,
+      username: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      email: '',
 
       fieldErrors: {
         username: null,
