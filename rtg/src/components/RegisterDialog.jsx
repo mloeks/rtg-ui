@@ -149,7 +149,12 @@ class RegisterDialog extends Component {
         aria-labelledby="RegisterDialog__title"
         onClose={this.handleCancel}
       >
-        <form className="RegisterDialog__form qa-register-form" onSubmit={this.handleSubmit} noValidate>
+        <form
+          className="RegisterDialog__form qa-register-form"
+          onSubmit={this.handleSubmit}
+          noValidate
+          style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+        >
           <DialogTitle id="RegisterDialog__title">
             Werde Teil der RTG
             <IconButton
