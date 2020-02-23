@@ -19,13 +19,13 @@
 
   &__title--desktop {
     display: none !important;
-    @media only screen and (min-width : 480px) {
+    @media only screen and (min-width : 768px) {
       display: flex !important;
     }
   }
 
   &__title--mobile {
-    @media only screen and (min-width : 480px) {
+    @media only screen and (min-width : 768px) {
       display: none !important;
     }
   }

@@ -11,7 +11,7 @@ import './Rules.scss';
 const Rules = () => (
   <Page className="RulesPage">
     <BigPicture className="RulesPage__heading" img={headingImg} positionY={70}>
-      <h1 className="BigPicture__heading">Die Regeln der RTG</h1>
+      <h2 className="BigPicture__heading">Die Regeln der RTG</h2>
     </BigPicture>
     <section className="RulesPage__content">
       <h4>Tipps Vorrunde</h4>

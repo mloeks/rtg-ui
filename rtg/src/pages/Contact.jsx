@@ -8,7 +8,7 @@ import headingImg from '../theme/img/headings/aisle_chairs.jpg';
 const Contact = () => (
   <Page className="ContactPage">
     <BigPicture className="ContactPage__heading" img={headingImg}>
-      <h1 className="BigPicture__heading">Kontakt</h1>
+      <h2 className="BigPicture__heading">Kontakt</h2>
     </BigPicture>
     <ContactForm />
   </Page>

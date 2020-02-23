@@ -234,7 +234,7 @@ class Schedule extends Component {
     return (
       <Page className="SchedulePage">
         <BigPicture className="SchedulePage__heading" img={headingImg}>
-          <h1 className="BigPicture__heading">Spielplan</h1>
+          <h2 className="BigPicture__heading">Spielplan</h2>
         </BigPicture>
 
         <section className="SchedulePage__content" ref={this.gamesSectionRef}>

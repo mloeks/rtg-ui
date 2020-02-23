@@ -163,7 +163,7 @@ class Post extends Component {
           className="Post__card-title qa-post-title"
           classes={{ title: classes.headline }}
           title={post.title}
-          titleTypographyProps={{ color: 'textPrimary', component: 'h2', variant: 'h5' }}
+          titleTypographyProps={{ color: 'textPrimary', variant: 'h4' }}
           style={{ backgroundColor: this.randomPostColour }}
         />
 

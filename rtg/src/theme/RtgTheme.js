@@ -10,16 +10,25 @@ const lightGold = '#EDD69C';
 /* eslint-enable no-unused-vars */
 
 export default {
+  // keep in sync with App.scss
   typography: {
     fontFamily: 'Roboto, sans-serif',
-    h5: {
-      fontFamily: 'Lobster Two, cursive',
+    h1: {
+      fontFamily: 'Cormorant Garamond, serif',
       fontWeight: 'normal',
-      fontSize: 32,
+      fontSize: 30,
       fontStyle: 'normal',
+      textTransform: 'uppercase',
     },
-    h6: {
-      fontFamily: 'Lobster Two, cursive',
+    h2: {
+      fontFamily: 'Cormorant Garamond, serif',
+      fontWeight: 'normal',
+      fontSize: 28,
+      fontStyle: 'normal',
+      textTransform: 'uppercase',
+    },
+    h4: {
+      fontFamily: 'Cormorant Garamond, serif',
       fontWeight: 'normal',
       fontSize: 24,
       fontStyle: 'normal',

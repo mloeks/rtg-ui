@@ -9,7 +9,7 @@ import './Standings.scss';
 const Standings = () => (
   <Page className="StandingsPage">
     <BigPicture className="StandingsPage__heading" img={headingImg}>
-      <h1 className="BigPicture__heading">Spielstand</h1>
+      <h2 className="BigPicture__heading">Spielstand</h2>
     </BigPicture>
 
     <section className="StandingsPage__content">
