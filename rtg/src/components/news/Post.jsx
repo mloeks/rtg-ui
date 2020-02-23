@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles, withTheme} from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -60,10 +60,10 @@ class Post extends Component {
       desktopLabel = `${noComments} Kommentare`;
     }
     return (
-      <Fragment>
+      <>
         <span className="Post__comments-label-mobile">{noComments}</span>
         <span className="Post__comments-label-desktop">{desktopLabel}</span>
-      </Fragment>
+      </>
     );
   }
 
@@ -194,7 +194,8 @@ class Post extends Component {
                   Alles lesen
                   <KeyboardArrowDownIcon />
                 </Button>
-              </div>)}
+              </div>
+            )}
           </CardContent>
         )}
 
@@ -204,7 +205,7 @@ class Post extends Component {
           title={post.author_details.username}
           subheader={`${getFormattedPostDate(dateCreated)}`}
           avatar={(
-            <Fragment>
+            <>
               <UserAvatar
                 className="Post__author-avatar"
                 size={40}
@@ -221,7 +222,7 @@ class Post extends Component {
                 open={userDetailsPopoverOpen}
                 onClose={this.hideUserDetailsPopover}
               />
-            </Fragment>
+            </>
           )}
           action={(
             <Button
