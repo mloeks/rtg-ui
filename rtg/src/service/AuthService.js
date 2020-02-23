@@ -134,7 +134,7 @@ class AuthService {
       if (responseJson && responseJson.error) {
         return responseJson.error;
       }
-      return 'Ein Fehler ist aufgetreten';
+      return 'Eintritt verwehrt. Bitte Zugangsdaten überprüfen!';
     };
 
     return new Promise((resolve, reject) => {
@@ -157,7 +157,7 @@ class AuthService {
         })
         .catch(() => {
           AuthService.resetProps();
-          reject(new Error('Ein Fehler ist aufgetreten.'));
+          reject(new Error('Entschuldige, der Eintritt ist derzeit nicht möglich. Bitte versuche es später noch einmal.'));
         });
     });
   }
