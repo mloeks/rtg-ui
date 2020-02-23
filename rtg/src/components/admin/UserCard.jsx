@@ -2,7 +2,7 @@
 // are directly used for props
 /* eslint-disable camelcase */
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '@material-ui/core/styles';
@@ -116,7 +116,8 @@ class UserCard extends Component {
     const paidSymbol = (
       <EuroSymbolIcon
         style={{ color: has_paid ? theme.palette.secondary.main : theme.palette.grey['300'] }}
-      />);
+      />
+    );
 
     const noAvatarPlaceholder = (
       <div
@@ -142,7 +143,6 @@ class UserCard extends Component {
         background: 'rgba(0, 0, 0, 0.35)',
         color: 'white',
         textShadow: 'black 1px 1px 4px',
-        fontFamily: '"Lobster Two", sans-serif',
         fontSize: '18px',
         lineHeight: '18px',
       }}
@@ -152,7 +152,7 @@ class UserCard extends Component {
     );
 
     return (
-      <Fragment>
+      <>
         <DeleteConfirmationModal
           open={deleteConfirmationModalOpen}
           username={username}
@@ -248,7 +248,7 @@ class UserCard extends Component {
             </IconButton>
           </CardActions>
         </Card>
-      </Fragment>
+      </>
     );
   }
 }
