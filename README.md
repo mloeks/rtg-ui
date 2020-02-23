@@ -6,21 +6,22 @@
 
 #### TODOs
 
-* 
+* Manual testing, also in IE11!
 
 #### Bugs
 
-* 
+* White background in Paper of UserDetailsPopover (probably related to Paper default change in MUI)
 
 ### Must-Haves 2020
 
-* Minor facelift
-    * Exchange headline font (e.g. Rochester?)
-    * Exchange some pictures (preferably with own pictures)
-* Manual testing, also in IE11!
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
+* Minor facelift
+    * Exchange headline font
+        * e.g. Rochester?
+    * Exchange some pictures
+        * preferably with own pictures...
 
 ### Next
 
