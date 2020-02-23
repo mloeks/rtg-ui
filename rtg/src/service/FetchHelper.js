@@ -1,9 +1,9 @@
 class FetchHelper {
-  static parseJson(response) {
+  static parseJson(response, checkAuth = true) {
     const contentType = response.headers.get('content-type');
 
-    // redirect to login page if user is not logged in anymore
-    if (response.status === 401) {
+    // redirect to login, if the user is meanwhile logged out (async request responded with 401)
+    if (checkAuth && response.status === 401) {
       window.location.href = '/';
     }
 

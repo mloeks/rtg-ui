@@ -2,6 +2,18 @@
 
 ## Current upgrades & TODOs
 
+### Testing 2020
+
+#### TODOs
+
+* 
+
+#### Bugs
+
+* 
+
+### Must-Haves 2020
+
 * Minor facelift
     * Exchange headline font (e.g. Rochester?)
     * Exchange some pictures (preferably with own pictures)
@@ -9,6 +21,9 @@
 * Prepare for React 17
     * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
+
+### Next
+
 * Fix minor (but numerous) linter complaints
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1

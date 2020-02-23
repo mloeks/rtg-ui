@@ -145,7 +145,8 @@ class AuthService {
           'Content-Type': 'application/json',
         },
       })
-        .then(FetchHelper.parseJson)
+        // avoid auth check here to prevent page refresh and show the user an error feedback
+        .then((json) => FetchHelper.parseJson(json, false))
         .then((response) => {
           if (response.ok) {
             AuthService.updatePropsFromAuthResponse(response.json);
