@@ -11,6 +11,8 @@
 #### Bugs
 
 * White background in Paper of UserDetailsPopover (probably related to Paper default change in MUI)
+* DialogTitle renders a h2 element (correct) with Typography-h6 class, why?
+    * Ref: https://material-ui.com/api/dialog-title/
 
 ### Must-Haves 2020
 
