@@ -11,7 +11,7 @@ import './Donate.scss';
 const Donate = () => (
   <Page className="DonatePage">
     <BigPicture className="DonatePage__heading" img={headingImg} positionY={100}>
-      <h1 className="BigPicture__heading">Spenden</h1>
+      <h2 className="BigPicture__heading">Spenden</h2>
     </BigPicture>
 
     <section className="DonatePage__content">

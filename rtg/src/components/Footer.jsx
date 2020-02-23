@@ -27,8 +27,8 @@ const Footer = ({ theme }) => (
   <footer className="Footer" style={{ backgroundColor: theme.palette.custom.footer.main }}>
     <Link to="/" className="Footer__title">
       <img alt="logo" className="Footer__logo" src={logo} />
-      <h4 className="Footer__title--full">Royale Tippgemeinschaft 2020</h4>
-      <h4 className="Footer__title--abbrev">RTG 2020</h4>
+      <h2 className="Footer__title--full">Royale Tippgemeinschaft 2020</h2>
+      <h2 className="Footer__title--abbrev">RTG 2020</h2>
     </Link>
 
     <div className="Footer__content">
@@ -69,7 +69,6 @@ const Footer = ({ theme }) => (
       </div>
     </div>
 
-    {/* TODO P3 add 10 years jubilee logo  */}
     <div className="Footer__copyright">© Copyright 2008 - 2020 Royale Tippgemeinschaft</div>
   </footer>
 );

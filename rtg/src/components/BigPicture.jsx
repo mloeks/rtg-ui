@@ -53,7 +53,7 @@ class BigPicture extends Component {
     return (
       <section
         ref={this.ref}
-        className={`BigPicture ${!showImg ? 'BigPicture--skeleton' : ''}`}
+        className={`BigPicture${!showImg ? ' BigPicture--skeleton' : ''}`}
         style={style}
       >
         {children}

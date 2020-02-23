@@ -10,6 +10,7 @@ import RtgSeparator from '../RtgSeparator';
 import Notification, { NotificationType } from '../Notification';
 
 const BetsOverview = ({ theme }) => {
+  // TODO P3 Replace specific inline style with typography / headline style
   const openBetsCountStyle = {
     margin: '0 5px',
     color: theme.palette.primary.main,

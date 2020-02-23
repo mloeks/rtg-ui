@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { scrollY } from 'verge';
 import AppBar from '@material-ui/core/AppBar';
@@ -98,7 +98,7 @@ class Header extends Component {
     const createTitleVariant = (className, title, loggedIn) => (
       <Typography
         className={`Header__title ${className}`}
-        variant="h6"
+        variant="h1"
         color="primary"
         style={{ margin: loggedIn ? '0' : '0 auto', flexGrow: loggedIn ? 1 : 0 }}
         onClick={() => { history.push('/'); }}
@@ -112,7 +112,7 @@ class Header extends Component {
         {(userContext) => {
           const loggedIn = userContext.isAuthenticated;
           return (
-            <Fragment>
+            <>
               <div className="Header__fixed-placeholder" style={{ height: HEADER_HEIGHT }} />
               <RootRef rootRef={this.headerRef}>
                 <AppBar className="Header qa-header" color="secondary" style={{ height: HEADER_HEIGHT }}>
@@ -143,9 +143,11 @@ class Header extends Component {
                   onClose={() => this.setState({ menuOpen: false })}
                 />
               )}
-            </Fragment>);
+            </>
+          );
         }}
-      </UserDetailsContext.Consumer>);
+      </UserDetailsContext.Consumer>
+    );
   }
 }
 

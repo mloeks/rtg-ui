@@ -83,7 +83,7 @@ class PasswordReset extends Component {
     return (
       <Page className="PasswordResetPage">
         <BigPicture className="RulesPage__heading" img={headingImg}>
-          <h1 className="BigPicture__heading">Neues Passwort vergeben</h1>
+          <h2 className="BigPicture__heading">Neues Passwort vergeben</h2>
         </BigPicture>
         <Paper className="PasswordResetForm" elevation={6}>
           {!resetSuccessful && (

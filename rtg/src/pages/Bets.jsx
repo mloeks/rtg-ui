@@ -137,7 +137,7 @@ class Bets extends Component {
           <Prompt when={betsHaveChanges} message={unsavedChangesConfirmText} />
 
           <BigPicture className="BetsPage__heading" img={headingImg} positionY={25}>
-            <h1 className="BigPicture__heading">Deine Tipps</h1>
+            <h2 className="BigPicture__heading">Deine Tipps</h2>
           </BigPicture>
 
           <section className="BetsPage__bets-area">

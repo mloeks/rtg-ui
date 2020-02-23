@@ -8,7 +8,7 @@ import headingImg from '../theme/img/headings/zarenfamilie.jpg';
 const AdminUsers = () => (
   <Page className="AdminUsersPage">
     <BigPicture img={headingImg}>
-      <h1 className="BigPicture__heading">Benutzerverwaltung</h1>
+      <h2 className="BigPicture__heading">Benutzerverwaltung</h2>
     </BigPicture>
     <section className="AdminUsersPage__content">
       <UsersGrid />
