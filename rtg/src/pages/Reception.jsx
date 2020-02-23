@@ -89,7 +89,8 @@ class Reception extends Component {
             </p>
           </div>
         </section>
-      </Page>);
+      </Page>
+    );
   }
 }
 

@@ -149,7 +149,8 @@ class LoginForm extends Component {
             onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}
           />
         </div>
-      </Paper>);
+      </Paper>
+    );
   }
 }
 
