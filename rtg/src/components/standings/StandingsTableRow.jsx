@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -56,15 +56,16 @@ class StandingsTableRow extends Component {
     } = this.props;
 
     return (
-      <Fragment>
-        <UserDetailsPopover
-          anchorEl={userDetailsPopoverAnchorEl}
-          avatar={userAvatar}
-          userId={userId}
-          username={username}
-          open={userDetailsPopoverOpen}
-          onClose={this.hideUserDetailsPopover}
-        />
+      <>
+        {userDetailsPopoverOpen && userDetailsPopoverAnchorEl && (
+          <UserDetailsPopover
+            anchorEl={userDetailsPopoverAnchorEl}
+            avatar={userAvatar}
+            userId={userId}
+            username={username}
+            onClose={this.hideUserDetailsPopover}
+          />
+        )}
 
         <TableRow
           hover
@@ -117,7 +118,7 @@ class StandingsTableRow extends Component {
           )}
 
           {showStatsColumns && (
-            <Fragment>
+            <>
               <TableCell style={betStatColumnStyle}>{noVolltreffer}</TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
@@ -143,12 +144,12 @@ class StandingsTableRow extends Component {
               >
                 {noNiete}
               </TableCell>
-            </Fragment>
+            </>
           )}
 
           <TableCell style={{ ...pointsColumnStyle, height: rowHeight }}>{points}</TableCell>
         </TableRow>
-      </Fragment>
+      </>
     );
   }
 }

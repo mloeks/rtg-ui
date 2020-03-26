@@ -11,12 +11,19 @@ import Collapse from '@material-ui/core/Collapse';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
 
-import {differenceInMinutes, differenceInSeconds, format, formatDistanceStrict, isSameDay, subDays,} from 'date-fns';
+import {
+  differenceInMinutes,
+  differenceInSeconds,
+  format,
+  formatDistanceStrict,
+  isSameDay,
+  subDays
+} from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
-import {randomHueHexColor} from '../../service/ColorHelper';
+import { randomHueHexColor } from '../../service/ColorHelper';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
 
@@ -214,14 +221,15 @@ class Post extends Component {
                 onClick={this.showUserDetailsPopover}
                 style={{ left: 0, top: 0 }}
               />
-              <UserDetailsPopover
-                anchorEl={userDetailsPopoverAnchorEl}
-                avatar={post.author_details.avatar}
-                userId={post.author_details.pk}
-                username={post.author_details.username}
-                open={userDetailsPopoverOpen}
-                onClose={this.hideUserDetailsPopover}
-              />
+              {userDetailsPopoverOpen && userDetailsPopoverAnchorEl && (
+                <UserDetailsPopover
+                  anchorEl={userDetailsPopoverAnchorEl}
+                  avatar={post.author_details.avatar}
+                  userId={post.author_details.pk}
+                  username={post.author_details.username}
+                  onClose={this.hideUserDetailsPopover}
+                />
+              )}
             </>
           )}
           action={(
@@ -260,7 +268,7 @@ class Post extends Component {
               comments={comments}
               commentCount={commentCount}
               onReplyAdded={this.handleCommentAdded}
-              onCommentsLoaded={loadedComments => this.setState({ comments: loadedComments })}
+              onCommentsLoaded={(loadedComments) => this.setState({ comments: loadedComments })}
             />
             <div style={{ textAlign: 'center' }}>
               <Button color="secondary" size="small" onClick={this.toggleExpanded}>

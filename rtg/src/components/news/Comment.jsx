@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {parseISO} from 'date-fns';
+import { parseISO } from 'date-fns';
 
 import Button from '@material-ui/core/Button';
 import CommentsList from './CommentsList';
 import UserAvatar from '../UserAvatar';
-import {getFormattedPostDate} from './Post';
+import { getFormattedPostDate } from './Post';
 import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Comment.scss';
@@ -59,14 +59,15 @@ class Comment extends Component {
       <div className="Comment">
         <div className="Comment__avatar-content-wrapper">
           <div className="Comment__avatar">
-            <UserDetailsPopover
-              anchorEl={userDetailsPopoverAnchorEl}
-              avatar={comment.author_details.avatar}
-              userId={comment.author_details.pk}
-              username={comment.author_details.username}
-              open={userDetailsPopoverOpen}
-              onClose={this.hideUserDetailsPopover}
-            />
+            {userDetailsPopoverOpen && userDetailsPopoverAnchorEl && (
+              <UserDetailsPopover
+                anchorEl={userDetailsPopoverAnchorEl}
+                avatar={comment.author_details.avatar}
+                userId={comment.author_details.pk}
+                username={comment.author_details.username}
+                onClose={this.hideUserDetailsPopover}
+              />
+            )}
 
             <UserAvatar
               size={40}

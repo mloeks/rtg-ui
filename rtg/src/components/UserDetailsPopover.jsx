@@ -30,17 +30,15 @@ class UserDetailsPopover extends Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.open) {
-      this.loadDetails();
-    }
+  componentDidMount() {
+    this.loadDetails();
   }
 
   async loadDetails() {
     const { userId } = this.props;
     fetch(`${API_BASE_URL}/rtg/users_public/${userId}/`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } })
-      .then(FetchHelper.parseJson).then(response => (
+      .then(FetchHelper.parseJson).then((response) => (
         this.setState({
           detailsLoading: false, ...response.ok && { user: response.json },
         })
@@ -55,7 +53,6 @@ class UserDetailsPopover extends Component {
       avatar,
       classes,
       onClose,
-      open,
       transformOrigin,
       theme,
       username,
@@ -67,7 +64,7 @@ class UserDetailsPopover extends Component {
         anchorOrigin={anchorOrigin}
         classes={{ paper: classes.paper }}
         onClose={onClose}
-        open={open}
+        open
         transformOrigin={transformOrigin}
         style={{ backgroundColor: 'transparent', boxShadow: 'none', marginBottom: 10 }}
       >
@@ -126,14 +123,13 @@ class UserDetailsPopover extends Component {
 }
 
 UserDetailsPopover.defaultProps = {
-  anchorEl: null,
   avatar: null,
   anchorOrigin: { horizontal: 'left', vertical: 'top' },
   transformOrigin: { horizontal: 'left', vertical: 'bottom' },
 };
 
 UserDetailsPopover.propTypes = {
-  anchorEl: PropTypes.object,
+  anchorEl: PropTypes.object.isRequired,
   anchorOrigin: PropTypes.shape({
     horizontal: PropTypes.string.isRequired,
     vertical: PropTypes.string.isRequired,
@@ -143,7 +139,6 @@ UserDetailsPopover.propTypes = {
     vertical: PropTypes.string.isRequired,
   }),
   avatar: PropTypes.string,
-  open: PropTypes.bool.isRequired,
   userId: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
 
