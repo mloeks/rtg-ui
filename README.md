@@ -13,17 +13,36 @@
 * White background in Paper of UserDetailsPopover (probably related to Paper default change in MUI)
 * DialogTitle renders a h2 element (correct) with Typography-h6 class, why?
     * Ref: https://material-ui.com/api/dialog-title/
+* Indeterminate progress bar in BetsStatusPanel is not shown
 
 ### Must-Haves 2020
 
-* Prepare for React 17
-    * Replace 6 usages of deprecated componentWillReceiveProps (CWRP)
+#### React 17: Replace componentWillReceiveProps
+
+Helpful resources:
     * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
-* Minor facelift
-    * Exchange headline font
-        * e.g. Rochester?
-    * Exchange some pictures
-        * preferably with own pictures...
+
+Do this test first. Write UI tests which cover workflows in which each affected component is included.
+
+* RegisterDialog / ForgotPasswordDialog: Clear state and register KeyEventListener on open
+    * Handle clear state on close!
+    * Handle form submit using Enter differently!
+    * --> then get rid of method
+
+* BetsStatusPanel: Show special "saving" state if save takes long (using 500ms timeout)
+    * What breaks without: Long save indicator not shown
+    * Solution: unclear
+* BetStatsPanel: Fetch Bets to display stats about on (re-)open
+    * What breaks without: bets are not updated / fetched (?)
+    * Solution: unclear
+* GameCardBet: determine if a save request affects this game (are there changes? also handles completed saves)
+    * What breaks without: saving bets is not possible, hangs during "saving"...
+    * Solution: unclear
+
+#### Minor facelift
+
+* Exchange some pictures
+    * preferably with own pictures...
 
 ### Next
 
