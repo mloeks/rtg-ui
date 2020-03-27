@@ -136,18 +136,18 @@ class LoginForm extends Component {
           <Button className="LoginForm__register qa-register-button" onClick={() => { this.setState({ registerModalOpen: true }); }}>
             Registrieren
           </Button>
-          <RegisterDialog
-            open={registerModalOpen}
-            onCancel={() => { this.setState({ registerModalOpen: false }); }}
-          />
+          {registerModalOpen && (
+            <RegisterDialog onCancel={() => { this.setState({ registerModalOpen: false }); }} />
+          )}
 
           <Button className="LoginForm__forgot-password" onClick={() => { this.setState({ passwordForgotDialogOpen: true }); }}>
             Passwort vergessen
           </Button>
-          <ForgotPasswordDialog
-            open={passwordForgotDialogOpen}
-            onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}
-          />
+          {passwordForgotDialogOpen && (
+            <ForgotPasswordDialog
+              onClose={() => { this.setState({ passwordForgotDialogOpen: false }); }}
+            />
+          )}
         </div>
       </Paper>
     );

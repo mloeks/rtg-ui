@@ -39,29 +39,9 @@ class ForgotPasswordDialog extends Component {
 
     this.state = ForgotPasswordDialog.getInitialState();
 
-    this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // reset my state on open
-    if (nextProps.open === true) {
-      window.addEventListener('keyup', this.handleKeyUpEvent, false);
-      this.setState(ForgotPasswordDialog.getInitialState);
-    } else {
-      window.removeEventListener('keyup', this.handleKeyUpEvent);
-    }
-  }
-
-  handleKeyUpEvent(e) {
-    const { email } = this.state;
-    if (e.keyCode === 13) {
-      if (email) {
-        this.handleSubmit();
-      }
-    }
   }
 
   updateEmail(event) {
@@ -73,7 +53,9 @@ class ForgotPasswordDialog extends Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
+
     const { onClose } = this.props;
     const { email } = this.state;
 
@@ -103,7 +85,7 @@ class ForgotPasswordDialog extends Component {
   }
 
   render() {
-    const { fullScreen, open, theme } = this.props;
+    const { fullScreen, theme } = this.props;
 
     const {
       email,
@@ -118,65 +100,72 @@ class ForgotPasswordDialog extends Component {
       <Dialog
         className="ForgotPasswordDialog"
         fullScreen={fullScreen}
-        open={open}
+        open
         aria-labelledby="ForgotPasswordDialog__title"
         onClose={this.handleCancel}
       >
-        <DialogTitle id="ForgotPasswordDialog__title">
-          Passwort vergessen
-          <IconButton
-            aria-label="close"
-            className="RegisterDialog__close"
-            style={{ position: 'absolute', right: 10, top: 10 }}
-            onClick={this.handleCancel}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
-            {formHasErrors && (
-              <p style={{ color: theme.palette.error.main, marginBottom: '0' }}>{formError}</p>
-            )}
-          </DialogContentText>
+        <form
+          className="ForgotPasswordDialog__form"
+          onSubmit={this.handleSubmit}
+          noValidate
+          style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+        >
+          <DialogTitle id="ForgotPasswordDialog__title">
+            Passwort vergessen
+            <IconButton
+              aria-label="close"
+              className="RegisterDialog__close"
+              style={{ position: 'absolute', right: 10, top: 10 }}
+              onClick={this.handleCancel}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
+              {formHasErrors && (
+                <span style={{ color: theme.palette.error.main, marginBottom: '0' }}>{formError}</span>
+              )}
+            </DialogContentText>
 
-          {!passwordReminderSuccessful && !requestInProgress && (
-            <TextField
-              autoFocus
-              error={Boolean(fieldErrors.email)}
-              helperText={fieldErrors.email ? fieldErrors.email[0] : ''}
-              label="E-Mail Adresse"
-              type="email"
-              fullWidth
-              value={email}
-              onChange={this.updateEmail}
-              style={{ marginTop: 8 }}
-            />
-          )}
-          {requestInProgress && <CircularProgress />}
-          {passwordReminderSuccessful && (
-            <p style={{ color: theme.palette.successColor, textAlign: 'center' }}>
-              Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
-              Passwort zurückzusetzen.
-            </p>
-          )}
-        </DialogContent>
-        <DialogActions>
-          {passwordReminderSuccessful && <Button color="primary" onClick={this.handleCancel}>Schließen</Button>}
-          {!passwordReminderSuccessful && (
-            <>
-              <Button color="secondary" onClick={this.handleCancel}>Abbrechen</Button>
-              <Button
-                color="primary"
-                disabled={!email || email.length === 0 || requestInProgress}
-                onClick={this.handleSubmit}
-              >
-                Abschicken
-              </Button>
-            </>
-          )}
-        </DialogActions>
+            {!passwordReminderSuccessful && !requestInProgress && (
+              <TextField
+                autoFocus
+                error={Boolean(fieldErrors.email)}
+                helperText={fieldErrors.email ? fieldErrors.email[0] : ''}
+                label="E-Mail Adresse"
+                type="email"
+                fullWidth
+                value={email}
+                onChange={this.updateEmail}
+                style={{ marginTop: 8 }}
+              />
+            )}
+            {requestInProgress && <CircularProgress />}
+            {passwordReminderSuccessful && (
+              <p style={{ color: theme.palette.successColor, textAlign: 'center' }}>
+                Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
+                Passwort zurückzusetzen.
+              </p>
+            )}
+          </DialogContent>
+          <DialogActions>
+            {passwordReminderSuccessful && <Button color="primary" onClick={this.handleCancel}>Schließen</Button>}
+            {!passwordReminderSuccessful && (
+              <>
+                <Button color="secondary" onClick={this.handleCancel}>Abbrechen</Button>
+                <Button
+                  color="primary"
+                  disabled={!email || email.length === 0 || requestInProgress}
+                  type="submit"
+                >
+                  Abschicken
+                </Button>
+              </>
+            )}
+          </DialogActions>
+        </form>
       </Dialog>
     );
   }
@@ -186,7 +175,6 @@ ForgotPasswordDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   theme: PropTypes.object.isRequired,
-  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

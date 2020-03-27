@@ -48,7 +48,6 @@ class RegisterDialog extends Component {
 
     this.state = RegisterDialog.getInitialState();
 
-    this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
     this.updateFormField = this.updateFormField.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
@@ -58,23 +57,6 @@ class RegisterDialog extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // reset my state on open
-    if (nextProps.open === true) {
-      window.addEventListener('keyup', this.handleKeyUpEvent, false);
-      this.setState(RegisterDialog.getInitialState);
-    } else {
-      window.removeEventListener('keyup', this.handleKeyUpEvent);
-    }
-  }
-
-  handleKeyUpEvent(e) {
-    const { hasChanges } = this.state;
-    if (e.keyCode === 13 && hasChanges) {
-      this.handleSubmit(e);
-    }
   }
 
   updateFormField(fieldName, newValue) {
@@ -126,7 +108,7 @@ class RegisterDialog extends Component {
   }
 
   render() {
-    const { fullScreen, open, theme } = this.props;
+    const { fullScreen, theme } = this.props;
     const {
       password,
       fieldErrors,
@@ -144,7 +126,7 @@ class RegisterDialog extends Component {
       <Dialog
         className="RegisterDialog qa-register-dialog"
         fullScreen={fullScreen}
-        open={open}
+        open
         aria-labelledby="RegisterDialog__title"
         onClose={this.handleCancel}
       >
@@ -248,7 +230,6 @@ class RegisterDialog extends Component {
 }
 
 RegisterDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
 
   fullScreen: PropTypes.bool.isRequired,
