@@ -28,7 +28,11 @@ export const SavingErrorType = {
   FAILED: 'FAILED',
 };
 
+// TODO P2 optimise render cycles and state handling. On first change of any bet, all GameCardBets are updated (why?)
+// Also: On save, all GameCardBets are updated with "shouldSave" :-/
 // TODO P3 handle and display bet loading failure
+// TODO P3 goals are either stored as integers when using arrows and as string when using text input
+//  this is potentially dangerous and can cause nasty side effects!
 class GameCardBet extends Component {
   static getIncrementedGoal(previousValue, inc) {
     const previousValueNumber = Number(previousValue);
@@ -89,19 +93,19 @@ class GameCardBet extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { awaygoalsInput, hasChanges, homegoalsInput } = this.state;
-    const { gameId, onSaveSuccess, shouldSave } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { awaygoalsInput, hasChanges, homegoalsInput } = prevState;
+    const { onSaveSuccess, shouldSave } = this.props;
 
-    if (!shouldSave && nextProps.shouldSave) {
+    // trigger save
+    if (!prevProps.shouldSave && shouldSave) {
       if (hasChanges) {
         this.save();
       } else {
-        onSaveSuccess(gameId, toResultString(homegoalsInput, awaygoalsInput),
+        // save requested, but there were no changes to this bet
+        onSaveSuccess(prevProps.gameId, toResultString(homegoalsInput, awaygoalsInput),
           SavingSuccessType.UNCHANGED);
       }
-    } else if (shouldSave && !nextProps.shouldSave) {
-      this.setState({ hasChanges: nextProps.hadSaveIssues, isSaving: false });
     }
   }
 
@@ -129,8 +133,6 @@ class GameCardBet extends Component {
     const { gameId, onSaveFailure, onSaveSuccess } = this.props;
 
     if (!isSaving) {
-      this.setState({ isSaving: true });
-
       const newBet = toResultString(homegoalsInput, awaygoalsInput);
       const emptyResult = isEmptyResult(newBet);
 
@@ -141,6 +143,8 @@ class GameCardBet extends Component {
 
       const body = emptyResult ? null : { bettable: gameId, result_bet: newBet };
       const betId = userBet ? userBet.id : null;
+
+      this.setState({ isSaving: true });
 
       let method;
       let url = `${API_BASE_URL}/rtg/bets/`;
@@ -212,7 +216,7 @@ class GameCardBet extends Component {
 
   handleHomegoalsIncrementalChange(inc, betsStatusContext) {
     GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
       hasChanges: true,
     }));
@@ -220,14 +224,14 @@ class GameCardBet extends Component {
 
   handleAwaygoalsIncrementalChange(inc, betsStatusContext) {
     GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
       hasChanges: true,
     }));
   }
 
   sanitizeBet() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       homegoalsInput: getGoalsString(prevState.homegoalsInput),
       awaygoalsInput: getGoalsString(prevState.awaygoalsInput),
       hasChanges: true,
@@ -240,7 +244,7 @@ class GameCardBet extends Component {
 
     return (
       <BetsStatusContext.Consumer>
-        {betsStatusContext => (
+        {(betsStatusContext) => (
           <GameCardBetPresentational
             id={gameId}
             homegoals={homegoalsInput}

@@ -27,9 +27,6 @@ Do this test first. Write UI tests which cover workflows in which each affected 
 * BetsStatusPanel: Show special "saving" state if save takes long (using 500ms timeout)
     * What breaks without: Long save indicator not shown
     * Solution: unclear
-* GameCardBet: determine if a save request affects this game (are there changes? also handles completed saves)
-    * What breaks without: saving bets is not possible, hangs during "saving"...
-    * Solution: unclear
 
 #### Minor facelift
 
