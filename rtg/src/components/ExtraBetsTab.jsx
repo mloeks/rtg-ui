@@ -88,7 +88,7 @@ export default class ExtraBetsTab extends Component {
           )}
 
           {(!loading && !loadingError) && extras
-            .map(extraBet => (
+            .map((extraBet) => (
               <Fragment key={`extra-bet-card-${extraBet.id}`}>
                 <ExtraBetCard
                   onBetAdded={() => onOpenBetsUpdate(-1, true)}

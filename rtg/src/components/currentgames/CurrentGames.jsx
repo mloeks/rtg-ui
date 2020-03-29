@@ -452,7 +452,8 @@ class CurrentGames extends Component {
           title="Fehler beim Laden der aktuellen Spiele"
           subtitle="Bitte versuche es erneut."
           containerStyle={{ margin: '30px auto', maxWidth: 480 }}
-        />);
+        />
+      );
     }
 
     return (
@@ -485,7 +486,7 @@ class CurrentGames extends Component {
           )}
 
           <UserDetailsContext.Consumer>
-            {userContext => (
+            {(userContext) => (
               <div
                 className={`CurrentGames__game-card-container ${scrolling ? 'scrolling' : ''}`}
                 ref={this.currentGamesContainerRef}
@@ -509,7 +510,7 @@ class CurrentGames extends Component {
                         onBetEditCancel={() => this.setState({ editingBet: false })}
                         onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
                       />
-                      {(game && !game.bets_open) && (
+                      {(game && !game.bets_open && offset) && (
                         <BetStatsPanel
                           bettableId={game.id}
                           open={offset === offsetWithBetStatsOpen}
@@ -517,12 +518,14 @@ class CurrentGames extends Component {
                           onOpen={() => this.setState({ offsetWithBetStatsOpen: offset })}
                         />
                       )}
-                    </div>);
+                    </div>
+);
                 })}
               </div>
             )}
           </UserDetailsContext.Consumer>
-        </section>));
+        </section>
+      ));
   }
 }
 

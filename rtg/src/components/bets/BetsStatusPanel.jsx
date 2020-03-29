@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stickybits from 'stickybits';
 
@@ -50,7 +50,7 @@ class BetsStatusPanel extends Component {
 
     const shouldDisplay = hasChanges || success;
     return (
-      <Fragment>
+      <>
         {saving && <div className="BetsStatusPanel__saving-overlay" />}
         <div className={`BetsStatusPanel ${success ? 'BetsStatusPanel--success' : ''} ${!shouldDisplay ? 'BetsStatusPanel--hidden' : ''}`}>
           {(hasChanges && !showSavingIndicator && !success) && (
@@ -66,7 +66,7 @@ class BetsStatusPanel extends Component {
           )}
 
           {showSavingIndicator && (
-            <LinearProgress mode="indeterminate" style={{ position: 'absolute', top: 0 }} />
+            <LinearProgress style={{ position: 'absolute', top: 0, width: '100%' }} />
           )}
           {showSavingIndicator && <span>Speichern...</span>}
 
@@ -77,7 +77,7 @@ class BetsStatusPanel extends Component {
             </span>
           )}
         </div>
-      </Fragment>
+      </>
     );
   }
 }
