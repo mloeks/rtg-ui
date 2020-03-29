@@ -13,20 +13,9 @@
 * White background in Paper of UserDetailsPopover (probably related to Paper default change in MUI)
 * DialogTitle renders a h2 element (correct) with Typography-h6 class, why?
     * Ref: https://material-ui.com/api/dialog-title/
-* Indeterminate progress bar in BetsStatusPanel is not shown
+* Long save overlay in betstab does not cover entire bets section
 
 ### Must-Haves 2020
-
-#### React 17: Replace componentWillReceiveProps
-
-Helpful resources:
-    * https://code.tubitv.com/migrating-to-new-react-lifecycle-methods-f6a0cccdec95
-
-Do this test first. Write UI tests which cover workflows in which each affected component is included.
-
-* BetsStatusPanel: Show special "saving" state if save takes long (using 500ms timeout)
-    * What breaks without: Long save indicator not shown
-    * Solution: unclear
 
 #### Minor facelift
 

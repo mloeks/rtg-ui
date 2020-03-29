@@ -10,6 +10,13 @@ import DoneIcon from '@material-ui/icons/Done';
 import './BetsStatusPanel.scss';
 
 class BetsStatusPanel extends Component {
+  static getDerivedStateFromProps(props) {
+    if (!props.saving) {
+      return { showSavingIndicator: false };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = { showSavingIndicator: false };
@@ -21,14 +28,14 @@ class BetsStatusPanel extends Component {
     this.stickybitsInstance = stickybits('.BetsStatusPanel', { verticalPosition: 'bottom' });
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.saving) {
+  componentDidUpdate() {
+    const { saving } = this.props;
+    if (saving) {
       this.savingIndicatorTimeout = setTimeout(() => {
         this.setState({ showSavingIndicator: true });
-      }, 500);
-    } else if (!nextProps.saving) {
+      }, 300);
+    } else {
       clearTimeout(this.savingIndicatorTimeout);
-      this.setState({ showSavingIndicator: false });
     }
   }
 
@@ -66,9 +73,11 @@ class BetsStatusPanel extends Component {
           )}
 
           {showSavingIndicator && (
-            <LinearProgress style={{ position: 'absolute', top: 0, width: '100%' }} />
+            <>
+              <LinearProgress style={{ position: 'absolute', top: 0, width: '100%' }} />
+              <span>Speichern...</span>
+            </>
           )}
-          {showSavingIndicator && <span>Speichern...</span>}
 
           {success && (
             <span className="BetsStatusPanel__success-info">
