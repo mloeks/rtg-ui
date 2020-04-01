@@ -16,17 +16,13 @@ export const NotificationType = {
   ERROR: 'error',
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     boxShadow: 'rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px',
   },
-  icon: {
-    marginRight: 0,
-    width: 30,
-    height: 30,
-  },
   title: {
-    fontWeight: 'bold',
+    color: theme.palette.grey['900'],
+    fontWeight: '400',
   },
   subtitle: {
     color: theme.palette.grey['600'],
@@ -95,11 +91,11 @@ class Notification extends Component {
           ...containerStyle,
         }}
       >
-        <ListItemIcon classes={{ root: classes.icon }}>
+        <ListItemIcon>
           {Notification.getIconByType(type, notificationColor)}
         </ListItemIcon>
         <ListItemText
-          classes={{ secondary: classes.subtitle }}
+          classes={{ primary: classes.title, secondary: classes.subtitle }}
           primary={title}
           secondary={subtitle}
         />
