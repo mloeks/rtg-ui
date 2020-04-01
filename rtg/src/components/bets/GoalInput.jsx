@@ -45,16 +45,17 @@ class GoalInput extends Component {
         inputRef={this.textInputRef}
         value={goals}
         onBlur={onBlur}
-        onChange={e => this.validateAndNotifyChange(e.target.value)}
+        onChange={(e) => this.validateAndNotifyChange(e.target.value)}
         onFocus={() => {
           if (this.textInputRef && this.textInputRef.current) this.textInputRef.current.select();
         }}
-        style={{ height: '100%', width: '40%' }}
+        style={{ width: '40%' }}
         InputProps={{
           disableUnderline: true,
           classes: { input: classes.goalInput },
         }}
-      />);
+      />
+    );
   }
 };
 

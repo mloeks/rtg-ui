@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {withTheme} from '@material-ui/core/styles';
@@ -8,13 +8,13 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import {format, formatDistance, parseISO} from 'date-fns';
 import de from 'date-fns/locale/de';
 
-import AuthService, {API_BASE_URL} from '../service/AuthService';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import GameCard from './GameCard';
-import GameCardBet, {SavingErrorType, SavingSuccessType} from './GameCardBet';
+import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import NullGameCard from './NullGameCard';
 import RtgSeparator from './RtgSeparator';
-import {BetsStatusContext, countOpenBets} from '../pages/Bets';
+import { BetsStatusContext, countOpenBets } from '../pages/Bets';
 import Notification, {NotificationType} from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
@@ -126,9 +126,9 @@ class GameBetsTab extends Component {
           <GameCardBet
             gameId={game.id}
             hadSaveIssues={gamesWithSavingIssues
-              .some(failedGame => game.id === failedGame.id)}
+              .some((failedGame) => game.id === failedGame.id)}
             shouldSave={shouldSave}
-            userBet={bets.find(bet => bet.bettable === game.id) || {}}
+            userBet={bets.find((bet) => bet.bettable === game.id) || {}}
             onSaveFailure={(id, attemptedBet, type, detail) => this
               .handleBetSaveDone(id, attemptedBet, type, detail, betsStatusContext)}
             onSaveSuccess={(id, savedBet, type, detail) => this
@@ -235,13 +235,13 @@ class GameBetsTab extends Component {
         </div>
 
         <BetsStatusContext.Consumer>
-          {betsStatusContext => (
+          {(betsStatusContext) => (
             <section className="GameBetsTab__game-bets-container">
               {loading && (
-                <Fragment>
+                <>
                   <RtgSeparator content="..." />
                   {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
-                </Fragment>
+                </>
               )}
 
               <SavingIssuesDialog
