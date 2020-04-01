@@ -16,6 +16,7 @@ import './UserDetailsPopover.scss';
 
 const styles = {
   paper: {
+    backgroundColor: 'transparent',
     overflow: 'visible',
   },
 };
@@ -65,6 +66,7 @@ class UserDetailsPopover extends Component {
         classes={{ paper: classes.paper }}
         onClose={onClose}
         open
+        PaperProps={{ elevation: 0 }}
         transformOrigin={transformOrigin}
         style={{ backgroundColor: 'transparent', boxShadow: 'none', marginBottom: 10 }}
       >
