@@ -33,10 +33,16 @@ export default {
       fontSize: 24,
       fontStyle: 'normal',
     },
+    h5: {
+      fontFamily: 'Cormorant Garamond, serif',
+      fontWeight: 'normal',
+      fontSize: 22,
+      fontStyle: 'normal',
+    },
     h6: {
       fontFamily: 'Cormorant Garamond, serif',
       fontWeight: 'normal',
-      fontSize: 16,
+      fontSize: 20,
       fontStyle: 'normal',
     },
   },
