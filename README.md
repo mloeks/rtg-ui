@@ -2,6 +2,23 @@
 
 ## Current upgrades & TODOs
 
+### Cookie Consent
+
+Laut EuGH nicht benötigt für Session Cookies (Login etc.)
+Quelle: https://www.e-recht24.de/artikel/datenschutz/8451-hinweispflicht-fuer-cookies.html
+
+Dennoch wenigstens folgenden Cookie-Hinweis (non-blocking):
+```
+Verwendung von Cookies
+
+Um die Royale Tippgemeinschaft für Euch optimal zu gestalten, verwenden wir einige Cookies. Durch die weitere Nutzung dieser Webseite stimmt Ihr der Verwendung von Cookies zu.
+
+Weitere Informationen zu Cookies erhaltet Ihr in unserer Datenschutzerklärung.
+```
+
+Eine Datenschutzerklärung sollte allerdings hinzugefügt werden, wo die Verwendung von Cookies erklärt wird. --> nur Session Cookies für Login und Userdaten lokal im Browser, werden nicht an Dritte weitergegeben. Keinerlei Analytics oder anderweitige
+Tracking Cookies vorhanden!
+
 ### Testing 2020
 
 #### TODOs
@@ -10,10 +27,7 @@
 
 #### Bugs
 
-* White background in Paper of UserDetailsPopover (probably related to Paper default change in MUI)
-* DialogTitle renders a h2 element (correct) with Typography-h6 class, why?
-    * Ref: https://material-ui.com/api/dialog-title/
-* Long save overlay in betstab does not cover entire bets section
+* ...
 
 ### Must-Haves 2020
 
@@ -32,12 +46,10 @@
     * hsl-to-hex
     * jwt-decode
     * verge
-    
-### Testing
 
-#### Explorative
+### Header Design
 
-* Do some more intensive explorative testing after the Material UI upgrade
+* Try to make it slightly V-shaped using SVG or CSS skewing, logo in the middle, apply fading leather texture on the top?
 
 ## Toolchain
 
@@ -50,25 +62,6 @@ Material UI has been added as CSS Framework as described [here](https://stackove
 ### Sass
 
 Sass support has been configured as described [here](https://create-react-app.dev/docs/adding-a-sass-stylesheet).
-
-## Current Issues / Outstanding TODOs
-
-### Registration
-
-* configure backend field error messages to be better
-* Style non-field-errors a bit nicer
-* send form on Enter
-
-* (first/last name info as icon + popup)
-
-### Forgot Password
-
-* (Style progress indicator and success message a bit nicer)
-
-### Design
-
-#### Header
-* Make it V-shaped using SVG or CSS skewing, logo in the middle, apply fading leather texture on the top?
 
 ## Learnings during dev
 
