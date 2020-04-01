@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import Button from '@material-ui/core/Button';
@@ -9,14 +8,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 
 import CloseIcon from '@material-ui/icons/Close';
 
+import Notification, { NotificationType } from './Notification';
 import AuthService from '../service/AuthService';
+
 
 class ForgotPasswordDialog extends Component {
   static getInitialState() {
@@ -85,7 +85,7 @@ class ForgotPasswordDialog extends Component {
   }
 
   render() {
-    const { fullScreen, theme } = this.props;
+    const { fullScreen } = this.props;
 
     const {
       email,
@@ -122,12 +122,16 @@ class ForgotPasswordDialog extends Component {
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
-              {formHasErrors && (
-                <span style={{ color: theme.palette.error.main, marginBottom: '0' }}>{formError}</span>
-              )}
-            </DialogContentText>
+            Bitte gib Deine E-Mail Adresse ein, um Dein Passwort zurückzusetzen.
+
+            {formHasErrors && (
+              <Notification
+                type={NotificationType.ERROR}
+                title="Das hat leider nicht geklappt"
+                subtitle={formError}
+                containerStyle={{ marginTop: 20, marginBottom: 20 }}
+              />
+            )}
 
             {!passwordReminderSuccessful && !requestInProgress && (
               <TextField
@@ -144,10 +148,12 @@ class ForgotPasswordDialog extends Component {
             )}
             {requestInProgress && <CircularProgress />}
             {passwordReminderSuccessful && (
-              <p style={{ color: theme.palette.successColor, textAlign: 'center' }}>
-                Herzlichen Dank! Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein
-                Passwort zurückzusetzen.
-              </p>
+              <Notification
+                type={NotificationType.SUCCESS}
+                title="Herzlichen Dank!"
+                subtitle="Du solltest in Kürze eine E-Mail mit einem Link bekommen, um dein Passwort zurückzusetzen."
+                containerStyle={{ marginTop: 20 }}
+              />
             )}
           </DialogContent>
           <DialogActions>
@@ -174,8 +180,7 @@ class ForgotPasswordDialog extends Component {
 ForgotPasswordDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  theme: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default withMobileDialog()(withTheme(ForgotPasswordDialog));
+export default withMobileDialog()(ForgotPasswordDialog);
