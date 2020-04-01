@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -13,8 +13,8 @@ import Notification, { NotificationType } from '../Notification';
 
 import './BetStatsPanel.scss';
 
-// TODO P2 implement empty state (no bets placed)
-// TODO P3 switch between result stats and 2/0/1 stats (for games only)
+// TODO P2 switch between result stats and 2/0/1 stats (for games only)
+// TODO P3 implement empty state (no bets placed)
 // TODO P3 how to display abbreviations for extra bets? (width on small devices...)
 class BetStatsPanel extends Component {
   constructor(props) {
@@ -156,7 +156,7 @@ class BetStatsPanel extends Component {
             )}
 
             {!loading && !loadingError && chartData && (
-              <Fragment>
+              <>
                 <div className="BetStatsPanel__chart-wrapper" style={{ pointerEvents: 'none' }}>
                   <PieChart
                     data={chartData}
@@ -196,7 +196,7 @@ class BetStatsPanel extends Component {
                   bets={bets}
                   betColumnStyle={standingsBetColumnStyle}
                 />
-              </Fragment>
+              </>
             )}
           </div>
         )}
