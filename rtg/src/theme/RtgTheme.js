@@ -13,6 +13,7 @@ export default {
   // keep in sync with App.scss
   typography: {
     fontFamily: 'Roboto, sans-serif',
+    fontDisplay: 'swap',
     h1: {
       fontFamily: 'Cormorant Garamond, serif',
       fontWeight: 'normal',
