@@ -4,7 +4,7 @@
 ENV=$1
 SSH=muden@s17.wservices.ch
 
-NODE_VERSION=v12.14.1
+NODE_VERSION=v12.16.1
 
 cd ../rtg
 
