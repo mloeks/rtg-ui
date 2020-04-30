@@ -39,6 +39,8 @@ Tracking Cookies vorhanden!
 ### Next
 
 * Fix minor (but numerous) linter complaints
+* Look to improve page speed for home page
+* Performance improvements on bet page (look for unnecessary render cycles and state updates)
 * [Optional] Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
 * Find replacements for some apparently unmaintained NPM modules
