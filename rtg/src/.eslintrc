@@ -6,6 +6,11 @@
     "fetch": true,
     "Element": true
   },
+  "parserOptions": {
+    // This setting makes eslint stop complaining about dynamic imports (required for React.lazy)
+    // See https://stackoverflow.com/a/58104827
+    "ecmaVersion": 11
+  },
   "rules": {
     "jsx-a11y/anchor-is-valid": [ "error", {
       "components": [ "Link" ],

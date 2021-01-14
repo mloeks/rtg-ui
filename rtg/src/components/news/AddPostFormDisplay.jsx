@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '@material-ui/core/styles';
@@ -17,9 +17,14 @@ import Notification, { NotificationType } from '../Notification';
 
 import './AddPostForm.scss';
 
+const Quill = React.lazy(() => {
+  import('react-quill/dist/quill.snow.css');
+  return import('react-quill');
+});
+
 const AddPostFormDisplay = ({
   appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
-  onCancel, onFieldChange, onSubmit, Quill, savingError, savingInProgress,
+  onCancel, onFieldChange, onSubmit, savingError, savingInProgress,
   sendMail, sendMailOption, theme, titleError,
 }) => {
   const getSuitableSavingErrorSubtitle = () => {
@@ -58,7 +63,7 @@ const AddPostFormDisplay = ({
         />
         <br />
 
-        {Quill && (
+        <Suspense fallback={<CircularProgress />}>
           <Quill
             placeholder="Inhalt schreiben..."
             value={content}
@@ -67,8 +72,7 @@ const AddPostFormDisplay = ({
             onChange={(val) => onFieldChange('content', val)}
             style={{ marginTop: 10, fontSize: '20px' }}
           />
-        )}
-        {!Quill && <CircularProgress />}
+        </Suspense>
 
         <br />
         <div className="AddPostForm__draft-info">
@@ -165,8 +169,6 @@ const AddPostFormDisplay = ({
 };
 
 AddPostFormDisplay.defaultProps = {
-  Quill: null,
-
   appearInNews: true,
   sendMail: true,
 
@@ -183,8 +185,6 @@ AddPostFormDisplay.defaultProps = {
 };
 
 AddPostFormDisplay.propTypes = {
-  Quill: PropTypes.func,
-
   content: PropTypes.string.isRequired,
   appearInNews: PropTypes.bool,
   sendMail: PropTypes.bool,

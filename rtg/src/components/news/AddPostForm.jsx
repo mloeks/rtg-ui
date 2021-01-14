@@ -4,7 +4,6 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import AddPostFormDisplay from './AddPostFormDisplay';
 import FetchHelper from '../../service/FetchHelper';
 import { debounce } from '../../service/EventsHelper';
-import QuillAsyncLoader from '../../service/QuillAsyncLoader';
 
 // TODO P3 since adding Quill editor, it is possible to add posts without content
 class AddPostForm extends Component {
@@ -56,8 +55,6 @@ class AddPostForm extends Component {
     super(props);
 
     this.state = {
-      quill: null,
-
       id: props.draft ? props.draft.id : null,
       title: props.draft ? props.draft.title : '',
       content: props.draft ? props.draft.content : '',
@@ -80,12 +77,6 @@ class AddPostForm extends Component {
     this.handleSaveDraft = debounce(this.handleSaveDraft.bind(this), 1500);
     this.handleSave = this.handleSave.bind(this);
     this.handleCancelled = this.handleCancelled.bind(this);
-  }
-
-  componentDidMount() {
-    // only load quill library when this component is mounted
-    // no normal user ever needs it and should not load this pretty big library
-    QuillAsyncLoader().then((quill) => this.setState({ quill }));
   }
 
   handleFieldUpdate(fieldName, value) {
@@ -175,7 +166,6 @@ class AddPostForm extends Component {
       draftSavingError,
       fieldErrors,
       nonFieldError,
-      quill,
       savingError,
       savingInProgress,
       sendMail,
@@ -185,7 +175,6 @@ class AddPostForm extends Component {
 
     return (
       <AddPostFormDisplay
-        Quill={quill}
         title={title}
         content={content}
         appearInNews={appearInNews}
