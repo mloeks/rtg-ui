@@ -1,15 +1,15 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {Prompt} from 'react-router-dom';
+import { Prompt } from 'react-router-dom';
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Badge from '@material-ui/core/Badge';
 
 import Page from './Page';
-import {UserDetailsContext} from '../components/providers/UserDetailsProvider';
+import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
@@ -25,13 +25,13 @@ export const BettableTypes = {
 };
 
 export const countOpenBets = (bettables, allBets) => {
-  const allBetBettablesIds = new Set(allBets.map(bet => bet.bettable));
-  return bettables.filter(bettable => !allBetBettablesIds.has(bettable.id)).length;
+  const allBetBettablesIds = new Set(allBets.map((bet) => bet.bettable));
+  return bettables.filter((bettable) => !allBetBettablesIds.has(bettable.id)).length;
 };
 
 export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
-const styles = theme => ({
+const styles = (theme) => ({
   openBetsBadge: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.common.white,
@@ -68,15 +68,6 @@ class Bets extends Component {
     window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
   }
 
-  confirmNavigationWithUnsavedChanges(e) {
-    const { betsHaveChanges } = this.state;
-    if (betsHaveChanges) {
-      e.returnValue = unsavedChangesConfirmText;
-      return unsavedChangesConfirmText;
-    }
-    return undefined;
-  }
-
   handleBetsHaveChanges(betsHaveChanges) {
     this.setState({ betsHaveChanges });
   }
@@ -90,7 +81,7 @@ class Bets extends Component {
   }
 
   handleOpenGameBetsCtUpdate(value, incremental, userContext) {
-    this.setState(prevState => (
+    this.setState((prevState) => (
       { openGameBetsCt: incremental ? prevState.openGameBetsCt + value : value }
     ), () => {
       const { openExtraBetsCt, openGameBetsCt } = this.state;
@@ -99,12 +90,21 @@ class Bets extends Component {
   }
 
   handleOpenExtraBetsCtUpdate(value, incremental, userContext) {
-    this.setState(prevState => (
+    this.setState((prevState) => (
       { openExtraBetsCt: incremental ? prevState.openExtraBetsCt + value : value }
     ), () => {
       const { openExtraBetsCt, openGameBetsCt } = this.state;
       userContext.updateOpenBetsCount(openExtraBetsCt + openGameBetsCt);
     });
+  }
+
+  confirmNavigationWithUnsavedChanges(e) {
+    const { betsHaveChanges } = this.state;
+    if (betsHaveChanges) {
+      e.returnValue = unsavedChangesConfirmText;
+      return unsavedChangesConfirmText;
+    }
+    return undefined;
   }
 
   openBetsBadge(title, count) {
@@ -142,8 +142,8 @@ class Bets extends Component {
 
           <section className="BetsPage__bets-area">
             <UserDetailsContext.Consumer>
-              {userContext => (
-                <Fragment>
+              {(userContext) => (
+                <>
                   <Tabs
                     className="BetsPage__tabs"
                     indicatorColor="secondary"
@@ -167,7 +167,7 @@ class Bets extends Component {
                         .handleOpenExtraBetsCtUpdate(val, inc, userContext)}
                     />
                   )}
-                </Fragment>
+                </>
               )}
             </UserDetailsContext.Consumer>
           </section>

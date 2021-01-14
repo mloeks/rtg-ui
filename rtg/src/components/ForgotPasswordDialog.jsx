@@ -17,7 +17,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Notification, { NotificationType } from './Notification';
 import AuthService from '../service/AuthService';
 
-
 class ForgotPasswordDialog extends Component {
   static getInitialState() {
     return {
@@ -42,15 +41,6 @@ class ForgotPasswordDialog extends Component {
     this.updateEmail = this.updateEmail.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-  }
-
-  updateEmail(event) {
-    this.setState({
-      formError: null,
-      formHasErrors: false,
-      fieldErrors: {},
-      email: event.target.value,
-    });
   }
 
   handleSubmit(e) {
@@ -81,6 +71,15 @@ class ForgotPasswordDialog extends Component {
     const { onClose } = this.props;
     this.setState(ForgotPasswordDialog.getInitialState, () => {
       onClose(e);
+    });
+  }
+
+  updateEmail(event) {
+    this.setState({
+      formError: null,
+      formHasErrors: false,
+      fieldErrors: {},
+      email: event.target.value,
     });
   }
 

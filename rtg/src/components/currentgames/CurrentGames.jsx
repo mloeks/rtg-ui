@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Prompt} from 'react-router-dom';
-import {parseISO} from 'date-fns';
+import { Prompt } from 'react-router-dom';
+import { parseISO } from 'date-fns';
 
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import {viewportW} from 'verge';
+import { viewportW } from 'verge';
 import FetchHelper from '../../service/FetchHelper';
-import AuthService, {API_BASE_URL} from '../../service/AuthService';
-import {UserDetailsContext} from '../providers/UserDetailsProvider';
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
+import { UserDetailsContext } from '../providers/UserDetailsProvider';
 import CurrentGameCard from './CurrentGameCard';
 import { throttle } from '../../service/EventsHelper';
 import getClosestGameIndex from '../../service/GamesHelper';
-import Notification, {NotificationType} from '../Notification';
-import {unsavedChangesConfirmText} from '../../pages/Bets';
+import Notification, { NotificationType } from '../Notification';
+import { unsavedChangesConfirmText } from '../../pages/Bets';
 import BetStatsPanel from '../bets/BetStatsPanel';
 
 import './CurrentGames.scss';
@@ -148,6 +148,26 @@ class CurrentGames extends Component {
     this.unregisterEvents();
   }
 
+  handleBetEditDone(betId, newBet, userContext) {
+    this.setState((prevState) => {
+      const updatedBets = prevState.bets.slice(0);
+      const updatedBetIndex = updatedBets.findIndex((bet) => bet.id === betId);
+      if (updatedBetIndex !== -1) {
+        if (newBet) {
+          updatedBets[updatedBetIndex] = newBet;
+        } else {
+          // remove bet from bets array
+          updatedBets.splice(updatedBetIndex, 1);
+          userContext.updateOpenBetsCount(userContext.openBetsCount + 1);
+        }
+      } else if (newBet) {
+        updatedBets.push(newBet);
+        userContext.updateOpenBetsCount(userContext.openBetsCount - 1);
+      }
+      return { bets: updatedBets, editingBet: false };
+    });
+  }
+
   onBreakpointChange() {
     this.setState((prevState) => {
       const gamesToDisplay = CurrentGames.getGamesToDisplay();
@@ -196,7 +216,7 @@ class CurrentGames extends Component {
   onTransitionEnd() {
     const { scrolling } = this.state;
     if (this.newOffsetAfterTransition !== null && scrolling) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         scrolling: false,
         currentOffset: this.newOffsetAfterTransition,
         gamesToDisplayWindow: CurrentGames
@@ -223,7 +243,7 @@ class CurrentGames extends Component {
 
   registerEvents() {
     window.addEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
-    this.mediaQueryList.forEach(mql => mql.addListener(this.onBreakpointChange));
+    this.mediaQueryList.forEach((mql) => mql.addListener(this.onBreakpointChange));
 
     this.gamesContainer = this.currentGamesContainerRef.current;
     if (this.gamesContainer) {
@@ -237,7 +257,7 @@ class CurrentGames extends Component {
 
   unregisterEvents() {
     window.removeEventListener('beforeunload', this.confirmNavigationWithUnsavedChanges, false);
-    this.mediaQueryList.forEach(mql => mql.removeListener(this.onBreakpointChange));
+    this.mediaQueryList.forEach((mql) => mql.removeListener(this.onBreakpointChange));
 
     if (this.gamesContainer) {
       this.gamesContainer.removeEventListener('touchstart', this.onTouchStart);
@@ -273,7 +293,7 @@ class CurrentGames extends Component {
     return fetch(url, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson).then((response) => {
-      this.setState(prevState => (response.ok
+      this.setState((prevState) => (response.ok
         ? {
           ...responseToStateMapper(
             prevState,
@@ -404,26 +424,6 @@ class CurrentGames extends Component {
     }
   }
 
-  handleBetEditDone(betId, newBet, userContext) {
-    this.setState((prevState) => {
-      const updatedBets = prevState.bets.slice(0);
-      const updatedBetIndex = updatedBets.findIndex(bet => bet.id === betId);
-      if (updatedBetIndex !== -1) {
-        if (newBet) {
-          updatedBets[updatedBetIndex] = newBet;
-        } else {
-          // remove bet from bets array
-          updatedBets.splice(updatedBetIndex, 1);
-          userContext.updateOpenBetsCount(userContext.openBetsCount + 1);
-        }
-      } else if (newBet) {
-        updatedBets.push(newBet);
-        userContext.updateOpenBetsCount(userContext.openBetsCount - 1);
-      }
-      return { bets: updatedBets, editingBet: false };
-    });
-  }
-
   render() {
     const {
       bets,
@@ -497,7 +497,7 @@ class CurrentGames extends Component {
               >
                 {gamesToDisplayWindow.range.map((offset) => {
                   const game = games[offset];
-                  const userBet = game ? bets.find(bet => bet.bettable === game.id) : null;
+                  const userBet = game ? bets.find((bet) => bet.bettable === game.id) : null;
                   return (
                     <div
                       className="CurrentGames__game-card-wrapper"
@@ -519,7 +519,7 @@ class CurrentGames extends Component {
                         />
                       )}
                     </div>
-);
+                  );
                 })}
               </div>
             )}

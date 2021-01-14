@@ -70,7 +70,7 @@ class BetStatsPanel extends Component {
       return { value: 100, caption: 'Kein Tipp', color: this.chartBaseColor };
     }
 
-    const sortedResults = bets.slice(0).map(b => b.result_bet).sort();
+    const sortedResults = bets.slice(0).map((b) => b.result_bet).sort();
     const chartData = [];
 
     let previousVal = null;
@@ -191,7 +191,6 @@ class BetStatsPanel extends Component {
                   showUserInfoOnClick={false}
                   userExcerptRows={10}
                   rowHeight={35}
-
                   showBetColumnForBettable={bettableId}
                   bets={bets}
                   betColumnStyle={standingsBetColumnStyle}

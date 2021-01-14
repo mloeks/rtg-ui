@@ -38,18 +38,6 @@ class UserDetailsProvider extends Component {
     }
   }
 
-  setUserFromAuthInformation() {
-    this.setState({
-      isAuthenticated: AuthService.isAuthenticated(),
-      isAdmin: AuthService.isAdmin(),
-      userId: AuthService.getUserId(),
-      username: AuthService.getUsername(),
-      avatar: AuthService.getAvatar(),
-      hasPaid: AuthService.getHasPaid(),
-      openBetsCount: AuthService.getOpenBetsCount(),
-    });
-  }
-
   handleLogout(reason) {
     const { history } = this.props;
     AuthService.logout().then(() => history.push(`/login${reason ? `/${reason}` : ''}`));
@@ -63,6 +51,18 @@ class UserDetailsProvider extends Component {
   handleOpenBetsCount(openBetsCount) {
     AuthService.setOpenBetsCount(openBetsCount);
     this.setState({ openBetsCount });
+  }
+
+  setUserFromAuthInformation() {
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated(),
+      isAdmin: AuthService.isAdmin(),
+      userId: AuthService.getUserId(),
+      username: AuthService.getUsername(),
+      avatar: AuthService.getAvatar(),
+      hasPaid: AuthService.getHasPaid(),
+      openBetsCount: AuthService.getOpenBetsCount(),
+    });
   }
 
   render() {

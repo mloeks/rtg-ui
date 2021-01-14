@@ -12,7 +12,7 @@ const CountryFlag = ({ country, countryCode, displayTeamName }) => {
   return (
     <div className="CountryFlag">
       <img
-        src={countryFlags[countryCode.toUpperCase()] || countryFlags['XXX']}
+        src={countryFlags[countryCode.toUpperCase()] || countryFlags.XXX}
         alt={countryCode.toUpperCase()}
         className="CountryFlag__flag"
       />

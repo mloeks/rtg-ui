@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -16,12 +16,12 @@ import Select from '@material-ui/core/Select';
 import StarIcon from '@material-ui/icons/Star';
 import AlarmIcon from '@material-ui/icons/Alarm';
 
-import {format, formatDistance, parseISO} from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 import de from 'date-fns/locale/de';
-import AuthService, {API_BASE_URL} from '../service/AuthService';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
-import Notification, {NotificationType} from './Notification';
-import {BetsStatusContext} from '../pages/Bets';
+import Notification, { NotificationType } from './Notification';
+import { BetsStatusContext } from '../pages/Bets';
 
 import './ExtraBetCard.scss';
 
@@ -63,32 +63,10 @@ class ExtraBetCard extends Component {
     clearInterval(deadlineCountdownIntervalId);
   }
 
-  fetchUserBet() {
-    const { id } = this.props;
-    return fetch(
-      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${id}`,
-      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
-    ).then(FetchHelper.parseJson).then((response) => {
-      this.setState(() => (
-        response.ok
-          ? { userBet: response.json.length > 0 ? response.json[0] : null }
-          : { loadingError: true }
-      ));
-    }).catch(() => this.setState({ loadingError: true }));
-  }
-
-  registerCountdown() {
-    const intervalId = setInterval(() => {
-      this.setState((prevState, prevProps) => (
-        { remainingTime: ExtraBetCard.getRemainingTime(prevProps.deadline) }));
-    }, 10000);
-    this.setState({ deadlineCountdownIntervalId: intervalId });
-  }
-
   handleChange(value, betsStatusContext) {
     this.setState((prevState) => {
       const prevUserBet = prevState.userBet || { result_bet: null };
-      const userBet = Object.assign({}, prevUserBet);
+      const userBet = { ...prevUserBet };
       userBet.result_bet = value;
       return { userBet, hasChanges: value !== prevUserBet.result_bet, savingError: false };
     }, () => {
@@ -145,6 +123,28 @@ class ExtraBetCard extends Component {
           }
         }).catch(() => this.setState({ savingError: true, isSaving: false }));
     }
+  }
+
+  registerCountdown() {
+    const intervalId = setInterval(() => {
+      this.setState((prevState, prevProps) => (
+        { remainingTime: ExtraBetCard.getRemainingTime(prevProps.deadline) }));
+    }, 10000);
+    this.setState({ deadlineCountdownIntervalId: intervalId });
+  }
+
+  fetchUserBet() {
+    const { id } = this.props;
+    return fetch(
+      `${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}&bettable=${id}`,
+      { headers: { Authorization: `Token ${AuthService.getToken()}` } },
+    ).then(FetchHelper.parseJson).then((response) => {
+      this.setState(() => (
+        response.ok
+          ? { userBet: response.json.length > 0 ? response.json[0] : null }
+          : { loadingError: true }
+      ));
+    }).catch(() => this.setState({ loadingError: true }));
   }
 
   createSubtitleDiv() {
@@ -229,7 +229,7 @@ class ExtraBetCard extends Component {
                   <InputLabel htmlFor="extra-bet-select">Dein Tipp</InputLabel>
                   <Select
                     value={userResultBet}
-                    onChange={e => this.handleChange(e.target.value, betsStatusContext)}
+                    onChange={(e) => this.handleChange(e.target.value, betsStatusContext)}
                     input={<Input name="extra-bet-select" id="extra-bet-select" />}
                     style={{ marginBottom: '20px' }}
                     inputProps={{ id: 'extra-bet-select' }}

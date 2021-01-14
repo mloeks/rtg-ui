@@ -21,7 +21,7 @@ const ProfileFormDisplay = ({
         value={firstName}
         helperText={firstNameError || false}
         style={{ width: '50%', marginRight: '10px' }}
-        onChange={e => onFieldChange('firstName', e.target.value)}
+        onChange={(e) => onFieldChange('firstName', e.target.value)}
       />
       <TextField
         error={Boolean(lastNameError)}
@@ -31,7 +31,7 @@ const ProfileFormDisplay = ({
         fullWidth
         helperText={lastNameError || false}
         style={{ width: '50%', marginLeft: '10px' }}
-        onChange={e => onFieldChange('lastName', e.target.value)}
+        onChange={(e) => onFieldChange('lastName', e.target.value)}
       />
     </div>
     <br />
@@ -43,7 +43,7 @@ const ProfileFormDisplay = ({
       label="E-Mail"
       name="email"
       value={email}
-      onChange={e => onFieldChange('email', e.target.value)}
+      onChange={(e) => onFieldChange('email', e.target.value)}
     />
     <br />
     <br />
@@ -54,7 +54,7 @@ const ProfileFormDisplay = ({
       value={email2}
       error={Boolean(email2Error)}
       helperText={email2Error || false}
-      onChange={e => onFieldChange('email2', e.target.value)}
+      onChange={(e) => onFieldChange('email2', e.target.value)}
     />
     <br />
     <br />
@@ -66,7 +66,7 @@ const ProfileFormDisplay = ({
       value={about}
       error={Boolean(aboutError)}
       helperText={aboutError || false}
-      onChange={e => onFieldChange('about', e.target.value)}
+      onChange={(e) => onFieldChange('about', e.target.value)}
     />
     <br />
     <br />
@@ -77,7 +77,7 @@ const ProfileFormDisplay = ({
       value={location}
       error={Boolean(locationError)}
       helperText={locationError || false}
-      onChange={e => onFieldChange('location', e.target.value)}
+      onChange={(e) => onFieldChange('location', e.target.value)}
     />
     <br />
     <br />

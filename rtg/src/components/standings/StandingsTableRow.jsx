@@ -76,12 +76,12 @@ class StandingsTableRow extends Component {
             {rank}
           </TableCell>
           <TableCell style={{ height: rowHeight, padding: 0 }}>
+            {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
             <div
               role={showUserInfoOnClick ? 'button' : null}
               className="TableRowColumn__user-wrapper"
-              tabIndex={showUserInfoOnClick ? 0 : null}
               onClick={this.showUserDetailsPopover}
-              onKeyPress={e => (isEnter(e) && this.showUserDetailsPopover(e))}
+              onKeyPress={(e) => (isEnter(e) && this.showUserDetailsPopover(e))}
               style={{
                 display: 'flex',
                 alignItems: 'center',

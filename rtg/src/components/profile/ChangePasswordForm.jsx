@@ -20,7 +20,7 @@ const ChangePasswordFormDisplay = ({
       value={oldPassword}
       error={Boolean(oldPasswordError)}
       helperText={oldPasswordError}
-      onChange={e => onFieldChange('oldPassword', e.target.value)}
+      onChange={(e) => onFieldChange('oldPassword', e.target.value)}
     />
     <VisiblePasswordField
       label="Neues Passwort"
@@ -28,7 +28,7 @@ const ChangePasswordFormDisplay = ({
       value={newPassword}
       error={Boolean(newPasswordError)}
       helperText={newPasswordError}
-      onChange={e => onFieldChange('newPassword', e.target.value)}
+      onChange={(e) => onFieldChange('newPassword', e.target.value)}
     />
     <br />
     <br />
@@ -103,7 +103,7 @@ class ChangePasswordForm extends Component {
 
     AuthService.changePassword(oldPassword, newPassword)
       .then(() => this.setState({ ...ChangePasswordForm.getInitialState(), savingSuccess: true }))
-      .catch(errorJson => this.setState({ saving: false, savingError: true, ...errorJson }));
+      .catch((errorJson) => this.setState({ saving: false, savingError: true, ...errorJson }));
   }
 
   handleFormFieldUpdate(fieldName, value) {
@@ -134,13 +134,10 @@ class ChangePasswordForm extends Component {
         <ChangePasswordFormDisplay
           oldPassword={oldPassword}
           newPassword={newPassword}
-
           oldPasswordError={fieldErrors.oldPassword}
           newPasswordError={fieldErrors.newPassword}
-
           isSaving={saving}
           formHasErrors={formHasErrors}
-
           onFieldChange={this.handleFormFieldUpdate}
         />
 

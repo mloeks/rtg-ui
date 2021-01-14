@@ -100,7 +100,7 @@ const DrawerMenu = ({
         <Link to="/bets">
           <ListItem button>
             <ListItemIcon><TrendingUpIcon /></ListItemIcon>
-            <ListItemText primary={openBetsBadge('Tipps', openBetsCount)}/>
+            <ListItemText primary={openBetsBadge('Tipps', openBetsCount)} />
           </ListItem>
         </Link>
       </List>

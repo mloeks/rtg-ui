@@ -53,7 +53,7 @@ const AddPostFormDisplay = ({
           fullWidth
           error={Boolean(titleError)}
           helperText={titleError || false}
-          onChange={e => onFieldChange('title', e.target.value)}
+          onChange={(e) => onFieldChange('title', e.target.value)}
           style={{ marginTop: 10 }}
         />
         <br />
@@ -64,7 +64,7 @@ const AddPostFormDisplay = ({
             value={content}
             modules={quillModules}
             formats={quillFormats}
-            onChange={val => onFieldChange('content', val)}
+            onChange={(val) => onFieldChange('content', val)}
             style={{ marginTop: 10, fontSize: '20px' }}
           />
         )}
@@ -93,7 +93,8 @@ const AddPostFormDisplay = ({
               color="primary"
               checked={appearInNews}
               onChange={(e, v) => onFieldChange('appearInNews', v)}
-            />)}
+            />
+)}
           label="Bei den Neuigkeiten auf dieser Seite anzeigen"
         />
         <FormControlLabel
@@ -102,7 +103,8 @@ const AddPostFormDisplay = ({
               color="primary"
               checked={sendMail}
               onChange={(e, v) => onFieldChange('sendMail', v)}
-            />)}
+            />
+)}
           label="Per E-Mail senden ..."
         />
 
@@ -163,7 +165,7 @@ const AddPostFormDisplay = ({
 };
 
 AddPostFormDisplay.defaultProps = {
-  quill: null,
+  Quill: null,
 
   appearInNews: true,
   sendMail: true,
@@ -183,7 +185,6 @@ AddPostFormDisplay.defaultProps = {
 AddPostFormDisplay.propTypes = {
   Quill: PropTypes.func,
 
-  title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   appearInNews: PropTypes.bool,
   sendMail: PropTypes.bool,

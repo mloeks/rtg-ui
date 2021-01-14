@@ -7,7 +7,7 @@ import './StandingsOverview.scss';
 
 // TODO P3 lazy load standings when scrolled into view
 const StandingsOverview = () => (
-  <Fragment>
+  <>
     <section className="StandingsOverview">
       <StandingsTable
         showOnlyUserExcerpt
@@ -20,7 +20,7 @@ const StandingsOverview = () => (
         Zum vollständigen Spielstand
       </Button>
     </Link>
-  </Fragment>
+  </>
 );
 
 export default StandingsOverview;

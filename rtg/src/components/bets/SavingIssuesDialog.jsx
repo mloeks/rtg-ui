@@ -48,7 +48,7 @@ const SavingIssuesDialog = ({
           leider nicht gespeichert werden:
         </p>
         <Divider />
-        {games.map(game => (
+        {games.map((game) => (
           <ListItem key={game.id}>
             <ListItemIcon><ErrorIcon style={{ color: theme.palette.error.main }} /></ListItemIcon>
             <ListItemText

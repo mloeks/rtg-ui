@@ -109,14 +109,11 @@ class ContactForm extends Component {
             author={author}
             email={email}
             content={content}
-
             authorError={fieldErrors.author}
             emailError={fieldErrors.email}
             contentError={fieldErrors.content}
-
             isSaving={isSaving}
             formHasErrors={formHasErrors}
-
             onFieldChange={(field, value) => this
               .setState({ [field]: value, formHasErrors: false })}
           />

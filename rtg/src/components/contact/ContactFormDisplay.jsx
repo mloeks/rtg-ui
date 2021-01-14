@@ -7,7 +7,7 @@ const ContactFormPresentational = ({
   author, authorError, content, contentError, email, emailError, formHasErrors,
   isSaving, onFieldChange,
 }) => (
-  <Fragment>
+  <>
     <TextField
       error={Boolean(authorError)}
       name="author"
@@ -16,7 +16,7 @@ const ContactFormPresentational = ({
       value={author}
       helperText={authorError}
       style={{ textAlign: 'left' }}
-      onChange={e => onFieldChange('author', e.target.value)}
+      onChange={(e) => onFieldChange('author', e.target.value)}
     />
     <br />
     <br />
@@ -28,7 +28,7 @@ const ContactFormPresentational = ({
       value={email}
       helperText={emailError}
       style={{ textAlign: 'left' }}
-      onChange={e => onFieldChange('email', e.target.value)}
+      onChange={(e) => onFieldChange('email', e.target.value)}
     />
     <br />
     <br />
@@ -42,7 +42,7 @@ const ContactFormPresentational = ({
       value={content}
       helperText={contentError}
       style={{ textAlign: 'left' }}
-      onChange={e => onFieldChange('content', e.target.value)}
+      onChange={(e) => onFieldChange('content', e.target.value)}
     />
     <br />
 
@@ -55,7 +55,7 @@ const ContactFormPresentational = ({
     >
       {isSaving ? 'Unterwegs...' : 'Zur Post geben'}
     </Button>
-  </Fragment>
+  </>
 );
 
 ContactFormPresentational.defaultProps = {

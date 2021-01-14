@@ -50,48 +50,6 @@ class News extends Component {
     this.loadPosts();
   }
 
-  loadPosts() {
-    const { offset } = this.state;
-    this.setState({ loading: true });
-    fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${offset}&limit=${this.pageSize}`, {
-      method: 'GET',
-      headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson).then((response) => {
-      this.setState((prevState) => {
-        if (response.ok) {
-          const newPosts = response.json.results;
-          const draft = prevState.offset === 0 ? newPosts
-            .find(post => !post.finished && post.author_details.pk === AuthService.getUserId())
-            : null;
-
-          return {
-            addingPost: draft !== null && draft !== undefined,
-            loading: false,
-            loadingError: false,
-            posts: prevState.posts.concat(newPosts.filter(post => post.finished)),
-            draft,
-            count: response.json.count,
-            offset: prevState.offset + this.pageSize,
-          };
-        }
-
-        return {
-          loading: false,
-          loadingError: 'Ein Fehler ist aufgetreten.',
-          posts: [],
-          draft: null,
-        };
-      });
-    }).catch(() => {
-      this.setState({
-        loading: false,
-        loadingError: 'Ein Fehler ist aufgetreten.',
-        posts: [],
-        draft: null,
-      });
-    });
-  }
-
   handleAddNews() {
     // TODO P3 animated scroll (lib?)
     this.setState({ addingPost: true, addPostSuccess: false }, () => {
@@ -118,6 +76,48 @@ class News extends Component {
 
   handleAddPostCancelled() {
     this.setState({ addingPost: false, addPostSuccess: false });
+  }
+
+  loadPosts() {
+    const { offset } = this.state;
+    this.setState({ loading: true });
+    fetch(`${API_BASE_URL}/rtg/posts/?news_appear=true&offset=${offset}&limit=${this.pageSize}`, {
+      method: 'GET',
+      headers: { Authorization: `Token ${AuthService.getToken()}` },
+    }).then(FetchHelper.parseJson).then((response) => {
+      this.setState((prevState) => {
+        if (response.ok) {
+          const newPosts = response.json.results;
+          const draft = prevState.offset === 0 ? newPosts
+            .find((post) => !post.finished && post.author_details.pk === AuthService.getUserId())
+            : null;
+
+          return {
+            addingPost: draft !== null && draft !== undefined,
+            loading: false,
+            loadingError: false,
+            posts: prevState.posts.concat(newPosts.filter((post) => post.finished)),
+            draft,
+            count: response.json.count,
+            offset: prevState.offset + this.pageSize,
+          };
+        }
+
+        return {
+          loading: false,
+          loadingError: 'Ein Fehler ist aufgetreten.',
+          posts: [],
+          draft: null,
+        };
+      });
+    }).catch(() => {
+      this.setState({
+        loading: false,
+        loadingError: 'Ein Fehler ist aufgetreten.',
+        posts: [],
+        draft: null,
+      });
+    });
   }
 
   render() {
@@ -152,8 +152,8 @@ class News extends Component {
         )}
 
         {!loadingError && posts
-          .filter(post => post.news_appear === true)
-          .map(post => <Post key={post.id} post={post} />)}
+          .filter((post) => post.news_appear === true)
+          .map((post) => <Post key={post.id} post={post} />)}
 
         {(!loading && !loadingError) && posts.length === 0 && (
           <div className="News__empty-state" style={{ color: theme.palette.grey['500'] }}>

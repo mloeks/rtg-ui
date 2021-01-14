@@ -85,30 +85,7 @@ class AddPostForm extends Component {
   componentDidMount() {
     // only load quill library when this component is mounted
     // no normal user ever needs it and should not load this pretty big library
-    QuillAsyncLoader().then(quill => this.setState({ quill }));
-  }
-
-  getPostBodyFromState() {
-    const {
-      appearInNews,
-      content,
-      id,
-      sendMail,
-      sendMailOption,
-      title,
-    } = this.state;
-
-    return {
-      id,
-      author: AuthService.getUserId(),
-      title,
-      content,
-      news_appear: appearInNews,
-      as_mail: sendMail,
-      force_active_users: sendMailOption === 'sendMailToActive',
-      force_inactive_users: sendMailOption === 'sendMailToInactive',
-      force_all_users: sendMailOption === 'sendMailToAll',
-    };
+    QuillAsyncLoader().then((quill) => this.setState({ quill }));
   }
 
   handleFieldUpdate(fieldName, value) {
@@ -166,6 +143,29 @@ class AddPostForm extends Component {
     onCancelled();
   }
 
+  getPostBodyFromState() {
+    const {
+      appearInNews,
+      content,
+      id,
+      sendMail,
+      sendMailOption,
+      title,
+    } = this.state;
+
+    return {
+      id,
+      author: AuthService.getUserId(),
+      title,
+      content,
+      news_appear: appearInNews,
+      as_mail: sendMail,
+      force_active_users: sendMailOption === 'sendMailToActive',
+      force_inactive_users: sendMailOption === 'sendMailToInactive',
+      force_all_users: sendMailOption === 'sendMailToAll',
+    };
+  }
+
   render() {
     const {
       appearInNews,
@@ -186,25 +186,19 @@ class AddPostForm extends Component {
     return (
       <AddPostFormDisplay
         Quill={quill}
-
         title={title}
         content={content}
         appearInNews={appearInNews}
-
         sendMail={sendMail}
         sendMailOption={sendMailOption}
-
         nonFieldError={nonFieldError}
         titleError={fieldErrors.title}
         contentError={fieldErrors.content}
-
         savingInProgress={savingInProgress}
         savingError={savingError}
-
         draftSaving={draftSaving}
         draftSaved={draftSaved}
         draftSavingError={draftSavingError}
-
         onFieldChange={this.handleFieldUpdate}
         onSubmit={this.handleSave}
         onCancel={this.handleCancelled}

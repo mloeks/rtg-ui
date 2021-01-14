@@ -28,6 +28,11 @@ class Comment extends Component {
     this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
   }
 
+  handleReplyAdded(comment) {
+    const { onReplyAdded } = this.props;
+    this.setState({ showAddComment: false }, onReplyAdded(comment));
+  }
+
   showUserDetailsPopover(e) {
     e.preventDefault();
     this.setState({ userDetailsPopoverOpen: true, userDetailsPopoverAnchorEl: e.currentTarget });
@@ -38,12 +43,7 @@ class Comment extends Component {
   }
 
   toggleAddReply() {
-    this.setState(prevState => ({ showAddComment: !prevState.showAddComment }));
-  }
-
-  handleReplyAdded(comment) {
-    const { onReplyAdded } = this.props;
-    this.setState({ showAddComment: false }, onReplyAdded(comment));
+    this.setState((prevState) => ({ showAddComment: !prevState.showAddComment }));
   }
 
   render() {
@@ -79,7 +79,8 @@ class Comment extends Component {
           <div>
             <div className="Comment__author-date">
               <span className="Comment__author">
-                {comment.author_details.username}&nbsp;–&nbsp;
+                {comment.author_details.username}
+&nbsp;–&nbsp;
               </span>
               <span>{getFormattedPostDate(parseISO(comment.date_created))}</span>
             </div>

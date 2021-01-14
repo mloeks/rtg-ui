@@ -17,7 +17,7 @@ class VisiblePasswordField extends Component {
   }
 
   handleIconClick() {
-    this.setState(prevState => ({ visible: !prevState.visible }));
+    this.setState((prevState) => ({ visible: !prevState.visible }));
   }
 
   render() {

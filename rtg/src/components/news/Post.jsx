@@ -17,7 +17,7 @@ import {
   format,
   formatDistanceStrict,
   isSameDay,
-  subDays
+  subDays,
 } from 'date-fns';
 import de from 'date-fns/locale/de';
 
@@ -102,6 +102,27 @@ class Post extends Component {
     this.setState({ contentWrappedForLength: shouldWrapLongContent });
   }
 
+  handleCommentAdded(newComment) {
+    this.setState((prevState) => {
+      let comments = [];
+      if (prevState.expanded) {
+        // only directly update comments if comments area is already visible
+        // otherwise they should be initially loaded (add comment when not yet visible)
+        comments = prevState.comments.slice(0);
+        const replyToIndex = comments.findIndex((c) => c.id === newComment.reply_to);
+        if (replyToIndex !== -1) {
+          comments[replyToIndex].no_replies += 1;
+        }
+        comments.push(newComment);
+      }
+      return {
+        expanded: true,
+        comments,
+        commentCount: this.getCommentCountIncrementedBy(1, prevState),
+      };
+    });
+  }
+
   getCommentCountIncrementedBy(inc, state = this.state) {
     return state.commentCount + 1;
   }
@@ -128,27 +149,6 @@ class Post extends Component {
 
   hideUserDetailsPopover() {
     this.setState({ userDetailsPopoverOpen: false });
-  }
-
-  handleCommentAdded(newComment) {
-    this.setState((prevState) => {
-      let comments = [];
-      if (prevState.expanded) {
-        // only directly update comments if comments area is already visible
-        // otherwise they should be initially loaded (add comment when not yet visible)
-        comments = prevState.comments.slice(0);
-        const replyToIndex = comments.findIndex(c => c.id === newComment.reply_to);
-        if (replyToIndex !== -1) {
-          comments[replyToIndex].no_replies += 1;
-        }
-        comments.push(newComment);
-      }
-      return {
-        expanded: true,
-        comments,
-        commentCount: this.getCommentCountIncrementedBy(1, prevState),
-      };
-    });
   }
 
   render() {

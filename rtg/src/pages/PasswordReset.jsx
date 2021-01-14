@@ -32,7 +32,6 @@ class PasswordReset extends Component {
       uid: match.params.uid,
       token: match.params.token,
 
-      requestInProgress: false,
       resetSuccessful: false,
 
       fieldErrors: { password: null },
@@ -42,27 +41,17 @@ class PasswordReset extends Component {
     };
   }
 
-  updateFormField(fieldName, newValue) {
-    const newState = { formError: null, formHasErrors: false, hasChanges: true };
-    newState[fieldName] = newValue;
-    this.setState(newState);
-  }
-
-  updatePassword(e) { this.updateFormField('password', e.target.value); }
-
   handleSubmit(e) {
     const { password, token, uid } = this.state;
 
-    this.setState({ requestInProgress: true });
     AuthService.confirmPasswordReset(password, uid, token)
       .then(() => {
         this.setState({
-          ...this.getInitialState(), resetSuccessful: true, requestInProgress: false,
+          ...this.getInitialState(), resetSuccessful: true,
         });
       })
       .catch((errors) => {
         this.setState({
-          requestInProgress: false,
           fieldErrors: errors.fieldErrors || {},
           formHasErrors: errors.nonFieldError,
           formError: errors.nonFieldError,
@@ -70,6 +59,14 @@ class PasswordReset extends Component {
       });
     e.preventDefault();
   }
+
+  updateFormField(fieldName, newValue) {
+    const newState = { formError: null, formHasErrors: false, hasChanges: true };
+    newState[fieldName] = newValue;
+    this.setState(newState);
+  }
+
+  updatePassword(e) { this.updateFormField('password', e.target.value); }
 
   render() {
     const {
@@ -87,7 +84,7 @@ class PasswordReset extends Component {
         </BigPicture>
         <Paper className="PasswordResetForm" elevation={6}>
           {!resetSuccessful && (
-            <Fragment>
+            <>
               <p style={{ textAlign: 'center' }}>Bitte gib Dein neues Passwort ein:</p>
               <form className="PasswordResetForm__form" onSubmit={this.handleSubmit}>
                 <VisiblePasswordField
@@ -111,11 +108,11 @@ class PasswordReset extends Component {
                   Abschicken
                 </Button>
               </form>
-            </Fragment>
+            </>
           )}
 
           {resetSuccessful === true && (
-            <Fragment>
+            <>
               <Notification
                 type={NotificationType.SUCCESS}
                 title="Neues Passwort erfolgreich festgelegt"
@@ -125,7 +122,7 @@ class PasswordReset extends Component {
               <Link to="/">
                 <Button color="primary">Zum Login</Button>
               </Link>
-            </Fragment>
+            </>
           )}
 
           {formHasErrors && (
@@ -146,7 +143,8 @@ class PasswordReset extends Component {
             />
           )}
         </Paper>
-      </Page>);
+      </Page>
+    );
   }
 }
 

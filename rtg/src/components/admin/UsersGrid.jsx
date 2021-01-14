@@ -46,7 +46,7 @@ class UsersGrid extends Component {
   handleHasPaidUpdated(userId, hasPaid) {
     this.setState((prevState) => {
       const updatedUsers = prevState.users.slice(0);
-      const updatedUserIndex = updatedUsers.findIndex(u => u.pk === userId);
+      const updatedUserIndex = updatedUsers.findIndex((u) => u.pk === userId);
       updatedUsers[updatedUserIndex].has_paid = hasPaid;
       return { users: updatedUsers };
     });
@@ -55,7 +55,7 @@ class UsersGrid extends Component {
   handleDelete(userId) {
     this.setState((prevState) => {
       const updatedUsers = prevState.users.slice(0);
-      const updatedUserIndex = updatedUsers.findIndex(u => u.pk === userId);
+      const updatedUserIndex = updatedUsers.findIndex((u) => u.pk === userId);
       updatedUsers.splice(updatedUserIndex, 1);
       return { users: updatedUsers };
     });
@@ -79,16 +79,16 @@ class UsersGrid extends Component {
 
     let filteredUsers = users;
     if (filterActive) {
-      filteredUsers = filteredUsers.filter(user => user.last_login !== null);
+      filteredUsers = filteredUsers.filter((user) => user.last_login !== null);
     }
     if (filterInactive) {
-      filteredUsers = filteredUsers.filter(user => user.last_login === null);
+      filteredUsers = filteredUsers.filter((user) => user.last_login === null);
     }
     if (filterHasNotPaid) {
-      filteredUsers = filteredUsers.filter(user => !user.has_paid);
+      filteredUsers = filteredUsers.filter((user) => !user.has_paid);
     }
     if (searchTerm) {
-      filteredUsers = filteredUsers.filter(user => (
+      filteredUsers = filteredUsers.filter((user) => (
         `${user.username} ${user.first_name} ${user.last_name}`.toLowerCase()
           .indexOf(searchTerm.toLowerCase()) !== -1));
     }
@@ -100,13 +100,12 @@ class UsersGrid extends Component {
           filterActive={filterActive}
           filterInactive={filterInactive}
           filterHasNotPaid={filterHasNotPaid}
-
           onFilterActiveToggled={() => this
-            .setState(prevState => ({ filterActive: !prevState.filterActive }))}
+            .setState((prevState) => ({ filterActive: !prevState.filterActive }))}
           onFilterInactiveToggled={() => this
-            .setState(prevState => ({ filterInactive: !prevState.filterInactive }))}
+            .setState((prevState) => ({ filterInactive: !prevState.filterInactive }))}
           onFilterHasNotPaidToggled={() => this
-            .setState(prevState => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
+            .setState((prevState) => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
           onSearchTermUpdated={this.handleSearchTermUpdated}
         />
 
@@ -143,13 +142,14 @@ class UsersGrid extends Component {
             padding: '0 10px',
           }}
         >
-          {filteredUsers.map(user => (
+          {filteredUsers.map((user) => (
             <UserCard
               key={`user-card-${user.pk}`}
               onHasPaidUpdated={this.handleHasPaidUpdated}
               onDelete={this.handleDelete}
               {...user}
-            />))}
+            />
+          ))}
         </div>
       </section>
     );

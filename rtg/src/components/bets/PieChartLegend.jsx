@@ -8,7 +8,7 @@ const PieChartLegend = ({
   const rowPadding = 3;
   return (
     <div className={className} style={containerStyle}>
-      {data.map(dataEntry => (
+      {data.map((dataEntry) => (
         <div
           key={`chart-legend-entry-${dataEntry.caption}`}
           style={{

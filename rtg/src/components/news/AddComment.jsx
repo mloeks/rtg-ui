@@ -65,7 +65,7 @@ class AddComment extends Component {
     const { focusOnMount, label } = this.props;
 
     return (
-      <Fragment>
+      <>
         <form
           className="AddComment__form"
           onSubmit={this.postComment}
@@ -86,7 +86,7 @@ class AddComment extends Component {
             name="content"
             value={content}
             helperText={contentError || false}
-            onChange={e => this.setState({
+            onChange={(e) => this.setState({
               content: e.target.value, contentError: '', savingError: false,
             })}
             style={{ flexGrow: 1 }}
@@ -112,7 +112,7 @@ class AddComment extends Component {
               subtitle="Bitte versuche es erneut."
             />
           )}
-      </Fragment>
+      </>
     );
   }
 }

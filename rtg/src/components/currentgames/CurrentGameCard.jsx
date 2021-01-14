@@ -1,9 +1,11 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {addDays, format, isSameDay, parseISO, subDays, toDate,} from 'date-fns';
+import {
+  addDays, format, isSameDay, parseISO, subDays, toDate,
+} from 'date-fns';
 import de from 'date-fns/locale/de';
 
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
@@ -14,8 +16,8 @@ import RtgSeparator from '../RtgSeparator';
 import GameCard from '../GameCard';
 import NullGameCard from '../NullGameCard';
 import GameCardGameInfo from '../GameCardGameInfo';
-import GameCardBet, {SavingErrorType} from '../GameCardBet';
-import Notification, {NotificationType} from '../Notification';
+import GameCardBet, { SavingErrorType } from '../GameCardBet';
+import Notification, { NotificationType } from '../Notification';
 
 import './CurrentGameCard.scss';
 
@@ -125,7 +127,8 @@ class CurrentGameCard extends Component {
                 >
                   {formattedRoundInfo(game)}
                 </span>
-              </div>)
+              </div>
+            )
             : '...'}
           contentStyle={{ margin: 0 }}
           style={{ marginBottom: 10 }}
@@ -158,7 +161,7 @@ class CurrentGameCard extends Component {
         {game && game.bets_open && (
           <div className="CurrentGameCard__actions">
             {editingBet && (
-              <Fragment>
+              <>
                 <Button
                   color="primary"
                   icon={<SaveIcon style={{ width: 20, height: 20 }} />}
@@ -169,7 +172,8 @@ class CurrentGameCard extends Component {
                 </Button>
                 <br />
                 <Button onClick={this.handleBetEditCancel}>Abbrechen</Button>
-              </Fragment>)}
+              </>
+            )}
 
             {(!editingBet && !editingBetSuccessful)
             && (
@@ -190,7 +194,8 @@ class CurrentGameCard extends Component {
                 disappearAfterMs={2000}
                 containerStyle={{ margin: '0 auto', maxWidth: 185 }}
                 onClose={() => this.setState({ editingBetSuccessful: false })}
-              />)}
+              />
+            )}
           </div>
         )}
 

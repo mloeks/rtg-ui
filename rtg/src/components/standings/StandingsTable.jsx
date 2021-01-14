@@ -16,7 +16,7 @@ import StandingsTableRow from './StandingsTableRow';
 
 import './StandingsTable.scss';
 
-const styles = theme => ({
+const styles = (theme) => ({
   rank: {
     width: '23px',
     textAlign: 'center',
@@ -64,7 +64,7 @@ class StandingsTable extends Component {
     return {
       loadingError: false,
       rows: StandingsTable.enhanceRowsWithDisplayRanks(
-        stats.map(statObj => ({
+        stats.map((statObj) => ({
           userId: statObj.user,
           username: statObj.username,
           userAvatar: statObj.user_avatar,
@@ -85,7 +85,7 @@ class StandingsTable extends Component {
     return {
       loadingError: false,
       rows: StandingsTable.enhanceRowsWithDisplayRanks(
-        users.map(user => ({
+        users.map((user) => ({
           userId: user.pk,
           username: user.username,
           userAvatar: user.avatar,
@@ -104,7 +104,7 @@ class StandingsTable extends Component {
   static enhanceRowsWithDisplayRanks(rows) {
     let lastRow = null;
     return rows.map((row, ix) => {
-      const rankEnhancedRow = Object.assign({}, row);
+      const rankEnhancedRow = { ...row };
       rankEnhancedRow.displayRank = StandingsTable.identicalRank(row, lastRow) ? ''
         : (ix + 1).toString();
       lastRow = row;
@@ -148,7 +148,7 @@ class StandingsTable extends Component {
       // put the visible rows into the DOM, not all rows.
       classList.push('StandingsTable--excerpt');
 
-      const userRank = rows.findIndex(r => r.userId === AuthService.getUserId());
+      const userRank = rows.findIndex((r) => r.userId === AuthService.getUserId());
       const numberUsersAroundUserOneSide = Math.floor(userExcerptRows / 2);
       const fromIndex = userRank - numberUsersAroundUserOneSide;
       if (fromIndex <= 0) {
@@ -175,8 +175,10 @@ class StandingsTable extends Component {
     const { bets } = this.state;
     const { showBetColumnForBettable } = this.props;
     return rows.map((row) => {
-      const enhancedRow = Object.assign({}, row);
-      const bet = bets.find(b => b.bettable === showBetColumnForBettable && b.user === row.userId);
+      const enhancedRow = { ...row };
+      const bet = bets.find((b) => (
+        b.bettable === showBetColumnForBettable && b.user === row.userId
+      ));
       enhancedRow.bet = bet || null;
       return enhancedRow;
     });
@@ -186,7 +188,7 @@ class StandingsTable extends Component {
     const { rows } = this.state;
     const { rowHeight, userExcerptRows } = this.props;
     const maxScrollTopRows = rows.length - userExcerptRows;
-    const userIndex = rows.findIndex(r => r.userId === AuthService.getUserId());
+    const userIndex = rows.findIndex((r) => r.userId === AuthService.getUserId());
     const halfExcerptHeightInRows = 0.5 * (userExcerptRows - 1);
 
     const scrollTopRows = Math.min(userIndex - halfExcerptHeightInRows, maxScrollTopRows);
@@ -210,7 +212,7 @@ class StandingsTable extends Component {
   fetchUsersOnly() {
     fetch(`${API_BASE_URL}/rtg/users_public/`,
       { headers: { Authorization: `Token ${AuthService.getToken()}` } })
-      .then(FetchHelper.parseJson).then(response => (
+      .then(FetchHelper.parseJson).then((response) => (
         this.setState({
           loading: false,
           ...response.ok
@@ -301,7 +303,7 @@ class StandingsTable extends Component {
                       </TableCell>
                     )}
                     {showStatsColumns && (
-                      <Fragment>
+                      <>
                         <TableCell classes={{ root: classes.betStat }}>V</TableCell>
                         <TableCell
                           className="StandingsTable__stat-col-desktop"
@@ -327,7 +329,7 @@ class StandingsTable extends Component {
                         >
                           N
                         </TableCell>
-                      </Fragment>
+                      </>
                     )}
                     <TableCell
                       classes={{ root: classes.points }}
@@ -340,7 +342,7 @@ class StandingsTable extends Component {
               )}
 
               <TableBody>
-                {displayedRows.map(row => (
+                {displayedRows.map((row) => (
                   <StandingsTableRow
                     key={row.userId}
                     rank={row.displayRank}
@@ -350,7 +352,6 @@ class StandingsTable extends Component {
                     showStatsColumns={showStatsColumns}
                     showUserAvatar={showUserAvatar}
                     showUserInfoOnClick={showUserInfoOnClick}
-
                     betColumnStyle={{ ...styles(theme).bet, betColumnStyle }}
                     betStatColumnStyle={{ ...styles(theme).betStat }}
                     pointsColumnStyle={{ ...styles(theme).points }}

@@ -57,7 +57,7 @@ class GoalInput extends Component {
       />
     );
   }
-};
+}
 
 GoalInput.propTypes = {
   id: PropTypes.string.isRequired,
@@ -67,6 +67,5 @@ GoalInput.propTypes = {
 
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-
 
 export default withStyles(styles)(GoalInput);

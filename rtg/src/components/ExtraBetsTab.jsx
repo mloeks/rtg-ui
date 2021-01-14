@@ -41,7 +41,7 @@ export default class ExtraBetsTab extends Component {
     await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets');
 
     onOpenBetsUpdate(countOpenBets(bettables
-      .filter(bettable => bettable.type === BettableTypes.EXTRA), bets));
+      .filter((bettable) => bettable.type === BettableTypes.EXTRA), bets));
 
     this.setState({ loading: false });
   }
@@ -106,8 +106,7 @@ export default class ExtraBetsTab extends Component {
                   />
                 )}
               </Fragment>
-            ))
-          }
+            ))}
           {loadingError && <div className="ExtraBetsTab__loadingError">Fehler beim Laden.</div>}
         </section>
       </div>

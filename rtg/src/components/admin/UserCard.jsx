@@ -39,30 +39,6 @@ class UserCard extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  toggleHasPaid() {
-    const { has_paid, onHasPaidUpdated, pk } = this.props;
-
-    this.setState({ savingInProgress: true, savingIssues: false }, () => {
-      const newHasPaid = !has_paid;
-
-      fetch(`${API_BASE_URL}/rtg/users_admin/${pk}/`, {
-        method: 'PATCH',
-        body: JSON.stringify({ has_paid: newHasPaid }),
-        headers: {
-          Authorization: `Token ${AuthService.getToken()}`,
-          'content-type': 'application/json',
-        },
-      }).then((response) => {
-        if (response.ok) {
-          this.setState({ savingInProgress: false });
-          onHasPaidUpdated(pk, newHasPaid);
-        } else {
-          this.setState({ savingInProgress: false, savingIssues: true });
-        }
-      }).catch(() => this.setState({ savingInProgress: false, savingIssues: true }));
-    });
-  }
-
   handleDeleteRequest() {
     this.setState({ deleteConfirmationModalOpen: true });
   }
@@ -85,6 +61,30 @@ class UserCard extends Component {
         if (response.ok) {
           this.setState({ savingInProgress: false });
           onDelete(pk);
+        } else {
+          this.setState({ savingInProgress: false, savingIssues: true });
+        }
+      }).catch(() => this.setState({ savingInProgress: false, savingIssues: true }));
+    });
+  }
+
+  toggleHasPaid() {
+    const { has_paid, onHasPaidUpdated, pk } = this.props;
+
+    this.setState({ savingInProgress: true, savingIssues: false }, () => {
+      const newHasPaid = !has_paid;
+
+      fetch(`${API_BASE_URL}/rtg/users_admin/${pk}/`, {
+        method: 'PATCH',
+        body: JSON.stringify({ has_paid: newHasPaid }),
+        headers: {
+          Authorization: `Token ${AuthService.getToken()}`,
+          'content-type': 'application/json',
+        },
+      }).then((response) => {
+        if (response.ok) {
+          this.setState({ savingInProgress: false });
+          onHasPaidUpdated(pk, newHasPaid);
         } else {
           this.setState({ savingInProgress: false, savingIssues: true });
         }

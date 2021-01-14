@@ -81,7 +81,6 @@ class AddGameForm extends Component {
       deadlineTime: null,
       venue: null,
 
-      loadingError: false,
       savingInProgress: false,
       savingError: false,
 
@@ -98,41 +97,6 @@ class AddGameForm extends Component {
     this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
     this.fetchData(`${API_BASE_URL}/rtg/teams/`, 'teams', false);
     this.fetchData(`${API_BASE_URL}/rtg/venues/`, 'venues', false);
-  }
-
-  getPostBodyFromState() {
-    const {
-      deadlineDate,
-      deadlineTime,
-      group,
-      kickoffDate,
-      kickoffTime,
-      round,
-      team1,
-      team2,
-      venue,
-    } = this.state;
-
-    return {
-      round,
-      group,
-      kickoff: AddGameForm.isoDateStringFromDateAndTime(kickoffDate, kickoffTime),
-      deadline: AddGameForm.isoDateStringFromDateAndTime(deadlineDate, deadlineTime),
-      hometeam: team1,
-      awayteam: team2,
-      venue,
-    };
-  }
-
-  fetchData(url, targetStateField) {
-    fetch(url, {
-      headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        this.setState(() => (
-          response.ok ? { [targetStateField]: response.json } : { loadingError: true }
-        ));
-      }).catch(() => this.setState({ loadingError: true }));
   }
 
   handleFieldUpdate(fieldName, value) {
@@ -164,6 +128,41 @@ class AddGameForm extends Component {
     });
   }
 
+  getPostBodyFromState() {
+    const {
+      deadlineDate,
+      deadlineTime,
+      group,
+      kickoffDate,
+      kickoffTime,
+      round,
+      team1,
+      team2,
+      venue,
+    } = this.state;
+
+    return {
+      round,
+      group,
+      kickoff: AddGameForm.isoDateStringFromDateAndTime(kickoffDate, kickoffTime),
+      deadline: AddGameForm.isoDateStringFromDateAndTime(deadlineDate, deadlineTime),
+      hometeam: team1,
+      awayteam: team2,
+      venue,
+    };
+  }
+
+  fetchData(url, targetStateField) {
+    fetch(url, {
+      headers: { Authorization: `Token ${AuthService.getToken()}` },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        if (response.ok) {
+          this.setState({ [targetStateField]: response.json });
+        }
+      });
+  }
+
   render() {
     const {
       deadlineDate,
@@ -192,7 +191,6 @@ class AddGameForm extends Component {
         groups={groups}
         teams={teams}
         venues={venues}
-
         round={round}
         group={group}
         team1={team1}
@@ -202,7 +200,6 @@ class AddGameForm extends Component {
         deadlineDate={deadlineDate}
         deadlineTime={deadlineTime}
         venue={venue}
-
         roundError={fieldErrors.round}
         groupError={fieldErrors.group}
         team1Error={fieldErrors.team1}
@@ -210,11 +207,9 @@ class AddGameForm extends Component {
         kickoffError={fieldErrors.kickoff}
         deadlineError={fieldErrors.deadline}
         venueError={fieldErrors.venue}
-
         savingInProgress={savingInProgress}
         savingError={savingError}
         nonFieldError={nonFieldError}
-
         onFieldChange={this.handleFieldUpdate}
         onSubmit={this.handleSave}
         onCancel={onCancelled}

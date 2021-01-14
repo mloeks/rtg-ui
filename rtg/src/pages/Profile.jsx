@@ -75,17 +75,15 @@ class Profile extends Component {
 
           {user && (
             <UserDetailsContext.Consumer>
-              {userContext => (
-                <Fragment>
+              {(userContext) => (
+                <>
                   <BigEditableAvatar
                     userId={userId}
                     username={user.username || ''}
                     avatarUrl={user.avatar || ''}
-
                     loading={loading}
                     loadingError={loadingError}
-
-                    onAvatarChanged={avatar => Profile.handleAvatarChanged(avatar, userContext)}
+                    onAvatarChanged={(avatar) => Profile.handleAvatarChanged(avatar, userContext)}
                   />
 
                   <ProfileForm
@@ -104,7 +102,7 @@ class Profile extends Component {
                     userId={userId}
                     onDelete={() => userContext.doLogout(LogoutReason.ACCOUNT_DELETED)}
                   />
-                </Fragment>
+                </>
               )}
             </UserDetailsContext.Consumer>
           )}

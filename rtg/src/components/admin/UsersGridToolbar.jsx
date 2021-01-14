@@ -59,7 +59,7 @@ class UsersGridToolbar extends Component {
       >
         <IconButton
           aria-label="Filter"
-          onClick={e => this.setState({ filterMenuAnchorEl: e.currentTarget })}
+          onClick={(e) => this.setState({ filterMenuAnchorEl: e.currentTarget })}
         >
           <FilterListIcon style={{ color: theme.palette.grey['700'] }} />
         </IconButton>
@@ -97,7 +97,7 @@ class UsersGridToolbar extends Component {
           <Input
             value={searchTerm}
             placeholder="User suchen"
-            onChange={e => onSearchTermUpdated(e.target.value)}
+            onChange={(e) => onSearchTermUpdated(e.target.value)}
             startAdornment={(
               <InputAdornment position="start">
                 <SearchIcon style={{ color: theme.palette.grey['600'] }} />

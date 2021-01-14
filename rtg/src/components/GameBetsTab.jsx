@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
-import {format, formatDistance, parseISO} from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 import de from 'date-fns/locale/de';
 
 import AuthService, { API_BASE_URL } from '../service/AuthService';
@@ -15,7 +15,7 @@ import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import NullGameCard from './NullGameCard';
 import RtgSeparator from './RtgSeparator';
 import { BetsStatusContext, countOpenBets } from '../pages/Bets';
-import Notification, {NotificationType} from './Notification';
+import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';
 
@@ -62,6 +62,51 @@ class GameBetsTab extends Component {
 
   componentDidMount() {
     this.updateData();
+  }
+
+  handleSaveRequest() {
+    this.setState((prevState) => {
+      this.gamesWithSaveType.clear();
+
+      prevState.gamesWithOpenBets.forEach((game) => {
+        this.gamesWithSaveType.set(game.id, game);
+      });
+
+      return { shouldSave: true, gamesWithSavingIssues: [] };
+    });
+  }
+
+  // TODO P3 refactor this method
+  handleBetSaveDone(gameId, newBetString, saveType, responseDetail, betsStatusContext) {
+    const { onOpenBetsUpdate } = this.props;
+
+    const updatedGameWithSaveDetails = {
+      ...this.gamesWithSaveType.get(gameId), newBet: newBetString, saveType, responseDetail,
+    };
+    this.gamesWithSaveType.set(gameId, updatedGameWithSaveDetails);
+
+    const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
+    const allBetsDone = !gamesWithSaveTypeValueArray.some((game) => !game.saveType);
+    if (allBetsDone) {
+      const gamesWithSavingIssues = gamesWithSaveTypeValueArray
+        .filter((game) => game.saveType && Object.values(SavingErrorType).includes(game.saveType));
+      onOpenBetsUpdate(GameBetsTab
+        .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray), true);
+
+      this.setState({
+        shouldSave: false,
+        showSavingSuccess: gamesWithSavingIssues.length === 0,
+        gamesWithSavingIssues,
+      });
+
+      if (gamesWithSavingIssues.length === 0) {
+        betsStatusContext.updateBetsHaveChanges(false);
+      }
+
+      setTimeout(() => {
+        this.setState({ showSavingSuccess: false });
+      }, 3000);
+    }
   }
 
   async updateData() {
@@ -161,51 +206,6 @@ class GameBetsTab extends Component {
     );
   }
 
-  handleSaveRequest() {
-    this.setState((prevState) => {
-      this.gamesWithSaveType.clear();
-
-      prevState.gamesWithOpenBets.forEach((game) => {
-        this.gamesWithSaveType.set(game.id, game);
-      });
-
-      return { shouldSave: true, gamesWithSavingIssues: [] };
-    });
-  }
-
-  // TODO P3 refactor this method
-  handleBetSaveDone(gameId, newBetString, saveType, responseDetail, betsStatusContext) {
-    const { onOpenBetsUpdate } = this.props;
-
-    const updatedGameWithSaveDetails = {
-      ...this.gamesWithSaveType.get(gameId), newBet: newBetString, saveType, responseDetail,
-    };
-    this.gamesWithSaveType.set(gameId, updatedGameWithSaveDetails);
-
-    const gamesWithSaveTypeValueArray = Array.from(this.gamesWithSaveType.values());
-    const allBetsDone = !gamesWithSaveTypeValueArray.some(game => !game.saveType);
-    if (allBetsDone) {
-      const gamesWithSavingIssues = gamesWithSaveTypeValueArray
-        .filter(game => game.saveType && Object.values(SavingErrorType).includes(game.saveType));
-      onOpenBetsUpdate(GameBetsTab
-        .getOpenBetsChangeFromSaveTypes(gamesWithSaveTypeValueArray), true);
-
-      this.setState({
-        shouldSave: false,
-        showSavingSuccess: gamesWithSavingIssues.length === 0,
-        gamesWithSavingIssues,
-      });
-
-      if (gamesWithSavingIssues.length === 0) {
-        betsStatusContext.updateBetsHaveChanges(false);
-      }
-
-      setTimeout(() => {
-        this.setState({ showSavingSuccess: false });
-      }, 3000);
-    }
-  }
-
   render() {
     const {
       gamesWithOpenBets,
@@ -240,7 +240,7 @@ class GameBetsTab extends Component {
               {loading && (
                 <>
                   <RtgSeparator content="..." />
-                  {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
+                  {Array(3).fill('').map((v, i) => <NullGameCard key={`game-placeholder-${i + 1}`} />)}
                 </>
               )}
 

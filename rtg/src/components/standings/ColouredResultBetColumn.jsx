@@ -42,6 +42,8 @@ ColouredResultBetColumn.defaultProps = {
 ColouredResultBetColumn.propTypes = {
   bet: PropTypes.shape({
     result_bet: PropTypes.string,
+    result_bet_type: PropTypes.string,
+    points: PropTypes.number,
   }),
   style: PropTypes.object,
 

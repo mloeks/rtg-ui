@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { addMinutes, format, isAfter, isBefore, } from 'date-fns';
+import {
+  addMinutes, format, isAfter, isBefore,
+} from 'date-fns';
 
 import { withTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -64,12 +66,12 @@ const GameCardGameInfo = ({
           <div className="GameCardGameInfo__kickoff">{format(kickoff, 'HH:mm')}</div>
         )}
         {gameIsRunning() && (
-          <Fragment>
+          <>
             <div className="GameCardGameInfo__game-running-crown">
               <img src={crown} alt="Icon Krone" />
             </div>
             <div className="GameCardGameInfo__game-running-text">Spiel läuft...</div>
-          </Fragment>
+          </>
         )}
 
         {result && (
@@ -83,7 +85,8 @@ const GameCardGameInfo = ({
             }}
           >
             {points || 0}
-          </Avatar>)}
+          </Avatar>
+        )}
 
         {(!result && !gameIsRunning()) && <div className="GameCardGameInfo__city">{city}</div>}
       </div>

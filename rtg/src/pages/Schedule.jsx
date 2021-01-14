@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
 
-import {withTheme} from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
@@ -23,8 +23,8 @@ import GameCard from '../components/GameCard';
 import NullGameCard from '../components/NullGameCard';
 import RtgSeparator from '../components/RtgSeparator';
 import FetchHelper from '../service/FetchHelper';
-import AuthService, {API_BASE_URL} from '../service/AuthService';
-import Notification, {NotificationType} from '../components/Notification';
+import AuthService, { API_BASE_URL } from '../service/AuthService';
+import Notification, { NotificationType } from '../components/Notification';
 import GameCardGameInfo from '../components/GameCardGameInfo';
 import isEnter from '../service/KeyHelper';
 import getClosestGameIndex from '../service/GamesHelper';
@@ -88,30 +88,6 @@ class Schedule extends Component {
     }
   }
 
-  async fetchData(url, targetStateField, isPaginated, successCallback = () => {}) {
-    this.setState({ loadingError: '' });
-    return fetch(url, {
-      headers: { Authorization: `Token ${AuthService.getToken()}` },
-    }).then(FetchHelper.parseJson)
-      .then((response) => {
-        this.setState(() => (
-          response.ok
-            ? { [targetStateField]: isPaginated ? response.json.results : response.json }
-            : { loadingError: true }
-        ), successCallback);
-      }).catch(() => this.setState({ loadingError: true }));
-  }
-
-  selectCurrentRound() {
-    const { games } = this.state;
-    const closestGameIndex = getClosestGameIndex(games.map(g => parseISO(g.kickoff)));
-    this.setState({
-      selectedRoundIndex: closestGameIndex !== -1
-        ? games[closestGameIndex].round_details.abbreviation
-        : 'VOR',
-    });
-  }
-
   handleSelectedRoundChange(e) {
     this.setState({ selectedRoundIndex: e.target.value });
   }
@@ -147,6 +123,30 @@ class Schedule extends Component {
     this.setState({ addingGame: false, addGameSuccess: false });
   }
 
+  async fetchData(url, targetStateField, isPaginated, successCallback = () => {}) {
+    this.setState({ loadingError: '' });
+    return fetch(url, {
+      headers: { Authorization: `Token ${AuthService.getToken()}` },
+    }).then(FetchHelper.parseJson)
+      .then((response) => {
+        this.setState(() => (
+          response.ok
+            ? { [targetStateField]: isPaginated ? response.json.results : response.json }
+            : { loadingError: true }
+        ), successCallback);
+      }).catch(() => this.setState({ loadingError: true }));
+  }
+
+  selectCurrentRound() {
+    const { games } = this.state;
+    const closestGameIndex = getClosestGameIndex(games.map((g) => parseISO(g.kickoff)));
+    this.setState({
+      selectedRoundIndex: closestGameIndex !== -1
+        ? games[closestGameIndex].round_details.abbreviation
+        : 'VOR',
+    });
+  }
+
   gamesFilter(game) {
     const { selectedGroupFilter, selectedRoundIndex } = this.state;
     if (selectedRoundIndex === 'VOR' && selectedGroupFilter !== 'all') {
@@ -172,7 +172,7 @@ class Schedule extends Component {
           />);
         lastGameDay = gameKickoffDate;
       }
-      const userBet = bets.find(bet => bet.bettable === game.id) || {};
+      const userBet = bets.find((bet) => bet.bettable === game.id) || {};
       gameCardsWithDateSubheadings.push(
         <React.Fragment key={`game-card-${game.id}`}>
           <div
@@ -180,7 +180,7 @@ class Schedule extends Component {
             className="GameCard__click-wrapper"
             tabIndex={0}
             onClick={() => history.push('/bets')}
-            onKeyPress={e => (isEnter(e) && history.push('/bets'))}
+            onKeyPress={(e) => (isEnter(e) && history.push('/bets'))}
           >
             <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
               <GameCardGameInfo
@@ -251,7 +251,7 @@ class Schedule extends Component {
                 onChange={this.handleSelectedRoundChange}
                 input={<Input name="round" id="round" />}
               >
-                {rounds.map(round => (
+                {rounds.map((round) => (
                   <MenuItem key={round.id} value={round.abbreviation}>{round.name}</MenuItem>
                 ))}
               </Select>
@@ -267,11 +267,11 @@ class Schedule extends Component {
                 >
                   <MenuItem value="all">Alle</MenuItem>
                   <Divider />
-                  {groups.map(group => (
+                  {groups.map((group) => (
                     <MenuItem key={group.abbreviation} value={group.abbreviation}>
                       {group.name}
-                    </MenuItem>))
-                  }
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             )}
@@ -310,7 +310,7 @@ class Schedule extends Component {
             {loading && (
               <>
                 <RtgSeparator content="..." />
-                {Array(3).fill('').map((_v, i) => <NullGameCard key={`game-placeholder-${i}`} />)}
+                {Array(3).fill('').map((_v, i) => <NullGameCard key={`game-placeholder-${i + 1}`} />)}
               </>
             )}
 

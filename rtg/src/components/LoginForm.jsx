@@ -35,14 +35,6 @@ class LoginForm extends Component {
     this.validate = this.validate.bind(this);
   }
 
-  updateUsername(e) {
-    this.setState({ formError: null, formHasErrors: false, username: e.target.value });
-  }
-
-  updatePassword(e) {
-    this.setState({ formError: null, formHasErrors: false, password: e.target.value });
-  }
-
   handleLogin(event) {
     const { onLogin } = this.props;
     const { formHasErrors, password, username } = this.state;
@@ -53,6 +45,14 @@ class LoginForm extends Component {
       }
     });
     event.preventDefault();
+  }
+
+  updateUsername(e) {
+    this.setState({ formError: null, formHasErrors: false, username: e.target.value });
+  }
+
+  updatePassword(e) {
+    this.setState({ formError: null, formHasErrors: false, password: e.target.value });
   }
 
   loginErrorCallback(error) {

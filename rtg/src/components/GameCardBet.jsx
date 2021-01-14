@@ -28,7 +28,8 @@ export const SavingErrorType = {
   FAILED: 'FAILED',
 };
 
-// TODO P2 optimise render cycles and state handling. On first change of any bet, all GameCardBets are updated (why?)
+// TODO P2 optimise render cycles and state handling. On first change of any bet,
+// all GameCardBets are updated (why?)
 // Also: On save, all GameCardBets are updated with "shouldSave" :-/
 // TODO P3 handle and display bet loading failure
 // TODO P3 goals are either stored as integers when using arrows and as string when using text input
@@ -72,7 +73,7 @@ class GameCardBet extends Component {
     const { userBet } = this.props;
 
     this.state = {
-      userBet: userBet !== null ? Object.assign({}, userBet) : null,
+      userBet: userBet !== null ? ({ ...userBet }) : null,
       ...GameCardBet.goalsStateFromUserBet(userBet),
       hasChanges: false,
       isSaving: false,
@@ -107,6 +108,32 @@ class GameCardBet extends Component {
           SavingSuccessType.UNCHANGED);
       }
     }
+  }
+
+  handleHomegoalsChange(value, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState({ homegoalsInput: value, hasChanges: true });
+  }
+
+  handleAwaygoalsChange(value, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState({ awaygoalsInput: value, hasChanges: true });
+  }
+
+  handleHomegoalsIncrementalChange(inc, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState((prevState) => ({
+      homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
+      hasChanges: true,
+    }));
+  }
+
+  handleAwaygoalsIncrementalChange(inc, betsStatusContext) {
+    GameCardBet.updateBetsHaveChanges(betsStatusContext);
+    this.setState((prevState) => ({
+      awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
+      hasChanges: true,
+    }));
   }
 
   fetchUserBet() {
@@ -204,32 +231,6 @@ class GameCardBet extends Component {
     }
   }
 
-  handleHomegoalsChange(value, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState({ homegoalsInput: value, hasChanges: true });
-  }
-
-  handleAwaygoalsChange(value, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState({ awaygoalsInput: value, hasChanges: true });
-  }
-
-  handleHomegoalsIncrementalChange(inc, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState((prevState) => ({
-      homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
-      hasChanges: true,
-    }));
-  }
-
-  handleAwaygoalsIncrementalChange(inc, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState((prevState) => ({
-      awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
-      hasChanges: true,
-    }));
-  }
-
   sanitizeBet() {
     this.setState((prevState) => ({
       homegoalsInput: getGoalsString(prevState.homegoalsInput),
@@ -249,13 +250,12 @@ class GameCardBet extends Component {
             id={gameId}
             homegoals={homegoalsInput}
             awaygoals={awaygoalsInput}
-
             onBlur={this.sanitizeBet}
-            onHomegoalsChange={val => this.handleHomegoalsChange(val, betsStatusContext)}
-            onAwaygoalsChange={val => this.handleAwaygoalsChange(val, betsStatusContext)}
-            onHomegoalsIncrementalChange={inc => this
+            onHomegoalsChange={(val) => this.handleHomegoalsChange(val, betsStatusContext)}
+            onAwaygoalsChange={(val) => this.handleAwaygoalsChange(val, betsStatusContext)}
+            onHomegoalsIncrementalChange={(inc) => this
               .handleHomegoalsIncrementalChange(inc, betsStatusContext)}
-            onAwaygoalsIncrementalChange={inc => this
+            onAwaygoalsIncrementalChange={(inc) => this
               .handleAwaygoalsIncrementalChange(inc, betsStatusContext)}
           />
         )}
@@ -265,14 +265,12 @@ class GameCardBet extends Component {
 }
 
 GameCardBet.defaultProps = {
-  hadSaveIssues: false,
   shouldSave: false,
   userBet: null,
 };
 
 GameCardBet.propTypes = {
   gameId: PropTypes.number.isRequired,
-  hadSaveIssues: PropTypes.bool,
   shouldSave: PropTypes.bool,
   userBet: PropTypes.shape(),
   onSaveFailure: PropTypes.func.isRequired,

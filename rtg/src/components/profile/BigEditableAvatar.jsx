@@ -12,8 +12,8 @@ import RotateRightIcon from '@material-ui/icons/RotateRight';
 import teal from '@material-ui/core/colors/teal';
 
 import AvatarEditor from 'react-avatar-editor';
-import Notification, {NotificationType} from '../Notification';
-import AuthService, {API_BASE_URL} from '../../service/AuthService';
+import Notification, { NotificationType } from '../Notification';
+import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 
 import './BigEditableAvatar.scss';
@@ -127,26 +127,6 @@ class BigEditableAvatar extends Component {
     this.handleEditSave = this.handleEditSave.bind(this);
   }
 
-  getCropOrUploadErrorReadableText() {
-    const { cropError, uploadError } = this.state;
-    if (uploadError) {
-      return uploadError;
-    }
-
-    if (cropError === 'maxsize') {
-      const maxSizeReadable = `${this.maxImageSize / 1024 / 1024} MB`;
-      return `Das Bild überschreitet die maximale erlaubte Dateigröße von ${maxSizeReadable}`;
-    }
-    if (cropError === 'not_image') {
-      return 'Erlaubte Dateitypen sind PNG/JPG/JPEG.';
-    }
-    return 'Bitte versuche es später noch einmal.';
-  }
-
-  setEditorRef(editor) {
-    this.editor = editor;
-  }
-
   handleFileInputChange(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -229,6 +209,26 @@ class BigEditableAvatar extends Component {
         },
       );
     }
+  }
+
+  getCropOrUploadErrorReadableText() {
+    const { cropError, uploadError } = this.state;
+    if (uploadError) {
+      return uploadError;
+    }
+
+    if (cropError === 'maxsize') {
+      const maxSizeReadable = `${this.maxImageSize / 1024 / 1024} MB`;
+      return `Das Bild überschreitet die maximale erlaubte Dateigröße von ${maxSizeReadable}`;
+    }
+    if (cropError === 'not_image') {
+      return 'Erlaubte Dateitypen sind PNG/JPG/JPEG.';
+    }
+    return 'Bitte versuche es später noch einmal.';
+  }
+
+  setEditorRef(editor) {
+    this.editor = editor;
   }
 
   render() {
@@ -337,8 +337,7 @@ class BigEditableAvatar extends Component {
 
         <div className="BigEditableAvatar__feedback">
           {uploadInProgress
-            && <CircularProgress size={30} thickness={2.5} style={{ margin: '20px 0' }} />
-          }
+            && <CircularProgress size={30} thickness={2.5} style={{ margin: '20px 0' }} />}
 
           {(cropError || uploadError)
             && (

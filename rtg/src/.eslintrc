@@ -14,6 +14,12 @@
     }],
     "no-underscore-dangle": [ "error", {
       "allowAfterThis": true
-    }]
+    }],
+
+    // harder to fix but should be re-activated
+    "import/no-cycle": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/forbid-prop-types": "off",
+    "react/no-danger": "off"
   }
 }

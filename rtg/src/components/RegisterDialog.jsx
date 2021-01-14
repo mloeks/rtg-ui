@@ -59,22 +59,6 @@ class RegisterDialog extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  updateFormField(fieldName, newValue) {
-    const newState = { formError: null, formHasErrors: false, hasChanges: true };
-    newState[fieldName] = newValue;
-    this.setState(newState);
-  }
-
-  updateUsername(e) { this.updateFormField('username', e.target.value); }
-
-  updatePassword(e) { this.updateFormField('password', e.target.value); }
-
-  updateFirstName(e) { this.updateFormField('firstName', e.target.value); }
-
-  updateLastName(e) { this.updateFormField('lastName', e.target.value); }
-
-  updateEmail(e) { this.updateFormField('email', e.target.value); }
-
   handleSubmit(e) {
     e.preventDefault();
 
@@ -106,6 +90,22 @@ class RegisterDialog extends Component {
       onCancel(e);
     });
   }
+
+  updateFormField(fieldName, newValue) {
+    const newState = { formError: null, formHasErrors: false, hasChanges: true };
+    newState[fieldName] = newValue;
+    this.setState(newState);
+  }
+
+  updateUsername(e) { this.updateFormField('username', e.target.value); }
+
+  updatePassword(e) { this.updateFormField('password', e.target.value); }
+
+  updateFirstName(e) { this.updateFormField('firstName', e.target.value); }
+
+  updateLastName(e) { this.updateFormField('lastName', e.target.value); }
+
+  updateEmail(e) { this.updateFormField('email', e.target.value); }
 
   render() {
     const { fullScreen, theme } = this.props;

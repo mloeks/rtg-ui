@@ -23,13 +23,15 @@ const Donate = () => (
         einige Unkosten, um beispielsweise diese Webseite zu betreiben.
       </p>
       <p>
-        Vielleicht hast Du Lust, uns mit einer kleinen Spende dabei zu unterstützen?<br />
+        Vielleicht hast Du Lust, uns mit einer kleinen Spende dabei zu unterstützen?
+        <br />
         Wie viel Du spendest liegt ganz bei dir, jeder Cent hilft dem Königshaus, ihr wisst ja,
         verarmter Adel und so...
       </p>
       <p>
         Klicke auf das Logo, um direkt per PayPal zu spenden:
-      </p><br />
+      </p>
+      <br />
 
       <a href="https://paypal.me/rtg2018" target="_blank" rel="noopener noreferrer">
         <img src={payPalLogo} alt="PayPal Logo" style={{ width: '100px' }} />

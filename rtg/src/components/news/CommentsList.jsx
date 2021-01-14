@@ -11,7 +11,7 @@ import AddComment from './AddComment';
 
 import './CommentsList.scss';
 
-const styles = theme => ({
+const styles = (theme) => ({
   loadMoreRepliesButton: {
     backgroundColor: theme.palette.grey['200'],
     minHeight: 24,
@@ -48,6 +48,11 @@ class CommentsList extends Component {
     if (comments.length === 0) { this.loadComments(); }
   }
 
+  handleCommentAdded(comment) {
+    const { onReplyAdded } = this.props;
+    this.setState({ collapsed: false }, () => { onReplyAdded(comment); });
+  }
+
   async loadComments() {
     const { onCommentsLoaded, postId } = this.props;
     this.setState({ loading: true, collapsed: false });
@@ -68,11 +73,6 @@ class CommentsList extends Component {
       .catch(() => this.setState({ loading: false, loadingError: true }));
   }
 
-  handleCommentAdded(comment) {
-    const { onReplyAdded } = this.props;
-    this.setState({ collapsed: false }, () => { onReplyAdded(comment); });
-  }
-
   render() {
     const {
       classes,
@@ -88,8 +88,8 @@ class CommentsList extends Component {
 
     // TODO P3 is being re-rendered 2*comment count times when post comments are only toggled?!
     const displayComments = hierarchyLevel === 0
-      ? comments.filter(c => !c.reply_to)
-      : comments.filter(c => c.reply_to === replyTo);
+      ? comments.filter((c) => !c.reply_to)
+      : comments.filter((c) => c.reply_to === replyTo);
 
     return (
       <div
@@ -102,7 +102,7 @@ class CommentsList extends Component {
         )}
 
         {(showAddComment && !loading) && (
-          <Fragment>
+          <>
             <AddComment
               label="Antwort hinzufügen..."
               postId={postId}
@@ -110,7 +110,7 @@ class CommentsList extends Component {
               onAdded={this.handleCommentAdded}
             />
             <br />
-          </Fragment>
+          </>
         )}
 
         {(collapsed && commentCount > 0) && (
@@ -126,7 +126,7 @@ class CommentsList extends Component {
         )}
 
         {(!loading && !collapsed && !loadingError) && (
-          displayComments.map(c => (
+          displayComments.map((c) => (
             <Comment
               key={`comment-${c.id}`}
               hierarchyLevel={hierarchyLevel}
@@ -134,7 +134,8 @@ class CommentsList extends Component {
               comment={c}
               replies={comments}
               onReplyAdded={onReplyAdded}
-            />))
+            />
+          ))
         )}
 
         {loadingError && (

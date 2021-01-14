@@ -58,6 +58,37 @@ class ProfileForm extends Component {
     this.stateToUserPatchPayload = this.stateToUserPatchPayload.bind(this);
   }
 
+  async handleSubmit(e) {
+    const { onUserUpdate, userId } = this.props;
+
+    e.preventDefault();
+    this.setState({ saving: true, savingSuccess: false, savingError: false });
+
+    await this.patchData(
+      `${API_BASE_URL}/rtg/users/${userId}/`,
+      this.stateToUserPatchPayload(),
+      onUserUpdate,
+      ProfileForm.userErrorResponseToState,
+    );
+
+    this.setState({ saving: false });
+  }
+
+  handleFormFieldUpdate(fieldName, value) {
+    this.setState((prevState) => {
+      const updatedUser = { ...prevState.user };
+      updatedUser[fieldName] = value;
+
+      return {
+        user: updatedUser,
+        formHasErrors: false,
+        savingError: false,
+        savingSuccess: false,
+        fieldErrors: ProfileForm.resetFieldErrors(),
+      };
+    });
+  }
+
   stateToUserPatchPayload() {
     const { user } = this.state;
     const { userId } = this.props;
@@ -91,37 +122,6 @@ class ProfileForm extends Component {
             : { savingError: true, ...errorResponseToStateMapper(response.json) }
         ));
       }).catch(() => this.setState({ savingError: true }));
-  }
-
-  async handleSubmit(e) {
-    const { onUserUpdate, userId } = this.props;
-
-    e.preventDefault();
-    this.setState({ saving: true, savingSuccess: false, savingError: false });
-
-    await this.patchData(
-      `${API_BASE_URL}/rtg/users/${userId}/`,
-      this.stateToUserPatchPayload(),
-      onUserUpdate,
-      ProfileForm.userErrorResponseToState,
-    );
-
-    this.setState({ saving: false });
-  }
-
-  handleFormFieldUpdate(fieldName, value) {
-    this.setState((prevState) => {
-      const updatedUser = Object.assign({}, prevState.user);
-      updatedUser[fieldName] = value;
-
-      return {
-        user: updatedUser,
-        formHasErrors: false,
-        savingError: false,
-        savingSuccess: false,
-        fieldErrors: ProfileForm.resetFieldErrors(),
-      };
-    });
   }
 
   render() {
@@ -164,7 +164,6 @@ class ProfileForm extends Component {
             lastName={user.lastName}
             location={user.location}
             reminderEmails={user.reminderEmails}
-
             aboutError={fieldErrors.about}
             dailyEmailsError={fieldErrors.dailyEmails}
             emailError={fieldErrors.email}
@@ -173,10 +172,8 @@ class ProfileForm extends Component {
             lastNameError={fieldErrors.lastName}
             locationError={fieldErrors.location}
             reminderEmailsError={fieldErrors.reminderEmails}
-
             isSaving={saving}
             formHasErrors={formHasErrors}
-
             onFieldChange={this.handleFormFieldUpdate}
           />
         )}
