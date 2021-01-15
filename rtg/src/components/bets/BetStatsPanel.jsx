@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -215,9 +217,9 @@ BetStatsPanel.defaultProps = {
 BetStatsPanel.propTypes = {
   bettableId: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
-  style: PropTypes.object,
-  buttonStyle: PropTypes.object,
-  standingsBetColumnStyle: PropTypes.object,
+  style: stylePropType,
+  buttonStyle: stylePropType,
+  standingsBetColumnStyle: stylePropType,
 
   onClose: PropTypes.func,
   onOpen: PropTypes.func,

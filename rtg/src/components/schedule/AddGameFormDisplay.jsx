@@ -199,12 +199,10 @@ AddGameFormDisplay.defaultProps = {
 };
 
 AddGameFormDisplay.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
   rounds: PropTypes.array.isRequired,
   groups: PropTypes.array.isRequired,
   teams: PropTypes.array.isRequired,
   venues: PropTypes.array.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 
   round: PropTypes.number,
   group: PropTypes.number,

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
 
 import './RtgSeparator.scss';
 
@@ -19,11 +20,8 @@ RtgSeparator.defaultProps = {
 
 RtgSeparator.propTypes = {
   content: PropTypes.node,
-
-  /* eslint-disable react/forbid-prop-types */
-  style: PropTypes.object,
-  contentStyle: PropTypes.object,
-  /* eslint-enable react/forbid-prop-types */
+  style: stylePropType,
+  contentStyle: stylePropType,
 };
 
 export default RtgSeparator;

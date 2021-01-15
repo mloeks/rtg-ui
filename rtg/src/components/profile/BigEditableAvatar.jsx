@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -74,7 +76,7 @@ EditingActions.propTypes = {
   maxSliderValue: PropTypes.number,
   minSliderValue: PropTypes.number,
   sliderValue: PropTypes.number,
-  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  style: stylePropType,
   onZoomIn: PropTypes.func.isRequired,
   onZoomOut: PropTypes.func.isRequired,
   onZoomChange: PropTypes.func.isRequired,

@@ -170,7 +170,7 @@ CommentsList.propTypes = {
   onCommentsLoaded: PropTypes.func,
   onReplyAdded: PropTypes.func,
 
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(CommentsList);

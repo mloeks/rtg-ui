@@ -291,10 +291,9 @@ Post.propTypes = {
   wrapFromHeight: PropTypes.number,
   post: PropTypes.shape().isRequired,
 
-  /* eslint-disable react/forbid-prop-types */
+  /* eslint-disable-next-line react/forbid-prop-types */
   theme: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 };
 
 export default withStyles(styles)(withTheme(Post));

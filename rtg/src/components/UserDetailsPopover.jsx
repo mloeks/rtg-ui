@@ -146,10 +146,8 @@ UserDetailsPopover.propTypes = {
 
   onClose: PropTypes.func.isRequired,
 
-  /* eslint-disable react/forbid-prop-types */
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 };
 
 export default withStyles(styles)(withTheme(UserDetailsPopover));

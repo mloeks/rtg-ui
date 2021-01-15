@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import CountryFlag from './CountryFlag';
 
 import './GameCard.scss';
@@ -58,7 +60,7 @@ GameCard.propTypes = {
   awayteam_name: PropTypes.string.isRequired,
   awayteam_abbreviation: PropTypes.string.isRequired,
 
-  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  style: stylePropType,
 
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

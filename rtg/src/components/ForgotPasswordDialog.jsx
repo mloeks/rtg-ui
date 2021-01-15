@@ -178,7 +178,6 @@ class ForgotPasswordDialog extends Component {
 
 ForgotPasswordDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   onClose: PropTypes.func.isRequired,
 };
 

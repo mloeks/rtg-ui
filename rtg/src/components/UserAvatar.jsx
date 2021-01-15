@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import Avatar from '@material-ui/core/Avatar';
 import { randomHueHexColor } from '../service/ColorHelper';
 import { API_BASE_URL } from '../service/AuthService';
@@ -63,7 +65,7 @@ UserAvatar.propTypes = {
   img: PropTypes.string,
   size: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
-  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  style: stylePropType,
   onClick: PropTypes.func,
 };
 

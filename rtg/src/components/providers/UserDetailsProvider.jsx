@@ -81,7 +81,7 @@ UserDetailsProvider.defaultProps = {
 
 UserDetailsProvider.propTypes = {
   children: PropTypes.node,
-  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(UserDetailsProvider);

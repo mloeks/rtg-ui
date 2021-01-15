@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
 
 import { withTheme } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -45,7 +46,7 @@ ColouredResultBetColumn.propTypes = {
     result_bet_type: PropTypes.string,
     points: PropTypes.number,
   }),
-  style: PropTypes.object,
+  style: stylePropType,
 
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

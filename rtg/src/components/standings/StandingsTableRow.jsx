@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import UserAvatar from '../UserAvatar';
@@ -190,12 +192,10 @@ StandingsTableRow.propTypes = {
   showUserAvatar: PropTypes.bool,
   showUserInfoOnClick: PropTypes.bool,
 
-  /* eslint-disable react/forbid-prop-types */
-  betColumnStyle: PropTypes.object,
-  betStatColumnStyle: PropTypes.object,
-  pointsColumnStyle: PropTypes.object,
-  rankColumnStyle: PropTypes.object,
-  /* eslint-enable react/forbid-prop-types */
+  betColumnStyle: stylePropType,
+  betStatColumnStyle: stylePropType,
+  pointsColumnStyle: stylePropType,
+  rankColumnStyle: stylePropType,
 };
 
 export default StandingsTableRow;

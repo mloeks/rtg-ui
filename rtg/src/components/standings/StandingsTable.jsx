@@ -401,10 +401,9 @@ StandingsTable.propTypes = {
   bets: PropTypes.array,
   betColumnStyle: PropTypes.object,
 
-  /* eslint-disable react/forbid-prop-types */
   classes: PropTypes.object.isRequired,
+  /* eslint-disable-next-line react/forbid-prop-types */
   theme: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 };
 
 export default withStyles(styles)(withTheme(StandingsTable));

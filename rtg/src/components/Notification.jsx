@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
+
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
@@ -129,11 +131,10 @@ Notification.propTypes = {
 
   className: PropTypes.string,
 
-  /* eslint-disable react/forbid-prop-types */
-  containerStyle: PropTypes.object,
+  containerStyle: stylePropType,
+  /* eslint-disable-next-line react/forbid-prop-types */
   theme: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 };
 
 export default withStyles(styles)(withTheme(Notification));

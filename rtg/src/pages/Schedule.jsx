@@ -337,10 +337,9 @@ class Schedule extends Component {
 }
 
 Schedule.propTypes = {
-  /* eslint-disable react/forbid-prop-types */
   history: PropTypes.object.isRequired,
+  /* eslint-disable-next-line react/forbid-prop-types */
   theme: PropTypes.object.isRequired,
-  /* eslint-enable react/forbid-prop-types */
 };
 
 export default withRouter(withTheme(Schedule));
