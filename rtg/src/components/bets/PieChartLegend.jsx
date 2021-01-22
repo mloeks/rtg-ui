@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
 import { withTheme } from '@material-ui/core/styles';
 
 const PieChartLegend = ({
@@ -70,8 +71,9 @@ PieChartLegend.propTypes = {
     color: PropTypes.string.isRequired,
   })).isRequired,
   entryRowHeight: PropTypes.number,
-  containerStyle: PropTypes.object,
-  entryStyle: PropTypes.object,
+
+  containerStyle: stylePropType,
+  entryStyle: stylePropType,
 
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

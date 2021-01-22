@@ -67,7 +67,7 @@ const SavingIssuesDialog = ({
 
 SavingIssuesDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  games: PropTypes.array.isRequired,
+  games: PropTypes.instanceOf(Map).isRequired,
   onClose: PropTypes.func.isRequired,
 
   fullScreen: PropTypes.bool.isRequired,

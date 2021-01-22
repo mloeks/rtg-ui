@@ -131,7 +131,7 @@ UserDetailsPopover.defaultProps = {
 };
 
 UserDetailsPopover.propTypes = {
-  anchorEl: PropTypes.object.isRequired,
+  anchorEl: PropTypes.node.isRequired,
   anchorOrigin: PropTypes.shape({
     horizontal: PropTypes.string.isRequired,
     vertical: PropTypes.string.isRequired,
@@ -146,8 +146,8 @@ UserDetailsPopover.propTypes = {
 
   onClose: PropTypes.func.isRequired,
 
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(withTheme(UserDetailsPopover));

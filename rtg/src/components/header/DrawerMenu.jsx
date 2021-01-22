@@ -132,7 +132,8 @@ DrawerMenu.propTypes = {
   openBetsCount: PropTypes.number.isRequired,
   onLogout: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
+
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(drawerStyles)(DrawerMenu);

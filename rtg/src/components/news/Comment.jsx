@@ -126,8 +126,23 @@ Comment.defaultProps = {
 Comment.propTypes = {
   hierarchyLevel: PropTypes.number.isRequired,
   postId: PropTypes.number.isRequired,
-  comment: PropTypes.object.isRequired,
-  replies: PropTypes.array,
+
+  // TODO P3 introduce dedicated DTO class for comments, then validate
+  // for instanceOf(Comment) here (for props comment & replies)
+  comment: PropTypes.shape({
+    author_details: PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      pk: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
+    }).isRequired,
+    content: PropTypes.string.isRequired,
+    date_created: PropTypes.instanceOf(Date).isRequired,
+    id: PropTypes.number.isRequired,
+    no_replies: PropTypes.number.isRequired,
+    reply_to: PropTypes.string.isRequired,
+  }).isRequired,
+
+  replies: PropTypes.shape(),
   onReplyAdded: PropTypes.func,
 };
 
