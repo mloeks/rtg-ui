@@ -199,10 +199,22 @@ AddGameFormDisplay.defaultProps = {
 };
 
 AddGameFormDisplay.propTypes = {
-  rounds: PropTypes.array.isRequired,
-  groups: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
-  venues: PropTypes.array.isRequired,
+  rounds: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  groups: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  teams: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  venues: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    city: PropTypes.string.isRequired,
+  })).isRequired,
 
   round: PropTypes.number,
   group: PropTypes.number,

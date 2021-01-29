@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import stylePropType from 'react-style-proptype';
 
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -396,14 +397,16 @@ StandingsTable.propTypes = {
   showUserInfoOnClick: PropTypes.bool,
 
   showBetColumnForBettable: PropTypes.number,
-  // can be passed in if the previous option is set
-  // if it is empty, the bets are fetched by this component
-  bets: PropTypes.array,
-  betColumnStyle: PropTypes.object,
 
-  classes: PropTypes.object.isRequired,
-  /* eslint-disable-next-line react/forbid-prop-types */
-  theme: PropTypes.object.isRequired,
+  // may optionally be provided, will otherwise be fetched by this component
+  bets: PropTypes.arrayOf(PropTypes.shape({
+    bettable: PropTypes.string.isRequired,
+    user: PropTypes.number.isRequired,
+  })),
+  betColumnStyle: stylePropType,
+
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(withTheme(StandingsTable));
