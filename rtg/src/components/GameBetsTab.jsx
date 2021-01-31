@@ -14,7 +14,7 @@ import GameCard from './GameCard';
 import GameCardBet, { SavingErrorType, SavingSuccessType } from './GameCardBet';
 import NullGameCard from './NullGameCard';
 import RtgSeparator from './RtgSeparator';
-import { BetsStatusContext, countOpenBets } from '../pages/Bets';
+import { BetsStatusContext, countOpenBets } from '../service/BetsUtils';
 import Notification, { NotificationType } from './Notification';
 import BetsStatusPanel from './bets/BetsStatusPanel';
 import SavingIssuesDialog from './bets/SavingIssuesDialog';

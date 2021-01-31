@@ -15,7 +15,7 @@ import CurrentGameCard from './CurrentGameCard';
 import { throttle } from '../../service/EventsHelper';
 import getClosestGameIndex from '../../service/GamesHelper';
 import Notification, { NotificationType } from '../Notification';
-import { unsavedChangesConfirmText } from '../../pages/Bets';
+import { unsavedChangesConfirmText } from '../../service/BetsUtils';
 import BetStatsPanel from '../bets/BetStatsPanel';
 
 import './CurrentGames.scss';

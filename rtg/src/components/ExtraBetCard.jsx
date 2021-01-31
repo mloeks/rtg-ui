@@ -21,7 +21,7 @@ import de from 'date-fns/locale/de';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import Notification, { NotificationType } from './Notification';
-import { BetsStatusContext } from '../pages/Bets';
+import { BetsStatusContext } from '../service/BetsUtils';
 
 import './ExtraBetCard.scss';
 

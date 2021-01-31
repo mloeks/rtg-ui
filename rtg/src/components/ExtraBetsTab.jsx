@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
 import ExtraBetCard from './ExtraBetCard';
-import { BettableTypes, countOpenBets } from '../pages/Bets';
+import { BettableTypes, countOpenBets } from '../service/BetsUtils';
 import BetStatsPanel from './bets/BetStatsPanel';
 
 // TODO P3 a LOT of this is identical to GameBetsTab --> can a HOC be used?

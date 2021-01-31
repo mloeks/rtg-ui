@@ -11,19 +11,10 @@ import Collapse from '@material-ui/core/Collapse';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ModeCommentIcon from '@material-ui/icons/ModeComment';
 
-import {
-  differenceInMinutes,
-  differenceInSeconds,
-  format,
-  formatDistanceStrict,
-  isSameDay,
-  subDays,
-} from 'date-fns';
-import de from 'date-fns/locale/de';
-
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
 import { randomHueHexColor } from '../../service/ColorHelper';
+import getFormattedPostDate from '../../service/PostUtils';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
 
@@ -39,23 +30,6 @@ const styles = {
     textOverflow: 'ellipsis',
     overflow: 'hidden',
   },
-};
-
-export const getFormattedPostDate = (date) => {
-  const now = new Date();
-
-  if (differenceInSeconds(now, date) < 60) {
-    return 'Gerade eben';
-  }
-  if (differenceInMinutes(now, date) < 60) {
-    return formatDistanceStrict(date, now, { locale: de, addSuffix: true, unit: 'minute' });
-  }
-
-  const formattedTime = format(date, 'HH:mm \'Uhr\'');
-  if (isSameDay(date, new Date())) { return `Heute, ${formattedTime}`; }
-  if (isSameDay(date, subDays(new Date(), 1))) { return `Gestern, ${formattedTime}`; }
-
-  return `${format(date, 'EEEEEE. d. MMM yyyy', { locale: de })}, ${formattedTime}`;
 };
 
 class Post extends Component {

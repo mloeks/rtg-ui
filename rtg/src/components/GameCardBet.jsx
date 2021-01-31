@@ -12,7 +12,7 @@ import {
   NO_GOALS_STRING,
   toResultString,
 } from '../service/ResultStringHelper';
-import { BetsStatusContext } from '../pages/Bets';
+import { BetsStatusContext } from '../service/BetsUtils';
 import GameCardBetPresentational from './GameCardBetPresentational';
 
 export const SavingSuccessType = {

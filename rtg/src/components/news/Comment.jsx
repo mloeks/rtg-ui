@@ -5,7 +5,7 @@ import { parseISO } from 'date-fns';
 import Button from '@material-ui/core/Button';
 import CommentsList from './CommentsList';
 import UserAvatar from '../UserAvatar';
-import { getFormattedPostDate } from './Post';
+import getFormattedPostDate from '../../service/PostUtils';
 import UserDetailsPopover from '../UserDetailsPopover';
 
 import './Comment.scss';

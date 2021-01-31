@@ -13,23 +13,10 @@ import { UserDetailsContext } from '../components/providers/UserDetailsProvider'
 import BigPicture from '../components/BigPicture';
 import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
+import { BetsStatusContext, unsavedChangesConfirmText } from '../service/BetsUtils';
 
 import headingImg from '../theme/img/headings/royals_stadium.jpg';
 import './Bets.scss';
-
-export const BetsStatusContext = React.createContext();
-
-export const BettableTypes = {
-  GAME: 'game',
-  EXTRA: 'extra',
-};
-
-export const countOpenBets = (bettables, allBets) => {
-  const allBetBettablesIds = new Set(allBets.map((bet) => bet.bettable));
-  return bettables.filter((bettable) => !allBetBettablesIds.has(bettable.id)).length;
-};
-
-export const unsavedChangesConfirmText = 'Du hast noch ungespeicherte Tipps. Wirklich fortfahren?';
 
 const styles = (theme) => ({
   openBetsBadge: {
