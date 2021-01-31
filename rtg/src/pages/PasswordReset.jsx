@@ -50,11 +50,11 @@ class PasswordReset extends Component {
           ...this.getInitialState(), resetSuccessful: true,
         });
       })
-      .catch((errors) => {
+      .catch((loginErr) => {
         this.setState({
-          fieldErrors: errors.fieldErrors || {},
-          formHasErrors: errors.nonFieldError,
-          formError: errors.nonFieldError,
+          fieldErrors: loginErr.fieldErrors || {},
+          formHasErrors: loginErr.message,
+          formError: loginErr.message,
         });
       });
     e.preventDefault();

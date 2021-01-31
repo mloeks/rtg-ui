@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
@@ -22,13 +23,16 @@ const AuthRoute = ({ component: Component, exact, path }) => (
 
 AuthRoute.defaultProps = {
   exact: false,
+  location: null,
 };
 
 AuthRoute.propTypes = {
-  component: ReactRouterPropTypes.component.isRequired,
-  exact: ReactRouterPropTypes.exact,
-  path: ReactRouterPropTypes.path.isRequired,
-  location: ReactRouterPropTypes.location.isRequired,
+  component: PropTypes.oneOfType([
+    PropTypes.func, PropTypes.element, PropTypes.node, PropTypes.object,
+  ]).isRequired,
+  exact: PropTypes.bool,
+  path: PropTypes.string.isRequired,
+  location: ReactRouterPropTypes.location,
 };
 
 export default AuthRoute;

@@ -74,11 +74,11 @@ class RegisterDialog extends Component {
       .then(() => {
         this.setState({ registerSuccessful: true });
       })
-      .catch((errors) => {
+      .catch((loginErr) => {
         this.setState({
-          fieldErrors: errors.fieldErrors || {},
-          formHasErrors: errors.nonFieldError,
-          formError: errors.nonFieldError,
+          fieldErrors: loginErr.fieldErrors,
+          formHasErrors: loginErr.message,
+          formError: loginErr.message,
           hasChanges: false,
         });
       });

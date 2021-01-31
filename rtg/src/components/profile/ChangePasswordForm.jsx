@@ -103,7 +103,12 @@ class ChangePasswordForm extends Component {
 
     AuthService.changePassword(oldPassword, newPassword)
       .then(() => this.setState({ ...ChangePasswordForm.getInitialState(), savingSuccess: true }))
-      .catch((errorJson) => this.setState({ saving: false, savingError: true, ...errorJson }));
+      .catch((loginErr) => this.setState({
+        saving: false,
+        savingError: true,
+        nonFieldError: loginErr.message,
+        fieldErrors: loginErr.fieldErrors,
+      }));
   }
 
   handleFormFieldUpdate(fieldName, value) {

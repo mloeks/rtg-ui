@@ -1,13 +1,14 @@
 import jwtDecode from 'jwt-decode';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import FetchHelper from './FetchHelper';
+import LoginError from './LoginError';
 
 // Unfortunately this does not work as elegantly as described here:
 // https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables
 // Instead, I defined all three different API URLs in one .env file
 
-export const API_BASE_URL = () => {
-  if (process.env.NODE_ENV === 'production') {
+const determineApiBaseUrl = () => {
+  if (process.env.NODE_ENV !== 'production') {
     return process.env.REACT_APP_DEV_API_URL;
   }
 
@@ -15,6 +16,8 @@ export const API_BASE_URL = () => {
     ? process.env.REACT_APP_PROD_API_URL
     : process.env.REACT_APP_DEMO_API_URL;
 };
+
+export const API_BASE_URL = determineApiBaseUrl();
 
 const LocalStorageWrapper = {
   get: (key) => localStorage.getItem(`rtg-${key}`),
@@ -192,8 +195,9 @@ class AuthService {
             resolve(responseJson);
           } else {
             AuthService.resetProps();
-            reject({
-              fieldErrors: {
+            reject(new LoginError(
+              responseJson.non_field_errors ? responseJson.non_field_errors[0] : responseJson.error,
+              {
                 username: responseJson.username ? responseJson.username[0] : '',
                 email: responseJson.email ? responseJson.email[0] : '',
                 firstName: responseJson.first_name ? responseJson.first_name[0] : '',
@@ -203,14 +207,12 @@ class AuthService {
                 // returns it like this
                 password: responseJson.password1 ? responseJson.password1[0] : '',
               },
-              nonFieldError: responseJson.non_field_errors
-                ? responseJson.non_field_errors[0] : responseJson.error,
-            });
+            ));
           }
         })
         .catch(() => {
           AuthService.resetProps();
-          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
+          reject(new LoginError());
         });
     });
   }
@@ -236,18 +238,17 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            reject({
-              formHasErrors: true,
-              fieldErrors: {
+            reject(new LoginError(
+              responseJson.non_field_errors && responseJson.non_field_errors[0],
+              {
                 oldPassword: responseJson.old_password && responseJson.old_password[0],
                 newPassword: (responseJson.new_password1 && responseJson.new_password1[0])
                 || (responseJson.new_password2 && responseJson.new_password2[0]),
               },
-              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
-            });
+            ));
           }
         }).catch(() => {
-          reject({ formHasErrors: false, nonFieldError: 'Ein Fehler ist aufgetreten' });
+          reject(new LoginError());
         });
     });
   }
@@ -267,14 +268,14 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            reject({
-              fieldErrors: { email: responseJson.email || '' },
-              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
-            });
+            reject(new LoginError(
+              responseJson.non_field_errors && responseJson.non_field_errors[0],
+              { email: responseJson.email || '' },
+            ));
           }
         })
         .catch(() => {
-          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
+          reject(new LoginError());
         });
     });
   }
@@ -299,18 +300,18 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            reject({
-              fieldErrors: {
+            reject(new LoginError(
+              responseJson.non_field_errors && responseJson.non_field_errors[0],
+              {
                 password: responseJson.new_password1 || responseJson.new_password2 || '',
                 uid: responseJson.uid || '',
                 token: responseJson.token || '',
               },
-              nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
-            });
+            ));
           }
         })
         .catch(() => {
-          reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
+          reject(new LoginError());
         });
     });
   }

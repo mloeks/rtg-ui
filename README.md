@@ -18,6 +18,10 @@ Sass support has been configured as described [here](https://create-react-app.de
 
 Implementation of authentication and authorisation is inspired by [this approach](https://reacttraining.com/react-router/web/example/auth-workflow).
 
+## Current TODOs
+
+* Thoroughly test login/registration after LoginError refactoring
+* Check console output for linter complaints while manually browsing through the rtg pages
 
 ## Planned next features
 

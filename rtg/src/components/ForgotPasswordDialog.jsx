@@ -57,12 +57,12 @@ class ForgotPasswordDialog extends Component {
         passwordReminderSuccessful: true,
       }, () => { setTimeout(onClose, 5000); });
     })
-      .catch((errors) => {
+      .catch((loginErr) => {
         this.setState({
           requestInProgress: false,
-          fieldErrors: errors.fieldErrors || {},
-          formHasErrors: errors.nonFieldError,
-          formError: errors.nonFieldError,
+          fieldErrors: loginErr.fieldErrors,
+          formHasErrors: loginErr.message,
+          formError: loginErr.message,
         });
       });
   }

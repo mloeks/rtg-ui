@@ -4,7 +4,8 @@
     "window": true,
     "document": true,
     "fetch": true,
-    "Element": true
+    "Element": true,
+    "localStorage": true
   },
   "parserOptions": {
     // This setting makes eslint stop complaining about dynamic imports (required for React.lazy)
@@ -24,7 +25,6 @@
     // harder to fix but should be re-activated
     "import/no-cycle": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/forbid-prop-types": "off",
     "react/no-danger": "off"
   }
 }
