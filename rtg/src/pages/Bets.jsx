@@ -49,9 +49,6 @@ class Bets extends Component {
       openGameBetsCt: 0,
       openExtraBetsCt: 0,
       betsHaveChanges: false,
-
-      // eslint-disable-next-line react/no-unused-state
-      updateBetsHaveChanges: this.handleBetsHaveChanges.bind(this),
     };
 
     this.confirmNavigationWithUnsavedChanges = this.confirmNavigationWithUnsavedChanges.bind(this);

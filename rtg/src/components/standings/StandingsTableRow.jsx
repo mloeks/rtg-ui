@@ -183,7 +183,11 @@ StandingsTableRow.propTypes = {
   noRemisTendenz: PropTypes.number.isRequired,
   noTendenz: PropTypes.number.isRequired,
   noNiete: PropTypes.number.isRequired,
-  bet: PropTypes.object,
+  bet: PropTypes.shape({
+    result_bet: PropTypes.string,
+    result_bet_type: PropTypes.string,
+    points: PropTypes.number,
+  }),
 
   self: PropTypes.bool,
   rowHeight: PropTypes.number.isRequired,

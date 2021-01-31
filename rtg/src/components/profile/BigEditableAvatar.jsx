@@ -179,7 +179,7 @@ class BigEditableAvatar extends Component {
           const canvasScaled = this.editor.getImageScaledToCanvas();
 
           canvasScaled.toBlob((blob) => {
-            const formData = new FormData(); // eslint-disable-line no-undef
+            const formData = new FormData();
             formData.append('upload', blob, 'avatar.jpg');
 
             fetch(`${API_BASE_URL}/rtg/users/${userId}/avatar/`, {
@@ -379,10 +379,8 @@ BigEditableAvatar.propTypes = {
 
   // TODO P3 display progress indicator while image is loading client-side
   // (if callbacks are offered)
-  /* eslint-disable react/no-unused-prop-types */
-  loading: PropTypes.bool.isRequired,
-  loadingError: PropTypes.bool.isRequired,
-  /* eslint-enable react/no-unused-prop-types */
+  // loading: PropTypes.bool.isRequired,
+  // loadingError: PropTypes.bool.isRequired,
 
   onAvatarChanged: PropTypes.func.isRequired,
 };

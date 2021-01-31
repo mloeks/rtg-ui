@@ -1,7 +1,6 @@
-/* eslint-disable react/no-unused-state */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterProptypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
@@ -67,8 +66,27 @@ class UserDetailsProvider extends Component {
 
   render() {
     const { children } = this.props;
+    const {
+      isAuthenticated,
+      isAdmin,
+      userId,
+      username,
+      avatar,
+      hasPaid,
+      openBetsCount,
+    } = this.state;
+
     return (
-      <UserDetailsContext.Provider value={this.state}>
+      <UserDetailsContext.Provider value={{
+        isAuthenticated,
+        isAdmin,
+        userId,
+        username,
+        avatar,
+        hasPaid,
+        openBetsCount,
+      }}
+      >
         {children}
       </UserDetailsContext.Provider>
     );
@@ -81,7 +99,7 @@ UserDetailsProvider.defaultProps = {
 
 UserDetailsProvider.propTypes = {
   children: PropTypes.node,
-  history: PropTypes.object.isRequired,
+  history: ReactRouterProptypes.history.isRequired,
 };
 
 export default withRouter(UserDetailsProvider);

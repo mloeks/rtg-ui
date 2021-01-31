@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import stylePropType from 'react-style-proptype';
@@ -7,6 +6,7 @@ import CountryFlag from './CountryFlag';
 
 import './GameCard.scss';
 
+/* eslint-disable camelcase */
 // TODO P3 make props camelcase and map backend objects fields beforehand
 // TODO P3 move team name from CountryFlag in here and clean up name mode foo
 const GameCard = ({

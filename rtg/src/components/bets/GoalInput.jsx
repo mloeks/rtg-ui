@@ -19,7 +19,7 @@ const styles = {
 class GoalInput extends Component {
   constructor(props) {
     super(props);
-    this.textInputRef = React.createRef(); // eslint-disable-line prefer-const
+    this.textInputRef = React.createRef();
   }
 
   validateAndNotifyChange(val) {

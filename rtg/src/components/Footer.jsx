@@ -74,8 +74,7 @@ const Footer = ({ theme }) => (
 );
 
 Footer.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withTheme(Footer);

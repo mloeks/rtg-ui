@@ -1,13 +1,11 @@
 // See https://v1-5-0.material-ui.com/customization/default-theme/
 // Keep in sync with _colors.scss
 
-/* eslint-disable no-unused-vars */
 const black = '#372D2D';
 const white = '#FCFCFC';
 const gold = '#CD9B1D';
 const darkGold = '#8B6914';
 const lightGold = '#EDD69C';
-/* eslint-enable no-unused-vars */
 
 export default {
   // keep in sync with App.scss

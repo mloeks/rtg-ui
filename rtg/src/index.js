@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -15,11 +13,12 @@ import './service/closest-polyfill';
 
 import './index.scss';
 
+/* eslint-disable react/jsx-filename-extension */
 ReactDOM.render(
   <BrowserRouter>
     <ScrollToTop>
       <App />
     </ScrollToTop>
   </BrowserRouter>,
-  document.getElementById('root'), // eslint-disable-line no-undef
+  document.getElementById('root'),
 );

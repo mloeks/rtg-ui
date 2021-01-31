@@ -155,8 +155,7 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   onLogin: PropTypes.func.isRequired,
 };
 

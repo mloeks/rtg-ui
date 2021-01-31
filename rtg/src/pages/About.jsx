@@ -36,7 +36,7 @@ const About = ({ history }) => (
 );
 
 About.propTypes = {
-  history: ReactRouterProptypes.history.isRequired, // eslint-disable-line react/no-typos
+  history: ReactRouterProptypes.history.isRequired,
 };
 
 export default withRouter(About);

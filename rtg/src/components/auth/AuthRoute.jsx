@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
@@ -11,7 +11,6 @@ const AuthRoute = ({ component: Component, exact, path }) => (
     path={path}
     render={(props) => {
       if (!AuthService.isAuthenticated()) {
-        // eslint-disable-next-line react/prop-types
         return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
       }
 
@@ -26,11 +25,10 @@ AuthRoute.defaultProps = {
 };
 
 AuthRoute.propTypes = {
-  component: PropTypes.oneOfType([
-    PropTypes.func, PropTypes.element, PropTypes.node, PropTypes.object,
-  ]).isRequired,
-  exact: PropTypes.bool,
-  path: PropTypes.string.isRequired,
+  component: ReactRouterPropTypes.component.isRequired,
+  exact: ReactRouterPropTypes.exact,
+  path: ReactRouterPropTypes.path.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
 };
 
 export default AuthRoute;

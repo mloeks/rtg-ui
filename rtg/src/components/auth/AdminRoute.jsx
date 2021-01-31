@@ -1,17 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import AuthService from '../../service/AuthService';
 
 const AdminRoute = ({ component: Component, exact, path }) => {
   const componentToRender = (props) => {
     if (!AuthService.isAuthenticated()) {
-      // eslint-disable-next-line react/prop-types
       return <Redirect to={{ pathname: '/', state: { from: props.location } }} />;
     }
 
     if (!AuthService.isAdmin()) {
-      // eslint-disable-next-line react/prop-types
       return <Redirect to={{ pathname: '/403', state: { from: props.location } }} />;
     }
 
@@ -28,11 +26,10 @@ AdminRoute.defaultProps = {
 };
 
 AdminRoute.propTypes = {
-  component: PropTypes.oneOfType([
-    PropTypes.func, PropTypes.element, PropTypes.node, PropTypes.object,
-  ]).isRequired,
-  exact: PropTypes.bool,
-  path: PropTypes.string.isRequired,
+  component: ReactRouterPropTypes.component.isRequired,
+  exact: ReactRouterPropTypes.exact,
+  path: ReactRouterPropTypes.path.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
 };
 
 export default AdminRoute;

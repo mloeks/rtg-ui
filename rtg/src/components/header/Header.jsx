@@ -152,7 +152,6 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  // eslint-disable-next-line react/no-typos
   history: ReactRouterProptypes.history.isRequired,
 };
 

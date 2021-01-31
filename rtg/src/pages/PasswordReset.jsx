@@ -149,7 +149,6 @@ class PasswordReset extends Component {
 }
 
 PasswordReset.propTypes = {
-  // eslint-disable-next-line react/no-typos
   match: ReactRouterProptypes.match.isRequired,
 };
 

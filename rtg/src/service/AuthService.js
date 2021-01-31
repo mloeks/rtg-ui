@@ -6,17 +6,20 @@ import FetchHelper from './FetchHelper';
 // https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-custom-environment-variables
 // Instead, I defined all three different API URLs in one .env file
 
-// eslint-disable-next-line no-nested-ternary
-export const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? (process.env.REACT_APP_ENV === 'production'
+export const API_BASE_URL = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.REACT_APP_DEV_API_URL;
+  }
+
+  return process.env.REACT_APP_ENV === 'production'
     ? process.env.REACT_APP_PROD_API_URL
-    : process.env.REACT_APP_DEMO_API_URL)
-  : process.env.REACT_APP_DEV_API_URL;
+    : process.env.REACT_APP_DEMO_API_URL;
+};
 
 const LocalStorageWrapper = {
-  get: (key) => localStorage.getItem(`rtg-${key}`), // eslint-disable-line no-undef
-  set: (key, value) => localStorage.setItem(`rtg-${key}`, value), // eslint-disable-line no-undef
-  remove: (key) => localStorage.removeItem(`rtg-${key}`), // eslint-disable-line no-undef
+  get: (key) => localStorage.getItem(`rtg-${key}`),
+  set: (key, value) => localStorage.setItem(`rtg-${key}`, value),
+  remove: (key) => localStorage.removeItem(`rtg-${key}`),
 };
 
 const REFRESH_IF_EXPIRY_IN_SECONDS = 5 * 60;
@@ -73,7 +76,7 @@ class AuthService {
   }
 
   static resetProps() {
-    localStorage.clear(); // eslint-disable-line no-undef
+    localStorage.clear();
   }
 
   static isAuthenticated() {
@@ -189,7 +192,6 @@ class AuthService {
             resolve(responseJson);
           } else {
             AuthService.resetProps();
-            // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               fieldErrors: {
                 username: responseJson.username ? responseJson.username[0] : '',
@@ -208,7 +210,6 @@ class AuthService {
         })
         .catch(() => {
           AuthService.resetProps();
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });
@@ -235,7 +236,6 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               formHasErrors: true,
               fieldErrors: {
@@ -247,7 +247,6 @@ class AuthService {
             });
           }
         }).catch(() => {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject({ formHasErrors: false, nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });
@@ -268,7 +267,6 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               fieldErrors: { email: responseJson.email || '' },
               nonFieldError: responseJson.non_field_errors && responseJson.non_field_errors[0],
@@ -276,7 +274,6 @@ class AuthService {
           }
         })
         .catch(() => {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });
@@ -302,7 +299,6 @@ class AuthService {
           if (response.ok) {
             resolve(responseJson);
           } else {
-            // eslint-disable-next-line prefer-promise-reject-errors
             reject({
               fieldErrors: {
                 password: responseJson.new_password1 || responseJson.new_password2 || '',
@@ -314,7 +310,6 @@ class AuthService {
           }
         })
         .catch(() => {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject({ nonFieldError: 'Ein Fehler ist aufgetreten' });
         });
     });

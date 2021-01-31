@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterProptypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import stickybits from 'stickybits';
 
@@ -337,9 +338,8 @@ class Schedule extends Component {
 }
 
 Schedule.propTypes = {
-  history: PropTypes.object.isRequired,
-  /* eslint-disable-next-line react/forbid-prop-types */
-  theme: PropTypes.object.isRequired,
+  history: ReactRouterProptypes.history.isRequired,
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withRouter(withTheme(Schedule));
