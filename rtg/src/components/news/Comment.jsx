@@ -136,13 +136,13 @@ Comment.propTypes = {
       username: PropTypes.string.isRequired,
     }).isRequired,
     content: PropTypes.string.isRequired,
-    date_created: PropTypes.instanceOf(Date).isRequired,
+    date_created: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     no_replies: PropTypes.number.isRequired,
-    reply_to: PropTypes.string.isRequired,
+    reply_to: PropTypes.number.isRequired,
   }).isRequired,
 
-  replies: PropTypes.shape(),
+  replies: PropTypes.instanceOf(Array),
   onReplyAdded: PropTypes.func,
 };
 

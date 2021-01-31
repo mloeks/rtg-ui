@@ -125,13 +125,14 @@ class UserDetailsPopover extends Component {
 }
 
 UserDetailsPopover.defaultProps = {
+  anchorEl: null,
   avatar: null,
   anchorOrigin: { horizontal: 'left', vertical: 'top' },
   transformOrigin: { horizontal: 'left', vertical: 'bottom' },
 };
 
 UserDetailsPopover.propTypes = {
-  anchorEl: PropTypes.node.isRequired,
+  anchorEl: PropTypes.instanceOf(Element),
   anchorOrigin: PropTypes.shape({
     horizontal: PropTypes.string.isRequired,
     vertical: PropTypes.string.isRequired,

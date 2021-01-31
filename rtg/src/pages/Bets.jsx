@@ -49,6 +49,8 @@ class Bets extends Component {
       openGameBetsCt: 0,
       openExtraBetsCt: 0,
       betsHaveChanges: false,
+
+      updateBetsHaveChanges: this.handleBetsHaveChanges.bind(this),
     };
 
     this.confirmNavigationWithUnsavedChanges = this.confirmNavigationWithUnsavedChanges.bind(this);
@@ -126,10 +128,18 @@ class Bets extends Component {
       betsHaveChanges,
       openExtraBetsCt,
       openGameBetsCt,
+      updateBetsHaveChanges,
     } = this.state;
 
     return (
-      <BetsStatusContext.Provider value={this.state}>
+      <BetsStatusContext.Provider value={{
+        activeTab,
+        betsHaveChanges,
+        openExtraBetsCt,
+        openGameBetsCt,
+        updateBetsHaveChanges,
+      }}
+      >
         <Page className="BetsPage">
           <Prompt when={betsHaveChanges} message={unsavedChangesConfirmText} />
 

@@ -74,6 +74,9 @@ class UserDetailsProvider extends Component {
       avatar,
       hasPaid,
       openBetsCount,
+      doLogout,
+      updateAvatar,
+      updateOpenBetsCount,
     } = this.state;
 
     return (
@@ -85,6 +88,9 @@ class UserDetailsProvider extends Component {
         avatar,
         hasPaid,
         openBetsCount,
+        doLogout,
+        updateAvatar,
+        updateOpenBetsCount,
       }}
       >
         {children}

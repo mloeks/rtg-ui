@@ -353,7 +353,7 @@ class StandingsTable extends Component {
                     showStatsColumns={showStatsColumns}
                     showUserAvatar={showUserAvatar}
                     showUserInfoOnClick={showUserInfoOnClick}
-                    betColumnStyle={{ ...styles(theme).bet, betColumnStyle }}
+                    betColumnStyle={{ ...styles(theme).bet, ...betColumnStyle }}
                     betStatColumnStyle={{ ...styles(theme).betStat }}
                     pointsColumnStyle={{ ...styles(theme).points }}
                     rankColumnStyle={{ ...styles(theme).rank }}
@@ -400,7 +400,7 @@ StandingsTable.propTypes = {
 
   // may optionally be provided, will otherwise be fetched by this component
   bets: PropTypes.arrayOf(PropTypes.shape({
-    bettable: PropTypes.string.isRequired,
+    bettable: PropTypes.number.isRequired,
     user: PropTypes.number.isRequired,
   })),
   betColumnStyle: stylePropType,
