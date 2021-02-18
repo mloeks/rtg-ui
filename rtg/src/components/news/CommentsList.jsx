@@ -1,27 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';
 import Comment from './Comment';
-import AddComment from './AddComment';
 
 import './CommentsList.scss';
-
-const styles = (theme) => ({
-  loadMoreRepliesButton: {
-    backgroundColor: theme.palette.grey['200'],
-    minHeight: 24,
-    padding: 0,
-  },
-  loadMoreRepliesLabel: {
-    color: theme.palette.grey['600'],
-    fontSize: 11,
-  },
-});
 
 class CommentsList extends Component {
   static getRepliesLabel(count) {
@@ -31,31 +16,74 @@ class CommentsList extends Component {
     return `${count} weitere Antworten anzeigen`;
   }
 
+  static mapComments(flatComments) {
+    const mappedComments = flatComments.slice(0);
+
+    for (let i = 0; i < mappedComments.length; i += 1) {
+      mappedComments[i].replies = mappedComments.filter((c) => c.reply_to === mappedComments[i].id);
+    }
+    return mappedComments.filter((c) => !c.reply_to);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       collapsed: props.collapsed,
-      loading: false,
+      comments: [],
+      loading: true,
       loadingError: false,
     };
 
-    this.loadComments = this.loadComments.bind(this);
     this.handleCommentAdded = this.handleCommentAdded.bind(this);
+    this.findCommentById = this.findCommentById.bind(this);
+    this.loadComments = this.loadComments.bind(this);
   }
 
   componentDidMount() {
-    const { comments } = this.props;
-    if (comments.length === 0) { this.loadComments(); }
+    this.loadComments();
   }
 
-  handleCommentAdded(comment) {
-    const { onReplyAdded } = this.props;
-    this.setState({ collapsed: false }, () => { onReplyAdded(comment); });
+  componentDidUpdate(prevProps) {
+    const { shouldUpdate } = this.props;
+    if (shouldUpdate && !prevProps.shouldUpdate) {
+      this.loadComments();
+    }
+  }
+
+  handleCommentAdded(newComment) {
+    const { onCommentAdded } = this.props;
+    this.setState((prevState) => {
+      let comments = [];
+      comments = prevState.comments.slice(0);
+      const replyToComment = this.findCommentById(comments, newComment.reply_to);
+      if (replyToComment) {
+        if (!replyToComment.replies) {
+          replyToComment.replies = [];
+        }
+        replyToComment.replies.push(newComment);
+      } else {
+        comments.push(newComment);
+      }
+      return { comments };
+    }, onCommentAdded);
+  }
+
+  findCommentById(comments, commentId) {
+    for (let i = 0; i < comments.length; i += 1) {
+      const c = comments[i];
+      if (c.id === commentId) {
+        return c;
+      }
+      const matchingReply = this.findCommentById(c.replies, commentId);
+      if (matchingReply) {
+        return matchingReply;
+      }
+    }
+    return null;
   }
 
   async loadComments() {
-    const { onCommentsLoaded, postId } = this.props;
-    this.setState({ loading: true, collapsed: false });
+    const { postId } = this.props;
 
     return fetch(`${API_BASE_URL}/rtg/comments/?post=${postId}`, {
       method: 'GET',
@@ -64,8 +92,10 @@ class CommentsList extends Component {
       .then(FetchHelper.parseJson)
       .then((response) => {
         if (response.ok) {
-          onCommentsLoaded(response.json.results);
-          this.setState({ loading: false });
+          this.setState({
+            loading: false,
+            comments: CommentsList.mapComments(response.json.results),
+          });
         } else {
           this.setState({ loading: false, loadingError: true });
         }
@@ -74,26 +104,17 @@ class CommentsList extends Component {
   }
 
   render() {
+    const { postId } = this.props;
     const {
-      classes,
+      collapsed,
       comments,
-      commentCount,
-      hierarchyLevel,
-      onReplyAdded,
-      postId,
-      replyTo,
-      showAddComment,
-    } = this.props;
-    const { collapsed, loading, loadingError } = this.state;
-
-    // TODO P3 is being re-rendered 2*comment count times when post comments are only toggled?!
-    const displayComments = hierarchyLevel === 0
-      ? comments.filter((c) => !c.reply_to)
-      : comments.filter((c) => c.reply_to === replyTo);
+      loading,
+      loadingError,
+    } = this.state;
 
     return (
       <div
-        className={`CommentsList ${collapsed ? 'CommentsList--collapsed' : ''} ${hierarchyLevel === 0 ? 'CommentsList--top-level' : ''}`}
+        className={`CommentsList ${collapsed ? 'CommentsList--collapsed' : ''}`}
       >
         {loading && (
           <div style={{ textAlign: 'center' }}>
@@ -101,39 +122,14 @@ class CommentsList extends Component {
           </div>
         )}
 
-        {(showAddComment && !loading) && (
-          <>
-            <AddComment
-              label="Antwort hinzufügen..."
-              postId={postId}
-              replyTo={replyTo}
-              onAdded={this.handleCommentAdded}
-            />
-            <br />
-          </>
-        )}
-
-        {(collapsed && commentCount > 0) && (
-          <Button
-            size="small"
-            className="CommentsList__load-more-replies"
-            classes={{ root: classes.loadMoreRepliesButton, label: classes.loadMoreRepliesLabel }}
-            fullWidth
-            onClick={() => this.setState({ collapsed: false })}
-          >
-            {CommentsList.getRepliesLabel(commentCount)}
-          </Button>
-        )}
-
         {(!loading && !collapsed && !loadingError) && (
-          displayComments.map((c) => (
+          comments.map((c) => (
             <Comment
               key={`comment-${c.id}`}
-              hierarchyLevel={hierarchyLevel}
+              hierarchyLevel={0}
               postId={postId}
               comment={c}
-              replies={comments}
-              onReplyAdded={onReplyAdded}
+              onReplyAdded={this.handleCommentAdded}
             />
           ))
         )}
@@ -152,25 +148,15 @@ class CommentsList extends Component {
 
 CommentsList.defaultProps = {
   collapsed: false,
-  comments: [],
-  replyTo: null,
-  showAddComment: false,
-  onCommentsLoaded: () => {},
-  onReplyAdded: () => {},
+  onCommentAdded: () => {},
+  shouldUpdate: false,
 };
 
 CommentsList.propTypes = {
   collapsed: PropTypes.bool,
-  comments: PropTypes.arrayOf(PropTypes.object),
-  commentCount: PropTypes.number.isRequired,
-  hierarchyLevel: PropTypes.number.isRequired,
+  onCommentAdded: PropTypes.func,
   postId: PropTypes.number.isRequired,
-  replyTo: PropTypes.number,
-  showAddComment: PropTypes.bool,
-  onCommentsLoaded: PropTypes.func,
-  onReplyAdded: PropTypes.func,
-
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  shouldUpdate: PropTypes.bool,
 };
 
-export default withStyles(styles)(CommentsList);
+export default CommentsList;

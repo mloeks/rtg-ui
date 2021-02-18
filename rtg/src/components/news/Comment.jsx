@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { parseISO } from 'date-fns';
 
 import Button from '@material-ui/core/Button';
-import CommentsList from './CommentsList';
+
+import AddComment from './AddComment';
 import UserAvatar from '../UserAvatar';
 import getFormattedPostDate from '../../service/PostUtils';
 import UserDetailsPopover from '../UserDetailsPopover';
@@ -52,11 +53,10 @@ class Comment extends Component {
       comment,
       hierarchyLevel,
       postId,
-      replies,
     } = this.props;
 
     return (
-      <div className="Comment">
+      <div className={`Comment ${hierarchyLevel === 0 ? 'Comment--top-level' : ''}`}>
         <div className="Comment__avatar-content-wrapper">
           <div className="Comment__avatar">
             {userDetailsPopoverOpen && userDetailsPopoverAnchorEl && (
@@ -90,36 +90,43 @@ class Comment extends Component {
 
         <div className="Comment__actions">
           {hierarchyLevel <= MAX_REPLY_DEPTH && (
-            <Button
-              size="small"
-              color="primary"
-              style={{ marginLeft: 42 }}
-              onClick={this.toggleAddReply}
-            >
-              Antworten
-            </Button>
+            <>
+              <Button
+                size="small"
+                color="primary"
+                onClick={this.toggleAddReply}
+              >
+                Antworten
+              </Button>
+
+              {showAddComment && (
+                <AddComment
+                  label="Antwort hinzufügen..."
+                  postId={postId}
+                  replyTo={comment.id}
+                  onAdded={this.handleReplyAdded}
+                />
+              )}
+            </>
           )}
         </div>
 
-        {hierarchyLevel <= MAX_REPLY_DEPTH && (
-          <CommentsList
+        {hierarchyLevel <= MAX_REPLY_DEPTH && comment.replies && comment.replies.map((reply) => (
+          <Comment
+            key={`comment-${reply.id}`}
             showAddComment={showAddComment}
-            collapsed={hierarchyLevel > 0}
             hierarchyLevel={hierarchyLevel + 1}
             postId={postId}
-            comments={replies}
-            commentCount={comment.no_replies}
-            replyTo={comment.id}
+            comment={reply}
             onReplyAdded={this.handleReplyAdded}
           />
-        )}
+        ))}
       </div>
     );
   }
 }
 
 Comment.defaultProps = {
-  replies: [],
   onReplyAdded: () => {},
 };
 
@@ -138,11 +145,10 @@ Comment.propTypes = {
     content: PropTypes.string.isRequired,
     date_created: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    no_replies: PropTypes.number.isRequired,
-    reply_to: PropTypes.number.isRequired,
+    replies: PropTypes.arrayOf(PropTypes.shape()),
+    reply_to: PropTypes.number,
   }).isRequired,
 
-  replies: PropTypes.instanceOf(Array),
   onReplyAdded: PropTypes.func,
 };
 

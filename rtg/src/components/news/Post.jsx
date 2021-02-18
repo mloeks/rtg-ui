@@ -51,10 +51,10 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
-      comments: [],
+      commentsExpanded: false,
       commentCount: props.post.no_comments || 0,
       contentWrappedForLength: false,
+      shouldCommentListUpdate: false,
       userDetailsPopoverAnchorEl: null,
       userDetailsPopoverOpen: false,
     };
@@ -62,12 +62,12 @@ class Post extends Component {
     this.contentRef = React.createRef();
     this.randomPostColour = randomHueHexColor(40, 90);
 
-    this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.handleCommentAdded = this.handleCommentAdded.bind(this);
+    this.handleTopLevelCommentAdded = this.handleTopLevelCommentAdded.bind(this);
+    this.toggleCommentsExpanded = this.toggleCommentsExpanded.bind(this);
     this.showAllContent = this.showAllContent.bind(this);
     this.showUserDetailsPopover = this.showUserDetailsPopover.bind(this);
     this.hideUserDetailsPopover = this.hideUserDetailsPopover.bind(this);
-    this.handleCommentAdded = this.handleCommentAdded.bind(this);
-    this.getCommentCountIncrementedBy = this.getCommentCountIncrementedBy.bind(this);
   }
 
   componentDidMount() {
@@ -76,40 +76,20 @@ class Post extends Component {
     this.setState({ contentWrappedForLength: shouldWrapLongContent });
   }
 
-  handleCommentAdded(newComment) {
-    this.setState((prevState) => {
-      let comments = [];
-      if (prevState.expanded) {
-        // only directly update comments if comments area is already visible
-        // otherwise they should be initially loaded (add comment when not yet visible)
-        comments = prevState.comments.slice(0);
-        const replyToIndex = comments.findIndex((c) => c.id === newComment.reply_to);
-        if (replyToIndex !== -1) {
-          comments[replyToIndex].no_replies += 1;
-        }
-        comments.push(newComment);
-      }
-      return {
-        expanded: true,
-        comments,
-        commentCount: this.getCommentCountIncrementedBy(1, prevState),
-      };
+  handleCommentAdded() {
+    this.setState((prevState) => ({ commentCount: prevState.commentCount + 1 }));
+  }
+
+  handleTopLevelCommentAdded() {
+    const { commentsExpanded } = this.state;
+    this.setState({ shouldCommentListUpdate: commentsExpanded, commentsExpanded: true }, () => {
+      this.setState({ shouldCommentListUpdate: false });
+      this.handleCommentAdded();
     });
   }
 
-  getCommentCountIncrementedBy(inc, state = this.state) {
-    return state.commentCount + 1;
-  }
-
-  toggleExpanded() {
-    this.setState((prevState) => {
-      const expanded = !prevState.expanded;
-      if (expanded) {
-        // force reloading of comments when expanding
-        return { comments: [], expanded };
-      }
-      return { expanded };
-    });
+  toggleCommentsExpanded() {
+    this.setState((prevState) => ({ commentsExpanded: !prevState.commentsExpanded }));
   }
 
   showAllContent() {
@@ -127,10 +107,10 @@ class Post extends Component {
 
   render() {
     const {
-      comments,
       commentCount,
       contentWrappedForLength,
-      expanded,
+      commentsExpanded,
+      shouldCommentListUpdate,
       userDetailsPopoverAnchorEl,
       userDetailsPopoverOpen,
     } = this.state;
@@ -209,7 +189,7 @@ class Post extends Component {
           action={(
             <Button
               disabled={commentCount === 0}
-              onClick={this.toggleExpanded}
+              onClick={this.toggleCommentsExpanded}
               style={{
                 color: theme.palette.grey['500'],
                 lineHeight: 'inherit',
@@ -230,22 +210,19 @@ class Post extends Component {
           <AddComment
             focusOnMount={false}
             postId={post.id}
-            onAdded={this.handleCommentAdded}
+            onAdded={this.handleTopLevelCommentAdded}
           />
         </CardActions>
 
-        <Collapse in={expanded} unmountOnExit>
+        <Collapse in={commentsExpanded} unmountOnExit>
           <CardContent className="Post__comments" style={{ paddingBottom: 8 }}>
             <CommentsList
-              hierarchyLevel={0}
               postId={post.id}
-              comments={comments}
-              commentCount={commentCount}
-              onReplyAdded={this.handleCommentAdded}
-              onCommentsLoaded={(loadedComments) => this.setState({ comments: loadedComments })}
+              shouldUpdate={shouldCommentListUpdate}
+              onCommentAdded={this.handleCommentAdded}
             />
             <div style={{ textAlign: 'center' }}>
-              <Button color="secondary" size="small" onClick={this.toggleExpanded}>
+              <Button color="secondary" size="small" onClick={this.toggleCommentsExpanded}>
                 Zuklappen
               </Button>
             </div>

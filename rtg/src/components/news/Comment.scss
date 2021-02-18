@@ -2,6 +2,16 @@
 
 // TODO P3 animate new comments with fading background color
 .Comment {
+  padding-left: 10px;
+  margin: 0 0 15px 3vw;
+
+  border-left: 1px solid lighten($lightGrey, 15%);
+
+  &--top-level {
+    margin-left: 0;
+    border-left: 0;
+  }
+
   &__avatar-content-wrapper {
     display: flex;
     align-items: flex-start;
@@ -42,6 +52,6 @@
 
   &__actions {
     text-align: left;
-    margin-bottom: 5px;
+    margin: 0 0 5px 42px;
   }
 }

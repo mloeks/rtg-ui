@@ -1,19 +1,7 @@
 @import '../../sass/colors.scss';
 
 .CommentsList {
-  padding-left: 10px;
-  margin: 0 0 15px 3vw;
-
-  border-left: 1px solid lighten($lightGrey, 15%);
-
-  &--top-level {
-    padding: 0;
-    margin-bottom: 0;
-  }
-
-  &--collapsed,
-  &--top-level {
-    margin-left: 0;
-    border-left: 0;
-  }
+  padding: 0;
+  margin: 0;
+  border-left: 0;
 }
