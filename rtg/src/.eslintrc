@@ -22,8 +22,7 @@
       "allowAfterThis": true
     }],
 
-    // harder to fix but should be re-activated
-    "react/jsx-props-no-spreading": "off",
-    "react/no-danger": "off"
+    // hard to fix but should be re-activated
+    "react/jsx-props-no-spreading": "warn"
   }
 }

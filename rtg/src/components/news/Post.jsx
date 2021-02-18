@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import DOMPurify from 'dompurify';
+
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -138,7 +140,10 @@ class Post extends Component {
           >
             <div
               className="qa-post-content"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              // Even though the Post content can only be entered by admins,
+              // let's still send it through a sanitizer in order to prevent XSS
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
               ref={this.contentRef}
               style={{
                 margin: 0,

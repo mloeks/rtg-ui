@@ -12,6 +12,7 @@
     "blob-polyfill": "^3.0.20180112",
     "canvas-toBlob": "^1.0.0",
     "date-fns": "^2.16.1",
+    "dompurify": "^2.2.6",
     "hsl-to-hex": "^1.0.0",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
