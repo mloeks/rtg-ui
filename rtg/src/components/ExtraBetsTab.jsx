@@ -91,9 +91,15 @@ export default class ExtraBetsTab extends Component {
             .map((extraBet) => (
               <Fragment key={`extra-bet-card-${extraBet.id}`}>
                 <ExtraBetCard
+                  choices={extraBet.choices}
+                  id={extraBet.id}
+                  deadline={extraBet.deadline}
+                  name={extraBet.name}
+                  open={extraBet.open}
+                  points={extraBet.points}
+                  result={extraBet.result}
                   onBetAdded={() => onOpenBetsUpdate(-1, true)}
                   onBetRemoved={() => onOpenBetsUpdate(1, true)}
-                  {...extraBet}
                 />
                 {(extraBet && !extraBet.open) && (
                   <BetStatsPanel
