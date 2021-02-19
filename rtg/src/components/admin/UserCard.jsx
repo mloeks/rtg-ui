@@ -69,10 +69,10 @@ class UserCard extends Component {
   }
 
   toggleHasPaid() {
-    const { has_paid, onHasPaidUpdated, pk } = this.props;
+    const { hasPaid, onHasPaidUpdated, pk } = this.props;
 
     this.setState({ savingInProgress: true, savingIssues: false }, () => {
-      const newHasPaid = !has_paid;
+      const newHasPaid = !hasPaid;
 
       fetch(`${API_BASE_URL}/rtg/users_admin/${pk}/`, {
         method: 'PATCH',
@@ -98,15 +98,15 @@ class UserCard extends Component {
       avatar,
       email,
       email2,
-      first_name,
-      has_paid,
-      last_login,
-      last_name,
+      firstName,
+      hasPaid,
+      lastLogin,
+      lastName,
       theme,
       username,
     } = this.props;
 
-    const isInactive = last_login === null;
+    const isInactive = lastLogin === null;
     const iconButtonStyle = {
       width: 24,
       height: 24,
@@ -115,7 +115,7 @@ class UserCard extends Component {
     };
     const paidSymbol = (
       <EuroSymbolIcon
-        style={{ color: has_paid ? theme.palette.secondary.main : theme.palette.grey['300'] }}
+        style={{ color: hasPaid ? theme.palette.secondary.main : theme.palette.grey['300'] }}
       />
     );
 
@@ -196,7 +196,7 @@ class UserCard extends Component {
             }}
           >
             <span style={{ fontWeight: 500, wordBreak: 'break-word' }}>
-              {`${first_name} ${last_name}`}
+              {`${firstName} ${lastName}`}
             </span>
             <br />
             <div style={{
@@ -221,7 +221,7 @@ class UserCard extends Component {
           >
             {!isInactive && (
               <IconButton
-                title={`Als ${has_paid ? 'unbezahlt' : 'bezahlt'} markieren`}
+                title={`Als ${hasPaid ? 'unbezahlt' : 'bezahlt'} markieren`}
                 onClick={this.toggleHasPaid}
                 style={iconButtonStyle}
               >
@@ -256,7 +256,7 @@ class UserCard extends Component {
 UserCard.defaultProps = {
   avatar: null,
   email2: null,
-  last_login: null,
+  lastLogin: null,
 };
 
 UserCard.propTypes = {
@@ -264,11 +264,11 @@ UserCard.propTypes = {
   username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   email2: PropTypes.string,
-  first_name: PropTypes.string.isRequired,
-  last_name: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
   avatar: PropTypes.string,
-  has_paid: PropTypes.bool.isRequired,
-  last_login: PropTypes.string,
+  hasPaid: PropTypes.bool.isRequired,
+  lastLogin: PropTypes.string,
 
   onHasPaidUpdated: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

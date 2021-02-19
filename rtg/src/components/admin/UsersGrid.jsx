@@ -144,10 +144,18 @@ class UsersGrid extends Component {
         >
           {filteredUsers.map((user) => (
             <UserCard
+              pk={user.pk}
+              username={user.username}
+              email={user.email}
+              email2={user.email2}
+              firstName={user.first_name}
+              lastName={user.last_name}
+              avatar={user.avatar}
+              hasPaid={user.has_paid}
+              lastLogin={user.last_login}
               key={`user-card-${user.pk}`}
               onHasPaidUpdated={this.handleHasPaidUpdated}
               onDelete={this.handleDelete}
-              {...user}
             />
           ))}
         </div>
