@@ -135,7 +135,13 @@ class CurrentGameCard extends Component {
         />
 
         {game ? (
-          <GameCard displayTeamNames="small" {...game}>
+          <GameCard
+            displayTeamNames="small"
+            hometeam={game.hometeam_name}
+            hometeamAbbrev={game.hometeam_abbreviation}
+            awayteam={game.awayteam_name}
+            awayteamAbbrev={game.awayteam_abbreviation}
+          >
             {editingBet ? (
               <GameCardBet
                 gameId={game.id}

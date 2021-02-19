@@ -167,7 +167,14 @@ class GameBetsTab extends Component {
       }
 
       const gameCardWithBet = (
-        <GameCard key={game.id} style={{ marginBottom: 25 }} {...game}>
+        <GameCard
+          key={game.id}
+          style={{ marginBottom: 25 }}
+          hometeam={game.hometeam_name}
+          hometeamAbbrev={game.hometeam_abbreviation}
+          awayteam={game.awayteam_name}
+          awayteamAbbrev={game.awayteam_abbreviation}
+        >
           <GameCardBet
             gameId={game.id}
             hadSaveIssues={gamesWithSavingIssues

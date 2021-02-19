@@ -7,11 +7,10 @@ import CountryFlag from './CountryFlag';
 import './GameCard.scss';
 
 /* eslint-disable camelcase */
-// TODO P3 make props camelcase and map backend objects fields beforehand
 // TODO P3 move team name from CountryFlag in here and clean up name mode foo
 const GameCard = ({
-  awayteam_abbreviation, awayteam_name, children, displayTeamNames,
-  hometeam_abbreviation, hometeam_name, style,
+  awayteam, awayteamAbbrev, children, displayTeamNames,
+  hometeam, hometeamAbbrev, style,
 }) => {
   const mapDisplayTeamNameForCountryFlag = displayTeamNames === 'auto' ? 'auto' : 'always';
 
@@ -22,24 +21,24 @@ const GameCard = ({
     >
       <div className="GameCard__inner">
         <CountryFlag
-          country={hometeam_name}
-          countryCode={hometeam_abbreviation}
+          country={hometeam}
+          countryCode={hometeamAbbrev}
           displayTeamName={mapDisplayTeamNameForCountryFlag}
         />
 
         <div className="hometeam">
-          {displayTeamNames !== 'small' ? hometeam_name : ''}
+          {displayTeamNames !== 'small' ? hometeam : ''}
         </div>
 
         {children}
 
         <div className="awayteam">
-          {displayTeamNames !== 'small' ? awayteam_name : ''}
+          {displayTeamNames !== 'small' ? awayteam : ''}
         </div>
 
         <CountryFlag
-          country={awayteam_name}
-          countryCode={awayteam_abbreviation}
+          country={awayteam}
+          countryCode={awayteamAbbrev}
           displayTeamName={mapDisplayTeamNameForCountryFlag}
         />
       </div>
@@ -55,10 +54,10 @@ GameCard.defaultProps = {
 
 GameCard.propTypes = {
   displayTeamNames: PropTypes.oneOf(['auto', 'small']),
-  hometeam_name: PropTypes.string.isRequired,
-  hometeam_abbreviation: PropTypes.string.isRequired,
-  awayteam_name: PropTypes.string.isRequired,
-  awayteam_abbreviation: PropTypes.string.isRequired,
+  hometeam: PropTypes.string.isRequired,
+  hometeamAbbrev: PropTypes.string.isRequired,
+  awayteam: PropTypes.string.isRequired,
+  awayteamAbbrev: PropTypes.string.isRequired,
 
   style: stylePropType,
 

@@ -183,7 +183,13 @@ class Schedule extends Component {
             onClick={() => history.push('/bets')}
             onKeyPress={(e) => (isEnter(e) && history.push('/bets'))}
           >
-            <GameCard userBet={userBet} style={{ marginBottom: 25 }} {...game}>
+            <GameCard
+              style={{ marginBottom: 25 }}
+              hometeam={game.hometeam_name}
+              hometeamAbbrev={game.hometeam_abbreviation}
+              awayteam={game.awayteam_name}
+              awayteamAbbrev={game.awayteam_abbreviation}
+            >
               <GameCardGameInfo
                 city={game.city}
                 kickoff={gameKickoffDate}
