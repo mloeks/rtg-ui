@@ -5,7 +5,7 @@ import stylePropType from 'react-style-proptype';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import PieChart from 'react-minimal-pie-chart';
+import { PieChart } from 'react-minimal-pie-chart';
 import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';

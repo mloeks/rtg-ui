@@ -28,10 +28,6 @@ Implementation of authentication and authorisation is inspired by [this approach
 ### Must (for 2021 EURO)
 
 * Library updates
-    * React 17 & react-scripts
-    * ESLint
-    * node-sass
-    * Can we get rid of [Blob](https://caniuse.com/?search=blob) polyfills when dropping IE support? (namely blob-polyfill and canvas-toBlob packages)
 * Cookie Consent according to legal requirements
     * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
 
