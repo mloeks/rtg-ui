@@ -20,9 +20,6 @@
     }],
     "no-underscore-dangle": [ "error", {
       "allowAfterThis": true
-    }],
-
-    // hard to fix but should be re-activated
-    "react/jsx-props-no-spreading": "warn"
+    }]
   }
 }

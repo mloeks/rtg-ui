@@ -347,6 +347,15 @@ class StandingsTable extends Component {
                   <StandingsTableRow
                     key={row.userId}
                     rank={row.displayRank}
+                    noDifferenz={row.noDifferenz}
+                    noNiete={row.noNiete}
+                    noRemisTendenz={row.noRemisTendenz}
+                    noTendenz={row.noTendenz}
+                    noVolltreffer={row.noVolltreffer}
+                    points={row.points}
+                    userAvatar={row.userAvatar}
+                    userId={row.userId}
+                    username={row.username}
                     rowHeight={rowHeight}
                     self={AuthService.getUserId() === row.userId}
                     showBetColumn={showBetColumnForBettable !== -1}
@@ -357,7 +366,6 @@ class StandingsTable extends Component {
                     betStatColumnStyle={{ ...styles(theme).betStat }}
                     pointsColumnStyle={{ ...styles(theme).points }}
                     rankColumnStyle={{ ...styles(theme).rank }}
-                    {...row}
                   />
                 ))}
               </TableBody>
