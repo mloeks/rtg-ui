@@ -8,8 +8,6 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.2.10",
-    "blob-polyfill": "^3.0.20180112",
-    "canvas-toBlob": "^1.0.0",
     "date-fns": "^2.17.0",
     "dompurify": "^2.2.6",
     "hsl-to-hex": "^1.0.0",
@@ -26,7 +24,6 @@
     "react-router-prop-types": "^1.0.4",
     "react-scripts": "^4.0.2",
     "react-style-proptype": "^3.2.2",
-    "stickybits": "^3.7.9",
     "verge": "^1.10.2"
   },
   "devDependencies": {
@@ -46,13 +43,12 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not ie <= 10",
+      "not ie 11",
       "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 firefox version"
     ]
   }
 }

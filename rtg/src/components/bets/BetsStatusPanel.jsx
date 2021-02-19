@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import stickybits from 'stickybits';
 
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -20,12 +19,7 @@ class BetsStatusPanel extends Component {
   constructor(props) {
     super(props);
     this.state = { showSavingIndicator: false };
-    this.stickybitsInstance = null;
     this.savingIndicatorTimeout = null;
-  }
-
-  componentDidMount() {
-    this.stickybitsInstance = stickybits('.BetsStatusPanel', { verticalPosition: 'bottom' });
   }
 
   componentDidUpdate() {
@@ -36,12 +30,6 @@ class BetsStatusPanel extends Component {
       }, 300);
     } else {
       clearTimeout(this.savingIndicatorTimeout);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.stickybitsInstance) {
-      this.stickybitsInstance.cleanup();
     }
   }
 

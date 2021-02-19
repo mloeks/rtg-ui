@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
-import stickybits from 'stickybits';
 
 import { withTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
@@ -54,7 +53,6 @@ class Schedule extends Component {
       loading: true,
       loadingError: '',
     };
-    this.stickybitsInstance = null;
     this.gamesSectionRef = React.createRef();
 
     this.selectCurrentRound = this.selectCurrentRound.bind(this);
@@ -67,26 +65,12 @@ class Schedule extends Component {
   }
 
   async componentDidMount() {
-    this.stickybitsInstance = stickybits('.SchedulePage__toolbar');
-
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentrounds/`, 'rounds', false);
     await this.fetchData(`${API_BASE_URL}/rtg/tournamentgroups/`, 'groups', false);
     await this.fetchData(`${API_BASE_URL}/rtg/games/?limit=999`, 'games', true, this.selectCurrentRound);
     await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets', false);
 
     this.setState({ loading: false });
-  }
-
-  componentDidUpdate() {
-    if (this.stickybitsInstance) {
-      this.stickybitsInstance.update();
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.stickybitsInstance) {
-      this.stickybitsInstance.cleanup();
-    }
   }
 
   handleSelectedRoundChange(e) {
@@ -230,10 +214,6 @@ class Schedule extends Component {
       selectedRoundIndex,
     } = this.state;
     const { theme } = this.props;
-
-    if (this.stickybitsInstance) {
-      this.stickybitsInstance.update();
-    }
 
     const gamesToDisplay = games.filter(this.gamesFilter);
     const gameContainerItems = this.createGameCardsWithDateSubheadings(gamesToDisplay, bets);
