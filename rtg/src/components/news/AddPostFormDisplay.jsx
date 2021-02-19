@@ -38,7 +38,7 @@ const AddPostFormDisplay = ({
   const quillModules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
       ['link'],
       ['clean'],
     ],
@@ -46,7 +46,7 @@ const AddPostFormDisplay = ({
 
   const quillFormats = [
     'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet', 'indent', 'link',
+    'list', 'bullet', 'link',
   ];
 
   return (
