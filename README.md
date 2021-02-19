@@ -27,7 +27,6 @@ Implementation of authentication and authorisation is inspired by [this approach
 
 ### Must (for 2021 EURO)
 
-* Library updates
 * Cookie Consent according to legal requirements
     * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
 
