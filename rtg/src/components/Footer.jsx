@@ -7,22 +7,6 @@ import { withTheme } from '@material-ui/core/styles';
 import './Footer.scss';
 import logo from '../theme/img/logo_tiny.png';
 
-/* eslint-disable max-len */
-const FacebookIcon = (props) => (
-  <SvgIcon {...props}>
-    <path d="M89.584 155.139V84.378h23.742l3.562-27.585H89.584V39.184c0-7.984 2.208-13.425 13.67-13.425l14.595-.006V1.08C115.325.752 106.661 0 96.577 0 75.52 0 61.104 12.853 61.104 36.452v20.341H37.29v27.585h23.814v70.761h28.48z" />
-  </SvgIcon>
-);
-/* eslint-enable max-len */
-
-/* eslint-disable max-len */
-const InstagramIcon = (props) => (
-  <SvgIcon {...props}>
-    <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
-  </SvgIcon>
-);
-/* eslint-enable max-len */
-
 const Footer = ({ theme }) => (
   <footer className="Footer" style={{ backgroundColor: theme.palette.custom.footer.main }}>
     <Link to="/" className="Footer__title">
@@ -48,11 +32,9 @@ const Footer = ({ theme }) => (
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FacebookIcon
-            className="Footer__socialmedia-icon"
-            viewBox="0 0 155.139 155.139"
-            color="secondary"
-          />
+          <SvgIcon className="Footer__socialmedia-icon" color="secondary" viewBox="0 0 155.139 155.139">
+            <path d="M89.584 155.139V84.378h23.742l3.562-27.585H89.584V39.184c0-7.984 2.208-13.425 13.67-13.425l14.595-.006V1.08C115.325.752 106.661 0 96.577 0 75.52 0 61.104 12.853 61.104 36.452v20.341H37.29v27.585h23.814v70.761h28.48z" />
+          </SvgIcon>
         </a>
         <a
           href="https://www.instagram.com/royaletippgemeinschaft/"
@@ -60,11 +42,9 @@ const Footer = ({ theme }) => (
           target="_blank"
           rel="noopener noreferrer"
         >
-          <InstagramIcon
-            className="Footer__socialmedia-icon"
-            viewBox="0 0 24 24"
-            color="secondary"
-          />
+          <SvgIcon className="Footer__socialmedia-icon" viewBox="0 0 24 24" color="secondary">
+            <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+          </SvgIcon>
         </a>
       </div>
     </div>
