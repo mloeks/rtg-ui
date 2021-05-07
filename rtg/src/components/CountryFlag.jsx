@@ -8,7 +8,7 @@ import countryFlags from '../theme/CountryFlagImporter';
 const CountryFlag = ({ country, countryCode, displayTeamName }) => {
   // hack for the only team name which is as long that it breaks in two lines
   // which we don't want here in order to keep the height of the GameCards low
-  const sanitizedCountry = country === 'Saudi-Arabien' ? 'S.-Arabien' : country;
+  const sanitizedCountry = country === 'Nordmazedonien' ? 'Nordmazed.' : country;
   return (
     <div className="CountryFlag">
       <img
