@@ -12,11 +12,7 @@ import UsersGridToolbar from './UsersGridToolbar';
 
 class UsersGrid extends Component {
   static isUserActive(lastLogin) {
-    if (lastLogin) {
-      const lastLoginDate = new Date(lastLogin);
-      return lastLoginDate.getFullYear() === new Date().getFullYear();
-    }
-    return false;
+    return (lastLogin !== null && new Date(lastLogin).getFullYear() === new Date().getFullYear());
   }
 
   constructor(props) {
