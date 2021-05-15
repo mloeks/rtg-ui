@@ -158,6 +158,7 @@ class UsersGrid extends Component {
               avatar={user.avatar}
               hasPaid={user.has_paid}
               key={`user-card-${user.pk}`}
+              lastLogin={user.last_login ? new Date(user.last_login) : null}
               onHasPaidUpdated={this.handleHasPaidUpdated}
               onDelete={this.handleDelete}
             />

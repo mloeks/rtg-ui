@@ -18,6 +18,9 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PersonIcon from '@material-ui/icons/Person';
 import teal from '@material-ui/core/colors/teal';
 
+import { format, formatDistanceToNow } from 'date-fns';
+import de from 'date-fns/locale/de';
+
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -102,6 +105,7 @@ class UserCard extends Component {
       firstName,
       hasPaid,
       lastName,
+      lastLogin,
       theme,
       username,
     } = this.props;
@@ -209,6 +213,14 @@ class UserCard extends Component {
               <span>{email}</span>
               <br />
               {email2 && <span>{email2}</span>}
+              <br />
+              Zuletzt eingeloggt:
+              <br />
+              {lastLogin && (
+                <span title={format(lastLogin, 'Pp', { locale: de })}>
+                  {formatDistanceToNow(lastLogin, { addSuffix: true, locale: de })}
+                </span>
+              )}
             </div>
           </CardContent>
 
@@ -255,6 +267,7 @@ class UserCard extends Component {
 UserCard.defaultProps = {
   avatar: null,
   email2: null,
+  lastLogin: null,
 };
 
 UserCard.propTypes = {
@@ -267,6 +280,7 @@ UserCard.propTypes = {
   active: PropTypes.bool.isRequired,
   avatar: PropTypes.string,
   hasPaid: PropTypes.bool.isRequired,
+  lastLogin: PropTypes.instanceOf(Date),
 
   onHasPaidUpdated: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
