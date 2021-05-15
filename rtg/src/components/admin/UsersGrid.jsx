@@ -11,6 +11,14 @@ import Notification, { NotificationType } from '../Notification';
 import UsersGridToolbar from './UsersGridToolbar';
 
 class UsersGrid extends Component {
+  static isUserActive(lastLogin) {
+    if (lastLogin) {
+      const lastLoginDate = new Date(lastLogin);
+      return lastLoginDate.getFullYear() === new Date().getFullYear();
+    }
+    return false;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -79,10 +87,10 @@ class UsersGrid extends Component {
 
     let filteredUsers = users;
     if (filterActive) {
-      filteredUsers = filteredUsers.filter((user) => user.last_login !== null);
+      filteredUsers = filteredUsers.filter((user) => UsersGrid.isUserActive(user.last_login));
     }
     if (filterInactive) {
-      filteredUsers = filteredUsers.filter((user) => user.last_login === null);
+      filteredUsers = filteredUsers.filter((user) => !UsersGrid.isUserActive(user.last_login));
     }
     if (filterHasNotPaid) {
       filteredUsers = filteredUsers.filter((user) => !user.has_paid);
@@ -150,9 +158,9 @@ class UsersGrid extends Component {
               email2={user.email2}
               firstName={user.first_name}
               lastName={user.last_name}
+              active={UsersGrid.isUserActive(user.last_login)}
               avatar={user.avatar}
               hasPaid={user.has_paid}
-              lastLogin={user.last_login}
               key={`user-card-${user.pk}`}
               onHasPaidUpdated={this.handleHasPaidUpdated}
               onDelete={this.handleDelete}

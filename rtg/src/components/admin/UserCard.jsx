@@ -95,18 +95,17 @@ class UserCard extends Component {
   render() {
     const { deleteConfirmationModalOpen, savingInProgress, savingIssues } = this.state;
     const {
+      active,
       avatar,
       email,
       email2,
       firstName,
       hasPaid,
-      lastLogin,
       lastName,
       theme,
       username,
     } = this.props;
 
-    const isInactive = lastLogin === null;
     const iconButtonStyle = {
       width: 24,
       height: 24,
@@ -174,7 +173,7 @@ class UserCard extends Component {
               height: 0.8 * CARD_SIZE,
               padding: 0,
               overflow: 'hidden',
-              opacity: isInactive ? 0.3 : 1,
+              opacity: active ? 1 : 0.3,
             }}
           >
             {avatar && (
@@ -192,7 +191,7 @@ class UserCard extends Component {
               fontSize: '14px',
               flexGrow: 1,
               padding: '10px',
-              opacity: isInactive ? 0.3 : 1,
+              opacity: active ? 1 : 0.3,
             }}
           >
             <span style={{ fontWeight: 500, wordBreak: 'break-word' }}>
@@ -215,11 +214,11 @@ class UserCard extends Component {
 
           <CardActions style={{
             display: 'flex',
-            justifyContent: isInactive ? 'flex-end' : 'space-between',
+            justifyContent: active ? 'space-between' : 'flex-end',
             padding: 8,
           }}
           >
-            {!isInactive && (
+            {active && (
               <IconButton
                 title={`Als ${hasPaid ? 'unbezahlt' : 'bezahlt'} markieren`}
                 onClick={this.toggleHasPaid}
@@ -256,7 +255,6 @@ class UserCard extends Component {
 UserCard.defaultProps = {
   avatar: null,
   email2: null,
-  lastLogin: null,
 };
 
 UserCard.propTypes = {
@@ -266,9 +264,9 @@ UserCard.propTypes = {
   email2: PropTypes.string,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
   avatar: PropTypes.string,
   hasPaid: PropTypes.bool.isRequired,
-  lastLogin: PropTypes.string,
 
   onHasPaidUpdated: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
