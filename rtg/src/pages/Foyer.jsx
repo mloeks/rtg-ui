@@ -46,6 +46,15 @@ const Foyer = () => (
     <News />
 
     <BigPicture
+      className="Foyer__standings-overview"
+      img={standingsHeadingImg}
+      lazyLoadWhenInViewport
+    >
+      <h2 className="BigPicture__heading">Aktueller Spielstand</h2>
+    </BigPicture>
+    <StandingsOverview />
+
+    <BigPicture
       className="Foyer__bets-overview"
       img={betsHeadingImg}
       positionY={25}
@@ -63,15 +72,6 @@ const Foyer = () => (
       <h2 className="BigPicture__heading">Spielplan</h2>
     </BigPicture>
     <ScheduleOverview />
-
-    <BigPicture
-      className="Foyer__standings-overview"
-      img={standingsHeadingImg}
-      lazyLoadWhenInViewport
-    >
-      <h2 className="BigPicture__heading">Aktueller Spielstand</h2>
-    </BigPicture>
-    <StandingsOverview />
   </Page>
 );
 
