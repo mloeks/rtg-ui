@@ -198,7 +198,7 @@ class CurrentGameCard extends Component {
                 title="Gespeichert"
                 dismissable
                 disappearAfterMs={2000}
-                containerStyle={{ margin: '0 auto', maxWidth: 185 }}
+                containerStyle={{ margin: '3px auto', maxWidth: 215 }}
                 onClose={() => this.setState({ editingBetSuccessful: false })}
               />
             )}
