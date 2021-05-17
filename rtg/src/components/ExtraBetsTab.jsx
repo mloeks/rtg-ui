@@ -33,12 +33,12 @@ export default class ExtraBetsTab extends Component {
   }
 
   async updateData() {
-    const { bets, bettables } = this.state;
-    const { onOpenBetsUpdate } = this.props;
-
     await this.fetchData(`${API_BASE_URL}/rtg/bettables/?bets_open=true`, 'bettables');
     await this.fetchData(`${API_BASE_URL}/rtg/extras/`, 'extras');
     await this.fetchData(`${API_BASE_URL}/rtg/bets/?user=${AuthService.getUserId()}`, 'bets');
+
+    const { bets, bettables } = this.state;
+    const { onOpenBetsUpdate } = this.props;
 
     onOpenBetsUpdate(countOpenBets(bettables
       .filter((bettable) => bettable.type === BettableTypes.EXTRA), bets));
