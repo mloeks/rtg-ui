@@ -31,7 +31,6 @@ const styles = (theme) => ({
   },
 });
 
-// TODO P3 closing by button click does not work in IE
 // TODO P3 animated show/hide
 class Notification extends Component {
   static getIconByType(type, color) {

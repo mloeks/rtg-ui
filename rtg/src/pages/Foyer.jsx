@@ -2,7 +2,6 @@ import React from 'react';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
 import News from '../components/news/News';
-import { UserDetailsContext } from '../components/providers/UserDetailsProvider';
 import AuthService from '../service/AuthService';
 import BetsOverview from '../components/foyer/BetsOverview';
 import ScheduleOverview from '../components/foyer/ScheduleOverview';
@@ -10,7 +9,6 @@ import StandingsOverview from '../components/foyer/StandingsOverview';
 import Notification, { NotificationType } from '../components/Notification';
 import CurrentGames from '../components/currentgames/CurrentGames';
 
-import logo from '../theme/img/logo_100px.png';
 import currentGamesHeadingImg from '../theme/img/headings/queen-haessler.jpg';
 import newsHeadingImg from '../theme/img/headings/courtyard_2.jpg';
 import betsHeadingImg from '../theme/img/headings/royals_stadium.jpg';
@@ -21,31 +19,17 @@ import './Foyer.scss';
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
-    <section className="Foyer__welcome qa-foyer-welcome">
-      <UserDetailsContext.Consumer>
-        {(userContext) => (
-          <>
-            <img className="Foyer__top-logo" src={logo} alt="RTG Logo" />
-            <h2 className="Foyer__greeting">
-              Herzlich Willkommen,
-              <br />
-              <span className="Foyer__logged-in-username qa-logged-in-username">{userContext.username}</span>
-              !
-            </h2>
-
-            {!AuthService.getLastLogin() && (
-              <Notification
-                className="Foyer__first-visit qa-first-visit-notification"
-                dismissable
-                type={NotificationType.SUCCESS}
-                title="Anmeldung erfolgreich"
-                subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
-              />
-            )}
-          </>
-        )}
-      </UserDetailsContext.Consumer>
-    </section>
+    {AuthService.getLastLogin() && (
+      <Notification
+        className="Foyer__first-visit qa-first-visit-notification"
+        containerStyle={{ position: 'fixed' }}
+        dismissable
+        disappearAfterMs="5000"
+        type={NotificationType.SUCCESS}
+        title="Anmeldung erfolgreich"
+        subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
+      />
+    )}
 
     <BigPicture className="Foyer__current-games" img={currentGamesHeadingImg} positionY={25}>
       <h2 className="BigPicture__heading">Aktuelle Spiele</h2>
