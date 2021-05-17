@@ -20,8 +20,8 @@ Implementation of authentication and authorisation is inspired by [this approach
 
 ## Current TODOs
 
-* Thoroughly test login/registration after LoginError refactoring
-* Check console output for linter complaints while manually browsing through the rtg pages
+* Known Bugs:
+    * Inline bet updates in "current game" cards are not immediately reflected on the card and neither in the "open bets badge"
 
 ## Planned next features
 
