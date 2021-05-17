@@ -7,7 +7,7 @@
   margin: 0;
   padding: 20px;
 
-  height: 145px;
+  height: 75px;
 
   text-align: center;
 
@@ -29,7 +29,11 @@
 
   &__heading {
     font-weight: 700;
-    font-size: 36px;
+    font-size: 28px;
+
+    @media only screen and (min-width : 768px) {
+      font-size: 36px;
+    }
 
     color: white;
     z-index: $zBigPictureHeading;
@@ -49,10 +53,10 @@
   }
 
   @media only screen and (min-width : 480px) {
-    height: 260px;
+    height: 140px;
   }
 
   @media only screen and (min-width : 1024px) {
-    height: 350px;
+    height: 225px;
   }
 }
