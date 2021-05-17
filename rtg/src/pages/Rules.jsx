@@ -70,10 +70,6 @@ const Rules = () => (
         viele Teilnehmer es geworden sind, werden wir alle gemeinsam demokratisch (Demokratie
         trotz Monarchie!) abstimmen, wie der Gewinn ausgeschüttet wird. Dann können wir auch
         eine genaue Angabe zu den Gewinnsummen geben.
-        <br />
-        <br />
-        Wer am Ende auf einer Schnapszahl landet, wird sich über einen kleinen materiellen
-        Trostpreis freuen können.
       </p>
 
       <RtgSeparator />
@@ -124,10 +120,10 @@ const Rules = () => (
 
       <RtgSeparator />
 
-      <h4>Paare</h4>
+      <h4>Paare & Familien</h4>
       <p>
-        Wie immer dürfen Liebespaare im Team spielen! Euer Username sollte dann eine
-        Kombination aus euren beiden Vornamen sein! ;-) Sooo romantisch! Und royal!
+        Wie immer dürfen Liebespaare und Familien im Team spielen! Euer Username kann dann z.B. eine
+        lustige Kombination eurer Vornamen sein! ;-) Sooo romantisch! Und royal!
       </p>
 
       <Link to="/">
