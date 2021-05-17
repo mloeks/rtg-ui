@@ -22,6 +22,9 @@ const styles = (theme) => ({
   root: {
     boxShadow: 'rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px',
   },
+  gutters: {
+    padding: '10px',
+  },
   title: {
     color: theme.palette.grey['900'],
     fontWeight: '400',
@@ -85,7 +88,7 @@ class Notification extends Component {
     return (
       <ListItem
         className={className}
-        classes={{ root: classes.root }}
+        classes={{ root: classes.root, gutters: classes.gutters }}
         component="div"
         style={{
           backgroundColor: lightenDarkenColor(notificationColor, 150),
