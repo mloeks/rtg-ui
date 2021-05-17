@@ -19,7 +19,7 @@ import './Foyer.scss';
 // TODO P3 make each BigPicture sticky (less high when sticky)
 const Foyer = () => (
   <Page className="Foyer">
-    {AuthService.getLastLogin() && (
+    {!AuthService.getLastLogin() && (
       <Notification
         className="Foyer__first-visit qa-first-visit-notification"
         containerStyle={{ position: 'fixed' }}
