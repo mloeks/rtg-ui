@@ -70,6 +70,7 @@ class AuthService {
   }
 
   static setOpenBetsCount(openBetsCount) {
+    console.log(`Setting open bets count in LocalStorage to ${openBetsCount}`);
     LocalStorageWrapper.set('open-bets-count', openBetsCount);
   }
 
@@ -120,9 +121,10 @@ class AuthService {
       LocalStorageWrapper.set('user-id', decodedToken.user_id);
       LocalStorageWrapper.set('username', decodedToken.username);
       LocalStorageWrapper.set('has-paid', decodedToken.has_paid);
-      LocalStorageWrapper.set('avatar', decodedToken.avatar);
-      LocalStorageWrapper.set('open-bets-count', decodedToken.no_open_bets);
       LocalStorageWrapper.set('last-login', decodedToken.last_login);
+
+      AuthService.setAvatar(decodedToken.avatar);
+      AuthService.setOpenBetsCount(decodedToken.no_open_bets);
 
       if (authResponse.refresh) {
         LocalStorageWrapper.set('refresh-token', authResponse.refresh);
