@@ -347,6 +347,7 @@ class StandingsTable extends Component {
                   <StandingsTableRow
                     key={row.userId}
                     rank={row.displayRank}
+                    bet={row.bet}
                     noDifferenz={row.noDifferenz}
                     noNiete={row.noNiete}
                     noRemisTendenz={row.noRemisTendenz}
