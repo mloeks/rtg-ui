@@ -10,6 +10,17 @@
     z-index: 10000;
   }
 
+  &__standings {
+    display: flex;
+    flex-direction: column;
+    max-width: 1480px;
+    margin: 0 auto;
+
+    @media only screen and (min-width : 768px) {
+      flex-direction: row;
+    }
+  }
+
   &__news {
     margin-top: 50px;
   }

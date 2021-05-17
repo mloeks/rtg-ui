@@ -9,11 +9,9 @@ import StandingsOverview from '../components/foyer/StandingsOverview';
 import Notification, { NotificationType } from '../components/Notification';
 import CurrentGames from '../components/currentgames/CurrentGames';
 
-import currentGamesHeadingImg from '../theme/img/headings/queen-haessler.jpg';
 import newsHeadingImg from '../theme/img/headings/courtyard_2.jpg';
 import betsHeadingImg from '../theme/img/headings/royals_stadium.jpg';
 import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
-import standingsHeadingImg from '../theme/img/headings/mountain_pitch.jpg';
 import './Foyer.scss';
 
 // TODO P3 make each BigPicture sticky (less high when sticky)
@@ -31,10 +29,10 @@ const Foyer = () => (
       />
     )}
 
-    <BigPicture className="Foyer__current-games" img={currentGamesHeadingImg} positionY={25}>
-      <h2 className="BigPicture__heading">Aktuelle Spiele</h2>
-    </BigPicture>
-    <CurrentGames />
+    <div className="Foyer__standings">
+      <CurrentGames />
+      <StandingsOverview />
+    </div>
 
     <BigPicture
       className="Foyer__news"
@@ -44,15 +42,6 @@ const Foyer = () => (
       <h2 className="BigPicture__heading">Neuigkeiten</h2>
     </BigPicture>
     <News />
-
-    <BigPicture
-      className="Foyer__standings-overview"
-      img={standingsHeadingImg}
-      lazyLoadWhenInViewport
-    >
-      <h2 className="BigPicture__heading">Aktueller Spielstand</h2>
-    </BigPicture>
-    <StandingsOverview />
 
     <BigPicture
       className="Foyer__bets-overview"

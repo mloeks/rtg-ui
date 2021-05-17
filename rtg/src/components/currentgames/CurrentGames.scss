@@ -5,11 +5,10 @@
   position: relative;
 
   width: 100%;
-  height: 255px;
+  // TODO P3 magic number - content is dynamic. How can this be solved better?
+  height: 330px;
   min-width: 320px;
-  max-width: 1600px;
   margin: 0 auto;
-  padding: 10px 0;
 
   overflow: hidden;
   box-sizing: border-box;
@@ -17,7 +16,7 @@
   transition: height 300ms $mdEasingStandard;
 
   &.bet-stats-open {
-    height: 920px;
+    height: 1015px;
   }
 
   &__game-card-container {
@@ -45,11 +44,12 @@
   }
 
   &__scroll-button {
-    top: 173px;
+    // magic spacing - height of the container is dynamic
+    top: 255px;
     z-index: $zCurrentGamesScrollButtons;
 
     @media only screen and (min-width : 375px) {
-      top: 78px;
+      top: 156px;
       margin: 0 20px;
     }
   }

@@ -46,10 +46,7 @@ class CurrentGames extends Component {
   }
 
   static getGamesToDisplay() {
-    const vw = viewportW();
-    if (vw < 768) { return 1; }
-    if (vw < 1280) { return 2; }
-    return 3;
+    return viewportW() < 1080 ? 1 : 2;
   }
 
   static getGamesToDisplayWindowState(offset, totalGames) {
@@ -108,10 +105,7 @@ class CurrentGames extends Component {
       },
     };
 
-    this.mediaQueryList = [
-      window.matchMedia('(max-width: 768px)'),
-      window.matchMedia('(max-width: 1280px)'),
-    ];
+    this.mediaQueryList = [window.matchMedia('(max-width: 1080px)')];
     this.preLoadGamesAroundView = 4;
     this.newOffsetAfterTransition = null;
     this.touchStartXPos = -1;
@@ -459,6 +453,7 @@ class CurrentGames extends Component {
     return (
       games && (
         <section className={`CurrentGames ${offsetWithBetStatsOpen !== -1 ? 'bet-stats-open' : ''}`}>
+          <h4>Aktuelle Spiele</h4>
           <Prompt
             when={editingBet}
             message={unsavedChangesConfirmText}
@@ -510,7 +505,7 @@ class CurrentGames extends Component {
                         onBetEditCancel={() => this.setState({ editingBet: false })}
                         onBetEditDone={(id, bet) => this.handleBetEditDone(id, bet, userContext)}
                       />
-                      {(game && !game.bets_open && offset) && (
+                      {(game && !game.bets_open && offset !== null) && (
                         <BetStatsPanel
                           bettableId={game.id}
                           open={offset === offsetWithBetStatsOpen}
