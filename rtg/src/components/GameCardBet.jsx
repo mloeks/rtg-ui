@@ -203,6 +203,8 @@ class GameCardBet extends Component {
               userBet: response.json || null,
               ...GameCardBet.goalsStateFromUserBet(response.json),
             }, () => {
+              // TODO P1 userBet is the old bet here (from the upper scope),
+              // must use userBet from updated state.
               if (method === 'POST') {
                 onSaveSuccess(gameId, userBet, SavingSuccessType.ADDED);
               } else if (method === 'PUT') {
