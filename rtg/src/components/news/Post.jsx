@@ -15,7 +15,6 @@ import ModeCommentIcon from '@material-ui/icons/ModeComment';
 
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';
-import { randomHueHexColor } from '../../service/ColorHelper';
 import getFormattedPostDate from '../../service/PostUtils';
 import AddComment from './AddComment';
 import UserDetailsPopover from '../UserDetailsPopover';
@@ -62,7 +61,6 @@ class Post extends Component {
     };
 
     this.contentRef = React.createRef();
-    this.randomPostColour = randomHueHexColor(40, 90);
 
     this.handleCommentAdded = this.handleCommentAdded.bind(this);
     this.handleTopLevelCommentAdded = this.handleTopLevelCommentAdded.bind(this);
@@ -127,7 +125,6 @@ class Post extends Component {
           classes={{ title: classes.headline }}
           title={post.title}
           titleTypographyProps={{ color: 'textPrimary', variant: 'h4' }}
-          style={{ backgroundColor: this.randomPostColour }}
         />
 
         {post && (
