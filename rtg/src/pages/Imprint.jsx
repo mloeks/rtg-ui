@@ -24,9 +24,9 @@ const Imprint = () => (
         <br />
         Matthias Loeks
         <br />
-        Lothringer Straße 79
+        Sonnenweg 21
         <br />
-        D-50677 Köln
+        D-51503 Rösrath
       </div>
 
       <h4>Kontakt</h4>
