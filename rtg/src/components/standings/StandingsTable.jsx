@@ -378,7 +378,7 @@ class StandingsTable extends Component {
 }
 
 StandingsTable.defaultProps = {
-  rowHeight: 60,
+  rowHeight: 45,
   scrollable: false,
 
   showOnlyUserExcerpt: false,
