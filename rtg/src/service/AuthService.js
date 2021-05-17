@@ -70,7 +70,6 @@ class AuthService {
   }
 
   static setOpenBetsCount(openBetsCount) {
-    console.log(`Setting open bets count in LocalStorage to ${openBetsCount}`);
     LocalStorageWrapper.set('open-bets-count', openBetsCount);
   }
 
