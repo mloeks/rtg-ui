@@ -13,14 +13,9 @@
 
     &__username {
       overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &__username--multi-line {
       white-space: normal;
       overflow-wrap: break-word;
       word-break: break-word;
-      overflow: hidden;
     }
   }
 }

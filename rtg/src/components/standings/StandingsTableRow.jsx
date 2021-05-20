@@ -99,10 +99,7 @@ class StandingsTableRow extends Component {
                   style={{ marginRight: '10px', minWidth: 0.65 * rowHeight }}
                 />
               )}
-              <span
-                className={`TableRowColumn__${rowHeight < 55 ? 'username' : 'username--multi-line'}`}
-                style={{ maxHeight: 0.65 * rowHeight }}
-              >
+              <span className="TableRowColumn__username">
                 {username}
               </span>
             </div>
