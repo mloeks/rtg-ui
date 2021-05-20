@@ -30,8 +30,8 @@ const Foyer = () => (
     )}
 
     <div className="Foyer__standings">
-      <CurrentGames />
       <StandingsOverview />
+      <CurrentGames />
     </div>
 
     <BigPicture
