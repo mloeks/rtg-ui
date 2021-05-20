@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserAvatar from '../UserAvatar';
 
-import profileBgImage from '../../theme/img/headings/french_windows.jpg';
+import profileBgImage from '../../theme/img/headings/courtyard_2.jpg';
 import './ProfileCard.scss';
 
 const ProfileCard = ({ avatar, username }) => (
   <div
     className="ProfileCard qa-user-panel"
-    style={{ backgroundImage: `url(${profileBgImage})` }}
+    style={{ backgroundImage: `url(${profileBgImage})`, backgroundPositionY: '100%' }}
   >
     <UserAvatar
       size={75}

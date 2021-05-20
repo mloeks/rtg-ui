@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Page from './Page';
 import BigPicture from '../components/BigPicture';
-import headingImg from '../theme/img/headings/neuschwanstein.jpg';
+import headingImg from '../theme/img/headings/my/stuffy_royal_room.webp';
 import djangoLogo from '../theme/img/libs/django.svg';
 import reactLogo from '../theme/img/libs/react.svg';
 import postgresLogo from '../theme/img/libs/postgresql.svg';

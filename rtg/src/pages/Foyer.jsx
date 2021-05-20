@@ -9,9 +9,9 @@ import StandingsOverview from '../components/foyer/StandingsOverview';
 import Notification, { NotificationType } from '../components/Notification';
 import CurrentGames from '../components/currentgames/CurrentGames';
 
-import newsHeadingImg from '../theme/img/headings/courtyard_2.jpg';
-import betsHeadingImg from '../theme/img/headings/royals_stadium.jpg';
-import scheduleHeadingImg from '../theme/img/headings/cup_and_ball.jpg';
+import newsHeadingImg from '../theme/img/headings/my/central_windsor_courtyard.webp';
+import betsHeadingImg from '../theme/img/headings/my/ancient_clocks.webp';
+import scheduleHeadingImg from '../theme/img/headings/my/books_of_queen_victoria.webp';
 import './Foyer.scss';
 
 // TODO P3 make each BigPicture sticky (less high when sticky)
@@ -46,7 +46,7 @@ const Foyer = () => (
     <BigPicture
       className="Foyer__bets-overview"
       img={betsHeadingImg}
-      positionY={25}
+      positionY={40}
       lazyLoadWhenInViewport
     >
       <h2 className="BigPicture__heading">Tippabgabe</h2>

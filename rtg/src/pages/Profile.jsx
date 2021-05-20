@@ -10,7 +10,7 @@ import RtgSeparator from '../components/RtgSeparator';
 import ChangePasswordForm from '../components/profile/ChangePasswordForm';
 import DeleteAccountButton from '../components/profile/DeleteAccountButton';
 
-import headingImg from '../theme/img/headings/bed.jpg';
+import headingImg from '../theme/img/headings/my/tent_room.webp';
 
 // TODO P3 offer possibility to delete avatar
 class Profile extends Component {
@@ -70,7 +70,7 @@ class Profile extends Component {
 
     return (
       <Page className="ProfilePage">
-        <BigPicture className="ProfilePage__heading" img={headingImg} positionY={75} />
+        <BigPicture className="ProfilePage__heading" img={headingImg} positionY={40} />
         <section className="ProfilePage__content" style={{ position: 'relative', padding: '10px' }}>
 
           {user && (

@@ -8,7 +8,7 @@ import BigPicture from '../components/BigPicture';
 import { LogoutReason } from '../components/providers/UserDetailsProvider';
 import Notification, { NotificationType } from '../components/Notification';
 
-import headingImg from '../theme/img/headings/gate.jpg';
+import headingImg from '../theme/img/headings/my/golden_fence_top_windsor.webp';
 import './Reception.scss';
 
 class Reception extends Component {
@@ -68,7 +68,7 @@ class Reception extends Component {
     return (
       <Page className="ReceptionPage">
         {reasonToReLogin && userNotificationIfReasonPresent}
-        <BigPicture className="ReceptionPage__heading" img={headingImg}>
+        <BigPicture className="ReceptionPage__heading" img={headingImg} positionY="30">
           <h2 className="BigPicture__heading qa-reception-greeting">Willkommen</h2>
         </BigPicture>
         <section className="ReceptionPage__content">

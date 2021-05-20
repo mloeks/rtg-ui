@@ -32,7 +32,7 @@ import BetStatsPanel from '../components/bets/BetStatsPanel';
 import AddGameForm from '../components/schedule/AddGameForm';
 
 import './Schedule.scss';
-import headingImg from '../theme/img/headings/cup_and_ball.jpg';
+import headingImg from '../theme/img/headings/my/books_of_queen_victoria.webp';
 
 class Schedule extends Component {
   constructor(props) {

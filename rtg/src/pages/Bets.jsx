@@ -15,7 +15,7 @@ import GameBetsTab from '../components/GameBetsTab';
 import ExtraBetsTab from '../components/ExtraBetsTab';
 import { BetsStatusContext, unsavedChangesConfirmText } from '../service/BetsUtils';
 
-import headingImg from '../theme/img/headings/royals_stadium.jpg';
+import headingImg from '../theme/img/headings/my/ancient_clocks.webp';
 import './Bets.scss';
 
 const styles = (theme) => ({
@@ -130,7 +130,7 @@ class Bets extends Component {
         <Page className="BetsPage">
           <Prompt when={betsHaveChanges} message={unsavedChangesConfirmText} />
 
-          <BigPicture className="BetsPage__heading" img={headingImg} positionY={25}>
+          <BigPicture className="BetsPage__heading" img={headingImg} positionY={40}>
             <h2 className="BigPicture__heading">Deine Tipps</h2>
           </BigPicture>
 
