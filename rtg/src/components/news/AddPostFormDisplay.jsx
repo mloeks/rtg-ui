@@ -25,7 +25,7 @@ const Quill = React.lazy(() => {
 const AddPostFormDisplay = ({
   appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
   onCancel, onFieldChange, onSubmit, savingError, savingInProgress,
-  sendMail, sendMailOption, theme, titleError,
+  sendMail, sendMailOption, showMailOptions, theme, titleError,
 }) => {
   const getSuitableSavingErrorSubtitle = () => {
     if (titleError || contentError) {
@@ -91,59 +91,63 @@ const AddPostFormDisplay = ({
           )}
         </div>
 
-        <FormControlLabel
-          control={(
-            <Checkbox
-              color="primary"
-              checked={appearInNews}
-              onChange={(e, v) => onFieldChange('appearInNews', v)}
+        {showMailOptions && (
+          <>
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  color="primary"
+                  checked={appearInNews}
+                  onChange={(e, v) => onFieldChange('appearInNews', v)}
+                />
+              )}
+              label="Bei den Neuigkeiten auf dieser Seite anzeigen"
             />
-)}
-          label="Bei den Neuigkeiten auf dieser Seite anzeigen"
-        />
-        <FormControlLabel
-          control={(
-            <Checkbox
-              color="primary"
-              checked={sendMail}
-              onChange={(e, v) => onFieldChange('sendMail', v)}
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  color="primary"
+                  checked={sendMail}
+                  onChange={(e, v) => onFieldChange('sendMail', v)}
+                />
+              )}
+              label="Per E-Mail senden ..."
             />
-)}
-          label="Per E-Mail senden ..."
-        />
 
-        <RadioGroup
-          className="AddPostForm__mail-choices-row"
-          name="mailChoices"
-          value={sendMailOption}
-          onChange={(e, v) => onFieldChange('sendMailOption', v)}
-          style={{ marginLeft: 30 }}
-        >
-          <FormControlLabel
-            control={<Radio color="primary" />}
-            disabled={!sendMail}
-            label="... an alle Abonnenten"
-            value="sendMailToSubscribers"
-          />
-          <FormControlLabel
-            control={<Radio color="primary" />}
-            disabled={!sendMail}
-            label="... an alle aktiven User"
-            value="sendMailToActive"
-          />
-          <FormControlLabel
-            control={<Radio color="primary" />}
-            disabled={!sendMail}
-            label="... nur an alle inaktiven User"
-            value="sendMailToInactive"
-          />
-          <FormControlLabel
-            control={<Radio color="primary" />}
-            disabled={!sendMail}
-            label="... an alle bekannten User (aktiv & inaktiv)"
-            value="sendMailToAll"
-          />
-        </RadioGroup>
+            <RadioGroup
+              className="AddPostForm__mail-choices-row"
+              name="mailChoices"
+              value={sendMailOption}
+              onChange={(e, v) => onFieldChange('sendMailOption', v)}
+              style={{ marginLeft: 30 }}
+            >
+              <FormControlLabel
+                control={<Radio color="primary" />}
+                disabled={!sendMail}
+                label="... an alle Abonnenten"
+                value="sendMailToSubscribers"
+              />
+              <FormControlLabel
+                control={<Radio color="primary" />}
+                disabled={!sendMail}
+                label="... an alle aktiven User"
+                value="sendMailToActive"
+              />
+              <FormControlLabel
+                control={<Radio color="primary" />}
+                disabled={!sendMail}
+                label="... nur an alle inaktiven User"
+                value="sendMailToInactive"
+              />
+              <FormControlLabel
+                control={<Radio color="primary" />}
+                disabled={!sendMail}
+                label="... an alle bekannten User (aktiv & inaktiv)"
+                value="sendMailToAll"
+              />
+            </RadioGroup>
+          </>
+        )}
 
         <div className="AddPostForm__button-row">
           <Button color="secondary" onClick={onCancel}>Abbrechen</Button>
@@ -189,6 +193,7 @@ AddPostFormDisplay.propTypes = {
   appearInNews: PropTypes.bool,
   sendMail: PropTypes.bool,
   sendMailOption: PropTypes.string.isRequired,
+  showMailOptions: PropTypes.bool.isRequired,
 
   nonFieldError: PropTypes.string,
   titleError: PropTypes.string,

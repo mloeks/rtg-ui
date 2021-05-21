@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -136,18 +134,30 @@ class News extends Component {
     const numberOfFurtherPosts = Math.min(this.pageSize, count - offset);
     return (
       <section className="News" ref={this.newsSectionRef}>
-        {(AuthService.isAdmin() && addingPost) && (
+        {!addingPost && (
+          <Button
+            className="News__add-button"
+            color="primary"
+            variant="contained"
+            disabled={addingPost}
+            onClick={this.handleAddNews}
+          >
+            Neuigkeit hinzufügen
+          </Button>
+        )}
+
+        {addingPost && (
           <AddPostForm
             draft={draft}
             onSaved={this.handlePostSaved}
             onCancelled={this.handleAddPostCancelled}
           />
         )}
-        {(AuthService.isAdmin() && addPostSuccess) && (
+        {addPostSuccess && (
           <Notification
             type={NotificationType.SUCCESS}
-            title="Neuigkeit erfolgreich hinzugefügt/verschickt."
-            disappearAfterMs={3000}
+            title="Neuigkeit erfolgreich hinzugefügt."
+            disappearAfterMs={5000}
           />
         )}
 
@@ -179,12 +189,6 @@ class News extends Component {
             subtitle={loadingError}
             containerStyle={{ margin: 'auto', maxWidth: '480px' }}
           />
-        )}
-
-        {(AuthService.isAdmin() && !addingPost) && (
-          <div className="News__add-button">
-            <Fab color="primary" onClick={this.handleAddNews}><AddIcon /></Fab>
-          </div>
         )}
       </section>
     );

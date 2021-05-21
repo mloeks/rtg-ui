@@ -144,17 +144,22 @@ class AddPostForm extends Component {
       title,
     } = this.state;
 
-    return {
+    const postBody = {
       id,
       author: AuthService.getUserId(),
       title,
       content,
-      news_appear: appearInNews,
-      as_mail: sendMail,
-      force_active_users: sendMailOption === 'sendMailToActive',
-      force_inactive_users: sendMailOption === 'sendMailToInactive',
-      force_all_users: sendMailOption === 'sendMailToAll',
     };
+
+    if (AuthService.isAdmin()) {
+      postBody.news_appear = appearInNews;
+      postBody.as_mail = sendMail;
+      postBody.force_active_users = sendMailOption === 'sendMailToActive';
+      postBody.force_inactive_users = sendMailOption === 'sendMailToInactive';
+      postBody.force_all_users = sendMailOption === 'sendMailToAll';
+    }
+
+    return postBody;
   }
 
   render() {
@@ -175,6 +180,7 @@ class AddPostForm extends Component {
 
     return (
       <AddPostFormDisplay
+        showMailOptions={AuthService.isAdmin()}
         title={title}
         content={content}
         appearInNews={appearInNews}
