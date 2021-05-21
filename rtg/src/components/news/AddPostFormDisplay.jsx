@@ -23,8 +23,8 @@ const Quill = React.lazy(() => {
 });
 
 const AddPostFormDisplay = ({
-  appearInNews, content, contentError, draftSaved, draftSaving, draftSavingError, nonFieldError,
-  onCancel, onFieldChange, onSubmit, savingError, savingInProgress,
+  appearInNews, title, content, contentError, draftSaved, draftSaving, draftSavingError,
+  nonFieldError, onCancel, onFieldChange, onSubmit, savingError, savingInProgress,
   sendMail, sendMailOption, showMailOptions, theme, titleError,
 }) => {
   const getSuitableSavingErrorSubtitle = () => {
@@ -55,6 +55,7 @@ const AddPostFormDisplay = ({
         <h4 className="AddPostForm__heading">Neuigkeit hinzufügen:</h4>
         <TextField
           label="Titel"
+          value={title}
           fullWidth
           error={Boolean(titleError)}
           helperText={titleError || false}
@@ -189,6 +190,7 @@ AddPostFormDisplay.defaultProps = {
 };
 
 AddPostFormDisplay.propTypes = {
+  title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   appearInNews: PropTypes.bool,
   sendMail: PropTypes.bool,
