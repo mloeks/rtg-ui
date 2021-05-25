@@ -79,6 +79,8 @@ class GameCardBet extends Component {
       isSaving: false,
     };
 
+    this.processSuccessfulBetSaveResponse = this.processSuccessfulBetSaveResponse.bind(this);
+    this.processFailedBetSaveResponse = this.processFailedBetSaveResponse.bind(this);
     this.save = this.save.bind(this);
     this.handleHomegoalsChange = this.handleHomegoalsChange.bind(this);
     this.handleAwaygoalsChange = this.handleAwaygoalsChange.bind(this);
@@ -197,35 +199,9 @@ class GameCardBet extends Component {
       }).then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
-            this.setState({
-              isSaving: false,
-              hasChanges: false,
-              userBet: response.json || null,
-              ...GameCardBet.goalsStateFromUserBet(response.json),
-            }, () => {
-              // TODO P1 userBet is the old bet here (from the upper scope),
-              // must use userBet from updated state.
-              if (method === 'POST') {
-                onSaveSuccess(gameId, userBet, SavingSuccessType.ADDED);
-              } else if (method === 'PUT') {
-                onSaveSuccess(gameId, userBet, SavingSuccessType.UPDATED);
-              } else if (method === 'DELETE') {
-                onSaveSuccess(gameId, null, SavingSuccessType.DELETED);
-              }
-            });
+            this.processSuccessfulBetSaveResponse(method, newBet, response);
           } else {
-            this.setState({ isSaving: false }, () => {
-              const responseDetail = response.json
-                ? response.json.detail || (response.json.non_field_errors
-                  ? response.json.non_field_errors[0]
-                  : null) : null;
-              const reasonDeadlinePassed = response.json && response.json.code
-                && response.json.code[0] === 'DEADLINE_PASSED';
-
-              onSaveFailure(gameId, newBet, reasonDeadlinePassed
-                ? SavingErrorType.DEADLINE_PASSED
-                : SavingErrorType.FAILED, responseDetail);
-            });
+            this.processFailedBetSaveResponse(newBet, response);
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
           onSaveFailure(gameId, newBet, SavingErrorType.FAILED);
@@ -239,6 +215,41 @@ class GameCardBet extends Component {
       awaygoalsInput: getGoalsString(prevState.awaygoalsInput),
       hasChanges: true,
     }));
+  }
+
+  processSuccessfulBetSaveResponse(method, newBet, response) {
+    const { gameId, onSaveSuccess } = this.props;
+    const userBet = response.json || null;
+    this.setState({
+      isSaving: false,
+      hasChanges: false,
+      userBet,
+      ...GameCardBet.goalsStateFromUserBet(userBet),
+    }, () => {
+      if (method === 'POST') {
+        onSaveSuccess(gameId, userBet, SavingSuccessType.ADDED);
+      } else if (method === 'PUT') {
+        onSaveSuccess(gameId, userBet, SavingSuccessType.UPDATED);
+      } else if (method === 'DELETE') {
+        onSaveSuccess(gameId, null, SavingSuccessType.DELETED);
+      }
+    });
+  }
+
+  processFailedBetSaveResponse(betAttempted, response) {
+    const { gameId, onSaveFailure } = this.props;
+    this.setState({ isSaving: false }, () => {
+      const responseDetail = response.json
+        ? response.json.detail || (response.json.non_field_errors
+          ? response.json.non_field_errors[0]
+          : null) : null;
+      const reasonDeadlinePassed = response.json && response.json.code
+        && response.json.code[0] === 'DEADLINE_PASSED';
+
+      onSaveFailure(gameId, betAttempted, reasonDeadlinePassed
+        ? SavingErrorType.DEADLINE_PASSED
+        : SavingErrorType.FAILED, responseDetail);
+    });
   }
 
   render() {

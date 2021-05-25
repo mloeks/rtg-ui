@@ -8,6 +8,9 @@ import de from 'date-fns/locale/de';
 import { withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
@@ -205,21 +208,21 @@ class CurrentGameCard extends Component {
           </div>
         )}
 
-        <Dialog
-          modal={false}
-          actions={[
+        <Dialog open={betSaveFailed} onClose={this.handleBetSaveErrorInfoDialogClosed}>
+          <DialogTitle>Speichern fehlgeschlagen</DialogTitle>
+          <DialogContent>
+            {betSaveFailedType === SavingErrorType.INCOMPLETE
+              && 'Bitte gib einen vollständigen Tipp ein.'}
+            {betSaveFailedType === SavingErrorType.DEADLINE_PASSED
+              && 'Die Deadline für diesen Tipp ist abgelaufen. Eine Tippabgabe ist daher leider nicht mehr möglich.'}
+            {betSaveFailedType === SavingErrorType.FAILED
+              && 'Das Speichern des Tipps ist leider fehlgeschlagen. Bitte versuche es erneut.'}
+          </DialogContent>
+          <DialogActions>
             <Button color="primary" onClick={this.handleBetSaveErrorInfoDialogClosed}>
               Ok
-            </Button>]}
-          open={betSaveFailed}
-          onRequestClose={this.handleBetSaveErrorInfoDialogClosed}
-        >
-          {betSaveFailedType === SavingErrorType.INCOMPLETE
-            && 'Bitte gib einen vollständigen Tipp ein.'}
-          {betSaveFailedType === SavingErrorType.DEADLINE_PASSED
-            && 'Die Deadline für diesen Tipp ist abgelaufen. Eine Tippabgabe ist daher leider nicht mehr möglich.'}
-          {betSaveFailedType === SavingErrorType.FAILED
-            && 'Das Speichern des Tipps ist leider fehlgeschlagen. Bitte versuche es erneut.'}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );
