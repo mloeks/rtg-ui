@@ -21,9 +21,12 @@ Implementation of authentication and authorisation is inspired by [this approach
 ## Current TODOs
 
 * Known Bugs:
-    * Inline bet updates in "current game" cards are not immediately reflected on the card and neither in the "open bets badge"
     * Drawer Menu is too wide in desktop breakpoints --> due to changed matchMedia events, which are registered in GameCard. Move to more cross-cutting, top level component?
     * Header display/disappearance is not animated anymore (AppBar overwrites CSS properties in Header.scss)
+* Ideas for small improvements:
+    * Allow admins to enter results in the UI
+    * Place info about open bets to the very top
+    * Show quotes from bwin or similar below games (also get results from there?)
 
 ## Planned next features
 
