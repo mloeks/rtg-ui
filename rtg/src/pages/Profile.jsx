@@ -70,7 +70,7 @@ class Profile extends Component {
 
     return (
       <Page className="ProfilePage">
-        <BigPicture className="ProfilePage__heading" img={headingImg} positionY={40} />
+        <BigPicture className="ProfilePage__heading" img={headingImg} positionY={40} large />
         <section className="ProfilePage__content" style={{ position: 'relative', padding: '10px' }}>
 
           {user && (

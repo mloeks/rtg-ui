@@ -45,7 +45,12 @@ class BigPicture extends Component {
 
   render() {
     const { showImg } = this.state;
-    const { children, img, positionY } = this.props;
+    const {
+      children,
+      img,
+      large,
+      positionY,
+    } = this.props;
 
     const style = showImg
       ? { backgroundImage: `url(${img})`, backgroundPositionY: `${positionY}%` } : {};
@@ -53,7 +58,7 @@ class BigPicture extends Component {
     return (
       <section
         ref={this.ref}
-        className={`BigPicture${!showImg ? ' BigPicture--skeleton' : ''}`}
+        className={`BigPicture${!showImg ? ' BigPicture--skeleton' : ''}${large ? ' BigPicture--large' : ''}`}
         style={style}
       >
         {children}
@@ -64,6 +69,7 @@ class BigPicture extends Component {
 
 BigPicture.defaultProps = {
   children: null,
+  large: false,
   lazyLoadWhenInViewport: false,
   positionY: 50,
 };
@@ -71,6 +77,7 @@ BigPicture.defaultProps = {
 BigPicture.propTypes = {
   children: PropTypes.node,
   img: PropTypes.string.isRequired,
+  large: PropTypes.bool,
   lazyLoadWhenInViewport: PropTypes.bool,
   positionY: PropTypes.number,
 };

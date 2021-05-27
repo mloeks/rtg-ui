@@ -13,7 +13,7 @@ import './Imprint.scss';
 
 const Imprint = () => (
   <Page className="ImprintPage">
-    <BigPicture className="ImprintPage__heading" img={headingImg}>
+    <BigPicture className="ImprintPage__heading" img={headingImg} large>
       <h2 className="BigPicture__heading">Impressum</h2>
     </BigPicture>
     <section className="ImprintPage__content">

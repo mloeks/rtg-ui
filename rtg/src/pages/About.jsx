@@ -10,7 +10,7 @@ import './About.scss';
 
 const About = ({ history }) => (
   <Page className="AboutPage">
-    <BigPicture className="AboutPage__heading" img={headingImg} positionY={21}>
+    <BigPicture className="AboutPage__heading" img={headingImg} positionY={21} large>
       <h2 className="BigPicture__heading">Über die RTG</h2>
     </BigPicture>
 
