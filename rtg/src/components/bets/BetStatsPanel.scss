@@ -1,16 +1,16 @@
+@import '../../sass/colors';
 @import '../../sass/utils';
 
 // TODO P3 make expanding of bet stats smoother
 .BetStatsPanel {
   margin: 0;
-  width: 100%;
-
-  transition: box-shadow 300ms $mdEasingStandard 100ms;
+  width: 95%;
 
   &.open &__inner {
     width: 100%;
     padding-top: 10px;
-    box-shadow: 0 0 50px -11px rgba(0, 0, 0, 0.55);
+    border: 1px solid $lightGrey;
+    border-radius: 5px;
   }
 
   &__chart-wrapper {
