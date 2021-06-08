@@ -10,6 +10,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -107,17 +108,32 @@ const DrawerMenu = ({
 
       <Divider />
 
-      <List>
-        {AuthService.isAdmin()
-          && (
-            <Link to="/admin/users">
-              <ListItem button>
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary="Benutzerverwaltung" />
-              </ListItem>
-            </Link>
-          )}
+      {AuthService.isAdmin()
+        && (
+          <>
+            <List
+              subheader={(
+                <ListSubheader>The Queen&apos;s Room</ListSubheader>
+              )}
+            >
+              <Link to="/admin/users">
+                <ListItem button>
+                  <ListItemIcon><SettingsIcon /></ListItemIcon>
+                  <ListItemText primary="Benutzerverwaltung" />
+                </ListItem>
+              </Link>
+              <Link to="/admin/results">
+                <ListItem button>
+                  <ListItemIcon><SettingsIcon /></ListItemIcon>
+                  <ListItemText primary="Ergebnisse eintragen" />
+                </ListItem>
+              </Link>
+            </List>
+            <Divider />
+          </>
+        )}
 
+      <List>
         <ListItem className="qa-logout-button" button onClick={onLogout}>
           <ListItemIcon><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Ausloggen" />

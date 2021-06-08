@@ -19,6 +19,7 @@ import Standings from './pages/Standings';
 import Profile from './pages/Profile';
 
 import AdminUsers from './pages/AdminUsers';
+import AdminGameResults from './pages/AdminGameResults';
 import PermissionDenied from './pages/403';
 import PasswordReset from './pages/PasswordReset';
 
@@ -63,7 +64,9 @@ const App = () => {
             <AuthRoute exact path="/standings" component={Standings} />
             <AuthRoute exact path="/profile" component={Profile} />
 
+            {/* Admins Only! */}
             <AdminRoute exact path="/admin/users" component={AdminUsers} />
+            <AdminRoute exact path="/admin/results" component={AdminGameResults} />
           </Switch>
         </div>
       </MuiPickersUtilsProvider>
