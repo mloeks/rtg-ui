@@ -61,6 +61,9 @@ GameCard.propTypes = {
 
   style: stylePropType,
 
+  // TODO P2 children aren't optional but a required definition of what kind of
+  // "central element" the game card (wrapper!) should show.
+  // Or can GameCardGameInfo be shown by default?
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
