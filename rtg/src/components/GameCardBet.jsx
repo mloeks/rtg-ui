@@ -13,7 +13,7 @@ import {
   toResultString,
 } from '../service/ResultStringHelper';
 import { BetsStatusContext } from '../service/BetsUtils';
-import GameCardBetPresentational from './GameCardBetPresentational';
+import GameCardScoreEditorPresentational from './GameCardScoreEditorPresentational';
 
 export const SavingSuccessType = {
   UNCHANGED: 'UNCHANGED',
@@ -259,7 +259,7 @@ class GameCardBet extends Component {
     return (
       <BetsStatusContext.Consumer>
         {(betsStatusContext) => (
-          <GameCardBetPresentational
+          <GameCardScoreEditorPresentational
             id={gameId}
             homegoals={homegoalsInput}
             awaygoals={awaygoalsInput}

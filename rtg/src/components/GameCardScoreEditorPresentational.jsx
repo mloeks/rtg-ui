@@ -8,7 +8,7 @@ import GameCardRibbon from './GameCardRibbon';
 import GoalInput from './bets/GoalInput';
 import { RESULT_SEPARATOR } from '../service/ResultStringHelper';
 
-import './GameCardBet.scss';
+import './GameCardScoreEditor.scss';
 
 const ARROW_SIZE = 26;
 const GoalChangeArrow = ({ direction, onClick }) => {
@@ -19,8 +19,8 @@ const GoalChangeArrow = ({ direction, onClick }) => {
     opacity: 0.8,
   };
   return (direction === 'up'
-    ? <KeyboardArrowUpIcon className="GameCardBet__arrow" style={arrowStyle} onClick={onClick} />
-    : <KeyboardArrowDownIcon className="GameCardBet__arrow" style={arrowStyle} onClick={onClick} />);
+    ? <KeyboardArrowUpIcon className="GameCardScoreEditor__arrow" style={arrowStyle} onClick={onClick} />
+    : <KeyboardArrowDownIcon className="GameCardScoreEditor__arrow" style={arrowStyle} onClick={onClick} />);
 };
 
 GoalChangeArrow.propTypes = {
@@ -28,17 +28,17 @@ GoalChangeArrow.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-const GameCardBetPresentational = ({
+const GameCardScoreEditorPresentational = ({
   id, homegoals, awaygoals, onBlur, onHomegoalsChange, onAwaygoalsChange,
   onHomegoalsIncrementalChange, onAwaygoalsIncrementalChange,
 }) => (
-  <GameCardRibbon stateCssClass="bet">
-    <div className="GameCardBet">
-      <div className="GameCardBet__up-arrow-row">
+  <GameCardRibbon stateCssClass="score">
+    <div className="GameCardScoreEditor">
+      <div className="GameCardScoreEditor__up-arrow-row">
         <GoalChangeArrow direction="up" onClick={() => onHomegoalsIncrementalChange(1)} />
         <GoalChangeArrow direction="up" onClick={() => onAwaygoalsIncrementalChange(1)} />
       </div>
-      <div className="GameCardBet__goal-input-row">
+      <div className="GameCardScoreEditor__goal-input-row">
         <GoalInput
           className="GoalInput GoalInput__home"
           id={`${id}-home`}
@@ -57,7 +57,7 @@ const GameCardBetPresentational = ({
           onBlur={onBlur}
         />
       </div>
-      <div className="GameCardBet__down-arrow-row">
+      <div className="GameCardScoreEditor__down-arrow-row">
         <GoalChangeArrow direction="down" onClick={() => onHomegoalsIncrementalChange(-1)} />
         <GoalChangeArrow direction="down" onClick={() => onAwaygoalsIncrementalChange(-1)} />
       </div>
@@ -65,7 +65,7 @@ const GameCardBetPresentational = ({
   </GameCardRibbon>
 );
 
-GameCardBetPresentational.propTypes = {
+GameCardScoreEditorPresentational.propTypes = {
   id: PropTypes.number.isRequired,
   homegoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   awaygoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -77,4 +77,4 @@ GameCardBetPresentational.propTypes = {
   onAwaygoalsIncrementalChange: PropTypes.func.isRequired,
 };
 
-export default GameCardBetPresentational;
+export default GameCardScoreEditorPresentational;

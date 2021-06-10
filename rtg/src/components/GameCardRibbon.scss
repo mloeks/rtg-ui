@@ -3,7 +3,7 @@
 @import '../sass/mixins/game-card-ribbon.scss';
 
 .GameCardRibbon {
-  &.bet { @include game-card-ribbon($ribbonBet, 65px, 75px); }
+  &.score { @include game-card-ribbon($ribbonScore, 65px, 75px); }
   &.skeleton { @include game-card-ribbon(lighten($ribbonNeutral, 20%), 65px, 75px); }
   &.neutral { @include game-card-ribbon($ribbonNeutral, 65px, 75px); }
   &.niete { @include game-card-ribbon($betResultNiete, 65px, 75px); }
