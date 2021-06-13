@@ -68,7 +68,7 @@ class Reception extends Component {
     return (
       <Page className="ReceptionPage">
         {reasonToReLogin && userNotificationIfReasonPresent}
-        <BigPicture className="ReceptionPage__heading" img={headingImg} positionY="40" large>
+        <BigPicture className="ReceptionPage__heading" img={headingImg} positionY={40} large>
           <h2 className="BigPicture__heading qa-reception-greeting">Willkommen</h2>
         </BigPicture>
         <section className="ReceptionPage__content">
