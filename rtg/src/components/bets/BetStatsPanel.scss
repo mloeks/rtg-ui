@@ -3,7 +3,7 @@
 
 // TODO P3 make expanding of bet stats smoother
 .BetStatsPanel {
-  margin: 0;
+  margin: 0 auto;
   width: 95%;
 
   &.open &__inner {
