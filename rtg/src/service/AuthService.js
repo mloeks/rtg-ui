@@ -25,7 +25,7 @@ const LocalStorageWrapper = {
   remove: (key) => localStorage.removeItem(`rtg-${key}`),
 };
 
-const REFRESH_IF_EXPIRY_IN_SECONDS = 5 * 60;
+const REFRESH_TOKEN_IF_EXPIRES_IN_S = 4 * 60 * 60;
 
 class AuthService {
   static getToken() {
@@ -87,14 +87,14 @@ class AuthService {
   }
 
   static refreshTokenIfNecessary() {
-    if (AuthService.isAuthenticated() && AuthService.isAboutToExpire()) {
+    if (AuthService.isAuthenticated() && AuthService.shouldRefresh()) {
       AuthService.refreshToken();
     }
   }
 
-  static isAboutToExpire() {
+  static shouldRefresh() {
     if (AuthService.getTokenExpiryDate()) {
-      return AuthService.getSecondsUntilExpiry() < REFRESH_IF_EXPIRY_IN_SECONDS;
+      return AuthService.getSecondsUntilExpiry() < REFRESH_TOKEN_IF_EXPIRES_IN_S;
     }
     return false;
   }
