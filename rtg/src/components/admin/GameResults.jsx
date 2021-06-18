@@ -20,11 +20,7 @@ class GameResults extends Component {
   }
 
   componentDidMount() {
-    // TODO only request games which have kicked off, can be achieved with
-    // kickoff_lt URL parameter and ISO date, but some prerequisites in the
-    // backend seem to be necessary. See https://stackoverflow.com/a/38862380
-    // Check if there is a standard way of filtering by date fields in DRF as well.
-    fetch(`${API_BASE_URL}/rtg/games/?bets_open=false`, {
+    fetch(`${API_BASE_URL}/rtg/games/?kicked_off=true&ordering=-kickoff`, {
       headers: { Authorization: `Token ${AuthService.getToken()}` },
     }).then(FetchHelper.parseJson)
       .then((response) => {
