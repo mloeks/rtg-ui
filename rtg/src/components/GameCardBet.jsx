@@ -2,18 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService, { API_BASE_URL } from '../service/AuthService';
 import FetchHelper from '../service/FetchHelper';
-import {
-  getAwaygoals,
-  getGoalsString,
-  getHomegoals,
-  isCompleteResult,
-  isEmptyResult,
-  MAX_GOALS_INPUT,
-  NO_GOALS_STRING,
-  toResultString,
-} from '../service/ResultStringHelper';
+import { isCompleteResult, isEmptyResult } from '../service/ResultStringHelper';
 import { BetsStatusContext } from '../service/BetsUtils';
-import GameCardScoreEditorPresentational from './GameCardScoreEditorPresentational';
+import GameCardScoreEditor from './GameCardScoreEditor';
 
 export const SavingSuccessType = {
   UNCHANGED: 'UNCHANGED',
@@ -35,30 +26,8 @@ export const SavingErrorType = {
 // TODO P3 goals are either stored as integers when using arrows and as string when using text input
 //  this is potentially dangerous and can cause nasty side effects!
 class GameCardBet extends Component {
-  static getIncrementedGoal(previousValue, inc) {
-    const previousValueNumber = Number(previousValue);
-    if (Number.isNaN(previousValue) || (previousValue === NO_GOALS_STRING && inc === 1)) {
-      return 0;
-    }
-    if (previousValue === NO_GOALS_STRING && inc === -1) {
-      return previousValue;
-    }
-    if (previousValueNumber === MAX_GOALS_INPUT && inc === 1) {
-      return previousValueNumber;
-    }
-    if (previousValueNumber === 0 && inc === -1) {
-      return NO_GOALS_STRING;
-    }
-
-    return previousValueNumber + inc;
-  }
-
-  static goalsStateFromUserBet(userBet) {
-    const resultAvailable = userBet && userBet.result_bet;
-    return {
-      homegoalsInput: resultAvailable ? getHomegoals(userBet.result_bet) : NO_GOALS_STRING,
-      awaygoalsInput: resultAvailable ? getAwaygoals(userBet.result_bet) : NO_GOALS_STRING,
-    };
+  static scoreStateFromUserBet(userBet) {
+    return userBet && userBet.result_bet ? userBet.result_bet : undefined;
   }
 
   static updateBetsHaveChanges(context) {
@@ -74,19 +43,15 @@ class GameCardBet extends Component {
 
     this.state = {
       userBet: userBet !== null ? ({ ...userBet }) : null,
-      ...GameCardBet.goalsStateFromUserBet(userBet),
+      score: GameCardBet.scoreStateFromUserBet(userBet),
       hasChanges: false,
       isSaving: false,
     };
 
+    this.handleScoreChange = this.handleScoreChange.bind(this);
     this.processSuccessfulBetSaveResponse = this.processSuccessfulBetSaveResponse.bind(this);
     this.processFailedBetSaveResponse = this.processFailedBetSaveResponse.bind(this);
     this.save = this.save.bind(this);
-    this.handleHomegoalsChange = this.handleHomegoalsChange.bind(this);
-    this.handleAwaygoalsChange = this.handleAwaygoalsChange.bind(this);
-    this.handleHomegoalsIncrementalChange = this.handleHomegoalsIncrementalChange.bind(this);
-    this.handleAwaygoalsIncrementalChange = this.handleAwaygoalsIncrementalChange.bind(this);
-    this.sanitizeBet = this.sanitizeBet.bind(this);
   }
 
   componentDidMount() {
@@ -97,7 +62,7 @@ class GameCardBet extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { awaygoalsInput, hasChanges, homegoalsInput } = prevState;
+    const { score, hasChanges } = prevState;
     const { onSaveSuccess, shouldSave } = this.props;
 
     // trigger save
@@ -106,36 +71,14 @@ class GameCardBet extends Component {
         this.save();
       } else {
         // save requested, but there were no changes to this bet
-        onSaveSuccess(prevProps.gameId, toResultString(homegoalsInput, awaygoalsInput),
-          SavingSuccessType.UNCHANGED);
+        onSaveSuccess(prevProps.gameId, score, SavingSuccessType.UNCHANGED);
       }
     }
   }
 
-  handleHomegoalsChange(value, betsStatusContext) {
+  handleScoreChange(value, betsStatusContext) {
     GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState({ homegoalsInput: value, hasChanges: true });
-  }
-
-  handleAwaygoalsChange(value, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState({ awaygoalsInput: value, hasChanges: true });
-  }
-
-  handleHomegoalsIncrementalChange(inc, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState((prevState) => ({
-      homegoalsInput: GameCardBet.getIncrementedGoal(prevState.homegoalsInput, inc),
-      hasChanges: true,
-    }));
-  }
-
-  handleAwaygoalsIncrementalChange(inc, betsStatusContext) {
-    GameCardBet.updateBetsHaveChanges(betsStatusContext);
-    this.setState((prevState) => ({
-      awaygoalsInput: GameCardBet.getIncrementedGoal(prevState.awaygoalsInput, inc),
-      hasChanges: true,
-    }));
+    this.setState({ score: value, hasChanges: true });
   }
 
   fetchUserBet() {
@@ -145,7 +88,7 @@ class GameCardBet extends Component {
     }).then(FetchHelper.parseJson).then((response) => {
       if (response.ok) {
         const userBet = response.json.length > 0 ? response.json[0] : null;
-        this.setState({ userBet, ...GameCardBet.goalsStateFromUserBet(userBet) });
+        this.setState({ userBet, score: GameCardBet.scoreStateFromUserBet(userBet) });
       }
     });
   }
@@ -153,24 +96,18 @@ class GameCardBet extends Component {
   // TODO P3 refactor!
   // TODO P3 DRY with ExtraBetCard, introduce BetSavingHelper
   save() {
-    const {
-      awaygoalsInput,
-      homegoalsInput,
-      isSaving,
-      userBet,
-    } = this.state;
+    const { isSaving, score, userBet } = this.state;
     const { gameId, onSaveFailure, onSaveSuccess } = this.props;
 
     if (!isSaving) {
-      const newBet = toResultString(homegoalsInput, awaygoalsInput);
-      const emptyResult = isEmptyResult(newBet);
+      const emptyResult = isEmptyResult(score);
 
-      if (!emptyResult && !isCompleteResult(newBet)) {
-        onSaveFailure(gameId, newBet, SavingErrorType.INCOMPLETE);
+      if (!emptyResult && !isCompleteResult(score)) {
+        onSaveFailure(gameId, score, SavingErrorType.INCOMPLETE);
         return;
       }
 
-      const body = emptyResult ? null : { bettable: gameId, result_bet: newBet };
+      const body = emptyResult ? null : { bettable: gameId, result_bet: score };
       const betId = userBet ? userBet.id : null;
 
       this.setState({ isSaving: true });
@@ -199,32 +136,24 @@ class GameCardBet extends Component {
       }).then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
-            this.processSuccessfulBetSaveResponse(method, newBet, response);
+            this.processSuccessfulBetSaveResponse(method, response);
           } else {
-            this.processFailedBetSaveResponse(newBet, response);
+            this.processFailedBetSaveResponse(score, response);
           }
         }).catch(() => this.setState({ isSaving: false }, () => {
-          onSaveFailure(gameId, newBet, SavingErrorType.FAILED);
+          onSaveFailure(gameId, score, SavingErrorType.FAILED);
         }));
     }
   }
 
-  sanitizeBet() {
-    this.setState((prevState) => ({
-      homegoalsInput: getGoalsString(prevState.homegoalsInput),
-      awaygoalsInput: getGoalsString(prevState.awaygoalsInput),
-      hasChanges: true,
-    }));
-  }
-
-  processSuccessfulBetSaveResponse(method, newBet, response) {
+  processSuccessfulBetSaveResponse(method, response) {
     const { gameId, onSaveSuccess } = this.props;
     const userBet = response.json || null;
     this.setState({
       isSaving: false,
       hasChanges: false,
       userBet,
-      ...GameCardBet.goalsStateFromUserBet(userBet),
+      score: GameCardBet.scoreStateFromUserBet(userBet),
     }, () => {
       if (method === 'POST') {
         onSaveSuccess(gameId, userBet, SavingSuccessType.ADDED);
@@ -253,23 +182,16 @@ class GameCardBet extends Component {
   }
 
   render() {
-    const { awaygoalsInput, homegoalsInput } = this.state;
+    const { score } = this.state;
     const { gameId } = this.props;
 
     return (
       <BetsStatusContext.Consumer>
         {(betsStatusContext) => (
-          <GameCardScoreEditorPresentational
-            id={gameId}
-            homegoals={homegoalsInput}
-            awaygoals={awaygoalsInput}
-            onBlur={this.sanitizeBet}
-            onHomegoalsChange={(val) => this.handleHomegoalsChange(val, betsStatusContext)}
-            onAwaygoalsChange={(val) => this.handleAwaygoalsChange(val, betsStatusContext)}
-            onHomegoalsIncrementalChange={(inc) => this
-              .handleHomegoalsIncrementalChange(inc, betsStatusContext)}
-            onAwaygoalsIncrementalChange={(inc) => this
-              .handleAwaygoalsIncrementalChange(inc, betsStatusContext)}
+          <GameCardScoreEditor
+            gameId={gameId}
+            scoreValue={score}
+            onChange={(val) => this.handleScoreChange(val, betsStatusContext)}
           />
         )}
       </BetsStatusContext.Consumer>
