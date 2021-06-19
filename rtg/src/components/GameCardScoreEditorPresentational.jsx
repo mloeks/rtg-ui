@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import GameCardRibbon from './GameCardRibbon';
 import GoalInput from './bets/GoalInput';
-import { RESULT_SEPARATOR } from '../service/ResultStringHelper';
+import { NO_GOALS_STRING, RESULT_SEPARATOR } from '../service/ResultStringHelper';
 
 import './GameCardScoreEditor.scss';
 
@@ -65,10 +65,15 @@ const GameCardScoreEditorPresentational = ({
   </GameCardRibbon>
 );
 
+GameCardScoreEditorPresentational.defaultProps = {
+  homegoals: NO_GOALS_STRING,
+  awaygoals: NO_GOALS_STRING,
+};
+
 GameCardScoreEditorPresentational.propTypes = {
   id: PropTypes.number.isRequired,
-  homegoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  awaygoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  homegoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  awaygoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
   onBlur: PropTypes.func.isRequired,
   onHomegoalsChange: PropTypes.func.isRequired,

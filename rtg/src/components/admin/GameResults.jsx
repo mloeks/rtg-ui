@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GameCard from '../GameCard';
-import GameCardBet from '../GameCardBet';
+import GameCardScoreEditor from '../GameCardScoreEditor';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
@@ -60,16 +60,11 @@ class GameResults extends Component {
               awayteam={game.awayteam_name}
               awayteamAbbrev={game.awayteam_abbreviation}
             >
-
-              {/* TODO introduce GameCardEditableScore component which should be
-              refactored out of GameCardBet and used directly here.
-              Using GameCardBet is just a quick hack to get something meaningful displayed.
-              It's not what we intend to use here later. */}
-              <GameCardBet
+              {/* TODO introduce GameCardResult (very similar to GameCardBet)
+                  which handles saving of results */}
+              <GameCardScoreEditor
                 gameId={game.id}
-                hadSaveIssues={false}
-                onSaveFailure={() => {}}
-                onSaveSuccess={() => {}}
+                onChange={(score) => { console.log(`changed: ${score}`); }}
               />
             </GameCard>
           ))}
