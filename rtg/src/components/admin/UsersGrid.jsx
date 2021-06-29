@@ -24,6 +24,8 @@ class UsersGrid extends Component {
       filterActive: true,
       filterInactive: false,
       filterHasNotPaid: false,
+      sortByName: true,
+      sortByOpenBets: false,
 
       loading: true,
       loadingError: false,
@@ -77,6 +79,8 @@ class UsersGrid extends Component {
       loading,
       loadingError,
       searchTerm,
+      sortByName,
+      sortByOpenBets,
       users,
     } = this.state;
     const { theme } = this.props;
@@ -96,6 +100,12 @@ class UsersGrid extends Component {
         `${user.username} ${user.first_name} ${user.last_name}`.toLowerCase()
           .indexOf(searchTerm.toLowerCase()) !== -1));
     }
+    if (sortByName) {
+      filteredUsers = filteredUsers.sort((a, b) => a.username > b.username);
+    }
+    if (sortByOpenBets) {
+      filteredUsers = filteredUsers.sort((a, b) => a.open_bettables < b.open_bettables);
+    }
 
     return (
       <section style={{ margin: '20px auto', maxWidth: 1024 }}>
@@ -104,6 +114,8 @@ class UsersGrid extends Component {
           filterActive={filterActive}
           filterInactive={filterInactive}
           filterHasNotPaid={filterHasNotPaid}
+          sortByName={sortByName}
+          sortByOpenBets={sortByOpenBets}
           onFilterActiveToggled={() => this
             .setState((prevState) => ({ filterActive: !prevState.filterActive }))}
           onFilterInactiveToggled={() => this
@@ -111,6 +123,10 @@ class UsersGrid extends Component {
           onFilterHasNotPaidToggled={() => this
             .setState((prevState) => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
           onSearchTermUpdated={this.handleSearchTermUpdated}
+          onSortByNameClicked={() => this
+            .setState({ sortByName: true, sortByOpenBets: false })}
+          onSortByOpenBetsClicked={() => this
+            .setState({ sortByName: false, sortByOpenBets: true })}
         />
 
         {loading && <CircularProgress />}

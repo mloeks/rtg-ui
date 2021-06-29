@@ -21,10 +21,15 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import SearchIcon from '@material-ui/icons/Search';
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import teal from '@material-ui/core/colors/teal';
 
 const styles = {
   filterMenu: {
+    minWidth: 300,
+  },
+  sortMenu: {
     minWidth: 300,
   },
 };
@@ -32,14 +37,18 @@ const styles = {
 class UsersGridToolbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { filterMenuAnchorEl: null };
+    this.state = {
+      filterMenuAnchorEl: null,
+      sortMenuAnchorEl: null,
+    };
   }
 
   render() {
-    const { filterMenuAnchorEl } = this.state;
+    const { filterMenuAnchorEl, sortMenuAnchorEl } = this.state;
     const {
       classes, filterActive, filterHasNotPaid, onFilterHasNotPaidToggled, filterInactive,
-      onFilterActiveToggled, onFilterInactiveToggled, onSearchTermUpdated, searchTerm, theme,
+      onFilterActiveToggled, onFilterInactiveToggled, onSearchTermUpdated, onSortByNameClicked,
+      onSortByOpenBetsClicked, searchTerm, sortByName, sortByOpenBets, theme,
     } = this.props;
 
     return (
@@ -93,6 +102,34 @@ class UsersGridToolbar extends Component {
           </ListItem>
         </Menu>
 
+        <IconButton
+          aria-label="Sortierung"
+          onClick={(e) => this.setState({ sortMenuAnchorEl: e.currentTarget })}
+        >
+          <SortByAlphaIcon style={{ color: theme.palette.grey['700'] }} />
+        </IconButton>
+        <Menu
+          anchorEl={sortMenuAnchorEl}
+          open={Boolean(sortMenuAnchorEl)}
+          onClose={() => this.setState({ sortMenuAnchorEl: null })}
+          classes={{ paper: classes.sortMenu }}
+        >
+          <ListItem>
+            <ListItemIcon><PersonIcon /></ListItemIcon>
+            <ListItemText primary="Username" />
+            <ListItemSecondaryAction>
+              <Switch onChange={onSortByNameClicked} checked={sortByName} />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemIcon><TrendingUpIcon /></ListItemIcon>
+            <ListItemText primary="Offene Tipps" />
+            <ListItemSecondaryAction>
+              <Switch onChange={onSortByOpenBetsClicked} checked={sortByOpenBets} />
+            </ListItemSecondaryAction>
+          </ListItem>
+        </Menu>
+
         <FormControl>
           <Input
             value={searchTerm}
@@ -128,6 +165,8 @@ UsersGridToolbar.defaultProps = {
   filterInactive: false,
   filterHasNotPaid: false,
   searchTerm: '',
+  sortByName: true,
+  sortByOpenBets: false,
 };
 
 UsersGridToolbar.propTypes = {
@@ -135,11 +174,15 @@ UsersGridToolbar.propTypes = {
   filterInactive: PropTypes.bool,
   filterHasNotPaid: PropTypes.bool,
   searchTerm: PropTypes.string,
+  sortByName: PropTypes.bool,
+  sortByOpenBets: PropTypes.bool,
 
   onFilterActiveToggled: PropTypes.func.isRequired,
   onFilterInactiveToggled: PropTypes.func.isRequired,
   onFilterHasNotPaidToggled: PropTypes.func.isRequired,
   onSearchTermUpdated: PropTypes.func.isRequired,
+  onSortByNameClicked: PropTypes.func.isRequired,
+  onSortByOpenBetsClicked: PropTypes.func.isRequired,
 
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
