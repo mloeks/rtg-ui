@@ -130,7 +130,7 @@ class UsersGridToolbar extends Component {
           </ListItem>
         </Menu>
 
-        <FormControl>
+        <FormControl style={{ flexGrow: 1 }}>
           <Input
             value={searchTerm}
             placeholder="User suchen"
