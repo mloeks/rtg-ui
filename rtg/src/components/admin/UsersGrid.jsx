@@ -24,8 +24,7 @@ class UsersGrid extends Component {
       filterActive: true,
       filterInactive: false,
       filterHasNotPaid: false,
-      sortByName: true,
-      sortByOpenBets: false,
+      sortBy: 'username',
 
       loading: true,
       loadingError: false,
@@ -79,8 +78,7 @@ class UsersGrid extends Component {
       loading,
       loadingError,
       searchTerm,
-      sortByName,
-      sortByOpenBets,
+      sortBy,
       users,
     } = this.state;
     const { theme } = this.props;
@@ -100,10 +98,11 @@ class UsersGrid extends Component {
         `${user.username} ${user.first_name} ${user.last_name}`.toLowerCase()
           .indexOf(searchTerm.toLowerCase()) !== -1));
     }
-    if (sortByName) {
-      filteredUsers = filteredUsers.sort((a, b) => a.username > b.username);
+    if (sortBy === 'username') {
+      filteredUsers = filteredUsers
+        .sort((a, b) => a.username.toLowerCase() > b.username.toLowerCase());
     }
-    if (sortByOpenBets) {
+    if (sortBy === 'openBets') {
       filteredUsers = filteredUsers.sort((a, b) => a.open_bettables < b.open_bettables);
     }
 
@@ -114,8 +113,7 @@ class UsersGrid extends Component {
           filterActive={filterActive}
           filterInactive={filterInactive}
           filterHasNotPaid={filterHasNotPaid}
-          sortByName={sortByName}
-          sortByOpenBets={sortByOpenBets}
+          sortBy={sortBy}
           onFilterActiveToggled={() => this
             .setState((prevState) => ({ filterActive: !prevState.filterActive }))}
           onFilterInactiveToggled={() => this
@@ -123,10 +121,7 @@ class UsersGrid extends Component {
           onFilterHasNotPaidToggled={() => this
             .setState((prevState) => ({ filterHasNotPaid: !prevState.filterHasNotPaid }))}
           onSearchTermUpdated={this.handleSearchTermUpdated}
-          onSortByNameClicked={() => this
-            .setState({ sortByName: true, sortByOpenBets: false })}
-          onSortByOpenBetsClicked={() => this
-            .setState({ sortByName: false, sortByOpenBets: true })}
+          onSortByChanged={(e) => this.setState({ sortBy: e.target.value })}
         />
 
         {loading && <CircularProgress />}

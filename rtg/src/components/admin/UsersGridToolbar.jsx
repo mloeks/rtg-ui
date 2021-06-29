@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -12,6 +13,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Menu from '@material-ui/core/Menu';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import Toolbar from '@material-ui/core/Toolbar';
 
@@ -22,14 +25,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import SearchIcon from '@material-ui/icons/Search';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import teal from '@material-ui/core/colors/teal';
 
 const styles = {
   filterMenu: {
-    minWidth: 300,
-  },
-  sortMenu: {
     minWidth: 300,
   },
 };
@@ -47,8 +46,8 @@ class UsersGridToolbar extends Component {
     const { filterMenuAnchorEl, sortMenuAnchorEl } = this.state;
     const {
       classes, filterActive, filterHasNotPaid, onFilterHasNotPaidToggled, filterInactive,
-      onFilterActiveToggled, onFilterInactiveToggled, onSearchTermUpdated, onSortByNameClicked,
-      onSortByOpenBetsClicked, searchTerm, sortByName, sortByOpenBets, theme,
+      onFilterActiveToggled, onFilterInactiveToggled, onSearchTermUpdated, onSortByChanged,
+      searchTerm, sortBy, theme,
     } = this.props;
 
     return (
@@ -114,20 +113,12 @@ class UsersGridToolbar extends Component {
           onClose={() => this.setState({ sortMenuAnchorEl: null })}
           classes={{ paper: classes.sortMenu }}
         >
-          <ListItem>
-            <ListItemIcon><PersonIcon /></ListItemIcon>
-            <ListItemText primary="Username" />
-            <ListItemSecondaryAction>
-              <Switch onChange={onSortByNameClicked} checked={sortByName} />
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon><TrendingUpIcon /></ListItemIcon>
-            <ListItemText primary="Offene Tipps" />
-            <ListItemSecondaryAction>
-              <Switch onChange={onSortByOpenBetsClicked} checked={sortByOpenBets} />
-            </ListItemSecondaryAction>
-          </ListItem>
+          <FormControl component="fieldset">
+            <RadioGroup aria-label="Sortierung" name="sort" value={sortBy} onChange={onSortByChanged}>
+              <FormControlLabel value="username" control={<Radio />} label="Username" />
+              <FormControlLabel value="openBets" control={<Radio />} label="Offene Tipps" />
+            </RadioGroup>
+          </FormControl>
         </Menu>
 
         <FormControl style={{ flexGrow: 1 }}>
@@ -165,8 +156,7 @@ UsersGridToolbar.defaultProps = {
   filterInactive: false,
   filterHasNotPaid: false,
   searchTerm: '',
-  sortByName: true,
-  sortByOpenBets: false,
+  sortBy: 'username',
 };
 
 UsersGridToolbar.propTypes = {
@@ -174,15 +164,13 @@ UsersGridToolbar.propTypes = {
   filterInactive: PropTypes.bool,
   filterHasNotPaid: PropTypes.bool,
   searchTerm: PropTypes.string,
-  sortByName: PropTypes.bool,
-  sortByOpenBets: PropTypes.bool,
+  sortBy: PropTypes.oneOf(['username', 'openBets']),
 
   onFilterActiveToggled: PropTypes.func.isRequired,
   onFilterInactiveToggled: PropTypes.func.isRequired,
   onFilterHasNotPaidToggled: PropTypes.func.isRequired,
   onSearchTermUpdated: PropTypes.func.isRequired,
-  onSortByNameClicked: PropTypes.func.isRequired,
-  onSortByOpenBetsClicked: PropTypes.func.isRequired,
+  onSortByChanged: PropTypes.func.isRequired,
 
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
