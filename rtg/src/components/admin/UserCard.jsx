@@ -256,20 +256,22 @@ class UserCard extends Component {
               </IconButton>
             )}
 
-            <Avatar
-              style={{
-                backgroundColor: openBettables > 0
-                  ? theme.palette.error.main
-                  : theme.palette.success.main,
-                width: OPEN_BETS_BADGE_HEIGHT,
-                height: OPEN_BETS_BADGE_HEIGHT,
-                fontSize: 0.5 * OPEN_BETS_BADGE_HEIGHT,
-                margin: 0,
-              }}
-              title={`${openBettables} offene Tipps`}
-            >
-              {openBettables || <CheckIcon style={{ width: 0.75 * OPEN_BETS_BADGE_HEIGHT }} />}
-            </Avatar>
+            {active && (
+              <Avatar
+                style={{
+                  backgroundColor: openBettables > 0
+                    ? theme.palette.error.main
+                    : theme.palette.success.main,
+                  width: OPEN_BETS_BADGE_HEIGHT,
+                  height: OPEN_BETS_BADGE_HEIGHT,
+                  fontSize: 0.5 * OPEN_BETS_BADGE_HEIGHT,
+                  margin: 0,
+                }}
+                title={`${openBettables} offene Tipps`}
+              >
+                {openBettables || <CheckIcon style={{ width: 0.75 * OPEN_BETS_BADGE_HEIGHT }} />}
+              </Avatar>
+            )}
 
             <IconButton
               title="Benutzer löschen"
