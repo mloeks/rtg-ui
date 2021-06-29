@@ -25,6 +25,8 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 
+import './UserCard.scss';
+
 const CARD_SIZE = 140;
 
 // TODO P3 add possibility to change username inline
@@ -106,6 +108,7 @@ class UserCard extends Component {
       hasPaid,
       lastName,
       lastLogin,
+      openBettables,
       theme,
       username,
     } = this.props;
@@ -218,9 +221,13 @@ class UserCard extends Component {
               <br />
               {lastLogin && (
                 <span title={format(lastLogin, 'Pp', { locale: de })}>
-                  {formatDistanceToNow(lastLogin, { addSuffix: true, locale: de })}
+                  <i>{formatDistanceToNow(lastLogin, { addSuffix: true, locale: de })}</i>
                 </span>
               )}
+              <br />
+              {openBettables === 0
+                ? <div className="UserCard__open-bettables UserCard__open-bettables--ok">Alles getippt.</div>
+                : <div className="UserCard__open-bettables UserCard__open-bettables--open">{`${openBettables} offene Tipps.`}</div>}
             </div>
           </CardContent>
 
@@ -281,6 +288,7 @@ UserCard.propTypes = {
   avatar: PropTypes.string,
   hasPaid: PropTypes.bool.isRequired,
   lastLogin: PropTypes.instanceOf(Date),
+  openBettables: PropTypes.number.isRequired,
 
   onHasPaidUpdated: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

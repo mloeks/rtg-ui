@@ -1,0 +1,14 @@
+@import '../../sass/colors';
+
+.UserCard__open-bettables {
+    padding: 10px 0 0;
+    font-weight: bold;
+
+    &--ok {
+        color: $success;
+    }
+
+    &--open {
+        color: $error;
+    }
+}
