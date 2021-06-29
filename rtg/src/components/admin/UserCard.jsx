@@ -6,12 +6,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 
+import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -28,6 +30,7 @@ import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import './UserCard.scss';
 
 const CARD_SIZE = 140;
+const OPEN_BETS_BADGE_HEIGHT = 22;
 
 // TODO P3 add possibility to change username inline
 class UserCard extends Component {
@@ -224,10 +227,6 @@ class UserCard extends Component {
                   <i>{formatDistanceToNow(lastLogin, { addSuffix: true, locale: de })}</i>
                 </span>
               )}
-              <br />
-              {openBettables === 0
-                ? <div className="UserCard__open-bettables UserCard__open-bettables--ok">Alles getippt.</div>
-                : <div className="UserCard__open-bettables UserCard__open-bettables--open">{`${openBettables} offene Tipps.`}</div>}
             </div>
           </CardContent>
 
@@ -256,6 +255,21 @@ class UserCard extends Component {
                 <WarningIcon style={{ color: theme.palette.error.main }} />
               </IconButton>
             )}
+
+            <Avatar
+              style={{
+                backgroundColor: openBettables > 0
+                  ? theme.palette.error.main
+                  : theme.palette.success.main,
+                width: OPEN_BETS_BADGE_HEIGHT,
+                height: OPEN_BETS_BADGE_HEIGHT,
+                fontSize: 0.5 * OPEN_BETS_BADGE_HEIGHT,
+                margin: 0,
+              }}
+              title={`${openBettables} offene Tipps`}
+            >
+              {openBettables || <CheckIcon style={{ width: 0.75 * OPEN_BETS_BADGE_HEIGHT }} />}
+            </Avatar>
 
             <IconButton
               title="Benutzer löschen"
