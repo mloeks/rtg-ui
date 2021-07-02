@@ -10,8 +10,8 @@ export const isEmptyResult = (resultString) => (
 );
 
 export const toResultString = (homegoals, awaygoals) => {
-  const homegoalsString = (!homegoals && Number(homegoals) !== 0) ? NO_GOALS_STRING : homegoals;
-  const awaygoalsString = (!awaygoals && Number(awaygoals) !== 0) ? NO_GOALS_STRING : awaygoals;
+  const homegoalsString = (typeof homegoals !== 'undefined' && homegoals !== null && Number(homegoals) >= 0) ? homegoals : NO_GOALS_STRING;
+  const awaygoalsString = (typeof awaygoals !== 'undefined' && awaygoals !== null && Number(awaygoals) >= 0) ? awaygoals : NO_GOALS_STRING;
   return `${homegoalsString}${RESULT_SEPARATOR}${awaygoalsString}`;
 };
 
