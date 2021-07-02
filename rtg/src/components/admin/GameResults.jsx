@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GameCard from '../GameCard';
-import GameCardScoreEditor from '../GameCardScoreEditor';
+import GameCardResult from './GameCardResult';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
+import { toResultString } from '../../service/ResultStringHelper';
 import Notification, { NotificationType } from '../Notification';
 
 class GameResults extends Component {
@@ -60,11 +61,9 @@ class GameResults extends Component {
               awayteam={game.awayteam_name}
               awayteamAbbrev={game.awayteam_abbreviation}
             >
-              {/* TODO introduce GameCardResult (very similar to GameCardBet)
-                  which handles saving of results */}
-              <GameCardScoreEditor
+              <GameCardResult
                 gameId={game.id}
-                onChange={(score) => { console.log(`changed: ${score}`); }}
+                resultValue={toResultString(game.homegoals, game.awaygoals)}
               />
             </GameCard>
           ))}
