@@ -7,7 +7,12 @@ import SaveIcon from '@material-ui/icons/Save';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import GameCard from '../GameCard';
-import { isCompleteResult, isEmptyResult } from '../../service/ResultStringHelper';
+import {
+  getAwaygoals,
+  getHomegoals,
+  isCompleteResult,
+  isEmptyResult,
+} from '../../service/ResultStringHelper';
 
 import GameCardScoreEditor from '../GameCardScoreEditor';
 import Notification, { NotificationType } from '../Notification';
@@ -44,13 +49,18 @@ class GameCardResult extends Component {
 
       this.setState({ isSaving: true });
 
-      fetch(`${API_BASE_URL}/rtg/games/${gameId}`, {
+      const payload = {
+        homegoals: getHomegoals(result),
+        awaygoals: getAwaygoals(result),
+      };
+
+      fetch(`${API_BASE_URL}/rtg/games/${gameId}/`, {
         headers: {
           Authorization: `Token ${AuthService.getToken()}`,
           'content-type': 'application/json',
         },
-        method: emptyResult ? 'DELETE' : 'PUT',
-        body: JSON.stringify(emptyResult ? null : { result }),
+        method: emptyResult ? 'DELETE' : 'PATCH',
+        body: JSON.stringify(emptyResult ? null : { payload }),
       }).then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
