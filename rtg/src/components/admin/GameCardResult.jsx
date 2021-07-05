@@ -6,6 +6,7 @@ import SaveIcon from '@material-ui/icons/Save';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
+import GameCard from '../GameCard';
 import { isCompleteResult, isEmptyResult } from '../../service/ResultStringHelper';
 
 import GameCardScoreEditor from '../GameCardScoreEditor';
@@ -71,15 +72,30 @@ class GameCardResult extends Component {
 
   render() {
     const { hasChanges, savingSuccess } = this.state;
-    const { gameId, resultValue } = this.props;
+    const {
+      awayteam,
+      awayteamAbbrev,
+      gameId,
+      hometeam,
+      hometeamAbbrev,
+      resultValue,
+    } = this.props;
 
     return (
-      <div className="GameCardResult">
-        <GameCardScoreEditor
-          gameId={gameId}
-          scoreValue={resultValue}
-          onChange={(val) => this.setState({ hasChanges: true, result: val })}
-        />
+      <>
+        <GameCard
+          hometeam={hometeam}
+          hometeamAbbrev={hometeamAbbrev}
+          awayteam={awayteam}
+          awayteamAbbrev={awayteamAbbrev}
+        >
+          <GameCardScoreEditor
+            gameId={gameId}
+            scoreValue={resultValue}
+            onChange={(val) => this.setState({ hasChanges: true, result: val })}
+          />
+        </GameCard>
+
         {hasChanges && (
           <Button
             color="primary"
@@ -89,6 +105,7 @@ class GameCardResult extends Component {
             Speichern
           </Button>
         )}
+
         {savingSuccess && (
           <Notification
             type={NotificationType.SUCCESS}
@@ -99,7 +116,7 @@ class GameCardResult extends Component {
             onClose={() => this.setState({ savingSuccess: null })}
           />
         )}
-      </div>
+      </>
     );
   }
 }
@@ -109,7 +126,11 @@ GameCardResult.defaultProps = {
 };
 
 GameCardResult.propTypes = {
+  awayteam: PropTypes.string.isRequired,
+  awayteamAbbrev: PropTypes.string.isRequired,
   gameId: PropTypes.number.isRequired,
+  hometeam: PropTypes.string.isRequired,
+  hometeamAbbrev: PropTypes.string.isRequired,
   resultValue: PropTypes.string,
 };
 

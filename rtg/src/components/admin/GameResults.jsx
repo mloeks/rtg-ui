@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import GameCard from '../GameCard';
 import GameCardResult from './GameCardResult';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
@@ -54,18 +53,15 @@ class GameResults extends Component {
 
         <div className="GameResults__games">
           {gamesStarted.map((game) => (
-            <GameCard
+            <GameCardResult
               key={`GameCard-${game.id}`}
-              hometeam={game.hometeam_name}
-              hometeamAbbrev={game.hometeam_abbreviation}
               awayteam={game.awayteam_name}
               awayteamAbbrev={game.awayteam_abbreviation}
-            >
-              <GameCardResult
-                gameId={game.id}
-                resultValue={toResultString(game.homegoals, game.awaygoals)}
-              />
-            </GameCard>
+              gameId={game.id}
+              hometeam={game.hometeam_name}
+              hometeamAbbrev={game.hometeam_abbreviation}
+              resultValue={toResultString(game.homegoals, game.awaygoals)}
+            />
           ))}
         </div>
       </>
