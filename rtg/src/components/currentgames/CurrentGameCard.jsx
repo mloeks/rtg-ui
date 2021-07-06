@@ -24,8 +24,6 @@ import Notification, { NotificationType } from '../Notification';
 
 import './CurrentGameCard.scss';
 
-// TODO P2 Move GameCard components into GameCardBet, GameCardGameInfo etc. with its
-// dedicated actions, allowing for some cleanup in this component's render method.
 class CurrentGameCard extends Component {
   static getFormattedKickoffDate(kickoff) {
     if (isSameDay(kickoff, subDays(new Date(), 1))) { return 'Gestern'; }
