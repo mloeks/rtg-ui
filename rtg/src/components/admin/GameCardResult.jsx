@@ -50,8 +50,8 @@ class GameCardResult extends Component {
       this.setState({ isSaving: true });
 
       const payload = {
-        homegoals: getHomegoals(result),
-        awaygoals: getAwaygoals(result),
+        homegoals: emptyResult ? -1 : getHomegoals(result),
+        awaygoals: emptyResult ? -1 : getAwaygoals(result),
       };
 
       fetch(`${API_BASE_URL}/rtg/games/${gameId}/`, {
@@ -59,8 +59,8 @@ class GameCardResult extends Component {
           Authorization: `Token ${AuthService.getToken()}`,
           'content-type': 'application/json',
         },
-        method: emptyResult ? 'DELETE' : 'PATCH',
-        body: JSON.stringify(emptyResult ? null : { payload }),
+        method: 'PATCH',
+        body: JSON.stringify(payload),
       }).then(FetchHelper.parseJson)
         .then((response) => {
           if (response.ok) {
@@ -73,7 +73,7 @@ class GameCardResult extends Component {
   }
 
   processResultSaveSuccess() {
-    this.setState({ isSaving: false, savingSuccess: true });
+    this.setState({ hasChanges: false, isSaving: false, savingSuccess: true });
   }
 
   processResultSaveFailure() {
