@@ -20,23 +20,16 @@ Implementation of authentication and authorisation is inspired by [this approach
 
 ## Current TODOs
 
-* Known Bugs:
-    * Drawer Menu is too wide in desktop breakpoints --> due to changed matchMedia events, which are registered in GameCard. Move to more cross-cutting, top level component?
-    * Header display/disappearance is not animated anymore (AppBar overwrites CSS properties in Header.scss)
-* Ideas for small improvements:
-    * Allow admins to enter results in the UI
-    * Place info about open bets to the very top
-    * Show quotes from bwin or similar below games (also get results from there?)
+### WWC 2023
 
-## Planned next features
-
-### Must (for 2021 EURO)
+#### Must
 
 * Cookie Consent according to legal requirements
-    * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
+  * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
 
 ### Should
 
+* Minor redesign (new colour palette, fonts, images)
 * Fix minor (but numerous) linter complaints
 * Minor facelift, e.g. exchange some pictures (with own pictures?)
 * Find replacements for some apparently unmaintained NPM modules
@@ -51,3 +44,10 @@ Implementation of authentication and authorisation is inspired by [this approach
 * Performance improvements on bet page (look for unnecessary render cycles and state updates)
 * Try out new styling approach coming with Material UI 3.5.1
     * https://github.com/mui-org/material-ui/releases/tag/v3.5.1
+* Known Bugs:
+  * Drawer Menu is too wide in desktop breakpoints --> due to changed matchMedia events, which are registered in GameCard. Move to more cross-cutting, top level component?
+  * Header display/disappearance is not animated anymore (AppBar overwrites CSS properties in Header.scss)
+* Ideas for small improvements:
+  * Allow admins to enter results in the UI
+  * Place info about open bets to the very top
+  * Show quotes from bwin or similar below games (also get results from there?)
