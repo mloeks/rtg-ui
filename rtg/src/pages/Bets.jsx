@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Prompt } from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/material/styles';
 
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Badge from '@material-ui/core/Badge';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Badge from '@mui/material/Badge';
 
 import Page from './Page';
 import { UserDetailsContext } from '../components/providers/UserDetailsProvider';

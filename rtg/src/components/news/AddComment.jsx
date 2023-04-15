@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from '@mui/icons/Send';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Notification, { NotificationType } from '../Notification';

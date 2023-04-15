@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
+import Button from '@mui/material/Button';
+import SaveIcon from '@mui/icons/Save';
 
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';

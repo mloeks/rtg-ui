@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { scrollY } from 'verge';
-import Fab from '@material-ui/core/Fab';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Fab from '@mui/material/Fab';
+import ArrowUpwardIcon from '@mui/icons/ArrowUpward';
 import { throttle, ThrottledScrollPositionListener } from '../service/EventsHelper';
 
 // TODO P3 animate scrolling

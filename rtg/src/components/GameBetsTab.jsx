@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
-import AlarmIcon from '@material-ui/icons/Alarm';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import { withTheme } from '@mui/material/styles';
+import AlarmIcon from '@mui/icons/Alarm';
+import NotInterestedIcon from '@mui/icons/NotInterested';
 
 import { format, formatDistance, parseISO } from 'date-fns';
 import de from 'date-fns/locale/de';

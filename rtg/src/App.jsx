@@ -1,8 +1,8 @@
 import React from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Route, Switch } from 'react-router-dom';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@mui/pickers';
 import de from 'date-fns/locale/de';
 
 import Rules from './pages/Rules';
@@ -35,8 +35,10 @@ const App = () => {
   const isDemo = window.location.href.match(/.*demo.*/i);
   const isLocal = window.location.href.match(/.*(localhost|192.168.).*/i);
 
+  const theme = createTheme(rtg);
+
   return (
-    <MuiThemeProvider theme={createMuiTheme(rtg)}>
+    <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={de}>
         <div className="App">
           {(isDemo || isLocal)
@@ -70,7 +72,7 @@ const App = () => {
           </Switch>
         </div>
       </MuiPickersUtilsProvider>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

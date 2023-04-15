@@ -1,23 +1,23 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
-import Badge from '@material-ui/core/Badge';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import Badge from '@mui/material/Badge';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import HomeIcon from '@material-ui/icons/Home';
-import ListIcon from '@material-ui/icons/List';
-import TodayIcon from '@material-ui/icons/Today';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import SettingsIcon from '@mui/icons/Settings';
+import ExitToAppIcon from '@mui/icons/ExitToApp';
+import HomeIcon from '@mui/icons/Home';
+import ListIcon from '@mui/icons/List';
+import TodayIcon from '@mui/icons/Today';
+import TrendingUpIcon from '@mui/icons/TrendingUp';
 
 import ProfileCard from './ProfileCard';
 import AuthService from '../../service/AuthService';

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import Popover from '@material-ui/core/Popover';
-import PlaceIcon from '@material-ui/icons/Place';
-import CloseIcon from '@material-ui/icons/Close';
+import { withStyles, withTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
+import PlaceIcon from '@mui/icons/Place';
+import CloseIcon from '@mui/icons/Close';
 
 import UserAvatar from './UserAvatar';
 import FetchHelper from '../service/FetchHelper';

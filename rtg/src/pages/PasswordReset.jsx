@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { Link } from 'react-router-dom';
 
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 
 import Page from './Page';
 import AuthService from '../service/AuthService';

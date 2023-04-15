@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import DoneIcon from '@material-ui/icons/Done';
+import { withTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import LinearProgress from '@mui/material/LinearProgress';
+import DoneIcon from '@mui/icons/Done';
 
 import './BetsStatusPanel.scss';
 

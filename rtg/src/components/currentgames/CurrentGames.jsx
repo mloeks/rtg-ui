@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Prompt } from 'react-router-dom';
 import { parseISO } from 'date-fns';
 
-import { withTheme } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import { withTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import KeyboardArrowLeftIcon from '@mui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons/KeyboardArrowRight';
 import { viewportW } from 'verge';
 import FetchHelper from '../../service/FetchHelper';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';

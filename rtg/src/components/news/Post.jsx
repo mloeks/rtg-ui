@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Collapse from '@material-ui/core/Collapse';
+import { withStyles, withTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import ModeCommentIcon from '@material-ui/icons/ModeComment';
+import KeyboardArrowDownIcon from '@mui/icons/KeyboardArrowDown';
+import ModeCommentIcon from '@mui/icons/ModeComment';
 
 import UserAvatar from '../UserAvatar';
 import CommentsList from './CommentsList';

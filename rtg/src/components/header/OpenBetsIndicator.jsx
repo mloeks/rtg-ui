@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { withTheme } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
+import { withTheme } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 
 const OpenBetsIndicator = ({ number, theme }) => (
   number > 0

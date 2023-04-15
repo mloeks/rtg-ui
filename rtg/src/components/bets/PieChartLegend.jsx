@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import stylePropType from 'react-style-proptype';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme } from '@mui/material/styles';
 
 const PieChartLegend = ({
   className, containerStyle, data, entryRowHeight, entryStyle, theme,

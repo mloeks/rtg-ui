@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import ListIcon from '@material-ui/icons/List';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import Button from '@mui/material/Button';
+import ListIcon from '@mui/icons/List';
+import TrendingUpIcon from '@mui/icons/TrendingUp';
 import OpenBetsIndicator from './OpenBetsIndicator';
 
 import './HeaderMenuItems.scss';

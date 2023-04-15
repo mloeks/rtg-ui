@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stylePropType from 'react-style-proptype';
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import Slider from '@material-ui/core/Slider';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Slider from '@mui/material/Slider';
 
-import PersonIcon from '@material-ui/icons/Person';
-import RotateLeftIcon from '@material-ui/icons/RotateLeft';
-import RotateRightIcon from '@material-ui/icons/RotateRight';
-import teal from '@material-ui/core/colors/teal';
+import PersonIcon from '@mui/icons/Person';
+import RotateLeftIcon from '@mui/icons/RotateLeft';
+import RotateRightIcon from '@mui/icons/RotateRight';
+import teal from '@mui/material/colors/teal';
 
 import AvatarEditor from 'react-avatar-editor';
 import Notification, { NotificationType } from '../Notification';

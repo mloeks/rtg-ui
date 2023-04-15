@@ -22,6 +22,20 @@ Implementation of authentication and authorisation is inspired by [this approach
 
 ### WWC 2023
 
+#### Major lib upgrades
+
+* React v17 -> v18
+* react-scripts v4 -> v5
+* react-router-dom v5 -> v6
+* date-io v1 -> v2
+* mui v4 -> v5
+  * https://mui.com/material-ui/migration/migration-v4/
+* dompurify v2 -> v3
+* react-app-polyfill v2 -> v3
+* react-avatar-editor v11 -> v13
+* react-quill v1 -> v2
+* eslint-config-airbnb v18 -> v19
+
 #### Must
 
 * Cookie Consent according to legal requirements

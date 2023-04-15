@@ -4,9 +4,9 @@ import {
   addMinutes, format, isAfter, isBefore,
 } from 'date-fns';
 
-import { withTheme } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/icons/Person';
+import { withTheme } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import PersonIcon from '@mui/icons/Person';
 import GameCardRibbon from './GameCardRibbon';
 
 import crown from '../theme/img/crown.svg';

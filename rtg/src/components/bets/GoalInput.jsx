@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
 import { VALID_GOAL_INPUT_REGEX } from '../../service/ResultStringHelper';
 

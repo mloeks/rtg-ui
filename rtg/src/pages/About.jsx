@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { withRouter } from 'react-router-dom';
 import ReactRouterProptypes from 'react-router-prop-types';
 import Page from './Page';

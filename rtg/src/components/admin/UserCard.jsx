@@ -5,20 +5,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
+import { withTheme } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
 
-import CheckIcon from '@material-ui/icons/Check';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
-import WarningIcon from '@material-ui/icons/Warning';
-import PersonIcon from '@material-ui/icons/Person';
-import teal from '@material-ui/core/colors/teal';
+import CheckIcon from '@mui/icons/Check';
+import DeleteIcon from '@mui/icons/Delete';
+import EuroSymbolIcon from '@mui/icons/EuroSymbol';
+import WarningIcon from '@mui/icons/Warning';
+import PersonIcon from '@mui/icons/Person';
+import teal from '@mui/material/colors/teal';
 
 import { format, formatDistanceToNow } from 'date-fns';
 import de from 'date-fns/locale/de';

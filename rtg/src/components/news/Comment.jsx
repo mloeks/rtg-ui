@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { parseISO } from 'date-fns';
 
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
 import AddComment from './AddComment';
 import UserAvatar from '../UserAvatar';

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { withTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import ChatBubbleOutlineIcon from '@mui/icons/ChatBubbleOutline';
+import KeyboardArrowDownIcon from '@mui/icons/KeyboardArrowDown';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';
 import FetchHelper from '../../service/FetchHelper';
 import Post from './Post';

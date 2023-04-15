@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stylePropType from 'react-style-proptype';
 
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import KeyboardArrowDownIcon from '@mui/icons/KeyboardArrowDown';
 import { PieChart } from 'react-minimal-pie-chart';
 import StandingsTable from '../standings/StandingsTable';
 import AuthService, { API_BASE_URL } from '../../service/AuthService';

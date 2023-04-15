@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import ReactRouterProptypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { withTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Fab from '@material-ui/core/Fab';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import { withTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
+import Fab from '@mui/material/Fab';
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
-import AddIcon from '@material-ui/icons/Add';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import AddIcon from '@mui/icons/Add';
+import NotInterestedIcon from '@mui/icons/NotInterested';
 import { format, isSameDay, parseISO } from 'date-fns';
 import de from 'date-fns/locale/de';
 

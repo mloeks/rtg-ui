@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Menu from '@material-ui/core/Menu';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Switch from '@material-ui/core/Switch';
-import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles, withTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Menu from '@mui/material/Menu';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Switch from '@mui/material/Switch';
+import Toolbar from '@mui/material/Toolbar';
 
-import BackspaceIcon from '@material-ui/icons/Backspace';
-import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import PersonIcon from '@material-ui/icons/Person';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import SearchIcon from '@material-ui/icons/Search';
-import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
-import teal from '@material-ui/core/colors/teal';
+import BackspaceIcon from '@mui/icons/Backspace';
+import EuroSymbolIcon from '@mui/icons/EuroSymbol';
+import FilterListIcon from '@mui/icons/FilterList';
+import PersonIcon from '@mui/icons/Person';
+import PersonOutlineIcon from '@mui/icons/PersonOutline';
+import SearchIcon from '@mui/icons/Search';
+import SortByAlphaIcon from '@mui/icons/SortByAlpha';
+import teal from '@mui/material/colors/teal';
 
 const styles = {
   filterMenu: {

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons/KeyboardArrowDown';
 
 import GameCardRibbon from './GameCardRibbon';
 import GoalInput from './bets/GoalInput';
