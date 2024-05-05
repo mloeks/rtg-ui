@@ -9,13 +9,13 @@ NODE_VERSION=$(node -v)
 cd ../rtg
 
 echo "Preparing NPM..."
-/home/mloeks/.nvm/versions/node/${NODE_VERSION}/bin/npm run clean
-#/home/mloeks/.nvm/versions/node/${NODE_VERSION}/bin/npm i
-#/home/mloeks/.nvm/versions/node/${NODE_VERSION}/bin/npm rebuild node-sass --force
+${HOME}/.nvm/versions/node/${NODE_VERSION}/bin/npm run clean
+#${HOME}/.nvm/versions/node/${NODE_VERSION}/bin/npm i
+#${HOME}/.nvm/versions/node/${NODE_VERSION}/bin/npm rebuild node-sass --force
 
 echo "Building ${ENV} assets..."
 NPM_SCRIPT=$([ "$ENV" == "PROD" ] && echo "build" || echo "build:demo")
-/home/mloeks/.nvm/versions/node/${NODE_VERSION}/bin/npm run ${NPM_SCRIPT}
+${HOME}/.nvm/versions/node/${NODE_VERSION}/bin/npm run ${NPM_SCRIPT}
 
 echo "Uploading new assets..."
 TARGET_APP=$([ "$ENV" == "PROD" ] && echo "rtg" || echo "rtg_demo")

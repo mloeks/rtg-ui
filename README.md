@@ -20,15 +20,20 @@ Implementation of authentication and authorisation is inspired by [this approach
 
 ## Current TODOs
 
-### WWC 2023
+### EURO 2024
 
-#### Must
-
-* Cookie Consent according to legal requirements
-  * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
+### Must
+* Manually test if everything is still running, without upgrading ...
 
 ### Should
 
+#### Upgrades
+* Check lib-upgrades branch
+* Make npm i work with more recent node LTS, removing and re-creating package-lock.json fails currently
+
+#### Other
+* Cookie Consent according to legal requirements
+  * As only technically required cookies are being used (for e.g. session and login), this should be rather straightforward
 * Minor redesign (new colour palette, fonts, images)
 * Fix minor (but numerous) linter complaints
 * Minor facelift, e.g. exchange some pictures (with own pictures?)
