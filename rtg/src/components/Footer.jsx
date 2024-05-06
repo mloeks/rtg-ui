@@ -29,6 +29,7 @@ const Footer = ({ theme }) => (
         <a
           href="http://www.facebook.com/groups/219528178065049"
           title="Zur Facebook-Gruppe"
+          aria-label="Zur Facebook-Grupe"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -39,6 +40,7 @@ const Footer = ({ theme }) => (
         <a
           href="https://www.instagram.com/royaletippgemeinschaft/"
           title="Zur Instagram-Gruppe"
+          aria-label="Zur Instagram-Gruppe"
           target="_blank"
           rel="noopener noreferrer"
         >

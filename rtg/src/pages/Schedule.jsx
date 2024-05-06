@@ -163,6 +163,7 @@ class Schedule extends Component {
           <div
             role="button"
             className="GameCard__click-wrapper"
+            aria-label="Spiel"
             tabIndex={0}
             onClick={() => history.push('/bets')}
             onKeyPress={(e) => (isEnter(e) && history.push('/bets'))}
