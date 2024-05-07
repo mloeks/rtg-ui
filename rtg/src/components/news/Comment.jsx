@@ -138,7 +138,7 @@ Comment.propTypes = {
   // for instanceOf(Comment) here (for props comment & replies)
   comment: PropTypes.shape({
     author_details: PropTypes.shape({
-      avatar: PropTypes.string.isRequired,
+      avatar: PropTypes.string,
       pk: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
