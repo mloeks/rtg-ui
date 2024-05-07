@@ -19,7 +19,7 @@ const Rules = () => (
         Sämtliche Vorrundenspiele werden vor Beginn der EURO getippt. Ihr könnt Eure Tipps bis zum
         Anstoß des Eröffnungsspiels am
         {' '}
-        <b>11.06.2021 um 21 Uhr (MESZ)</b>
+        <b>14.06.2024 um 21 Uhr (MESZ)</b>
         {' '}
         ändern. Danach könnt ihr
         nichts verändern. Geht also sicher, dass ihr JEDES Spiel getippt habt und ALLES
@@ -52,7 +52,7 @@ const Rules = () => (
       <h4>Wetteinsatz</h4>
       <p>
         Der Wetteinsatz beträgt 5 €. Bitte übermittelt den Betrag bis spätestens&nbsp;
-        <b>Freitag, 18.06.2021</b>
+        <b>Freitag, 21.06.2024</b>
         {' '}
         an das Royale Paar, via&nbsp;
         <a href="https://paypal.me/rtg2018/5" target="_blank" rel="noopener noreferrer">
@@ -80,12 +80,12 @@ const Rules = () => (
         {' '}
         <b>5 Punkte</b>
         {' '}
-        (z.B. Deutschland - Portgual
+        (z.B. Deutschland - Schottland
         geht 5:0 aus und ihr tippt 5:0).
         <br />
         <br />
 
-        Für einen richtigen Differenztipp (z.B. Deutschland - Portgual geht 5:0 aus und ihr
+        Für einen richtigen Differenztipp (z.B. Deutschland - Schottland geht 5:0 aus und ihr
         tippt 6:1) gibt es
         {' '}
         <b>3 Punkte</b>
@@ -93,7 +93,7 @@ const Rules = () => (
         <br />
         <br />
 
-        Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Portgual
+        Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Schottland
         gewinnt, Deutschland gewinnt auch, aber nur mit 1:0) dann bekommt&nbsp;
         ihr
         {' '}

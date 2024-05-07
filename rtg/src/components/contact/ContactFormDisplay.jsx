@@ -38,7 +38,7 @@ const ContactFormPresentational = ({
       label="Nachricht an das Königshaus"
       fullWidth
       multiline
-      rows={5}
+      minRows={5}
       value={content}
       helperText={contentError}
       style={{ textAlign: 'left' }}

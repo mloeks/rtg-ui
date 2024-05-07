@@ -1,5 +1,5 @@
 import React from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Route, Switch } from 'react-router-dom';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -36,7 +36,7 @@ const App = () => {
   const isLocal = window.location.href.match(/.*(localhost|192.168.).*/i);
 
   return (
-    <MuiThemeProvider theme={createMuiTheme(rtg)}>
+    <MuiThemeProvider theme={createTheme(rtg)}>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={de}>
         <div className="App">
           {(isDemo || isLocal)

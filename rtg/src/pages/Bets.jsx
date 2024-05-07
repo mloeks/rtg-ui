@@ -100,6 +100,7 @@ class Bets extends Component {
         <Badge
           classes={{ badge: classes.openBetsBadge }}
           badgeContent={count}
+          overlap="rectangular"
           style={{ padding: '0 16px' }}
         >
           {title}

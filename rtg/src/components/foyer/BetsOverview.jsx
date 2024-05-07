@@ -16,7 +16,7 @@ const BetsOverview = () => (
       &nbsp;der Fußball-Europameisterschaft getippt.
       Bitte gib deine Tipps für sämtliche Vorrundenspiele rechtzeitig bis zum Beginn des
       Eröffnungspiels am&nbsp;
-      <b>Freitag, 11. Juni 2021, 21:00 Uhr (MESZ)</b>
+      <b>Freitag, 14. Juni 2024, 21:00 Uhr (MESZ)</b>
       &nbsp;ab.
       <br />
       <br />

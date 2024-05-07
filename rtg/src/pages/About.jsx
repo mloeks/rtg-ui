@@ -16,11 +16,11 @@ const About = ({ history }) => (
 
     <section className="AboutPage__content">
       <p>
-        Die Royale Tippgemeinschaft ist ein alle zwei Jahre zur Fußball-WM oder EM
+        Die Royale Tippgemeinschaft ist ein zur Fußball-WM oder EM
         stattfindendes Tippspiel, welches von der Royal Family (Dorothee von Schweden,
-        ihrem Prinzgemahl Matthias und Kronprinz Jonathan Marius) organisiert wird.
-        Es wendet sich an alle Freunde, Bekannte, Kollegen und Familienmitglieder
-        der Organisatoren.
+        ihrem Prinzgemahl Matthias, Kronprinz Jonathan Marius und Kronprinzessin Evi Johanne)
+        organisiert wird. Es wendet sich an alle Freunde, Bekannte, Kollegen und
+        Familienmitglieder der Organisatoren.
       </p>
       <p>
         Stetig wächst die RTG, deren Mitglieder mittlerweile nicht nur

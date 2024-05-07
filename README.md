@@ -28,6 +28,8 @@ Implementation of authentication and authorisation is inspired by [this approach
 ### Should
 
 #### Upgrades
+* Upgrade to Material UI 5.x
+  * https://mui.com/material-ui/migration/migration-v4/#update-react
 * Check lib-upgrades branch
 * Make npm i work with more recent node LTS, removing and re-creating package-lock.json fails currently
 

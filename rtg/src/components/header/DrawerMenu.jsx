@@ -42,7 +42,7 @@ const DrawerMenu = ({
 }) => {
   const openBetsBadge = (title, count) => (
     count > 0
-      ? <Badge badgeContent={count} classes={{ badge: classes.badge }}>{title}</Badge>
+      ? <Badge badgeContent={count} classes={{ badge: classes.badge }} overlap="rectangular">{title}</Badge>
       : title
   );
 

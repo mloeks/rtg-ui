@@ -22,7 +22,7 @@ const Foyer = () => (
         className="Foyer__first-visit qa-first-visit-notification"
         containerStyle={{ position: 'fixed' }}
         dismissable
-        disappearAfterMs="5000"
+        disappearAfterMs={5000}
         type={NotificationType.SUCCESS}
         title="Anmeldung erfolgreich"
         subtitle="Viel Spaß und Erfolg bei der diesjährigen RTG!"
