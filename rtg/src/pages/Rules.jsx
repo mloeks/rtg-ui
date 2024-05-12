@@ -78,7 +78,7 @@ const Rules = () => (
       <p>
         Für einen komplett richtigen Tipp gibt es
         {' '}
-        <b>5 Punkte</b>
+        <b>3 Punkte</b>
         {' '}
         (z.B. Deutschland - Schottland
         geht 5:0 aus und ihr tippt 5:0).
@@ -88,25 +88,21 @@ const Rules = () => (
         Für einen richtigen Differenztipp (z.B. Deutschland - Schottland geht 5:0 aus und ihr
         tippt 6:1) gibt es
         {' '}
-        <b>3 Punkte</b>
+        <b>2 Punkte</b>
         .
         <br />
         <br />
 
         Für eine richtige Tendenz (ihr tippt z.B., dass Deutschland 4:0 gegen Schottland
-        gewinnt, Deutschland gewinnt auch, aber nur mit 1:0) dann bekommt&nbsp;
-        ihr
-        {' '}
+        gewinnt, Deutschland gewinnt auch, aber nur mit 1:0) dann bekommt ihr&nbsp;
         <b>1 Punkt</b>
         .
         <br />
         <br />
 
-        Tippt ihr Unentschieden, z.B. 1:1, das Spiel geht aber 2:2 aus, dann gibt es&nbsp;
-        <b>2 Punkte</b>
-        , weil man zwar die Differenz richtig hat, aber es ja auch nicht so
-        schwer ist, in der Differenz bei Unentschieden richtig zu liegen. Deswegen die
-        2 Punkte als Kompromiss.
+        Tippt ihr Unentschieden, z.B. 1:1, das Spiel geht aber 2:2 aus, dann gibt es ebenfalls&nbsp;
+        <b>1 Punkt</b>
+        .
       </p>
 
       <RtgSeparator />
