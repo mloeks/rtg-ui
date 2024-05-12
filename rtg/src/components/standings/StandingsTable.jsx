@@ -316,12 +316,6 @@ class StandingsTable extends Component {
                           className="StandingsTable__stat-col-desktop"
                           classes={{ root: classes.betStat }}
                         >
-                          RT
-                        </TableCell>
-                        <TableCell
-                          className="StandingsTable__stat-col-desktop"
-                          classes={{ root: classes.betStat }}
-                        >
                           T
                         </TableCell>
                         <TableCell

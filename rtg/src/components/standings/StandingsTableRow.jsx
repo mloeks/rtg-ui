@@ -129,13 +129,7 @@ class StandingsTableRow extends Component {
                 className="StandingsTable__stat-col-desktop"
                 style={betStatColumnStyle}
               >
-                {noRemisTendenz}
-              </TableCell>
-              <TableCell
-                className="StandingsTable__stat-col-desktop"
-                style={betStatColumnStyle}
-              >
-                {noTendenz}
+                {noTendenz + noRemisTendenz}
               </TableCell>
               <TableCell
                 className="StandingsTable__stat-col-desktop"
