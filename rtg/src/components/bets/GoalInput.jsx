@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 import { VALID_GOAL_INPUT_REGEX } from '../../service/ResultStringHelper';
 
-const styles = {
-  goalInput: {
-    color: '#F2CE00',
-    fontFamily: '"Oswald", sans-serif',
-    fontSize: 26,
-    textAlign: 'center',
-  },
-};
+import './GoalInput.scss';
 
 // TODO P3 add arrow key functionality for in-/decreasing the goals while in an input field
 class GoalInput extends Component {
@@ -31,15 +23,14 @@ class GoalInput extends Component {
 
   render() {
     const {
-      classes,
       goals,
       id,
+      editing,
       onBlur,
     } = this.props;
-
     return (
       <TextField
-        className="GoalInput__text-field"
+        className={`GoalInput__text-field${editing ? ' editing' : ''}`}
         classes={{}}
         id={id}
         inputRef={this.textInputRef}
@@ -50,22 +41,19 @@ class GoalInput extends Component {
           if (this.textInputRef && this.textInputRef.current) this.textInputRef.current.select();
         }}
         style={{ width: '40%' }}
-        InputProps={{
-          disableUnderline: true,
-          classes: { input: classes.goalInput },
-        }}
+        InputProps={{ disableUnderline: true }}
       />
     );
   }
 }
 
 GoalInput.propTypes = {
+  editing: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   goals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
-
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withStyles(styles)(GoalInput);
+export default GoalInput;

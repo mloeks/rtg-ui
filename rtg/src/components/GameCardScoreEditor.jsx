@@ -82,11 +82,12 @@ class GameCardScoreEditor extends Component {
 
   render() {
     const { homegoals, awaygoals } = this.state;
-    const { gameId } = this.props;
+    const { hasChanges, gameId } = this.props;
 
     return (
       <GameCardScoreEditorPresentational
         id={gameId}
+        hasChanges={hasChanges}
         homegoals={homegoals}
         awaygoals={awaygoals}
         onBlur={this.sanitizeScore}
@@ -105,6 +106,7 @@ GameCardScoreEditor.defaultProps = {
 
 GameCardScoreEditor.propTypes = {
   gameId: PropTypes.number.isRequired,
+  hasChanges: PropTypes.bool.isRequired,
   scoreValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };

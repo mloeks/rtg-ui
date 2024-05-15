@@ -182,7 +182,7 @@ class GameCardBet extends Component {
   }
 
   render() {
-    const { score } = this.state;
+    const { hasChanges, score } = this.state;
     const { gameId } = this.props;
 
     return (
@@ -190,6 +190,7 @@ class GameCardBet extends Component {
         {(betsStatusContext) => (
           <GameCardScoreEditor
             gameId={gameId}
+            hasChanges={hasChanges}
             scoreValue={score}
             onChange={(val) => this.handleScoreChange(val, betsStatusContext)}
           />

@@ -29,7 +29,7 @@ GoalChangeArrow.propTypes = {
 };
 
 const GameCardScoreEditorPresentational = ({
-  id, homegoals, awaygoals, onBlur, onHomegoalsChange, onAwaygoalsChange,
+  id, hasChanges, homegoals, awaygoals, onBlur, onHomegoalsChange, onAwaygoalsChange,
   onHomegoalsIncrementalChange, onAwaygoalsIncrementalChange,
 }) => (
   <GameCardRibbon stateCssClass="score">
@@ -42,6 +42,7 @@ const GameCardScoreEditorPresentational = ({
         <GoalInput
           className="GoalInput GoalInput__home"
           id={`${id}-home`}
+          editing={hasChanges}
           goals={homegoals}
           type="home"
           onChange={onHomegoalsChange}
@@ -51,6 +52,7 @@ const GameCardScoreEditorPresentational = ({
         <GoalInput
           className="GoalInput GoalInput__away"
           id={`${id}-away`}
+          editing={hasChanges}
           goals={awaygoals}
           type="away"
           onChange={onAwaygoalsChange}
@@ -72,6 +74,7 @@ GameCardScoreEditorPresentational.defaultProps = {
 
 GameCardScoreEditorPresentational.propTypes = {
   id: PropTypes.number.isRequired,
+  hasChanges: PropTypes.bool.isRequired,
   homegoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   awaygoals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 

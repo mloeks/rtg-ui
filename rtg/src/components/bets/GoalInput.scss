@@ -1,0 +1,14 @@
+@import '../../sass/colors';
+
+.GoalInput__text-field {
+  input[type="text"] {
+    color: $betInput;
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px;
+    text-align: center;
+  }
+
+  &.editing input[type="text"] {
+    color: $betInputEditing;
+  }
+}
