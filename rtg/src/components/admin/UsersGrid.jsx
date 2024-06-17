@@ -11,8 +11,9 @@ import Notification, { NotificationType } from '../Notification';
 import UsersGridToolbar from './UsersGridToolbar';
 
 class UsersGrid extends Component {
-  static isUserActive(lastLogin) {
-    return (lastLogin !== null && new Date(lastLogin).getFullYear() === new Date().getFullYear());
+  static isUserActive(isActive, lastLogin) {
+    return isActive !== false
+        && (lastLogin !== null && new Date(lastLogin).getFullYear() === new Date().getFullYear());
   }
 
   constructor(props) {
@@ -85,10 +86,14 @@ class UsersGrid extends Component {
 
     let filteredUsers = users;
     if (filterActive) {
-      filteredUsers = filteredUsers.filter((user) => UsersGrid.isUserActive(user.last_login));
+      filteredUsers = filteredUsers.filter((user) => UsersGrid.isUserActive(
+        user.is_active, user.last_login,
+      ));
     }
     if (filterInactive) {
-      filteredUsers = filteredUsers.filter((user) => !UsersGrid.isUserActive(user.last_login));
+      filteredUsers = filteredUsers.filter((user) => !UsersGrid.isUserActive(
+        user.is_active, user.last_login,
+      ));
     }
     if (filterHasNotPaid) {
       filteredUsers = filteredUsers.filter((user) => !user.has_paid);
@@ -165,7 +170,7 @@ class UsersGrid extends Component {
               email2={user.email2}
               firstName={user.first_name}
               lastName={user.last_name}
-              active={UsersGrid.isUserActive(user.last_login)}
+              active={UsersGrid.isUserActive(user.is_active, user.last_login)}
               avatar={user.avatar}
               hasPaid={user.has_paid}
               key={`user-card-${user.pk}`}
